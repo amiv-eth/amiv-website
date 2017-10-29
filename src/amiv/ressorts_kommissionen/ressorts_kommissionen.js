@@ -21,7 +21,7 @@ module.exports = {
         `Der Blitz ist die Fachzeitschrift des AMIVs. Er erscheint 6 Mal pro Semester, an jedem zweitem Montag,
         und erreicht nahezu 100% aller Studierenden der Departemente Maschinenbau und Verfahrenstechnik (D-MAVT)
         und Informationstechnologie und Elektrotechnik (D-ITET). Dies sind gut 3000 Ingenieure von morgen! `,
-        m('a', { href: '#!/amiv/kommissionen/blitz' }, 'Zur Website'),
+        m('a', { href: 'https://www.blitz.ethz.ch/', target: '_blank' }, 'Zur Website'),
       ]),
       m('h3', 'Braukommission'),
       m('p', [
