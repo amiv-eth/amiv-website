@@ -1,10 +1,13 @@
 // src/index.js
 const m = require('mithril');
-const Layout = require('./layout');
-const amiv = require('./amiv');
-const statuten = require('./amiv/statuten');
-const contact = require('./contact');
-const aufenthaltsraum = require('./amiv/aufenthaltsraum');
+
+const Layout = require('./views/layout');
+const amiv = require('./views/amiv');
+const login = require('./views/login');
+const statuten = require('./views/amiv/statuten');
+const contact = require('./views/contact');
+const aufenthaltsraum = require('./views/amiv/aufenthaltsraum');
+
 
 m.route(document.body, '/', {
   '/': {
@@ -25,6 +28,11 @@ m.route(document.body, '/', {
   '/amiv/aufenthaltsraum': {
     render() {
       return m(Layout, m(aufenthaltsraum));
+    },
+  },
+  '/login': {
+    render() {
+      return m(Layout, m(login));
     },
   },
 });
