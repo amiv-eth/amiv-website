@@ -8,13 +8,13 @@ module.exports = {
         `Der Bastli ist die Kommission des AMIV, welche dir einen guten Zugang zur praktischen Seite deines Studiums ermöglicht.
       Wir betreiben ein Elektroniklabor und einen Bauteileshop, beides mehrmals pro Woche geöffnet. Dort kannst du von modernen Messgeräten,
       jeder Menge Laborausrüstung, einer Platinenfräse zur Platinenherstellung, viel Werkzeug und Fachwissen profitieren. `,
-        m('a', { href: '#!/amiv/kommissionen/bastli' }, 'Zur Website'),
+        m('a', { href: 'http://www.bastli.ethz.ch/', target: '_blank' }, 'Zur Website'),
       ]),
       m('h3', 'BEEZ'),
       m('p', [
         `BEEZ steht für Biomedical Engineering ETH Zürich und ist eine am 9. März 2009 gegründete Kommission des AMIVs,
         die die Interessen der Studenten im Master Programm "Biomedical Engineering" vertritt. `,
-        m('a', { href: '#!/amiv/kommissionen/beez' }, 'Zur Website'),
+        m('a', { href: '#!/amiv/kommissionen/beez', target: '_blank' }, 'Zur Website'),
       ]),
       m('h3', 'Blitz'),
       m('p', [
@@ -40,7 +40,7 @@ module.exports = {
         `Die Funkbude betreibt die Amateurfunkstation auf dem ETZ-Dach. Der Shack - die Funkstation - ist bestens ausgerüstet.
         Vom klassischen Morsen bis hin zu den neuen digitalen Betriebsarten ist funktechnisch fast alles möglich.
         Zur Vorbereitung auf die Amateurfunkprüfung bietet die Funkbude jedes Herbstsemester einen Vorbereitungskurs an. `,
-        m('a', { href: '#!/amiv/kommissionen/funkbude' }, 'Zur Website'),
+        m('a', { href: 'https://hb9zz.ethz.ch/', target: '_blank' }, 'Zur Website'),
       ]),
       m('h3', 'Kontakt'),
       m('p', [
