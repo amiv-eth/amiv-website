@@ -7,5 +7,6 @@ module.exports = {
     "rules": {
         "no-multi-str": 0,
         "no-underscore-dangle": 0,
+        "no-console": 0
     },
 };
