@@ -11,6 +11,3 @@ eslint:
   when: always
   script:
     - npm run lint
-
-  only:
-    - master
