@@ -1,0 +1,16 @@
+image: node:latest
+
+stages:
+  - lint
+
+before_script:
+  - npm install
+
+eslint:
+  stage: lint
+  when: always
+  script:
+    - npm run lint
+
+  only:
+    - master
