@@ -7,6 +7,7 @@ const login = require('./views/login');
 const statuten = require('./views/amiv/statuten');
 const contact = require('./views/contact');
 const aufenthaltsraum = require('./views/amiv/aufenthaltsraum');
+const board = require('./views/amiv/board');
 
 
 m.route(document.body, '/', {
@@ -33,6 +34,11 @@ m.route(document.body, '/', {
   '/login': {
     render() {
       return m(Layout, m(login));
+    },
+  },
+  '/amiv/board': {
+    render() {
+      return m(Layout, m(board));
     },
   },
 });
