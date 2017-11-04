@@ -2,6 +2,7 @@
 const m = require('mithril');
 
 const Layout = require('./views/layout');
+const amivLayout = require('./views/amiv/amivLayout');
 const amiv = require('./views/amiv');
 const login = require('./views/login');
 const statuten = require('./views/amiv/statuten');
@@ -13,12 +14,12 @@ const board = require('./views/amiv/board');
 m.route(document.body, '/', {
   '/': {
     render() {
-      return m(Layout, m(amiv));
+      return m(Layout, m(amivLayout, m(amiv)));
     },
   },
   '/amiv/statuten': {
     render() {
-      return m(Layout, m(statuten));
+      return m(Layout, m(amivLayout, m(statuten)));
     },
   },
   '/contact': {
@@ -28,7 +29,7 @@ m.route(document.body, '/', {
   },
   '/amiv/aufenthaltsraum': {
     render() {
-      return m(Layout, m(aufenthaltsraum));
+      return m(Layout, m(amivLayout, m(aufenthaltsraum)));
     },
   },
   '/login': {
@@ -38,7 +39,7 @@ m.route(document.body, '/', {
   },
   '/amiv/board': {
     render() {
-      return m(Layout, m(board));
+      return m(Layout, m(amivLayout, m(board)));
     },
   },
 });
