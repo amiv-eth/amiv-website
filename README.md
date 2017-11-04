@@ -4,14 +4,23 @@ This is the home of the new AMIV website.
 
 ## How to use
 
+**Developer**
 ```
 npm install
-npm start &   # start webpack
-npm run server &   # start developer server
+npm run server  #start developer server
 ```
 
-Lint:
-```npm run lint```
+**Production**
+```
+npm install
+npm run build
+```
+Then copy `index.html` and the dist folder to your webhost.
+
+**Lint**
+```
+npm run lint
+```
 
 ## Developer 
 

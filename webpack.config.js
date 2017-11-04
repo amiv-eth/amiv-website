@@ -13,11 +13,11 @@ var config = {
     //To run development server
     devServer: {
         contentBase: __dirname,
+        publicPath: '/dist',
         compress: true,
         port: 9000,
         hot: true,
-        index: "index.html",
-        hotOnly: true
+        index: "index.html"
     },
 
     module: {
