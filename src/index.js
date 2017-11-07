@@ -3,6 +3,7 @@ const m = require('mithril');
 const Layout = require('./layout');
 const kontakt = require('./amiv/kontakt');
 const aufenthaltsraum = require('./amiv/aufenthaltsraum');
+const comissions = require('./amiv/comissions');
 
 m.route(document.body, '/', {
   '/': {
@@ -18,6 +19,11 @@ m.route(document.body, '/', {
   '/aufenthaltsraum': {
     render() {
       return m(aufenthaltsraum);
+    },
+  },
+  '/comissions': {
+    render() {
+      return m(comissions);
     },
   },
 });
