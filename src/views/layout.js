@@ -1,5 +1,6 @@
+import * as auth from '../models/auth';
+
 const m = require('mithril');
-const auth = require('../models/auth');
 
 module.exports = {
   oninit: auth.checkLogin,

@@ -1,5 +1,6 @@
+import * as auth from '../models/auth';
+
 const m = require('mithril');
-const Auth = require('../models/auth');
 
 module.exports = {
   username: '',
@@ -10,11 +11,11 @@ module.exports = {
         'form', {
           onsubmit: (e) => {
             e.preventDefault();
-            Auth.login(this.username, this.password);
+            auth.login(this.username, this.password);
           },
         },
         m('h3', 'Login'), [
-          m('p', Auth.error),
+          m('p', auth.error),
           m('input.input[type=text][placeholder=Username]', {
             oninput: m.withAttr('value', (value) => { this.username = value; }),
             value: this.username,
