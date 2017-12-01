@@ -1,9 +1,9 @@
-const config = require('./config.js');
+import { verbose } from './config';
 
-const log = {
-  log(message) {
-    if (config.verbose === true) console.log(message);
-  },
-};
+export function log(message) {
+  if (verbose === true) console.log(message);
+}
 
-module.exports = log;
+export function error(message) {
+  if (verbose === true) console.error(message);
+}

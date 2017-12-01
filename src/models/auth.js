@@ -1,6 +1,7 @@
+import { apiUrl } from './config';
+import { log } from './log';
+
 const m = require('mithril');
-const Config = require('./config');
-const log = require('./log');
 
 const auth = {
   username: '',
@@ -14,11 +15,11 @@ const auth = {
     this.reloadLocalStorage();
     return m.request({
       method: 'POST',
-      url: `${Config.api_url}/sessions`,
+      url: `${apiUrl}/sessions`,
       data: { username, password },
     }).then((result) => {
       const dt = new Date();
-      log.log('logged in!');
+      log('logged in!');
       this.token = result.token;
       this.etag = result._etag;
       this.id = result._id;
@@ -39,13 +40,13 @@ const auth = {
     this.authenticated = false;
     return m.request({
       method: 'DELETE',
-      url: `${Config.api_url}/sessions/${this.id}`,
+      url: `${apiUrl}/sessions/${this.id}`,
       headers: {
         Authorization: `Token ${this.token}`,
         'If-Match': this.etag,
       },
     }).then(() => {
-      log.log('logged out!');
+      log('logged out!');
       this.token = '';
       this.authenticated = false;
       this.error = '';
@@ -64,23 +65,23 @@ const auth = {
     const dt = new Date();
     auth.reloadLocalStorage();
     if (this.authenticated === true) {
-      log.log('no session found');
+      log('no session found');
       m.route.set('/login');
       return new Promise(() => { });
     }
     if (dt.getTime() > this.lastChecked + 5000) {
       return m.request({
         method: 'GET',
-        url: `${Config.api_url}/sessions/${this.token}`,
+        url: `${apiUrl}/sessions/${this.token}`,
       }).then((result) => {
         const dt2 = new Date();
-        log.log('session is still valid!');
+        log('session is still valid!');
         this.authenticated = true;
         this.etag = result._etag;
         this.lastChecked = dt2.getTime();
       }).catch((e) => {
-        log.log('token is not valid');
-        log.log(e);
+        log('token is not valid');
+        log(e);
         this.authenticated = false;
         localStorage.removeItem('session');
         localStorage.removeItem('username');
@@ -92,7 +93,7 @@ const auth = {
     return new Promise(() => { });
   },
   reloadLocalStorage() {
-    log.log('checking stored session');
+    log('checking stored session');
     if (localStorage.getItem('token') !== null) {
       this.token = localStorage.token;
       this.id = localStorage.id;
