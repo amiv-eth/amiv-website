@@ -1,5 +1,7 @@
 // src/index.js
 import studydocList from './views/studydocList';
+import eventList from './views/eventList';
+import eventDetails from './views/eventDetails';
 
 const m = require('mithril');
 
@@ -47,6 +49,16 @@ m.route(document.body, '/', {
   '/studydocuments': {
     render() {
       return m(Layout, m(studydocList));
+    },
+  },
+  '/events': {
+    render() {
+      return m(Layout, m(eventList));
+    },
+  },
+  '/events/:eventId': {
+    render(vnode) {
+      return m(Layout, m(eventDetails, vnode.attrs));
     },
   },
 });
