@@ -4,6 +4,7 @@ import { getToken } from './auth';
 const m = require('mithril');
 
 const lang = 'de';
+const date = `${new Date().toISOString().split('.')[0]}Z`;
 
 let querySaved = '';
 
@@ -12,6 +13,10 @@ export function getList() {
     return [];
   }
   return this.list;
+}
+
+export function getCurrent() {
+  return this.current;
 }
 
 export function load(query = {}) {
@@ -38,6 +43,22 @@ export function load(query = {}) {
       return newEvent;
     });
   });
+}
+
+export function loadCurrent(eventId) {
+  this.current = this.getList().find(item => item._id === eventId);
+  if (typeof this.current === 'undefined') {
+    this.load({
+      where: {
+        time_advertising_start: { $lte: date },
+        time_advertising_end: { $gte: date },
+        show_website: true,
+      },
+      sort: ['-priority', 'time_advertising_start'],
+    }).then(() => {
+      this.current = this.getList().find(item => item._id === eventId);
+    });
+  }
 }
 
 export function reload() {
