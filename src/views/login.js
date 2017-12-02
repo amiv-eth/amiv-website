@@ -1,21 +1,24 @@
-import * as auth from '../models/auth';
+import { login } from '../models/auth';
 
 const m = require('mithril');
 
 module.exports = {
   username: '',
   password: '',
+  error: '',
   view() {
     return m('div', [
       m(
         'form', {
           onsubmit: (e) => {
             e.preventDefault();
-            auth.login(this.username, this.password);
+            login(this.username, this.password)
+              .then(() => { m.route.set('/'); })
+              .catch((err) => { this.error = err; });
           },
         },
         m('h3', 'Login'), [
-          m('p', auth.error),
+          m('p', this.error),
           m('input.input[type=text][placeholder=Username]', {
             oninput: m.withAttr('value', (value) => { this.username = value; }),
             value: this.username,

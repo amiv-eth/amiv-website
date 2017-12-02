@@ -1,11 +1,11 @@
-import * as auth from '../models/auth';
+import { checkLogin, isLoggedIn, logout } from '../models/auth';
 
 const m = require('mithril');
 
 module.exports = {
-  oninit: auth.checkLogin,
+  oninit: checkLogin,
   view(vnode) {
-    if (auth.authenticated === false) {
+    if (isLoggedIn() === false) {
       return m('div', [
         m('nav', [
           m('a', { href: '/', oncreate: m.route.link }, 'AMIV'),
@@ -27,7 +27,7 @@ module.exports = {
         m('a', {
           href: '/',
           onclick: () => {
-            auth.logout();
+            logout().then(() => { m.route.set('/'); });
             return false;
           },
           oncreate: m.route.link,
