@@ -32,7 +32,7 @@ export default class EventList {
           m('td', event.time_start),
           m('td', event.signup_count),
           m('td', event.spots),
-          m('td', m('button', 'show details')),
+          m('td', m('a', { href: `/events/${event._id}`, oncreate: m.route.link }, 'Details')),
         ]))),
     ]);
   }
