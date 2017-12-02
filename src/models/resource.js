@@ -23,6 +23,9 @@ export default class Resource {
       method: 'GET',
       url: `${apiUrl}/${this.resource}/?${queryString}`,
       headers: { Authorization: `Token ${getToken()}` },
+    }).then((data) => {
+      this.list = data._items;
+      return data;
     }).catch((err) => {
       // If the error is 401, the token is invalid -> auto log out
       if (err._error.code === 401) { logout(); }
