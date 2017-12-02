@@ -1,5 +1,4 @@
 import { apiUrl } from './config';
-import { log } from './log';
 import { getToken } from './auth';
 
 const m = require('mithril');
@@ -16,8 +15,7 @@ export function getList() {
 
 export function load(query = {}) {
   querySaved = query;
-  log('hallo');
-  const queryEncoded = m.buildQueryString(JSON.stringify(query));
+  const queryEncoded = m.buildQueryString({ where: JSON.stringify(query) });
 
   return m.request({
     method: 'GET',
