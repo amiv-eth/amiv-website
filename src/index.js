@@ -1,4 +1,7 @@
 // src/index.js
+import eventList from './views/eventList';
+import eventDetails from './views/eventDetails';
+
 const m = require('mithril');
 
 const Layout = require('./views/layout');
@@ -9,6 +12,7 @@ const statuten = require('./views/amiv/statuten');
 const contact = require('./views/contact');
 const aufenthaltsraum = require('./views/amiv/aufenthaltsraum');
 const board = require('./views/amiv/board');
+// const eventDetails = require('./views/eventDetails');
 
 
 m.route(document.body, '/', {
@@ -40,6 +44,16 @@ m.route(document.body, '/', {
   '/amiv/board': {
     render() {
       return m(Layout, m(amivLayout, m(board)));
+    },
+  },
+  '/events': {
+    render() {
+      return m(Layout, m(eventList));
+    },
+  },
+  '/events/:eventId': {
+    render(vnode) {
+      return m(Layout, m(eventDetails, vnode.attrs));
     },
   },
 });
