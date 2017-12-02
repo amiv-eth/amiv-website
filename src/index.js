@@ -1,4 +1,6 @@
 // src/index.js
+import studydocList from './views/studydocList';
+
 const m = require('mithril');
 
 const Layout = require('./views/layout');
@@ -40,6 +42,11 @@ m.route(document.body, '/', {
   '/amiv/board': {
     render() {
       return m(Layout, m(amivLayout, m(board)));
+    },
+  },
+  '/studydocuments': {
+    render() {
+      return m(Layout, m(studydocList));
     },
   },
 });
