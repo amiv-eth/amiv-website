@@ -31,3 +31,28 @@ export function load(query = {}) {
 export function reload() {
   return load(querySaved);
 }
+
+export function addNew(doc) {
+  if (typeof doc !== 'object') {
+    return new Promise(() => { }); // empty promise
+  }
+  const form = new FormData();
+  Object.keys(doc).forEach((key) => {
+    if (key === 'files') {
+      for (let i = 0; i < doc.files.length; i += 1) {
+        form.append('files', doc.files[i]);
+      }
+    } else {
+      form.append(key, doc[key]);
+    }
+  });
+
+  return m.request({
+    method: 'POST',
+    url: `${apiUrl}/studydocuments`,
+    data: form,
+    headers: {
+      Authorization: `Token ${getToken()}`,
+    },
+  });
+}

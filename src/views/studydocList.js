@@ -36,6 +36,7 @@ export default class studydocList {
         m('input', { type: 'text', oninput: m.withAttr('value', (value) => { this.search = value; }) }, ''),
         m('button', { type: 'submit' }, 'Search'),
       ]),
+      m('button', { onclick: () => m.route.set('/studydocuments/new') }, 'add new'),
       m('table', [
         m('thead', m('tr', tableHeadings.map(header => m('th', header)))),
         m('tbody', studydocs.getList().map(doc => m('tr', [

@@ -1,5 +1,6 @@
 // src/index.js
 import studydocList from './views/studydocList';
+import studydocNew from './views/studydocNew';
 import eventList from './views/eventList';
 import eventDetails from './views/eventDetails';
 
@@ -49,6 +50,11 @@ m.route(document.body, '/', {
   '/studydocuments': {
     render() {
       return m(Layout, m(studydocList));
+    },
+  },
+  '/studydocuments/new': {
+    render() {
+      return m(Layout, m(studydocNew));
     },
   },
   '/events': {
