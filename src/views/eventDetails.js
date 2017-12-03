@@ -17,7 +17,7 @@ class EventSignupForm {
       return m('div');
     }
     if (isLoggedIn()) {
-      if (typeof events.getCurrentSignup() === 'undefined') {
+      if (events.currentSignupHasLoaded() && typeof events.getCurrentSignup() === 'undefined') {
         return m('button', { onclick() { events.signupCurrent(); } }, 'signup');
       }
     } else if (events.getCurrent().allow_email_signup) {
