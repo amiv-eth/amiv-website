@@ -24,6 +24,10 @@ export function getCurrentSignup() {
   return this.currentSignup;
 }
 
+export function currentSignupHasLoaded() {
+  return this.currentSignupLoaded;
+}
+
 export function checkCurrentSignup() {
   const queryString = m.buildQueryString({
     where: JSON.stringify({
@@ -40,6 +44,7 @@ export function checkCurrentSignup() {
     } : {},
   }).then((result) => {
     [this.currentSignup] = result._items;
+    this.currentSignupLoaded = true;
     log(this.currentSignup);
   });
 }
