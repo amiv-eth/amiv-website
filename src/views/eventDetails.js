@@ -1,39 +1,83 @@
-import * as events from '../models/event';
+import * as EmailValidator from 'email-validator';
+import * as events from '../models/events';
+import { log } from '../models/log';
 import { isLoggedIn } from '../models/auth';
+import { inputGroup, submitButton } from './formFields';
+import JSONSchemaForm from './jsonSchemaForm';
 
 const m = require('mithril');
 
-let signupEmail = '';
-
-class EventSignupForm {
-  static oninit() {
+class EventSignupForm extends JSONSchemaForm {
+  oninit(vnode) {
+    super.oninit(vnode);
+    this.emailErrors = [];
+    this.emailValid = false;
     if (isLoggedIn()) {
       events.checkCurrentSignup();
     }
   }
 
-  static view() {
-    if (typeof events.getCurrent() === 'undefined') {
-      return m('div');
-    }
+  submit() {
     if (isLoggedIn()) {
-      if (!events.currentSignupHasLoaded()) {
-        return m('span', 'Loading...');
-      } else if (typeof events.getCurrentSignup() === 'undefined') {
-        return m('button', { onclick() { events.signupCurrent(); } }, 'signup');
-      }
-    } else if (events.getCurrent().allow_email_signup) {
-      return m('div', [
-        m('input', {
-          type: 'text',
-          placeholder: 'Email',
-          oninput: m.withAttr('value', (value) => { signupEmail = value; }),
-          value: signupEmail,
-        }),
-        m('button', { onclick() { events.signupCurrent(signupEmail); } }, 'signup'),
-      ]);
+      events.signupCurrent(super.getValue());
+    } else {
+      events.signupCurrent(super.getValue(), this.email);
     }
-    return m('div');
+  }
+
+  view() {
+    // do not render anything if there is no data yet
+    if (typeof events.getCurrent() === 'undefined') return m();
+
+    if (isLoggedIn()) {
+      // do not render form if there is no signup data of the current user
+      if (!events.currentSignupHasLoaded()) return m('span', 'Loading...');
+      if (typeof events.getCurrentSignup() === 'undefined') {
+        const elements = this.renderFormElements();
+        elements.push(m(submitButton, {
+          active: super.isValid(),
+          args: {
+            onclick: () => this.submit(),
+          },
+          text: 'Signup',
+        }));
+        return m('form', elements);
+      }
+      return m('div', 'You have already signed up for this event.');
+    } else if (events.getCurrent().allow_email_signup) {
+      const elements = this.renderFormElements();
+      elements.push(m(inputGroup, {
+        name: 'email',
+        title: 'Email',
+        args: {
+          type: 'text',
+        },
+        onchange: (e) => {
+          // bind changed data
+          this.email = e.target.value;
+
+          // validate if email address has the right structure
+          if (EmailValidator.validate(this.email)) {
+            this.emailValid = true;
+            this.emailErrors = [];
+          } else {
+            this.emailValid = false;
+            this.emailErrors = ['Not a valid email address'];
+          }
+        },
+        getErrors: () => this.emailErrors,
+        value: this.email,
+      }));
+      elements.push(m(submitButton, {
+        active: this.emailValid && super.isValid(),
+        args: {
+          onclick: () => this.submit(),
+        },
+        text: 'Signup',
+      }));
+      return m('form', elements);
+    }
+    return m('div', 'This event is for AMIV members only.');
   }
 }
 
@@ -44,7 +88,27 @@ export default class EventDetails {
 
   static view() {
     if (typeof events.getCurrent() === 'undefined') {
-      return m('div');
+      return m();
+    }
+    log(events.getCurrent());
+    let eventSignupForm;
+    const now = new Date();
+    const registerStart = new Date(events.getCurrent().time_register_start);
+    const registerEnd = new Date(events.getCurrent().time_register_end);
+    log(`Now: ${now}`);
+    log(`Start: ${registerStart}`);
+    log(`End: ${registerEnd}`);
+    if (registerStart <= now) {
+      if (registerEnd >= now) {
+        eventSignupForm = m(EventSignupForm, {
+          schema: events.getCurrent().additional_fields === undefined ?
+            undefined : JSON.parse(events.getCurrent().additional_fields),
+        });
+      } else {
+        eventSignupForm = m('div', 'The registration period is over.');
+      }
+    } else {
+      eventSignupForm = m('div', `The registration starts at ${registerStart}`);
     }
     return m('div', [
       m('h1', events.getCurrent().title_de),
@@ -52,7 +116,7 @@ export default class EventDetails {
       m('span', events.getCurrent().signup_count),
       m('span', events.getCurrent().spots),
       m('p', events.getCurrent().description_de),
-      m(EventSignupForm),
+      eventSignupForm,
     ]);
   }
 }

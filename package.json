@@ -17,6 +17,8 @@
   "author": "AMIV IT team",
   "license": "ISC",
   "dependencies": {
+    "ajv": "^5.5.0",
+    "email-validator": "^1.1.1",
     "babel-core": "^6.26.0",
     "babel-cli": "^6.26.0",
     "babel-loader": "^7.1.2",

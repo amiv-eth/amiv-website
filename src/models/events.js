@@ -45,11 +45,18 @@ export function checkCurrentSignup() {
   }).then((result) => {
     [this.currentSignup] = result._items;
     this.currentSignupLoaded = true;
-    log(this.currentSignup);
   });
 }
 
-export function signupCurrent(email = '') {
+export function signupCurrent(additionalFields, email = '') {
+  let additionalFieldsString;
+  if (this.current.additional_fields === undefined ||
+    additionalFields === null || typeof additionalFields !== 'object') {
+    additionalFieldsString = undefined;
+  } else {
+    additionalFieldsString = JSON.stringify(additionalFields);
+  }
+
   if (isLoggedIn()) {
     log(`UserId: ${getUserId()}`);
     m.request({
@@ -57,6 +64,7 @@ export function signupCurrent(email = '') {
       url: `${apiUrl}/eventsignups`,
       data: {
         event: this.current._id,
+        additional_fields: additionalFieldsString,
         user: getUserId(),
       },
       headers: getToken() ? {
@@ -64,19 +72,19 @@ export function signupCurrent(email = '') {
       } : {},
     }).then(() => { this.checkCurrentSignup(); });
   } else if (this.current.allow_email_signup) {
-    if (email.length > 0) {
-      m.request({
-        method: 'POST',
-        url: `${apiUrl}/eventsignups`,
-        data: {
-          event: this.current._id,
-          email,
-        },
-        headers: getToken() ? {
-          Authorization: `Token ${getToken()}`,
-        } : {},
-      }).then(() => { this.checkCurrentSignup(); });
-    }
+    log(`Email: ${email}`);
+    m.request({
+      method: 'POST',
+      url: `${apiUrl}/eventsignups`,
+      data: {
+        event: this.current._id,
+        additional_fields: additionalFieldsString,
+        email,
+      },
+      headers: getToken() ? {
+        Authorization: `Token ${getToken()}`,
+      } : {},
+    }).then(() => { this.checkCurrentSignup(); });
   }
 }
 

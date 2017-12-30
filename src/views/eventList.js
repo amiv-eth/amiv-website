@@ -1,4 +1,4 @@
-import * as events from '../models/event';
+import * as events from '../models/events';
 
 const m = require('mithril');
 
@@ -14,6 +14,13 @@ export default class EventList {
       },
       sort: ['-priority', 'time_advertising_start'],
     });
+  }
+
+  static onbeforeupdate(vnode, old) {
+    // when attrs are different it means we changed route
+    if (vnode.attrs.id !== old.attrs.id) {
+      events.reload();
+    }
   }
 
   static view() {
