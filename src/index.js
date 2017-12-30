@@ -3,6 +3,7 @@ import studydocList from './views/studydocList';
 import studydocNew from './views/studydocNew';
 import eventList from './views/eventList';
 import eventDetails from './views/eventDetails';
+import profile from './views/profile';
 
 const m = require('mithril');
 
@@ -65,6 +66,11 @@ m.route(document.body, '/', {
   '/events/:eventId': {
     render(vnode) {
       return m(Layout, m(eventDetails, vnode.attrs));
+    },
+  },
+  '/profile': {
+    render(vnode) {
+      return m(Layout, m(profile, vnode.attrs));
     },
   },
 });
