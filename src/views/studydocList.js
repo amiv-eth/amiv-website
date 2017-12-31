@@ -24,10 +24,10 @@ export default class studydocList {
           e.preventDefault();
           const query = {
             $or: [
-              { title: { $regex: `.*${this.search}.*` } },
-              { lecture: { $regex: `.*${this.search}.*` } },
-              { professor: { $regex: `.*${this.search}.*` } },
-              { author: { $regex: `.*${this.search}.*` } },
+              { title: { $regex: `^(?i).*${this.search}.*` } },
+              { lecture: { $regex: `^(?i).*${this.search}.*` } },
+              { professor: { $regex: `^(?i).*${this.search}.*` } },
+              { author: { $regex: `^(?i).*${this.search}.*` } },
             ],
           };
           studydocs.load(query);
