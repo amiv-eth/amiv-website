@@ -1,5 +1,6 @@
 import { isLoggedIn } from '../models/auth';
 import * as user from '../models/user';
+import * as groups from '../models/groups';
 import { log } from '../models/log';
 
 const m = require('mithril');
@@ -94,6 +95,33 @@ class announceSubscriptionForm {
   }
 }
 
+// shows group memberships and allows to withdraw and enroll for selected groups.
+class groupMemberships {
+  static oninit() {
+    groups.load({ allow_self_enrollment: true });
+    groups.loadMemberships();
+  }
+
+  static view() {
+    return m('div', [
+      m('div', groups.getMemberships().map(membership => m('div', [
+        m('span', membership.group.name),
+        membership.expiry === undefined ? undefined : m('span', `(expires on ${membership.expiry})`),
+        m('button', { onclick: () => groups.withdraw(membership._id, membership._etag) }, 'withdraw'),
+      ]))),
+      m('div', groups.getList().map((group) => {
+        if (groups.getMemberships().some(element => element.group._id === group._id)) {
+          return undefined;
+        }
+        return m('div', [
+          m('span', group.name),
+          m('button', { onclick: () => groups.enroll(group._id) }, 'enroll'),
+        ]);
+      })),
+    ]);
+  }
+}
+
 // shows all submodules defined above
 export default class profile {
   static oninit() {
@@ -108,6 +136,7 @@ export default class profile {
       m(showUserInfo),
       m(rfidForm),
       m(announceSubscriptionForm),
+      m(groupMemberships),
     ]);
   }
 }
