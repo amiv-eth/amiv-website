@@ -52,7 +52,7 @@ class EventSignupForm extends JSONSchemaForm {
         args: {
           type: 'text',
         },
-        onchange: (e) => {
+        oninput: (e) => {
           // bind changed data
           this.email = e.target.value;
 
