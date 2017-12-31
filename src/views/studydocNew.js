@@ -1,7 +1,9 @@
 // import Ajv from 'ajv';
 import * as studydocs from '../models/studydocs';
 // import { apiUrl } from '../models/config';
+import { isLoggedIn } from '../models/auth';
 import { log } from '../models/log';
+import { Error401 } from './errors';
 
 const m = require('mithril');
 
@@ -25,6 +27,8 @@ export default class studydocNew {
   }
 
   view() {
+    if (!isLoggedIn()) return m(Error401);
+
     return m('div', [
       m('form', {
         onsubmit: (e) => {
