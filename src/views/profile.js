@@ -60,7 +60,7 @@ class changePasswordForm {
         type: 'password',
         placeholder: 'Password',
         value: this.password1,
-        onchange: (e) => {
+        oninput: (e) => {
           this.password1 = e.target.value;
           this.validate();
         },
@@ -71,7 +71,7 @@ class changePasswordForm {
         type: 'password',
         placeholder: 'Repeat',
         value: this.password2,
-        onchange: (e) => {
+        oninput: (e) => {
           this.password2 = e.target.value;
           this.validate();
         },
@@ -110,7 +110,7 @@ class rfidForm {
         type: 'text',
         placeholder: 'RFID',
         value: this.rfid,
-        onchange: (e) => {
+        oninput: (e) => {
           this.rfid = e.target.value;
           this.valid = /^\d{6}$/g.test(this.rfid);
           log(`rfid valid: ${this.valid}`);
