@@ -28,6 +28,59 @@ class showUserInfo {
   }
 }
 
+// provides a form to change the users password (if not authenticated by LDAP)
+class changePasswordForm {
+  submit() {
+    const password = this.password1;
+    this.busy = true;
+    user.update({ password }).then(() => {
+      this.busy = false;
+    }).catch(() => {
+      this.busy = false;
+    });
+  }
+
+  validate() {
+    this.valid = this.password1.length && this.password1 === this.password2;
+  }
+
+  view() {
+    if (user.get() === undefined) return m();
+
+    const buttonArgs = { onclick: () => this.submit() };
+
+    if (!this.valid || this.busy) {
+      buttonArgs.disabled = 'disabled';
+    }
+
+    return m('div', [
+      m('input', {
+        name: 'password1',
+        id: 'password1',
+        type: 'password',
+        placeholder: 'Password',
+        value: this.password1,
+        onchange: (e) => {
+          this.password1 = e.target.value;
+          this.validate();
+        },
+      }),
+      m('input', {
+        name: 'password2',
+        id: 'password2',
+        type: 'password',
+        placeholder: 'Repeat',
+        value: this.password2,
+        onchange: (e) => {
+          this.password2 = e.target.value;
+          this.validate();
+        },
+      }),
+      m('button', buttonArgs, 'change password'),
+    ]);
+  }
+}
+
 // provides a form to change the users rfid
 class rfidForm {
   submit() {
@@ -134,6 +187,7 @@ export default class profile {
   static view() {
     return m('div', [
       m(showUserInfo),
+      m(changePasswordForm),
       m(rfidForm),
       m(announceSubscriptionForm),
       m(groupMemberships),
