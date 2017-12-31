@@ -112,8 +112,7 @@ class rfidForm {
         value: this.rfid,
         oninput: (e) => {
           this.rfid = e.target.value;
-          this.valid = /^\d{6}$/g.test(this.rfid);
-          log(`rfid valid: ${this.valid}`);
+          this.valid = /^\d{6}$/g.test(this.rfid) && this.rfid !== user.get().rfid;
         },
       }),
       m('button', buttonArgs, 'save'),
