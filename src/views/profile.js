@@ -1,7 +1,6 @@
 import { isLoggedIn } from '../models/auth';
 import * as user from '../models/user';
 import * as groups from '../models/groups';
-import { log } from '../models/log';
 
 const m = require('mithril');
 
