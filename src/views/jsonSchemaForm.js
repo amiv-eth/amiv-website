@@ -32,7 +32,7 @@ export default class JSONSchemaForm {
     if (!this.errors[attrs.name]) this.errors[attrs.name] = [];
 
     const boundFormelement = {
-      onchange: (e) => {
+      oninput: (e) => {
         // bind changed data
         this.data[e.target.name] = e.target.value;
 

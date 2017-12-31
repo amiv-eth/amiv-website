@@ -25,6 +25,7 @@ export class inputGroup {
     }
     args.value = vnode.attrs.value;
     args.onchange = vnode.attrs.onchange;
+    args.oninput = vnode.attrs.oninput;
 
     if (['radio', 'checkbox'].includes(args.type)) {
       return m('div', { class: groupClasses }, [
@@ -65,6 +66,14 @@ export class selectGroup {
                   }
                   vnode.attrs.onchange({ target: { name: e.target.name, value: this.value } });
                 },
+                oninput: (e) => {
+                  if (e.target.checked) {
+                    this.value.push(e.target.value);
+                  } else {
+                    this.value = this.value.filter(item => item !== e.target.value);
+                  }
+                  vnode.attrs.oninput({ target: { name: e.target.name, value: this.value } });
+                },
                 args: { type: 'checkbox' },
               }))),
           ]);
@@ -97,7 +106,18 @@ export class selectGroup {
                       value.push(opt);
                     }
                   }
-                  vnode.attrs.onchange(e);
+                  vnode.attrs.onchange({ target: { name: e.target.name, value } });
+                },
+                oninput: (e) => {
+                  const value = [];
+                  let opt;
+                  for (let i = 0; i < e.target.options.length; i += 1) {
+                    opt = e.target.options[i];
+                    if (opt.selected) {
+                      value.push(opt);
+                    }
+                  }
+                  vnode.attrs.oninput({ target: { name: e.target.name, value } });
                 },
                 multiple: true,
               },
@@ -112,6 +132,7 @@ export class selectGroup {
             {
               value: vnode.attrs.value,
               onchange: vnode.attrs.onchange,
+              oninput: vnode.attrs.oninput,
               multiple: false,
             },
             vnode.attrs.args.options.map(option => m('option', option)),
