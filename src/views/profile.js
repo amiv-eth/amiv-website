@@ -39,8 +39,21 @@ class changePasswordForm {
     });
   }
 
+  // Password policy:
+  // * Minimum length: 8
+  // * Maximum length: 100
+  // * Contains capital/lower letters
+  // * Contains numbers
+  // * Does not contain any whitespace characters
   validate() {
-    this.valid = this.password1.length && this.password1 === this.password2;
+    this.valid = this.password1.length > 8 &&
+      this.password1.length <= 100 &&
+      !this.password1.match(/\s/g) &&
+      this.password1.match(/[A-Z]/g) &&
+      this.password1.match(/[a-z]/g) &&
+      this.password1.match(/\d/g) &&
+      this.password1.match(/\W+/g);
+    this.equal = this.password1 === this.password2;
   }
 
   view() {
@@ -48,7 +61,7 @@ class changePasswordForm {
 
     const buttonArgs = { onclick: () => this.submit() };
 
-    if (!this.valid || this.busy) {
+    if (!this.valid || !this.equal || this.busy) {
       buttonArgs.disabled = 'disabled';
     }
 
