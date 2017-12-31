@@ -85,13 +85,13 @@ class changePasswordForm {
 class rfidForm {
   submit() {
     const savedRfid = this.rfid;
-    this.valid = false;
+    this.busy = true;
     user.update({ rfid: savedRfid }).then(() => {
       this.rfid = savedRfid;
-      this.valid = true;
+      this.busy = false;
     }).catch(() => {
       this.rfid = savedRfid;
-      this.valid = true;
+      this.busy = false;
     });
   }
 
@@ -99,7 +99,7 @@ class rfidForm {
     const buttonArgs = { onclick: () => this.submit() };
 
     if (this.rfid === undefined) this.rfid = user.get().rfid;
-    if (!this.valid) {
+    if (!this.valid || this.busy) {
       buttonArgs.disabled = 'disabled';
     }
 
@@ -123,24 +123,19 @@ class rfidForm {
 
 // provides a button to (un-)subscribe for the announce
 class announceSubscriptionForm {
-  oninit() {
-    this.valid = true;
-  }
-
   submit() {
-    this.valid = false;
+    this.busy = true;
     user.update({ send_newsletter: !user.get().send_newsletter }).then(() => {
-      this.valid = true;
+      this.busy = false;
     }).catch(() => {
-      this.valid = true;
+      this.busy = false;
     });
   }
 
   view() {
     const buttonArgs = { onclick: () => this.submit() };
 
-    if (this.rfid === undefined) this.rfid = user.get().rfid;
-    if (!this.valid) {
+    if (this.busy) {
       buttonArgs.disabled = 'disabled';
     }
 
@@ -153,22 +148,54 @@ class groupMemberships {
   static oninit() {
     groups.load({ allow_self_enrollment: true });
     groups.loadMemberships();
+    this.busy = [];
   }
 
   static view() {
     return m('div', [
-      m('div', groups.getMemberships().map(membership => m('div', [
-        m('span', membership.group.name),
-        membership.expiry === undefined ? undefined : m('span', `(expires on ${membership.expiry})`),
-        m('button', { onclick: () => groups.withdraw(membership._id, membership._etag) }, 'withdraw'),
-      ]))),
+      m('div', groups.getMemberships().map((membership) => {
+        const buttonArgs = {
+          onclick: () => {
+            this.busy[membership.group._id] = true;
+            groups.withdraw(membership._id, membership._etag).then(() => {
+              this.busy[membership.group._id] = false;
+            }).catch(() => {
+              this.busy[membership.group._id] = false;
+            });
+          },
+        };
+
+        if (this.busy[membership.group._id]) {
+          buttonArgs.disabled = 'disabled';
+        }
+
+        return m('div', [
+          m('span', membership.group.name),
+          membership.expiry === undefined ? undefined : m('span', `(expires on ${membership.expiry})`),
+          m('button', buttonArgs, 'withdraw'),
+        ]);
+      })),
       m('div', groups.getList().map((group) => {
         if (groups.getMemberships().some(element => element.group._id === group._id)) {
-          return undefined;
+          return m.trust('');
+        }
+        const buttonArgs = {
+          onclick: () => {
+            this.busy[group._id] = true;
+            groups.enroll(group._id).then(() => {
+              this.busy[group._id] = false;
+            }).catch(() => {
+              this.busy[group._id] = false;
+            });
+          },
+        };
+
+        if (this.busy[group._id]) {
+          buttonArgs.disabled = 'disabled';
         }
         return m('div', [
           m('span', group.name),
-          m('button', { onclick: () => groups.enroll(group._id) }, 'enroll'),
+          m('button', buttonArgs, 'enroll'),
         ]);
       })),
     ]);
