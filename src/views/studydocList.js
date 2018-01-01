@@ -49,7 +49,7 @@ export default class studydocList {
           m('td', doc.professor),
           m('td', doc.semester),
           m('td', doc.author),
-          m('td', m('a', { href: apiUrl + doc.files[0].file }, 'download')),
+          m('td', doc.files.map(item => m('a', { href: `${apiUrl}${item.file}`, target: '_blank' }, item.name))),
         ]))),
       ]),
 
