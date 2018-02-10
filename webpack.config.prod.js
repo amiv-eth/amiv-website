@@ -1,5 +1,5 @@
-const webpack = require('webpack');
-const CompressionPlugin = require('compression-webpack-plugin');
+import { optimize } from 'webpack';
+import CompressionPlugin from 'compression-webpack-plugin';
 
 const config = {
   context: `${__dirname}/src`, // `__dirname` is root of project and `src` is source
@@ -35,8 +35,8 @@ const config = {
   },
 
   plugins: [
-    new webpack.optimize.UglifyJsPlugin(),
-    new webpack.optimize.AggressiveMergingPlugin(),
+    new optimize.UglifyJsPlugin(),
+    new optimize.AggressiveMergingPlugin(),
     new CompressionPlugin({
       asset: '[path].gz[query]',
       algorithm: 'gzip',
@@ -49,4 +49,4 @@ const config = {
   devtool: '', // No source map for production build
 };
 
-module.exports = config;
+export default config;
