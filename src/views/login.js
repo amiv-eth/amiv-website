@@ -17,18 +17,17 @@ module.exports = {
               .catch((err) => { this.error = err.message; });
           },
         },
-        m('h3', 'Login'), [
-          m('p', this.error),
-          m('input.input[type=text][placeholder=Username]', {
-            oninput: m.withAttr('value', (value) => { this.username = value; }),
-            value: this.username,
-          }),
-          m('input.input[placeholder=Password][type=password]', {
-            oninput: m.withAttr('value', (value) => { this.password = value; }),
-            value: this.password,
-          }),
-          m('button.button[type=submit]', 'Login'),
-        ],
+        m('h3', 'Login'),
+        m('p', this.error),
+        m('input.input[type=text][placeholder=Username]', {
+          oninput: m.withAttr('value', (value) => { this.username = value; }),
+          value: this.username,
+        }),
+        m('input.input[placeholder=Password][type=password]', {
+          oninput: m.withAttr('value', (value) => { this.password = value; }),
+          value: this.password,
+        }),
+        m('button.button[type=submit]', 'Login'),
       ),
     ]);
   },
