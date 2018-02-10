@@ -35,6 +35,7 @@ export default class studydocNew {
           e.preventDefault();
           log(this.doc);
           studydocs.addNew(this.doc);
+          m.route.set('/studydocuments');
         },
       }, [
         m('input[name=title]', {
