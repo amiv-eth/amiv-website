@@ -14,7 +14,7 @@ module.exports = {
             e.preventDefault();
             login(this.username, this.password)
               .then(() => { m.route.set('/'); })
-              .catch((err) => { this.error = err; });
+              .catch((err) => { this.error = err.message; });
           },
         },
         m('h3', 'Login'), [

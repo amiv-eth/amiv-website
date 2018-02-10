@@ -25,18 +25,14 @@ export function getToken() {
   return APISession.token;
 }
 
-export function isLoggedIn() {
-  return APISession.authenticated;
-}
-
 function reloadLocalStorage() {
-  log('checking stored session');
   if (localStorage.getItem('token') !== null) {
     APISession.token = localStorage.token;
     APISession.id = localStorage.id;
     APISession.username = localStorage.username;
     APISession.userId = localStorage.userId;
     APISession.etag = localStorage.etag;
+    APISession.lastChecked = 0;
     APISession.authenticated = true;
   }
 }
@@ -95,32 +91,34 @@ export function logout() {
 export function checkLogin() {
   const dt = new Date();
   reloadLocalStorage();
-  if (this.authenticated === true) {
-    log('no session found');
-    m.route.set('/login');
+  if (APISession.authenticated === false) {
     return new Promise(() => { });
-  }
-  if (dt.getTime() > this.lastChecked + 5000) {
+  } else if (dt.getTime() > APISession.lastChecked + 5000) {
     return m.request({
       method: 'GET',
-      url: `${apiUrl}/sessions/${this.token}`,
+      url: `${apiUrl}/sessions/${APISession.token}`,
     }).then((result) => {
       const dt2 = new Date();
       log('session is still valid!');
-      this.authenticated = true;
-      this.etag = result._etag;
-      this.lastChecked = dt2.getTime();
+      APISession.authenticated = true;
+      APISession.etag = result._etag;
+      APISession.lastChecked = dt2.getTime();
     }).catch((e) => {
-      log('token is not valid');
+      log('session is not valid');
       log(e);
-      this.authenticated = false;
+      APISession.authenticated = false;
       localStorage.removeItem('session');
       localStorage.removeItem('username');
       localStorage.removeItem('userId');
       localStorage.removeItem('id');
       localStorage.removeItem('etag');
-      m.route.set('/login');
+      localStorage.removeItem('token');
     });
   }
   return new Promise(() => { });
+}
+
+export function isLoggedIn() {
+  checkLogin();
+  return APISession.authenticated;
 }
