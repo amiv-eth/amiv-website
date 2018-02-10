@@ -1,7 +1,6 @@
+import m from 'mithril';
 import { apiUrl } from './config';
 import { getToken } from './auth';
-
-const m = require('mithril');
 
 let querySaved = {};
 

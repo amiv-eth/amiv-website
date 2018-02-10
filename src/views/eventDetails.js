@@ -1,11 +1,10 @@
+import m from 'mithril';
 import * as EmailValidator from 'email-validator';
 import * as events from '../models/events';
 import { log } from '../models/log';
 import { isLoggedIn } from '../models/auth';
 import { inputGroup, submitButton } from './formFields';
 import JSONSchemaForm from './jsonSchemaForm';
-
-const m = require('mithril');
 
 class EventSignupForm extends JSONSchemaForm {
   oninit(vnode) {

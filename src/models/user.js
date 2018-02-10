@@ -1,8 +1,7 @@
+import m from 'mithril';
 import { apiUrl } from './config';
 import { getToken, getUserId } from './auth';
 import { log, error } from './log';
-
-const m = require('mithril');
 
 // update data of logged in user
 export function update(options) {

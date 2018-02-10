@@ -1,8 +1,8 @@
+import m from 'mithril';
 import { isLoggedIn } from '../models/auth';
 import * as user from '../models/user';
 import * as groups from '../models/groups';
 
-const m = require('mithril');
 
 // shows all relevant user information
 class showUserInfo {

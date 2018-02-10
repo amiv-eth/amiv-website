@@ -1,8 +1,7 @@
+import m from 'mithril';
 import Ajv from 'ajv';
+import jsonSchemaDraft04 from 'ajv/lib/refs/json-schema-draft-04.json';
 import { inputGroup, selectGroup } from './formFields';
-
-const m = require('mithril');
-const jsonSchemaDraft04 = require('ajv/lib/refs/json-schema-draft-04.json');
 
 export default class JSONSchemaForm {
   constructor() {

@@ -1,9 +1,9 @@
+import m from 'mithril';
 import * as studydocs from '../models/studydocs';
 import { apiUrl } from '../models/config';
 import { isLoggedIn } from '../models/auth';
 import { Error401 } from './errors';
 
-const m = require('mithril');
 
 const tableHeadings = [
   'title', 'lecture', 'professor', 'semester', 'author', 'download',

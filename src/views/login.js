@@ -1,6 +1,5 @@
+import m from 'mithril';
 import { login } from '../models/auth';
-
-const m = require('mithril');
 
 module.exports = {
   username: '',

@@ -1,4 +1,4 @@
-const m = require('mithril');
+import m from 'mithril';
 
 //  Link welcher zur Registrierung des Kaffe- und Bierautomaten.
 function getLink() {

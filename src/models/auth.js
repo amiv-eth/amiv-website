@@ -1,7 +1,6 @@
+import m from 'mithril';
 import { apiUrl } from './config';
 import { log } from './log';
-
-const m = require('mithril');
 
 const APISession = {
   username: '',

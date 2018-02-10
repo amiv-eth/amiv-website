@@ -1,3 +1,4 @@
+import m from 'mithril';
 // import Ajv from 'ajv';
 import * as studydocs from '../models/studydocs';
 // import { apiUrl } from '../models/config';
@@ -5,7 +6,6 @@ import { isLoggedIn } from '../models/auth';
 import { log } from '../models/log';
 import { Error401 } from './errors';
 
-const m = require('mithril');
 
 // TODO: add validate
 

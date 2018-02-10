@@ -1,6 +1,6 @@
+import m from 'mithril';
 import { checkLogin, isLoggedIn, logout } from '../models/auth';
 
-const m = require('mithril');
 
 const layoutLoggedOut = vnode => m('div', [
   m('nav', [

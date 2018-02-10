@@ -1,8 +1,7 @@
+import m from 'mithril';
 import { apiUrl } from './config';
 import { getToken, getUserId, isLoggedIn } from './auth';
 import { log } from './log';
-
-const m = require('mithril');
 
 const lang = 'de';
 const date = `${new Date().toISOString().split('.')[0]}Z`;

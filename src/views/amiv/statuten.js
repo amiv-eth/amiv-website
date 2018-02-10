@@ -2,7 +2,7 @@
 // HTML obtained by converting the 'statuten' LaTeX file using
 // pandoc amiv-statuten.tex -s -o amiv-statuten.html -t html5
 // TODO: As soon as we decide on a css framework we'll have to add some typography
-const m = require('mithril');
+import m from 'mithril';
 
 module.exports = {
   view() {

@@ -1,10 +1,11 @@
 // src/index.js
+import m from 'mithril';
 import studydocList from './views/studydocList';
 import studydocNew from './views/studydocNew';
 import eventList from './views/eventList';
 import eventDetails from './views/eventDetails';
 import profile from './views/profile';
-import Layout from './views/layout';
+import layout from './views/layout';
 import amivLayout from './views/amiv/amivLayout';
 import amiv from './views/amiv';
 import login from './views/login';
@@ -13,62 +14,60 @@ import contact from './views/contact';
 import aufenthaltsraum from './views/amiv/aufenthaltsraum';
 import board from './views/amiv/board';
 
-const m = require('mithril');
-
 m.route(document.body, '/', {
   '/': {
     render() {
-      return m(Layout, m(amivLayout, m(amiv)));
+      return m(layout, m(amivLayout, m(amiv)));
     },
   },
   '/amiv/statuten': {
     render() {
-      return m(Layout, m(amivLayout, m(statuten)));
+      return m(layout, m(amivLayout, m(statuten)));
     },
   },
   '/contact': {
     render() {
-      return m(Layout, m(contact));
+      return m(layout, m(contact));
     },
   },
   '/amiv/aufenthaltsraum': {
     render() {
-      return m(Layout, m(amivLayout, m(aufenthaltsraum)));
+      return m(layout, m(amivLayout, m(aufenthaltsraum)));
     },
   },
   '/login': {
     render() {
-      return m(Layout, m(login));
+      return m(layout, m(login));
     },
   },
   '/amiv/board': {
     render() {
-      return m(Layout, m(amivLayout, m(board)));
+      return m(layout, m(amivLayout, m(board)));
     },
   },
   '/studydocuments': {
     render() {
-      return m(Layout, m(studydocList));
+      return m(layout, m(studydocList));
     },
   },
   '/studydocuments/new': {
     render() {
-      return m(Layout, m(studydocNew));
+      return m(layout, m(studydocNew));
     },
   },
   '/events': {
     render() {
-      return m(Layout, m(eventList));
+      return m(layout, m(eventList));
     },
   },
   '/events/:eventId': {
     render(vnode) {
-      return m(Layout, m(eventDetails, vnode.attrs));
+      return m(layout, m(eventDetails, vnode.attrs));
     },
   },
   '/profile': {
     render(vnode) {
-      return m(Layout, m(profile, vnode.attrs));
+      return m(layout, m(profile, vnode.attrs));
     },
   },
 });
