@@ -96,7 +96,10 @@ export function checkLogin() {
   } else if (dt.getTime() > APISession.lastChecked + 5000) {
     return m.request({
       method: 'GET',
-      url: `${apiUrl}/sessions/${APISession.token}`,
+      url: `${apiUrl}/sessions/${APISession.id}`,
+      headers: {
+        Authorization: `Token ${APISession.token}`,
+      },
     }).then((result) => {
       const dt2 = new Date();
       log('session is still valid!');
@@ -119,6 +122,5 @@ export function checkLogin() {
 }
 
 export function isLoggedIn() {
-  checkLogin();
   return APISession.authenticated;
 }
