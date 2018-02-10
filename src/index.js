@@ -4,18 +4,16 @@ import studydocNew from './views/studydocNew';
 import eventList from './views/eventList';
 import eventDetails from './views/eventDetails';
 import profile from './views/profile';
+import Layout from './views/layout';
+import amivLayout from './views/amiv/amivLayout';
+import amiv from './views/amiv';
+import login from './views/login';
+import statuten from './views/amiv/statuten';
+import contact from './views/contact';
+import aufenthaltsraum from './views/amiv/aufenthaltsraum';
+import board from './views/amiv/board';
 
 const m = require('mithril');
-
-const Layout = require('./views/layout');
-const amivLayout = require('./views/amiv/amivLayout');
-const amiv = require('./views/amiv');
-const login = require('./views/login');
-const statuten = require('./views/amiv/statuten');
-const contact = require('./views/contact');
-const aufenthaltsraum = require('./views/amiv/aufenthaltsraum');
-const board = require('./views/amiv/board');
-
 
 m.route(document.body, '/', {
   '/': {
