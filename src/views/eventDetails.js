@@ -13,7 +13,12 @@ class EventSignupForm extends JSONSchemaForm {
     this.emailErrors = [];
     this.emailValid = false;
     if (isLoggedIn()) {
-      events.loadSignupForSelectedEvent();
+      events.loadSignupForSelectedEvent()
+        .then(() => {
+          if (typeof events.getSignupForSelectedEvent() !== 'undefined') {
+            this.data = JSON.parse(events.getSignupForSelectedEvent().additional_fields) || {};
+          }
+        });
     }
   }
 
@@ -23,6 +28,11 @@ class EventSignupForm extends JSONSchemaForm {
       .catch(() => log('Could not sign up of the event!'));
   }
 
+  signoff() {
+    events.signoffForSelectedEvent();
+    this.validate();
+  }
+
   view() {
     // do not render anything if there is no data yet
     if (typeof events.getSelectedEvent() === 'undefined') return m();
@@ -30,12 +40,14 @@ class EventSignupForm extends JSONSchemaForm {
     if (isLoggedIn()) {
       // do not render form if there is no signup data of the current user
       if (!events.signupForSelectedEventHasLoaded()) return m('span', 'Loading...');
-      if (typeof events.getSignupForSelectedEvent() === 'undefined') {
-        const elements = this.renderFormElements();
-        elements.push(this._renderSignupButton());
-        return m('form', elements);
+
+      const elements = this.renderFormElements();
+      elements.push(this._renderSignupButton());
+      if (typeof events.getSignupForSelectedEvent() !== 'undefined') {
+        elements.unshift(m('div', 'You have already signed up. Update your data below.'));
+        elements.push(this._renderSignoffButton());
       }
-      return m('div', 'You have already signed up for this event.');
+      return m('form', elements);
     } else if (events.getSelectedEvent().allow_email_signup) {
       const elements = this.renderFormElements();
       elements.push(this._renderEmailField());
@@ -86,6 +98,16 @@ class EventSignupForm extends JSONSchemaForm {
       text: 'Signup',
     });
   }
+
+  _renderSignoffButton() {
+    return m(submitButton, {
+      active: true,
+      args: {
+        onclick: () => this.signoff(),
+      },
+      text: 'Delete signup',
+    });
+  }
 }
 
 export default class EventDetails {
@@ -108,7 +130,11 @@ export default class EventDetails {
             undefined : JSON.parse(events.getSelectedEvent().additional_fields),
         });
       } else {
-        eventSignupForm = m('div', 'The registration period is over.');
+        let participantNotice = '';
+        if (events.getSignupForSelectedEvent() !== 'undefined') {
+          participantNotice = m('You signed up for this event.');
+        }
+        eventSignupForm = m('div', ['The registration period is over.', participantNotice]);
       }
     } else {
       eventSignupForm = m('div', `The registration starts at ${registerStart}`);

@@ -47,6 +47,20 @@ export function loadSignupForSelectedEvent() {
 }
 
 export function _signupUserForSelectedEvent(additionalFieldsString) {
+  if (typeof this.selectedEventSignup !== 'undefined') {
+    return m.request({
+      method: 'PATCH',
+      url: `${apiUrl}/eventsignups/${this.selectedEventSignup._id}`,
+      data: {
+        additional_fields: additionalFieldsString,
+      },
+      headers: getToken() ? {
+        Authorization: `Token ${getToken()}`,
+        'If-Match': this.selectedEventSignup._etag,
+      } : { 'If-Match': this.selectedEventSignup._etag },
+    }).then(() => { this.loadSignupForSelectedEvent(); });
+  }
+
   return m.request({
     method: 'POST',
     url: `${apiUrl}/eventsignups`,
@@ -91,6 +105,19 @@ export function signupForSelectedEvent(additionalFields, email = '') {
     return this._signupEmailForSelectedEvent(additionalFieldsString, email);
   }
   return Promise.reject(new Error('Signup not allowed'));
+}
+
+export function signoffForSelectedEvent() {
+  if (isLoggedIn() && typeof this.selectedEventSignup !== 'undefined') {
+    m.request({
+      method: 'DELETE',
+      url: `${apiUrl}/eventsignups/${this.selectedEventSignup._id}`,
+      headers: getToken() ? {
+        Authorization: `Token ${getToken()}`,
+        'If-Match': this.selectedEventSignup._etag,
+      } : { 'If-Match': this.selectedEventSignup._etag },
+    }).then(() => { this.loadSignupForSelectedEvent(); });
+  }
 }
 
 export function load(query = {}) {
