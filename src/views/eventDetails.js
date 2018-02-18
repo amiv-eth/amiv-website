@@ -9,6 +9,7 @@ import JSONSchemaForm from './jsonSchemaForm';
 class EventSignupForm extends JSONSchemaForm {
   oninit(vnode) {
     super.oninit(vnode);
+    this.email = '';
     this.emailErrors = [];
     this.emailValid = false;
     if (isLoggedIn()) {

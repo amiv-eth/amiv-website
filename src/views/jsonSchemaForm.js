@@ -70,6 +70,12 @@ export default class JSONSchemaForm {
     return this.schema === undefined || this.valid;
   }
 
+  validate() {
+    // validate the new data against the schema
+    const validate = this.ajv.getSchema('schema');
+    this.valid = validate(this.data);
+  }
+
   getValue() {
     return this.data;
   }
