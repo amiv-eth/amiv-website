@@ -1,7 +1,6 @@
 import m from 'mithril';
 import { apiUrl } from './config';
 import { getToken, getUserId, isLoggedIn } from './auth';
-import { log } from './log';
 
 const lang = 'de';
 const date = `${new Date().toISOString().split('.')[0]}Z`;
@@ -15,23 +14,23 @@ export function getList() {
   return this.list;
 }
 
-export function getCurrent() {
-  return this.current;
+export function getSelectedEvent() {
+  return this.selectedEvent;
 }
 
-export function getCurrentSignup() {
-  return this.currentSignup;
+export function getSignupForSelectedEvent() {
+  return this.selectedEventSignup;
 }
 
-export function currentSignupHasLoaded() {
-  return this.currentSignupLoaded;
+export function signupForSelectedEventHasLoaded() {
+  return this.selectedEventSignupLoaded;
 }
 
-export function checkCurrentSignup() {
+export function loadSignupForSelectedEvent() {
   const queryString = m.buildQueryString({
     where: JSON.stringify({
       user: getUserId(),
-      event: this.getCurrent()._id,
+      event: this.getSelectedEvent()._id,
     }),
   });
 
@@ -42,14 +41,44 @@ export function checkCurrentSignup() {
       Authorization: `Token ${getToken()}`,
     } : {},
   }).then((result) => {
-    [this.currentSignup] = result._items;
-    this.currentSignupLoaded = true;
+    [this.selectedEventSignup] = result._items;
+    this.selectedEventSignupLoaded = true;
   });
 }
 
-export function signupCurrent(additionalFields, email = '') {
+export function _signupUserForSelectedEvent(additionalFieldsString) {
+  return m.request({
+    method: 'POST',
+    url: `${apiUrl}/eventsignups`,
+    data: {
+      event: this.selectedEvent._id,
+      additional_fields: additionalFieldsString,
+      user: getUserId(),
+    },
+    headers: getToken() ? {
+      Authorization: `Token ${getToken()}`,
+    } : {},
+  }).then(() => { this.loadSignupForSelectedEvent(); });
+}
+
+export function _signupEmailForSelectedEvent(additionalFieldsString, email) {
+  return m.request({
+    method: 'POST',
+    url: `${apiUrl}/eventsignups`,
+    data: {
+      event: this.selectedEvent._id,
+      additional_fields: additionalFieldsString,
+      email,
+    },
+    headers: getToken() ? {
+      Authorization: `Token ${getToken()}`,
+    } : {},
+  }).then(() => { this.loadSignupForSelectedEvent(); });
+}
+
+export function signupForSelectedEvent(additionalFields, email = '') {
   let additionalFieldsString;
-  if (this.current.additional_fields === undefined ||
+  if (this.selectedEvent.additional_fields === undefined ||
     additionalFields === null || typeof additionalFields !== 'object') {
     additionalFieldsString = undefined;
   } else {
@@ -57,34 +86,11 @@ export function signupCurrent(additionalFields, email = '') {
   }
 
   if (isLoggedIn()) {
-    log(`UserId: ${getUserId()}`);
-    m.request({
-      method: 'POST',
-      url: `${apiUrl}/eventsignups`,
-      data: {
-        event: this.current._id,
-        additional_fields: additionalFieldsString,
-        user: getUserId(),
-      },
-      headers: getToken() ? {
-        Authorization: `Token ${getToken()}`,
-      } : {},
-    }).then(() => { this.checkCurrentSignup(); });
-  } else if (this.current.allow_email_signup) {
-    log(`Email: ${email}`);
-    m.request({
-      method: 'POST',
-      url: `${apiUrl}/eventsignups`,
-      data: {
-        event: this.current._id,
-        additional_fields: additionalFieldsString,
-        email,
-      },
-      headers: getToken() ? {
-        Authorization: `Token ${getToken()}`,
-      } : {},
-    }).then(() => { this.checkCurrentSignup(); });
+    return this._signupUserForSelectedEvent(additionalFieldsString);
+  } else if (this.selectedEvent.allow_email_signup) {
+    return this._signupEmailForSelectedEvent(additionalFieldsString, email);
   }
+  return Promise.reject(new Error('Signup not allowed'));
 }
 
 export function load(query = {}) {
@@ -113,9 +119,9 @@ export function load(query = {}) {
   });
 }
 
-export function loadCurrent(eventId) {
-  this.current = this.getList().find(item => item._id === eventId);
-  if (typeof this.current === 'undefined') {
+export function selectEvent(eventId) {
+  this.selectedEvent = this.getList().find(item => item._id === eventId);
+  if (typeof this.selectedEvent === 'undefined') {
     this.load({
       where: {
         time_advertising_start: { $lte: date },
@@ -124,7 +130,7 @@ export function loadCurrent(eventId) {
       },
       sort: ['-priority', 'time_advertising_start'],
     }).then(() => {
-      this.current = this.getList().find(item => item._id === eventId);
+      this.selectedEvent = this.getList().find(item => item._id === eventId);
     });
   }
 }
