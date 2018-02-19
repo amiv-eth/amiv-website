@@ -35,7 +35,7 @@ class EventSignupForm extends JSONSchemaForm {
 
   view() {
     // do not render anything if there is no data yet
-    if (typeof events.getSelectedEvent() === 'undefined') return m();
+    if (typeof events.getSelectedEvent() === 'undefined') return m('');
 
     if (isLoggedIn()) {
       // do not render form if there is no signup data of the current user
@@ -117,8 +117,9 @@ export default class EventDetails {
 
   static view() {
     if (typeof events.getSelectedEvent() === 'undefined') {
-      return m();
+      return m('');
     }
+
     let eventSignupForm;
     const now = new Date();
     const registerStart = new Date(events.getSelectedEvent().time_register_start);
