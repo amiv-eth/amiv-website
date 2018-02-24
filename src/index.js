@@ -13,6 +13,8 @@ import statuten from './views/amiv/statuten';
 import contact from './views/contact';
 import aufenthaltsraum from './views/amiv/aufenthaltsraum';
 import board from './views/amiv/board';
+import jobOfferList from './views/jobofferList';
+import jobOfferDetails from './views/jobofferDetails';
 
 m.route(document.body, '/', {
   '/': {
@@ -63,6 +65,16 @@ m.route(document.body, '/', {
   '/events/:eventId': {
     render(vnode) {
       return m(layout, m(eventDetails, vnode.attrs));
+    },
+  },
+  '/jobs': {
+    render() {
+      return m(layout, m(jobOfferList));
+    },
+  },
+  '/jobs/:jobId': {
+    render(vnode) {
+      return m(layout, m(jobOfferDetails, vnode.attrs));
     },
   },
   '/profile': {
