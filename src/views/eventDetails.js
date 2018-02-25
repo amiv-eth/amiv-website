@@ -4,7 +4,7 @@ import * as events from '../models/events';
 import { log } from '../models/log';
 import { isLoggedIn } from '../models/auth';
 import inputGroup from './form/inputGroup';
-import submitButton from './form/submitButton';
+import button from './form/button';
 import JSONSchemaForm from './form/jsonSchemaForm';
 
 class EventSignupForm extends JSONSchemaForm {
@@ -34,7 +34,7 @@ class EventSignupForm extends JSONSchemaForm {
       if (!events.currentSignupHasLoaded()) return m('span', 'Loading...');
       if (typeof events.getCurrentSignup() === 'undefined') {
         const elements = this.renderFormElements();
-        elements.push(m(submitButton, {
+        elements.push(m(button, {
           active: super.isValid(),
           args: {
             onclick: () => this.submit(),
@@ -68,7 +68,7 @@ class EventSignupForm extends JSONSchemaForm {
         getErrors: () => this.emailErrors,
         value: this.email,
       }));
-      elements.push(m(submitButton, {
+      elements.push(m(button, {
         active: this.emailValid && super.isValid(),
         args: {
           onclick: () => this.submit(),

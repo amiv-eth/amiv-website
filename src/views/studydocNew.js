@@ -1,116 +1,148 @@
 import m from 'mithril';
-// import Ajv from 'ajv';
 import * as studydocs from '../models/studydocs';
-// import { apiUrl } from '../models/config';
 import { isLoggedIn } from '../models/auth';
-import { log } from '../models/log';
 import { Error401 } from './errors';
-
-
-// TODO: add validate
+import inputGroup from './form/inputGroup';
+import selectGroup from './form/selectGroup';
+import button from './form/button';
 
 export default class studydocNew {
   oninit() {
-    // this.ajv = new Ajv({
-    //   missingRefs: 'ignore',
-    //   errorDataPath: 'property',
-    //   allErrors: true,
-    // });
-    // // load schema
-    // m.request(`${apiUrl}/docs/api-docs`).then((schema) => {
-    //   const objectSchema = schema.definitions.Studydocument;
-    //   this.ajv.addSchema(objectSchema, 'schema');
-    //   this.validate = this.ajv.getSchema('schema');
-    // });
+    this.doc = { type: 'exams' };
+    this.isValid = false;
+  }
 
-    this.doc = { semester: '1', department: 'itet', type: 'exams' };
+  static _getInputSuggestions(field, input, callback) {
+    if (input.length > 2) {
+      studydocs.getInputSuggestions(field, input).then((result) => {
+        const suggestions = new Set();
+        result._items.forEach((item) => {
+          suggestions.add(item[field]);
+        });
+        callback(Array.from(suggestions));
+      });
+    }
+  }
+
+  submit() {
+    if (this.isValid) {
+      studydocs.addNew(this.doc);
+      m.route.set('/studydocuments');
+    }
   }
 
   view() {
     if (!isLoggedIn()) return m(Error401);
 
-    return m('div', [
-      m('form', {
-        onsubmit: (e) => {
-          e.preventDefault();
-          log(this.doc);
-          studydocs.addNew(this.doc);
-          m.route.set('/studydocuments');
+    return m('form', [
+      m(inputGroup, {
+        name: 'title',
+        title: 'Title',
+        oninput: (e) => {
+          this.doc.title = e.target.value;
         },
-      }, [
-        m('input[name=title]', {
-          placeholder: 'title',
-          onchange: (e) => {
-            this.doc.title = e.target.value;
-            // this.validate(this.doc);
-          },
-        }),
-        m('input[name=professor]', {
-          placeholder: 'professor',
-          onchange: (e) => {
-            this.doc.professor = e.target.value;
-            // this.validate(this.doc);
-          },
-        }),
-        m('input[name=author]', {
-          placeholder: 'author',
-          onchange: (e) => {
-            this.doc.author = e.target.value;
-            // this.validate(this.doc);
-          },
-        }),
-        m('select[name=semester]', {
-          onchange: (e) => {
-            this.doc.semester = e.target.value;
-            // this.validate(this.doc);
-          },
-        }, [
-          m('option', { value: '1' }, '1'),
-          m('option', { value: '2' }, '2'),
-          m('option', { value: '3' }, '3'),
-          m('option', { value: '4' }, '4'),
-          m('option', { value: '5+' }, '5+'),
-        ]),
-        m('select[name=department]', {
-          onchange: (e) => {
-            this.doc.department = e.target.value;
-            // this.validate(this.doc);
-          },
-        }, [
-          m('option', { value: 'itet' }, 'itet'),
-          m('option', { value: 'mavt' }, 'mavt'),
-        ]),
-        m('input[name=lecture]', {
-          placeholder: 'lecture',
-          onchange: (e) => {
-            this.doc.lecture = e.target.value;
-            // this.validate(this.doc);
-          },
-        }),
-        m('input[name=course_year]', {
-          type: 'number',
-          placeholder: 2018,
-          onchange: (e) => {
-            this.doc.course_year = e.target.value;
-            // this.validate(this.doc);
-          },
-        }),
-        m('select[name=type]', {
-          onchange: (e) => {
-            this.doc.type = e.target.value;
-            // this.validate(this.doc);
-          },
-        }, [
-          m('option', { value: 'exams' }, 'exams'),
-          m('option', { value: 'cheat sheets' }, 'cheat sheets'),
-          m('option', { value: 'lecture documents' }, 'lecture documents'),
-          m('option', { value: 'exercises' }, 'exercises'),
-        ]),
-        m('button.button[type=submit]', 'Submit'),
-      ]),
-      m('input[type=file][multiple]', {
+        getSuggestions: (input, callback) =>
+          studydocNew._getInputSuggestions('title', input, callback),
+      }),
+      m(inputGroup, {
+        name: 'professor',
+        title: 'Professor',
+        oninput: (e) => {
+          this.doc.professor = e.target.value;
+        },
+        getSuggestions: (input, callback) =>
+          studydocNew._getInputSuggestions('professor', input, callback),
+      }),
+      m(inputGroup, {
+        name: 'author',
+        title: 'Author',
+        oninput: (e) => {
+          this.doc.author = e.target.value;
+        },
+        getSuggestions: (input, callback) =>
+          studydocNew._getInputSuggestions('author', input, callback),
+      }),
+      m(selectGroup, {
+        name: 'semester',
+        title: 'Semester',
+        type: 'select',
+        onchange: (e) => {
+          this.doc.semester = e.target.value;
+        },
+        options: [
+          { value: '1', text: '1' },
+          { value: '2', text: '2' },
+          { value: '3', text: '3' },
+          { value: '4', text: '4' },
+          { value: '5+', text: '5+' },
+        ],
+      }),
+      m(selectGroup, {
+        name: 'department',
+        title: 'Department',
+        type: 'select',
+        onchange: (e) => {
+          this.doc.department = e.target.value;
+        },
+        options: [
+          { value: 'itet', text: 'itet' },
+          { value: 'mavt', text: 'mavt' },
+        ],
+      }),
+      m(inputGroup, {
+        name: 'lecture',
+        title: 'Lecture',
+        oninput: (e) => {
+          this.doc.lecture = e.target.value;
+        },
+        getSuggestions: (input, callback) =>
+          studydocNew._getInputSuggestions('lecture', input, callback),
+      }),
+      m(inputGroup, {
+        name: 'course_year',
+        title: 'Course Year',
+        type: 'number',
+        args: {
+          placeholder: (new Date()).getFullYear(),
+        },
+        oninput: (e) => {
+          this.doc.course_year = e.target.value;
+        },
+      }),
+      m(selectGroup, {
+        name: 'type',
+        title: 'Type',
+        type: 'select',
+        onchange: (e) => {
+          this.doc.type = e.target.value;
+        },
+        options: [
+          { value: 'exams', text: 'Exam' },
+          { value: 'cheat sheets', text: 'Cheat sheet' },
+          { value: 'lecture documents', text: 'Lecture Document' },
+          { value: 'exercises', text: 'Exercise' },
+        ],
+      }),
+      m(inputGroup, {
+        name: 'files',
+        title: 'Files',
+        args: {
+          type: 'file',
+          multiple: 1,
+        },
         onchange: (e) => {
           this.doc.files = e.target.files;
+          if (this.doc.files.length > 0) {
+            this.isValid = true;
+          }
+        },
+      }),
+      m(button, {
+        name: 'submit',
+        title: 'Submit',
+        active: this.isValid,
+        args: {
+          onclick: () => this.submit(),
         },
       }),
     ]);

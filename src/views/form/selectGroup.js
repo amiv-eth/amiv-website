@@ -8,16 +8,24 @@ export default class SelectGroup {
   }
 
   view(vnode) {
-    switch (vnode.attrs.args.type) {
+    let { args } = vnode.attrs;
+    if (args === undefined) {
+      args = {};
+    }
+    args.value = vnode.attrs.value;
+    args.onchange = vnode.attrs.onchange;
+    args.oninput = vnode.attrs.oninput;
+
+    switch (vnode.attrs.type) {
       case 'buttons': {
-        if (vnode.attrs.args.multipleSelect) {
+        if (args.multipleSelect) {
           return m('div', { class: vnode.attrs.classes }, [
             m(`label[for=${vnode.attrs.name}]`, vnode.attrs.title),
-            m('div', vnode.attrs.args.options.map(option =>
+            m('div', vnode.attrs.options.map(option =>
               m(inputGroup, {
                 name: vnode.attrs.name,
-                title: option,
-                value: option,
+                title: option.text,
+                value: option.value,
                 onchange: (e) => {
                   if (e.target.checked) {
                     this.value.push(e.target.value);
@@ -51,12 +59,13 @@ export default class SelectGroup {
       }
       case 'select':
       default: {
-        if (vnode.attrs.args.multipleSelect) {
+        if (args.multipleSelect) {
           return m('div', { class: vnode.attrs.classes }, [
             m(`label[for=${vnode.attrs.name}]`, vnode.attrs.title),
             m(
               `select[name=${vnode.attrs.name}][id=${vnode.attrs.name}]`,
               {
+                args,
                 onchange: (e) => {
                   const value = [];
                   let opt;
@@ -79,9 +88,8 @@ export default class SelectGroup {
                   }
                   vnode.attrs.oninput({ target: { name: e.target.name, value } });
                 },
-                multiple: true,
               },
-              vnode.attrs.options.map(option => m('option', option)),
+              vnode.attrs.options.map(option => m('option', { value: option.value }, option.text)),
             ),
           ]);
         }
@@ -89,13 +97,8 @@ export default class SelectGroup {
           m(`label[for=${vnode.attrs.name}]`, vnode.attrs.title),
           m(
             `select[name=${vnode.attrs.name}][id=${vnode.attrs.name}]`,
-            {
-              value: vnode.attrs.value,
-              onchange: vnode.attrs.onchange,
-              oninput: vnode.attrs.oninput,
-              multiple: false,
-            },
-            vnode.attrs.args.options.map(option => m('option', option)),
+            args,
+            vnode.attrs.options.map(option => m('option', { value: option.value }, option.text)),
           ),
         ]);
       }

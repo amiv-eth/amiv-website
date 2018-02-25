@@ -1,5 +1,4 @@
 import m from 'mithril';
-import { log } from '../../models/log';
 
 export default class InputGroup {
   constructor(vnode) {
@@ -37,18 +36,16 @@ export default class InputGroup {
         errorField,
       ]);
     }
-    args.list = `${args.id}-datalist`;
-    log(args);
-    if (args.getSuggestions) {
-      log('test');
+    args.list = `${vnode.attrs.name}-datalist`;
+    if (typeof args.getSuggestions === 'function') {
       args.oninput_original = args.oninput;
       args.oninput = (e) => {
-        log(`get suggestions for '${e.target.value}'`);
-        args.getSuggestions(e.target.value, (result) => {
-          log('callback called!');
-          this.suggestions = result;
-        });
-        if (args.oninput_original) {
+        if (typeof args.getSuggestions === 'function') {
+          args.getSuggestions(e.target.value, (result) => {
+            this.suggestions = result;
+          });
+        }
+        if (typeof args.oninput_original === 'function') {
           args.oninput_original(e);
         }
       };

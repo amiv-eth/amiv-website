@@ -5,7 +5,6 @@ import { isNullOrUndefined } from 'util';
 import { log } from '../../models/log';
 import inputGroup from './inputGroup';
 import selectGroup from './selectGroup';
-import mediaGroup from './mediaGroup';
 
 export default class JSONSchemaForm {
   constructor() {
@@ -109,14 +108,6 @@ export default class JSONSchemaForm {
           options: item.items.enum,
           type: item.items.enum.length > 8 ? 'select' : 'buttons',
           multipleSelect: true,
-        },
-      }));
-    } else if (item.type === 'media') {
-      return m(mediaGroup, this.bind({
-        name: key,
-        title: item.description,
-        args: {
-          multiple: 'multiple',
         },
       }));
     }
