@@ -3,8 +3,9 @@ import * as EmailValidator from 'email-validator';
 import * as events from '../models/events';
 import { log } from '../models/log';
 import { isLoggedIn } from '../models/auth';
-import { inputGroup, submitButton } from './formFields';
-import JSONSchemaForm from './jsonSchemaForm';
+import inputGroup from './form/inputGroup';
+import submitButton from './form/submitButton';
+import JSONSchemaForm from './form/jsonSchemaForm';
 
 class EventSignupForm extends JSONSchemaForm {
   oninit(vnode) {
