@@ -13,7 +13,7 @@ export default class InputGroup {
   view(vnode) {
     // set display-settings accoridng to error-state
     let errorField = null;
-    let groupClasses = vnode.attrs.classes ? vnode.attrs.classes : '';
+    let groupClasses = vnode.attrs.classes || '';
     const errors = this.getErrors();
     if (errors.length > 0) {
       errorField = m('span', `Error: ${errors.join(', ')}`);
@@ -37,15 +37,13 @@ export default class InputGroup {
       ]);
     }
     args.list = `${vnode.attrs.name}-datalist`;
-    if (typeof args.getSuggestions === 'function') {
+    if (args.getSuggestions) {
       args.oninput_original = args.oninput;
       args.oninput = (e) => {
-        if (typeof args.getSuggestions === 'function') {
-          args.getSuggestions(e.target.value, (result) => {
-            this.suggestions = result;
-          });
-        }
-        if (typeof args.oninput_original === 'function') {
+        args.getSuggestions(e.target.value, (result) => {
+          this.suggestions = result;
+        });
+        if (args.oninput_original) {
           args.oninput_original(e);
         }
       };

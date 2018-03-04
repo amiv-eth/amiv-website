@@ -1,7 +1,6 @@
 import m from 'mithril';
 import Ajv from 'ajv';
 import jsonSchemaDraft04 from 'ajv/lib/refs/json-schema-draft-04.json';
-import { isNullOrUndefined } from 'util';
 import { log } from '../../models/log';
 import inputGroup from './inputGroup';
 import selectGroup from './selectGroup';
@@ -27,7 +26,7 @@ export default class JSONSchemaForm {
     } else {
       this.ajv.addSchema(this.schema, 'schema');
     }
-    if (isNullOrUndefined(this.fieldOrder)) {
+    if (!this.fieldOrder) {
       this.fieldOrder = [];
     }
   }
