@@ -1,24 +1,13 @@
 import m from 'mithril';
 
-export class inputGroup {
-  constructor(vnode) {
-    // Link the error-getting function from the binding
-    this.getErrors = () => [];
-    if (vnode.attrs.getErrors) {
-      this.getErrors = vnode.attrs.getErrors;
-    }
+import inputGroup from './inputGroup';
+
+export default class SelectGroup {
+  oninit() {
+    this.value = [];
   }
 
   view(vnode) {
-    // set display-settings accoridng to error-state
-    let errorField = null;
-    let groupClasses = vnode.attrs.classes ? vnode.attrs.classes : '';
-    const errors = this.getErrors();
-    if (errors.length > 0) {
-      errorField = m('span', `Error: ${errors.join(', ')}`);
-      groupClasses += ' has-error';
-    }
-
     let { args } = vnode.attrs;
     if (args === undefined) {
       args = {};
@@ -27,37 +16,23 @@ export class inputGroup {
     args.onchange = vnode.attrs.onchange;
     args.oninput = vnode.attrs.oninput;
 
-    if (['radio', 'checkbox'].includes(args.type)) {
-      return m('div', { class: groupClasses }, [
-        m(`input[name=${vnode.attrs.name}][id=${vnode.attrs.name}]`, args),
-        m(`label[for=${vnode.attrs.name}]`, vnode.attrs.title),
-        errorField,
-      ]);
-    }
-    return m('div', { class: groupClasses }, [
-      m(`label[for=${vnode.attrs.name}]`, vnode.attrs.title),
-      m(`input[name=${vnode.attrs.name}][id=${vnode.attrs.name}]`, args),
-      errorField,
-    ]);
-  }
-}
+    const options = vnode.attrs.options.map((option) => {
+      if (typeof option === 'object') {
+        return option;
+      }
+      return { value: option, text: option };
+    });
 
-export class selectGroup {
-  oninit() {
-    this.value = [];
-  }
-
-  view(vnode) {
-    switch (vnode.attrs.args.type) {
+    switch (vnode.attrs.type) {
       case 'buttons': {
-        if (vnode.attrs.args.multipleSelect) {
+        if (args.multipleSelect) {
           return m('div', { class: vnode.attrs.classes }, [
             m(`label[for=${vnode.attrs.name}]`, vnode.attrs.title),
-            m('div', vnode.attrs.args.options.map(option =>
+            m('div', options.map(option =>
               m(inputGroup, {
                 name: vnode.attrs.name,
-                title: option,
-                value: option,
+                title: option.text,
+                value: option.value,
                 onchange: (e) => {
                   if (e.target.checked) {
                     this.value.push(e.target.value);
@@ -79,10 +54,11 @@ export class selectGroup {
           ]);
         }
         return m('div', { class: vnode.attrs.classes }, [
-          m('div', vnode.attrs.options.map(option =>
+          m('div', options.map(option =>
             m(inputGroup, {
               name: vnode.attrs.name,
-              title: option,
+              title: option.text,
+              value: option.value,
               onchange: vnode.attrs.onchange,
               args: { type: 'radio' },
             }))),
@@ -91,12 +67,13 @@ export class selectGroup {
       }
       case 'select':
       default: {
-        if (vnode.attrs.args.multipleSelect) {
+        if (args.multipleSelect) {
           return m('div', { class: vnode.attrs.classes }, [
             m(`label[for=${vnode.attrs.name}]`, vnode.attrs.title),
             m(
               `select[name=${vnode.attrs.name}][id=${vnode.attrs.name}]`,
               {
+                args,
                 onchange: (e) => {
                   const value = [];
                   let opt;
@@ -119,9 +96,8 @@ export class selectGroup {
                   }
                   vnode.attrs.oninput({ target: { name: e.target.name, value } });
                 },
-                multiple: true,
               },
-              vnode.attrs.options.map(option => m('option', option)),
+              options.map(option => m('option', { value: option.value }, option.text)),
             ),
           ]);
         }
@@ -129,26 +105,11 @@ export class selectGroup {
           m(`label[for=${vnode.attrs.name}]`, vnode.attrs.title),
           m(
             `select[name=${vnode.attrs.name}][id=${vnode.attrs.name}]`,
-            {
-              value: vnode.attrs.value,
-              onchange: vnode.attrs.onchange,
-              oninput: vnode.attrs.oninput,
-              multiple: false,
-            },
-            vnode.attrs.args.options.map(option => m('option', option)),
+            args,
+            options.map(option => m('option', { value: option.value }, option.text)),
           ),
         ]);
       }
     }
-  }
-}
-
-export class submitButton {
-  static view(vnode) {
-    const { args } = vnode.attrs;
-    if (!vnode.attrs.active) {
-      args.disabled = 'disabled';
-    }
-    return m('button[type=button]', args, vnode.attrs.text);
   }
 }

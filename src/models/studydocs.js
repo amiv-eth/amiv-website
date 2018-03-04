@@ -27,6 +27,25 @@ export function load(query = {}) {
   });
 }
 
+export function getInputSuggestions(field, input) {
+  const query = {};
+  query[field] = { $regex: `^(?i).*${input}.*` };
+  // TODO: debug Error 502 Bad Gateway returned by API
+  // const projection = {};
+  // projection[field] = 1;
+  const queryEncoded = m.buildQueryString({
+    where: JSON.stringify(query),
+    // projection: JSON.stringify(projection),
+  });
+  return m.request({
+    method: 'GET',
+    url: `${apiUrl}/studydocuments?${queryEncoded}`,
+    headers: {
+      Authorization: `Token ${getToken()}`,
+    },
+  });
+}
+
 export function reload() {
   return load(querySaved);
 }
