@@ -1,7 +1,9 @@
 import m from 'mithril';
 import Ajv from 'ajv';
 import jsonSchemaDraft04 from 'ajv/lib/refs/json-schema-draft-04.json';
-import { inputGroup, selectGroup } from './formFields';
+import { log } from '../../models/log';
+import inputGroup from './inputGroup';
+import selectGroup from './selectGroup';
 
 export default class JSONSchemaForm {
   constructor() {
@@ -11,17 +13,21 @@ export default class JSONSchemaForm {
     this.ajv = new Ajv({
       missingRefs: 'ignore',
       errorDataPath: 'property',
-      allErrors: true,
+      allErrors: false,
     });
     this.ajv.addMetaSchema(jsonSchemaDraft04);
   }
 
   oninit(vnode) {
     this.schema = vnode.attrs.schema;
+    this.fieldOrder = vnode.attrs.fieldOrder;
     if (this.schema === null || typeof this.schema !== 'object') {
       this.schema = undefined;
     } else {
       this.ajv.addSchema(this.schema, 'schema');
+    }
+    if (!this.fieldOrder) {
+      this.fieldOrder = [];
     }
   }
 
@@ -84,22 +90,47 @@ export default class JSONSchemaForm {
   renderFormElements() {
     const elements = [];
     if (this.schema !== undefined) {
-      Object.keys(this.schema.properties).forEach((key) => {
+      let keys = Object.keys(this.schema.properties);
+      this.fieldOrder.forEach((key) => {
+        if (key in keys) {
+          elements.push(this._renderProperty(key, this.schema.properties[key]));
+          keys = keys.filter(e => e !== key);
+        }
+      });
+      keys.forEach((key) => {
         elements.push(this._renderProperty(key, this.schema.properties[key]));
       });
     }
     return elements;
   }
 
-  // render schema property to form-fields
-  _renderProperty(key, item) {
+  _renderArrayProperty(key, item) {
     if ('enum' in item) {
       return m(selectGroup, this.bind({
         name: key,
         title: item.description,
+        type: item.items.enum.length > 8 ? 'select' : 'buttons',
+        options: item.items.enum,
         args: {
-          options: item.enum,
-          type: 'select',
+          multipleSelect: true,
+        },
+      }));
+    }
+    log('Unknown array property type');
+    return m('');
+  }
+
+  // render schema property to form-fields
+  _renderProperty(key, item) {
+    if (item.readOnly) return m('');
+
+    if ('enum' in item) {
+      return m(selectGroup, this.bind({
+        name: key,
+        title: item.description,
+        options: item.enum,
+        type: 'select',
+        args: {
           multipleSelect: false,
         },
       }));
@@ -115,15 +146,7 @@ export default class JSONSchemaForm {
         return m(inputGroup, this.bind({ name: key, title: item.description, args: { type: 'checkbox' } }));
       }
       case 'array': {
-        return m(selectGroup, this.bind({
-          name: key,
-          title: item.description,
-          args: {
-            options: item.items.enum,
-            type: item.items.enum.length > 8 ? 'select' : 'buttons',
-            multipleSelect: true,
-          },
-        }));
+        return this._renderArrayProperty(key, item);
       }
       case 'string':
       default: {

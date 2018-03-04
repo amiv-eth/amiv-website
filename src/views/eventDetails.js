@@ -3,8 +3,9 @@ import * as EmailValidator from 'email-validator';
 import * as events from '../models/events';
 import { log } from '../models/log';
 import { isLoggedIn } from '../models/auth';
-import { inputGroup, submitButton } from './formFields';
-import JSONSchemaForm from './jsonSchemaForm';
+import inputGroup from './form/inputGroup';
+import button from './form/button';
+import JSONSchemaForm from './form/jsonSchemaForm';
 
 class EventSignupForm extends JSONSchemaForm {
   oninit(vnode) {
@@ -90,22 +91,24 @@ class EventSignupForm extends JSONSchemaForm {
   }
 
   _renderSignupButton() {
-    return m(submitButton, {
+    return m(button, {
+      name: 'signup',
+      title: 'Signup',
       active: super.isValid(),
       args: {
         onclick: () => this.signup(),
       },
-      text: 'Signup',
     });
   }
 
   _renderSignoffButton() {
-    return m(submitButton, {
+    return m(button, {
+      name: 'signoff',
+      title: 'Delete signup',
       active: true,
       args: {
         onclick: () => this.signoff(),
       },
-      text: 'Delete signup',
     });
   }
 }
