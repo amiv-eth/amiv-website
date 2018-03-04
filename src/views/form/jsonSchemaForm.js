@@ -77,6 +77,12 @@ export default class JSONSchemaForm {
     return this.schema === undefined || this.valid;
   }
 
+  validate() {
+    // validate the new data against the schema
+    const validate = this.ajv.getSchema('schema');
+    this.valid = validate(this.data);
+  }
+
   getValue() {
     return this.data;
   }
@@ -104,9 +110,9 @@ export default class JSONSchemaForm {
       return m(selectGroup, this.bind({
         name: key,
         title: item.description,
+        type: item.items.enum.length > 8 ? 'select' : 'buttons',
+        options: item.items.enum,
         args: {
-          options: item.items.enum,
-          type: item.items.enum.length > 8 ? 'select' : 'buttons',
           multipleSelect: true,
         },
       }));
@@ -123,9 +129,9 @@ export default class JSONSchemaForm {
       return m(selectGroup, this.bind({
         name: key,
         title: item.description,
+        options: item.enum,
+        type: 'select',
         args: {
-          options: item.enum,
-          type: 'select',
           multipleSelect: false,
         },
       }));

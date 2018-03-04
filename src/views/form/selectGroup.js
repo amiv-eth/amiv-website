@@ -16,12 +16,19 @@ export default class SelectGroup {
     args.onchange = vnode.attrs.onchange;
     args.oninput = vnode.attrs.oninput;
 
+    const options = vnode.attrs.options.map((option) => {
+      if (typeof option === 'object') {
+        return option;
+      }
+      return { value: option, text: option };
+    });
+
     switch (vnode.attrs.type) {
       case 'buttons': {
         if (args.multipleSelect) {
           return m('div', { class: vnode.attrs.classes }, [
             m(`label[for=${vnode.attrs.name}]`, vnode.attrs.title),
-            m('div', vnode.attrs.options.map(option =>
+            m('div', options.map(option =>
               m(inputGroup, {
                 name: vnode.attrs.name,
                 title: option.text,
@@ -47,10 +54,11 @@ export default class SelectGroup {
           ]);
         }
         return m('div', { class: vnode.attrs.classes }, [
-          m('div', vnode.attrs.options.map(option =>
+          m('div', options.map(option =>
             m(inputGroup, {
               name: vnode.attrs.name,
-              title: option,
+              title: option.text,
+              value: option.value,
               onchange: vnode.attrs.onchange,
               args: { type: 'radio' },
             }))),
@@ -89,7 +97,7 @@ export default class SelectGroup {
                   vnode.attrs.oninput({ target: { name: e.target.name, value } });
                 },
               },
-              vnode.attrs.options.map(option => m('option', { value: option.value }, option.text)),
+              options.map(option => m('option', { value: option.value }, option.text)),
             ),
           ]);
         }
@@ -98,7 +106,7 @@ export default class SelectGroup {
           m(
             `select[name=${vnode.attrs.name}][id=${vnode.attrs.name}]`,
             args,
-            vnode.attrs.options.map(option => m('option', { value: option.value }, option.text)),
+            options.map(option => m('option', { value: option.value }, option.text)),
           ),
         ]);
       }
