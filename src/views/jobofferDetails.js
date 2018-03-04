@@ -11,7 +11,7 @@ export default class JobOfferDetails {
   static view() {
     const jobOffer = jobs.getSelectedOffer();
 
-    if (typeof jobOffer === 'undefined') {
+    if (!jobOffer) {
       return m('');
     }
 

@@ -9,7 +9,7 @@ let querySaved = {};
 
 
 export function getList() {
-  if (typeof this.list === 'undefined') {
+  if (!this.list) {
     return [];
   }
   return this.list;
@@ -47,7 +47,7 @@ export function load(query = {}) {
 
 export function selectOffer(offerId) {
   this.selectedOffer = this.getList().find(item => item._id === offerId);
-  if (typeof this.selectedOffer === 'undefined') {
+  if (!this.selectedOffer) {
     this.load({
       where: {
         time_end: { $gte: date },
