@@ -21,6 +21,8 @@ export default class studydocNew {
         });
         callback(Array.from(suggestions));
       });
+    } else {
+      callback([]);
     }
   }
 
