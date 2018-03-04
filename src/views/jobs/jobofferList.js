@@ -1,6 +1,6 @@
 import m from 'mithril';
-import { apiUrl } from '../models/config';
-import * as jobs from '../models/joboffers';
+import { apiUrl } from '../../models/config';
+import * as jobs from '../../models/joboffers';
 
 const date = `${new Date().toISOString().split('.')[0]}Z`;
 

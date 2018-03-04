@@ -1,10 +1,10 @@
 import m from 'mithril';
-import * as studydocs from '../models/studydocs';
-import { isLoggedIn } from '../models/auth';
-import { Error401 } from './errors';
-import inputGroup from './form/inputGroup';
-import selectGroup from './form/selectGroup';
-import button from './form/button';
+import * as studydocs from '../../models/studydocs';
+import { isLoggedIn } from '../../models/auth';
+import { Error401 } from '../errors';
+import inputGroup from '../form/inputGroup';
+import selectGroup from '../form/selectGroup';
+import button from '../form/button';
 
 export default class studydocNew {
   oninit() {

@@ -1,11 +1,11 @@
 import m from 'mithril';
 import * as EmailValidator from 'email-validator';
-import * as events from '../models/events';
-import { log } from '../models/log';
-import { isLoggedIn } from '../models/auth';
-import inputGroup from './form/inputGroup';
-import button from './form/button';
-import JSONSchemaForm from './form/jsonSchemaForm';
+import * as events from '../../models/events';
+import { log } from '../../models/log';
+import { isLoggedIn } from '../../models/auth';
+import inputGroup from '../form/inputGroup';
+import button from '../form/button';
+import JSONSchemaForm from '../form/jsonSchemaForm';
 
 class EventSignupForm extends JSONSchemaForm {
   oninit(vnode) {

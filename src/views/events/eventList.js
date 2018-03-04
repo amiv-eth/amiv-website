@@ -1,5 +1,5 @@
 import m from 'mithril';
-import * as events from '../models/events';
+import * as events from '../../models/events';
 
 const date = `${new Date().toISOString().split('.')[0]}Z`;
 

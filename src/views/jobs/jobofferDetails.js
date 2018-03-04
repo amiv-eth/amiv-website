@@ -1,7 +1,7 @@
 import m from 'mithril';
-import { apiUrl } from '../models/config';
-import * as jobs from '../models/joboffers';
-import { log } from '../models/log';
+import { apiUrl } from '../../models/config';
+import * as jobs from '../../models/joboffers';
+import { log } from '../../models/log';
 
 export default class JobOfferDetails {
   static oninit(vnode) {
