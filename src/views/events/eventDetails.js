@@ -4,7 +4,7 @@ import * as events from '../../models/events';
 import { log } from '../../models/log';
 import { isLoggedIn } from '../../models/auth';
 import inputGroup from '../form/inputGroup';
-import Button from '../../components/Button';
+import { Button } from '../../components';
 import JSONSchemaForm from '../form/jsonSchemaForm';
 
 class EventSignupForm extends JSONSchemaForm {

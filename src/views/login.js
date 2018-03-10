@@ -1,6 +1,6 @@
 import m from 'mithril';
 import { login } from '../models/auth';
-import Button from '../components/Button';
+import { Button } from '../components';
 
 module.exports = {
   username: '',

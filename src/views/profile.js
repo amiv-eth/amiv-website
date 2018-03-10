@@ -2,7 +2,7 @@ import m from 'mithril';
 import { isLoggedIn } from '../models/auth';
 import * as user from '../models/user';
 import * as groups from '../models/groups';
-import Button from '../components/Button';
+import { Button } from '../components';
 
 
 // shows all relevant user information

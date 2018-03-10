@@ -3,7 +3,7 @@ import * as studydocs from '../../models/studydocs';
 import { apiUrl } from '../../models/config';
 import { isLoggedIn } from '../../models/auth';
 import { Error401 } from '../errors';
-import Button from '../../components/Button';
+import { Button } from '../../components';
 
 const tableHeadings = [
   'title', 'lecture', 'professor', 'semester', 'author', 'download',
