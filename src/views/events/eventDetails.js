@@ -4,7 +4,7 @@ import * as events from '../../models/events';
 import { log } from '../../models/log';
 import { isLoggedIn } from '../../models/auth';
 import inputGroup from '../form/inputGroup';
-import button from '../form/button';
+import Button from '../../components/Button';
 import JSONSchemaForm from '../form/jsonSchemaForm';
 
 class EventSignupForm extends JSONSchemaForm {
@@ -91,22 +91,22 @@ class EventSignupForm extends JSONSchemaForm {
   }
 
   _renderSignupButton() {
-    return m(button, {
+    return m(Button, {
       name: 'signup',
-      title: 'Signup',
+      label: 'Signup',
       active: super.isValid(),
-      args: {
+      events: {
         onclick: () => this.signup(),
       },
     });
   }
 
   _renderSignoffButton() {
-    return m(button, {
+    return m(Button, {
       name: 'signoff',
-      title: 'Delete signup',
+      label: 'Delete signup',
       active: true,
-      args: {
+      events: {
         onclick: () => this.signoff(),
       },
     });

@@ -4,7 +4,7 @@ import { isLoggedIn } from '../../models/auth';
 import { Error401 } from '../errors';
 import inputGroup from '../form/inputGroup';
 import selectGroup from '../form/selectGroup';
-import button from '../form/button';
+import Button from '../../components/Button';
 
 export default class studydocNew {
   oninit() {
@@ -139,11 +139,11 @@ export default class studydocNew {
           }
         },
       }),
-      m(button, {
+      m(Button, {
         name: 'submit',
-        title: 'Submit',
+        label: 'Submit',
         active: this.isValid,
-        args: {
+        events: {
           onclick: () => this.submit(),
         },
       }),

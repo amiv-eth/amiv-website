@@ -1,5 +1,6 @@
 import m from 'mithril';
 import { login } from '../models/auth';
+import Button from '../components/Button';
 
 module.exports = {
   username: '',
@@ -26,7 +27,7 @@ module.exports = {
           oninput: m.withAttr('value', (value) => { this.password = value; }),
           value: this.password,
         }),
-        m('button.button[type=submit]', 'Login'),
+        m(Button, { label: 'Login' }),
       ),
     ]);
   },

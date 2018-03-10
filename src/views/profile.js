@@ -2,6 +2,7 @@ import m from 'mithril';
 import { isLoggedIn } from '../models/auth';
 import * as user from '../models/user';
 import * as groups from '../models/groups';
+import Button from '../components/Button';
 
 
 // shows all relevant user information
@@ -59,10 +60,10 @@ class changePasswordForm {
   view() {
     if (user.get() === undefined) return m();
 
-    const buttonArgs = { onclick: () => this.submit() };
+    const buttonArgs = { events: { onclick: () => this.submit() } };
 
     if (!this.valid || !this.equal || this.busy) {
-      buttonArgs.disabled = 'disabled';
+      buttonArgs.disabled = true;
     }
 
     return m('div', [
@@ -88,7 +89,7 @@ class changePasswordForm {
           this.validate();
         },
       }),
-      m('button', buttonArgs, 'change password'),
+      m(Button, { ...buttonArgs, label: 'change password' }),
     ]);
   }
 }
@@ -108,11 +109,11 @@ class rfidForm {
   }
 
   view() {
-    const buttonArgs = { onclick: () => this.submit() };
+    const buttonArgs = { events: { onclick: () => this.submit() } };
 
     if (this.rfid === undefined) this.rfid = user.get().rfid;
     if (!this.valid || this.busy) {
-      buttonArgs.disabled = 'disabled';
+      buttonArgs.disabled = true;
     }
 
     return m('div', [
@@ -127,7 +128,7 @@ class rfidForm {
           this.valid = /^\d{6}$/g.test(this.rfid) && this.rfid !== user.get().rfid;
         },
       }),
-      m('button', buttonArgs, 'save'),
+      m(Button, {...buttonArgs, label: 'save'}),
     ]);
   }
 }
@@ -144,13 +145,13 @@ class announceSubscriptionForm {
   }
 
   view() {
-    const buttonArgs = { onclick: () => this.submit() };
+    const buttonArgs = { events: { onclick: () => this.submit() } };
 
     if (this.busy) {
-      buttonArgs.disabled = 'disabled';
+      buttonArgs.disabled = true;
     }
 
-    return m('button', buttonArgs, user.get().send_newsletter ? 'unsubscribe from Newsletter' : 'subscribe to Newsletter');
+    return m(Button, {...buttonArgs, label: user.get().send_newsletter ? 'unsubscribe from Newsletter' : 'subscribe to Newsletter'});
   }
 }
 
@@ -166,24 +167,26 @@ class groupMemberships {
     return m('div', [
       m('div', groups.getMemberships().map((membership) => {
         const buttonArgs = {
-          onclick: () => {
-            this.busy[membership.group._id] = true;
-            groups.withdraw(membership._id, membership._etag).then(() => {
-              this.busy[membership.group._id] = false;
-            }).catch(() => {
-              this.busy[membership.group._id] = false;
-            });
-          },
+          events: {
+            onclick: () => {
+              this.busy[membership.group._id] = true;
+              groups.withdraw(membership._id, membership._etag).then(() => {
+                this.busy[membership.group._id] = false;
+              }).catch(() => {
+                this.busy[membership.group._id] = false;
+              });
+            },
+          }
         };
 
         if (this.busy[membership.group._id]) {
-          buttonArgs.disabled = 'disabled';
+          buttonArgs.disabled = true;
         }
 
         return m('div', [
           m('span', membership.group.name),
           membership.expiry === undefined ? undefined : m('span', `(expires on ${membership.expiry})`),
-          m('button', buttonArgs, 'withdraw'),
+          m(Button, {...buttonArgs, label: 'withdraw'}),
         ]);
       })),
       m('div', groups.getList().map((group) => {
@@ -191,22 +194,24 @@ class groupMemberships {
           return m.trust('');
         }
         const buttonArgs = {
-          onclick: () => {
-            this.busy[group._id] = true;
-            groups.enroll(group._id).then(() => {
-              this.busy[group._id] = false;
-            }).catch(() => {
-              this.busy[group._id] = false;
-            });
-          },
+          events: {
+            onclick: () => {
+              this.busy[group._id] = true;
+              groups.enroll(group._id).then(() => {
+                this.busy[group._id] = false;
+              }).catch(() => {
+                this.busy[group._id] = false;
+              });
+            },
+          }
         };
 
         if (this.busy[group._id]) {
-          buttonArgs.disabled = 'disabled';
+          buttonArgs.disabled = true;
         }
         return m('div', [
           m('span', group.name),
-          m('button', buttonArgs, 'enroll'),
+          m(Button, {...buttonArgs, label: 'enroll'}),
         ]);
       })),
     ]);
