@@ -11,7 +11,7 @@ const config = {
   // To run development server
   devServer: {
     contentBase: __dirname,
-    publicPath: '/dist',
+    publicPath: '/dist/',
     compress: true,
     port: 9000,
     hot: true,
@@ -35,8 +35,8 @@ const config = {
             loader: 'file-loader', // Writes the generated HTML to a file
             options: {
               name: '[name].html',
-              outputPath: 'companies',
-              publicPath: '/dist/companies',
+              outputPath: 'companies/',
+              publicPath: 'dist/companies/',
             },
           },
           {
