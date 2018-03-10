@@ -8,28 +8,33 @@ const layoutCommon = [
   m('a', { href: '/jobs', oncreate: m.route.link }, 'Jobs'),
 ];
 
-const layoutLoggedOut = vnode => m('div', [
-  m('nav', [
-    layoutCommon,
-    m('a', { href: '/login', oncreate: m.route.link }, 'Login'),
-  ]),
-  m('main', vnode.children),
-]);
+const layoutLoggedOut = vnode =>
+  m('div', [
+    m('nav', [layoutCommon, m('a', { href: '/login', oncreate: m.route.link }, 'Login')]),
+    m('main', vnode.children),
+  ]);
 
-const layoutLoggedIn = vnode => m('div', [
-  m('nav', [
-    layoutCommon,
-    m('a', { href: '/profile', oncreate: m.route.link }, 'Profil'),
-    m('a', {
-      href: '/',
-      onclick: () => {
-        logout().then(() => { m.route.set('/'); });
-        return false;
-      },
-    }, 'Logout'),
-  ]),
-  m('main', vnode.children),
-]);
+const layoutLoggedIn = vnode =>
+  m('div', [
+    m('nav', [
+      layoutCommon,
+      m('a', { href: '/profile', oncreate: m.route.link }, 'Profil'),
+      m(
+        'a',
+        {
+          href: '/',
+          onclick: () => {
+            logout().then(() => {
+              m.route.set('/');
+            });
+            return false;
+          },
+        },
+        'Logout'
+      ),
+    ]),
+    m('main', vnode.children),
+  ]);
 
 module.exports = {
   oninit: checkLogin,

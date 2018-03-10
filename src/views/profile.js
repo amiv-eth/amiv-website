@@ -3,7 +3,6 @@ import { isLoggedIn } from '../models/auth';
 import * as user from '../models/user';
 import * as groups from '../models/groups';
 
-
 // shows all relevant user information
 class showUserInfo {
   static view() {
@@ -18,10 +17,7 @@ class showUserInfo {
     }
 
     return m('div', [
-      m('div', [
-        m('span', 'Membership: '),
-        m('span', user.get().membership),
-      ]),
+      m('div', [m('span', 'Membership: '), m('span', user.get().membership)]),
       freeBeerNotice,
     ]);
   }
@@ -32,11 +28,14 @@ class changePasswordForm {
   submit() {
     const password = this.password1;
     this.busy = true;
-    user.update({ password }).then(() => {
-      this.busy = false;
-    }).catch(() => {
-      this.busy = false;
-    });
+    user
+      .update({ password })
+      .then(() => {
+        this.busy = false;
+      })
+      .catch(() => {
+        this.busy = false;
+      });
   }
 
   // Password policy:
@@ -46,7 +45,8 @@ class changePasswordForm {
   // * Contains numbers
   // * Does not contain any whitespace characters
   validate() {
-    this.valid = this.password1.length > 8 &&
+    this.valid =
+      this.password1.length > 8 &&
       this.password1.length <= 100 &&
       !this.password1.match(/\s/g) &&
       this.password1.match(/[A-Z]/g) &&
@@ -72,7 +72,7 @@ class changePasswordForm {
         type: 'password',
         placeholder: 'Password',
         value: this.password1,
-        oninput: (e) => {
+        oninput: e => {
           this.password1 = e.target.value;
           this.validate();
         },
@@ -83,7 +83,7 @@ class changePasswordForm {
         type: 'password',
         placeholder: 'Repeat',
         value: this.password2,
-        oninput: (e) => {
+        oninput: e => {
           this.password2 = e.target.value;
           this.validate();
         },
@@ -98,13 +98,16 @@ class rfidForm {
   submit() {
     const savedRfid = this.rfid;
     this.busy = true;
-    user.update({ rfid: savedRfid }).then(() => {
-      this.rfid = savedRfid;
-      this.busy = false;
-    }).catch(() => {
-      this.rfid = savedRfid;
-      this.busy = false;
-    });
+    user
+      .update({ rfid: savedRfid })
+      .then(() => {
+        this.rfid = savedRfid;
+        this.busy = false;
+      })
+      .catch(() => {
+        this.rfid = savedRfid;
+        this.busy = false;
+      });
   }
 
   view() {
@@ -122,7 +125,7 @@ class rfidForm {
         type: 'text',
         placeholder: 'RFID',
         value: this.rfid,
-        oninput: (e) => {
+        oninput: e => {
           this.rfid = e.target.value;
           this.valid = /^\d{6}$/g.test(this.rfid) && this.rfid !== user.get().rfid;
         },
@@ -136,11 +139,14 @@ class rfidForm {
 class announceSubscriptionForm {
   submit() {
     this.busy = true;
-    user.update({ send_newsletter: !user.get().send_newsletter }).then(() => {
-      this.busy = false;
-    }).catch(() => {
-      this.busy = false;
-    });
+    user
+      .update({ send_newsletter: !user.get().send_newsletter })
+      .then(() => {
+        this.busy = false;
+      })
+      .catch(() => {
+        this.busy = false;
+      });
   }
 
   view() {
@@ -150,7 +156,11 @@ class announceSubscriptionForm {
       buttonArgs.disabled = 'disabled';
     }
 
-    return m('button', buttonArgs, user.get().send_newsletter ? 'unsubscribe from Newsletter' : 'subscribe to Newsletter');
+    return m(
+      'button',
+      buttonArgs,
+      user.get().send_newsletter ? 'unsubscribe from Newsletter' : 'subscribe to Newsletter'
+    );
   }
 }
 
@@ -164,51 +174,62 @@ class groupMemberships {
 
   static view() {
     return m('div', [
-      m('div', groups.getMemberships().map((membership) => {
-        const buttonArgs = {
-          onclick: () => {
-            this.busy[membership.group._id] = true;
-            groups.withdraw(membership._id, membership._etag).then(() => {
-              this.busy[membership.group._id] = false;
-            }).catch(() => {
-              this.busy[membership.group._id] = false;
-            });
-          },
-        };
+      m(
+        'div',
+        groups.getMemberships().map(membership => {
+          const buttonArgs = {
+            onclick: () => {
+              this.busy[membership.group._id] = true;
+              groups
+                .withdraw(membership._id, membership._etag)
+                .then(() => {
+                  this.busy[membership.group._id] = false;
+                })
+                .catch(() => {
+                  this.busy[membership.group._id] = false;
+                });
+            },
+          };
 
-        if (this.busy[membership.group._id]) {
-          buttonArgs.disabled = 'disabled';
-        }
+          if (this.busy[membership.group._id]) {
+            buttonArgs.disabled = 'disabled';
+          }
 
-        return m('div', [
-          m('span', membership.group.name),
-          membership.expiry === undefined ? undefined : m('span', `(expires on ${membership.expiry})`),
-          m('button', buttonArgs, 'withdraw'),
-        ]);
-      })),
-      m('div', groups.getList().map((group) => {
-        if (groups.getMemberships().some(element => element.group._id === group._id)) {
-          return m.trust('');
-        }
-        const buttonArgs = {
-          onclick: () => {
-            this.busy[group._id] = true;
-            groups.enroll(group._id).then(() => {
-              this.busy[group._id] = false;
-            }).catch(() => {
-              this.busy[group._id] = false;
-            });
-          },
-        };
+          return m('div', [
+            m('span', membership.group.name),
+            membership.expiry === undefined
+              ? undefined
+              : m('span', `(expires on ${membership.expiry})`),
+            m('button', buttonArgs, 'withdraw'),
+          ]);
+        })
+      ),
+      m(
+        'div',
+        groups.getList().map(group => {
+          if (groups.getMemberships().some(element => element.group._id === group._id)) {
+            return m.trust('');
+          }
+          const buttonArgs = {
+            onclick: () => {
+              this.busy[group._id] = true;
+              groups
+                .enroll(group._id)
+                .then(() => {
+                  this.busy[group._id] = false;
+                })
+                .catch(() => {
+                  this.busy[group._id] = false;
+                });
+            },
+          };
 
-        if (this.busy[group._id]) {
-          buttonArgs.disabled = 'disabled';
-        }
-        return m('div', [
-          m('span', group.name),
-          m('button', buttonArgs, 'enroll'),
-        ]);
-      })),
+          if (this.busy[group._id]) {
+            buttonArgs.disabled = 'disabled';
+          }
+          return m('div', [m('span', group.name), m('button', buttonArgs, 'enroll')]);
+        })
+      ),
     ]);
   }
 }

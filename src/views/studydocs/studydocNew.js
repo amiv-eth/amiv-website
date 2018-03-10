@@ -14,9 +14,9 @@ export default class studydocNew {
 
   static _getInputSuggestions(field, input, callback) {
     if (input.length > 2) {
-      studydocs.getInputSuggestions(field, input).then((result) => {
+      studydocs.getInputSuggestions(field, input).then(result => {
         const suggestions = new Set();
-        result._items.forEach((item) => {
+        result._items.forEach(item => {
           suggestions.add(item[field]);
         });
         callback(Array.from(suggestions));
@@ -40,7 +40,7 @@ export default class studydocNew {
       m(inputGroup, {
         name: 'title',
         title: 'Title',
-        oninput: (e) => {
+        oninput: e => {
           this.doc.title = e.target.value;
         },
         getSuggestions: (input, callback) =>
@@ -49,7 +49,7 @@ export default class studydocNew {
       m(inputGroup, {
         name: 'professor',
         title: 'Professor',
-        oninput: (e) => {
+        oninput: e => {
           this.doc.professor = e.target.value;
         },
         getSuggestions: (input, callback) =>
@@ -58,7 +58,7 @@ export default class studydocNew {
       m(inputGroup, {
         name: 'author',
         title: 'Author',
-        oninput: (e) => {
+        oninput: e => {
           this.doc.author = e.target.value;
         },
         getSuggestions: (input, callback) =>
@@ -68,7 +68,7 @@ export default class studydocNew {
         name: 'semester',
         title: 'Semester',
         type: 'select',
-        onchange: (e) => {
+        onchange: e => {
           this.doc.semester = e.target.value;
         },
         options: [
@@ -83,18 +83,15 @@ export default class studydocNew {
         name: 'department',
         title: 'Department',
         type: 'select',
-        onchange: (e) => {
+        onchange: e => {
           this.doc.department = e.target.value;
         },
-        options: [
-          { value: 'itet', text: 'itet' },
-          { value: 'mavt', text: 'mavt' },
-        ],
+        options: [{ value: 'itet', text: 'itet' }, { value: 'mavt', text: 'mavt' }],
       }),
       m(inputGroup, {
         name: 'lecture',
         title: 'Lecture',
-        oninput: (e) => {
+        oninput: e => {
           this.doc.lecture = e.target.value;
         },
         getSuggestions: (input, callback) =>
@@ -105,9 +102,9 @@ export default class studydocNew {
         title: 'Course Year',
         type: 'number',
         args: {
-          placeholder: (new Date()).getFullYear(),
+          placeholder: new Date().getFullYear(),
         },
-        oninput: (e) => {
+        oninput: e => {
           this.doc.course_year = e.target.value;
         },
       }),
@@ -115,7 +112,7 @@ export default class studydocNew {
         name: 'type',
         title: 'Type',
         type: 'select',
-        onchange: (e) => {
+        onchange: e => {
           this.doc.type = e.target.value;
         },
         options: [
@@ -132,7 +129,7 @@ export default class studydocNew {
           type: 'file',
           multiple: 1,
         },
-        onchange: (e) => {
+        onchange: e => {
           this.doc.files = e.target.files;
           if (this.doc.files.length > 0) {
             this.isValid = true;
