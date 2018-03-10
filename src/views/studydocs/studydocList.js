@@ -3,7 +3,7 @@ import * as studydocs from '../../models/studydocs';
 import { apiUrl } from '../../models/config';
 import { isLoggedIn } from '../../models/auth';
 import { Error401 } from '../errors';
-
+import Button from '../../components/Button';
 
 const tableHeadings = [
   'title', 'lecture', 'professor', 'semester', 'author', 'download',
@@ -38,7 +38,7 @@ export default class studydocList {
         },
       }, [
         m('input', { type: 'text', oninput: m.withAttr('value', (value) => { this.search = value; }) }, ''),
-        m('button', { type: 'submit' }, 'Search'),
+        m(Button, { label: 'Search', type: 'submit' }),
       ]),
       m('button', { onclick: () => m.route.set('/studydocuments/new') }, 'add new'),
       m('table', [
