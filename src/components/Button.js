@@ -1,9 +1,13 @@
 import m from "mithril";
 import { Button } from "polythene-mithril";
-import "polythene-css"
+import "polythene-css";
 
-const ButtonComponent = () => {
-    return Button;
+const defaultProps = {
+    element: 'button',
+}
+
+const ButtonComponent = props => {
+    return m(Button, {...defaultProps, ...props});
 }
 
 export default ButtonComponent;

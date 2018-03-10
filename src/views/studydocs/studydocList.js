@@ -38,7 +38,7 @@ export default class studydocList {
         },
       }, [
         m('input', { type: 'text', oninput: m.withAttr('value', (value) => { this.search = value; }) }, ''),
-        m(Button, { label: 'Search', type: 'submit' }),
+        Button({ label: 'Search' }),
       ]),
       m('button', { onclick: () => m.route.set('/studydocuments/new') }, 'add new'),
       m('table', [
