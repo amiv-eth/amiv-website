@@ -28,6 +28,22 @@ const config = {
           options: { presets: ['env'] },
         }],
       },
+      {
+        test: /\.md$/, // Check for all md files
+        use: [
+          {
+            loader: 'file-loader', // Writes the generated HTML to a file
+            options: {
+              name: '[name].html',
+              outputPath: 'companies',
+              publicPath: '/dist/companies',
+            },
+          },
+          {
+            loader: 'markdown-loader', // Converts Markdown to HTML
+          },
+        ],
+      },
     ],
   },
 
