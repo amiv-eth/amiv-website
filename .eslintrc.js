@@ -11,7 +11,7 @@ module.exports = {
     'no-multi-str': 0,
     'no-underscore-dangle': 0,
     'no-console': 0,
-    'prettier/prettier': 'warn',
+    'prettier/prettier': 'error',
   },
   plugins: ['prettier'],
 };
