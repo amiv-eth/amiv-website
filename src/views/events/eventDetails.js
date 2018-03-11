@@ -14,17 +14,17 @@ class EventSignupForm extends JSONSchemaForm {
     this.emailErrors = [];
     this.emailValid = false;
     if (isLoggedIn()) {
-      events.loadSignupForSelectedEvent()
-        .then(() => {
-          if (typeof events.getSignupForSelectedEvent() !== 'undefined') {
-            this.data = JSON.parse(events.getSignupForSelectedEvent().additional_fields) || {};
-          }
-        });
+      events.loadSignupForSelectedEvent().then(() => {
+        if (typeof events.getSignupForSelectedEvent() !== 'undefined') {
+          this.data = JSON.parse(events.getSignupForSelectedEvent().additional_fields) || {};
+        }
+      });
     }
   }
 
   signup() {
-    events.signupForSelectedEvent(super.getValue(), this.email)
+    events
+      .signupForSelectedEvent(super.getValue(), this.email)
       .then(() => log('Successfully signed up for the event!'))
       .catch(() => log('Could not sign up of the event!'));
   }
@@ -72,7 +72,7 @@ class EventSignupForm extends JSONSchemaForm {
       args: {
         type: 'text',
       },
-      oninput: (e) => {
+      oninput: e => {
         // bind changed data
         this.email = e.target.value;
 
@@ -130,8 +130,10 @@ export default class EventDetails {
     if (registerStart <= now) {
       if (registerEnd >= now) {
         eventSignupForm = m(EventSignupForm, {
-          schema: events.getSelectedEvent().additional_fields === undefined ?
-            undefined : JSON.parse(events.getSelectedEvent().additional_fields),
+          schema:
+            events.getSelectedEvent().additional_fields === undefined
+              ? undefined
+              : JSON.parse(events.getSelectedEvent().additional_fields),
         });
       } else {
         let participantNotice = '';
