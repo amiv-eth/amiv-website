@@ -117,7 +117,6 @@ export function checkLogin() {
         log('session is not valid');
         log(e);
         APISession.authenticated = false;
-        localStorage.removeItem('session');
         localStorage.removeItem('username');
         localStorage.removeItem('userId');
         localStorage.removeItem('id');
