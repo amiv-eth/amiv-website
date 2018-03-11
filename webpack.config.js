@@ -11,7 +11,7 @@ const config = {
   // To run development server
   devServer: {
     contentBase: __dirname,
-    publicPath: '/dist',
+    publicPath: '/dist/',
     compress: true,
     port: 9000,
     hot: true,
@@ -27,6 +27,22 @@ const config = {
           loader: 'babel-loader',
           options: { presets: ['env'] },
         }],
+      },
+      {
+        test: /src\/views\/companies\/markdown\/[a-zA-Z\d-]{3,}\.md$/, // Check for all .md files in /companies/markdown
+        use: [
+          {
+            loader: 'file-loader', // Writes the generated HTML to a file
+            options: {
+              name: '[name].html',
+              outputPath: 'companies/',
+              publicPath: 'dist/companies/',
+            },
+          },
+          {
+            loader: 'markdown-loader', // Converts Markdown to HTML
+          },
+        ],
       },
     ],
   },
