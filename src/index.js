@@ -15,6 +15,8 @@ import aufenthaltsraum from './views/amiv/aufenthaltsraum';
 import board from './views/amiv/board';
 import jobOfferList from './views/jobs/jobofferList';
 import jobOfferDetails from './views/jobs/jobofferDetails';
+import companyList from './views/companies/companyList';
+import companyDetail from './views/companies/companyDetail';
 
 m.route(document.body, '/', {
   '/': {
@@ -80,6 +82,16 @@ m.route(document.body, '/', {
   '/profile': {
     render(vnode) {
       return m(layout, m(profile, vnode.attrs));
+    },
+  },
+  '/companies': {
+    render() {
+      return m(layout, m(companyList));
+    },
+  },
+  '/companies/:companyId': {
+    render(vnode) {
+      return m(layout, m(companyDetail, vnode.attrs));
     },
   },
 });
