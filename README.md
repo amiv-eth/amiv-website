@@ -28,4 +28,8 @@ Backend: [AMIV API](https://github.com/amiv-eth/amivapi)
 
 Technologies:
  * [Mitrhil](https://mithril.js.org/)
+
+ 
+Needed extensions:
  * [ESlint](https://github.com/eslint/eslint)
+ * [Prettier](https://github.com/prettier/prettier)

@@ -34,66 +34,91 @@ export function loadSignupForSelectedEvent() {
     }),
   });
 
-  return m.request({
-    method: 'GET',
-    url: `${apiUrl}/eventsignups?${queryString}`,
-    headers: getToken() ? {
-      Authorization: `Token ${getToken()}`,
-    } : {},
-  }).then((result) => {
-    [this.selectedEventSignup] = result._items;
-    this.selectedEventSignupLoaded = true;
-  });
+  return m
+    .request({
+      method: 'GET',
+      url: `${apiUrl}/eventsignups?${queryString}`,
+      headers: getToken()
+        ? {
+            Authorization: `Token ${getToken()}`,
+          }
+        : {},
+    })
+    .then(result => {
+      [this.selectedEventSignup] = result._items;
+      this.selectedEventSignupLoaded = true;
+    });
 }
 
 export function _signupUserForSelectedEvent(additionalFieldsString) {
   if (typeof this.selectedEventSignup !== 'undefined') {
-    return m.request({
-      method: 'PATCH',
-      url: `${apiUrl}/eventsignups/${this.selectedEventSignup._id}`,
-      data: {
-        additional_fields: additionalFieldsString,
-      },
-      headers: getToken() ? {
-        Authorization: `Token ${getToken()}`,
-        'If-Match': this.selectedEventSignup._etag,
-      } : { 'If-Match': this.selectedEventSignup._etag },
-    }).then(() => { this.loadSignupForSelectedEvent(); });
+    return m
+      .request({
+        method: 'PATCH',
+        url: `${apiUrl}/eventsignups/${this.selectedEventSignup._id}`,
+        data: {
+          additional_fields: additionalFieldsString,
+        },
+        headers: getToken()
+          ? {
+              Authorization: `Token ${getToken()}`,
+              'If-Match': this.selectedEventSignup._etag,
+            }
+          : { 'If-Match': this.selectedEventSignup._etag },
+      })
+      .then(() => {
+        this.loadSignupForSelectedEvent();
+      });
   }
 
-  return m.request({
-    method: 'POST',
-    url: `${apiUrl}/eventsignups`,
-    data: {
-      event: this.selectedEvent._id,
-      additional_fields: additionalFieldsString,
-      user: getUserId(),
-    },
-    headers: getToken() ? {
-      Authorization: `Token ${getToken()}`,
-    } : {},
-  }).then(() => { this.loadSignupForSelectedEvent(); });
+  return m
+    .request({
+      method: 'POST',
+      url: `${apiUrl}/eventsignups`,
+      data: {
+        event: this.selectedEvent._id,
+        additional_fields: additionalFieldsString,
+        user: getUserId(),
+      },
+      headers: getToken()
+        ? {
+            Authorization: `Token ${getToken()}`,
+          }
+        : {},
+    })
+    .then(() => {
+      this.loadSignupForSelectedEvent();
+    });
 }
 
 export function _signupEmailForSelectedEvent(additionalFieldsString, email) {
-  return m.request({
-    method: 'POST',
-    url: `${apiUrl}/eventsignups`,
-    data: {
-      event: this.selectedEvent._id,
-      additional_fields: additionalFieldsString,
-      email,
-    },
-    headers: getToken() ? {
-      Authorization: `Token ${getToken()}`,
-    } : {},
-  }).then(() => { this.loadSignupForSelectedEvent(); });
+  return m
+    .request({
+      method: 'POST',
+      url: `${apiUrl}/eventsignups`,
+      data: {
+        event: this.selectedEvent._id,
+        additional_fields: additionalFieldsString,
+        email,
+      },
+      headers: getToken()
+        ? {
+            Authorization: `Token ${getToken()}`,
+          }
+        : {},
+    })
+    .then(() => {
+      this.loadSignupForSelectedEvent();
+    });
 }
 
 export function signupForSelectedEvent(additionalFields, email = '') {
   let additionalFieldsString;
-  if (this.selectedEvent.additional_fields === undefined ||
-    additionalFields === null || typeof additionalFields !== 'object') {
+  if (
+    this.selectedEvent.additional_fields === undefined ||
+    additionalFields === null ||
+    typeof additionalFields !== 'object'
+  ) {
     additionalFieldsString = undefined;
   } else {
     additionalFieldsString = JSON.stringify(additionalFields);
@@ -109,14 +134,20 @@ export function signupForSelectedEvent(additionalFields, email = '') {
 
 export function signoffForSelectedEvent() {
   if (isLoggedIn() && typeof this.selectedEventSignup !== 'undefined') {
-    m.request({
-      method: 'DELETE',
-      url: `${apiUrl}/eventsignups/${this.selectedEventSignup._id}`,
-      headers: getToken() ? {
-        Authorization: `Token ${getToken()}`,
-        'If-Match': this.selectedEventSignup._etag,
-      } : { 'If-Match': this.selectedEventSignup._etag },
-    }).then(() => { this.loadSignupForSelectedEvent(); });
+    m
+      .request({
+        method: 'DELETE',
+        url: `${apiUrl}/eventsignups/${this.selectedEventSignup._id}`,
+        headers: getToken()
+          ? {
+              Authorization: `Token ${getToken()}`,
+              'If-Match': this.selectedEventSignup._etag,
+            }
+          : { 'If-Match': this.selectedEventSignup._etag },
+      })
+      .then(() => {
+        this.loadSignupForSelectedEvent();
+      });
   }
 }
 
@@ -125,25 +156,29 @@ export function load(query = {}) {
 
   // Parse query such that the backend understands it
   const parsedQuery = {};
-  Object.keys(query).forEach((key) => {
-    parsedQuery[key] = (key === 'sort') ? query[key] : JSON.stringify(query[key]);
+  Object.keys(query).forEach(key => {
+    parsedQuery[key] = key === 'sort' ? query[key] : JSON.stringify(query[key]);
   });
   const queryString = m.buildQueryString(parsedQuery);
 
-  return m.request({
-    method: 'GET',
-    url: `${apiUrl}/events?${queryString}`,
-    headers: getToken() ? {
-      Authorization: `Token ${getToken()}`,
-    } : {},
-  }).then((result) => {
-    this.list = result._items.map((event) => {
-      const newEvent = Object.assign({}, event);
-      newEvent.title = newEvent[`title_${lang}`];
-      newEvent.description = newEvent[`description_${lang}`];
-      return newEvent;
+  return m
+    .request({
+      method: 'GET',
+      url: `${apiUrl}/events?${queryString}`,
+      headers: getToken()
+        ? {
+            Authorization: `Token ${getToken()}`,
+          }
+        : {},
+    })
+    .then(result => {
+      this.list = result._items.map(event => {
+        const newEvent = Object.assign({}, event);
+        newEvent.title = newEvent[`title_${lang}`];
+        newEvent.description = newEvent[`description_${lang}`];
+        return newEvent;
+      });
     });
-  });
 }
 
 export function selectEvent(eventId) {

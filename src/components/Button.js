@@ -16,7 +16,7 @@ export default class ButtonComponent {
       label: 'Unnamed button',
     };
   }
-  
+
   static view(vnode) {
     return m(Button, { ...this.defaultProps, ...vnode.attrs });
   }

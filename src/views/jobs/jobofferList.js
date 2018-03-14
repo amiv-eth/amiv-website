@@ -24,19 +24,22 @@ export default class JobOfferList {
 
   static view() {
     return m('table', [
-      m('thead', [
-        m('tr', [
-          m('th', 'Company'),
-          m('th', 'Title'),
-          m('th', 'Details'),
-        ]),
-      ]),
-      m('tbody', jobs.getList().map(job =>
-        m('tr', [
-          m('td', m('img', { src: `${apiUrl}${job.logo.file}`, width: '150px', alt: job.company })),
-          m('td', job.title),
-          m('td', m('a', { href: `/jobs/${job._id}`, oncreate: m.route.link }, 'Details')),
-        ]))),
+      m('thead', [m('tr', [m('th', 'Company'), m('th', 'Title'), m('th', 'Details')])]),
+      m(
+        'tbody',
+        jobs
+          .getList()
+          .map(job =>
+            m('tr', [
+              m(
+                'td',
+                m('img', { src: `${apiUrl}${job.logo.file}`, width: '150px', alt: job.company })
+              ),
+              m('td', job.title),
+              m('td', m('a', { href: `/jobs/${job._id}`, oncreate: m.route.link }, 'Details')),
+            ])
+          )
+      ),
     ]);
   }
 }

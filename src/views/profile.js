@@ -73,7 +73,7 @@ class changePasswordForm {
         type: 'password',
         placeholder: 'Password',
         value: this.password1,
-        oninput: (e) => {
+        oninput: e => {
           this.password1 = e.target.value;
           this.validate();
         },
@@ -84,7 +84,7 @@ class changePasswordForm {
         type: 'password',
         placeholder: 'Repeat',
         value: this.password2,
-        oninput: (e) => {
+        oninput: e => {
           this.password2 = e.target.value;
           this.validate();
         },
@@ -126,10 +126,9 @@ class rfidForm {
         type: 'text',
         placeholder: 'RFID',
         value: this.rfid,
-        oninput: (e) => {
+        oninput: e => {
           this.rfid = e.target.value;
-          this.valid =
-            /^\d{6}$/g.test(this.rfid) && this.rfid !== user.get().rfid;
+          this.valid = /^\d{6}$/g.test(this.rfid) && this.rfid !== user.get().rfid;
         },
       }),
       m(Button, { ...buttonArgs, label: 'save' }),
@@ -160,9 +159,7 @@ class announceSubscriptionForm {
 
     return m(Button, {
       ...buttonArgs,
-      label: user.get().send_newsletter
-        ? 'unsubscribe from Newsletter'
-        : 'subscribe to Newsletter',
+      label: user.get().send_newsletter ? 'unsubscribe from Newsletter' : 'subscribe to Newsletter',
     });
   }
 }
@@ -179,7 +176,7 @@ class groupMemberships {
     return m('div', [
       m(
         'div',
-        groups.getMemberships().map((membership) => {
+        groups.getMemberships().map(membership => {
           const buttonArgs = {
             events: {
               onclick: () => {
@@ -207,16 +204,12 @@ class groupMemberships {
               : m('span', `(expires on ${membership.expiry})`),
             m(Button, { ...buttonArgs, label: 'withdraw' }),
           ]);
-        }),
+        })
       ),
       m(
         'div',
-        groups.getList().map((group) => {
-          if (
-            groups
-              .getMemberships()
-              .some(element => element.group._id === group._id)
-          ) {
+        groups.getList().map(group => {
+          if (groups.getMemberships().some(element => element.group._id === group._id)) {
             return m.trust('');
           }
           const buttonArgs = {
@@ -238,11 +231,8 @@ class groupMemberships {
           if (this.busy[group._id]) {
             buttonArgs.disabled = true;
           }
-          return m('div', [
-            m('span', group.name),
-            m(Button, { ...buttonArgs, label: 'enroll' }),
-          ]);
-        }),
+          return m('div', [m('span', group.name), m(Button, { ...buttonArgs, label: 'enroll' })]);
+        })
       ),
     ]);
   }

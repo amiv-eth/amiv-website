@@ -39,8 +39,8 @@ export default class InputGroup {
     args.list = `${vnode.attrs.name}-datalist`;
     if (args.getSuggestions) {
       args.oninput_original = args.oninput;
-      args.oninput = (e) => {
-        args.getSuggestions(e.target.value, (result) => {
+      args.oninput = e => {
+        args.getSuggestions(e.target.value, result => {
           this.suggestions = result;
         });
         if (args.oninput_original) {

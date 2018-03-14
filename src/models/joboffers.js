@@ -7,7 +7,6 @@ const date = `${new Date().toISOString().split('.')[0]}Z`;
 
 let querySaved = {};
 
-
 export function getList() {
   if (!this.list) {
     return [];
@@ -24,25 +23,27 @@ export function load(query = {}) {
 
   // Parse query such that the backend understands it
   const parsedQuery = {};
-  Object.keys(query).forEach((key) => {
-    parsedQuery[key] = (key === 'sort') ? query[key] : JSON.stringify(query[key]);
+  Object.keys(query).forEach(key => {
+    parsedQuery[key] = key === 'sort' ? query[key] : JSON.stringify(query[key]);
   });
   const queryString = m.buildQueryString(parsedQuery);
 
-  return m.request({
-    method: 'GET',
-    url: `${apiUrl}/joboffers?${queryString}`,
-    headers: {
-      Authorization: `Token ${getToken()}`,
-    },
-  }).then((result) => {
-    this.list = result._items.map((event) => {
-      const newOffer = Object.assign({}, event);
-      newOffer.title = newOffer[`title_${lang}`];
-      newOffer.description = newOffer[`description_${lang}`];
-      return newOffer;
+  return m
+    .request({
+      method: 'GET',
+      url: `${apiUrl}/joboffers?${queryString}`,
+      headers: {
+        Authorization: `Token ${getToken()}`,
+      },
+    })
+    .then(result => {
+      this.list = result._items.map(event => {
+        const newOffer = Object.assign({}, event);
+        newOffer.title = newOffer[`title_${lang}`];
+        newOffer.description = newOffer[`description_${lang}`];
+        return newOffer;
+      });
     });
-  });
 }
 
 export function selectOffer(offerId) {

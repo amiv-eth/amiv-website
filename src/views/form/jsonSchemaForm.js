@@ -37,7 +37,7 @@ export default class JSONSchemaForm {
     if (!this.errors[attrs.name]) this.errors[attrs.name] = [];
 
     const boundFormelement = {
-      oninput: (e) => {
+      oninput: e => {
         // bind changed data
         this.data[e.target.name] = e.target.value;
 
@@ -46,14 +46,13 @@ export default class JSONSchemaForm {
         this.valid = validate(this.data);
 
         if (this.valid) {
-          Object.keys(this.errors).forEach((field) => {
+          Object.keys(this.errors).forEach(field => {
             this.errors[field] = [];
           });
         } else {
           // get errors for respective fields
-          Object.keys(this.errors).forEach((field) => {
-            const errors = validate.errors.filter(error =>
-              `.${field}` === error.dataPath);
+          Object.keys(this.errors).forEach(field => {
+            const errors = validate.errors.filter(error => `.${field}` === error.dataPath);
             this.errors[field] = errors.map(error => error.message);
           });
         }
@@ -62,7 +61,9 @@ export default class JSONSchemaForm {
       value: this.data[attrs.name],
     };
     // add the given attributes
-    Object.keys(attrs).forEach((key) => { boundFormelement[key] = attrs[key]; });
+    Object.keys(attrs).forEach(key => {
+      boundFormelement[key] = attrs[key];
+    });
 
     return boundFormelement;
   }
@@ -91,13 +92,13 @@ export default class JSONSchemaForm {
     const elements = [];
     if (this.schema !== undefined) {
       let keys = Object.keys(this.schema.properties);
-      this.fieldOrder.forEach((key) => {
+      this.fieldOrder.forEach(key => {
         if (key in keys) {
           elements.push(this._renderProperty(key, this.schema.properties[key]));
           keys = keys.filter(e => e !== key);
         }
       });
-      keys.forEach((key) => {
+      keys.forEach(key => {
         elements.push(this._renderProperty(key, this.schema.properties[key]));
       });
     }
@@ -106,15 +107,18 @@ export default class JSONSchemaForm {
 
   _renderArrayProperty(key, item) {
     if ('enum' in item) {
-      return m(selectGroup, this.bind({
-        name: key,
-        title: item.description,
-        type: item.items.enum.length > 8 ? 'select' : 'buttons',
-        options: item.items.enum,
-        args: {
-          multipleSelect: true,
-        },
-      }));
+      return m(
+        selectGroup,
+        this.bind({
+          name: key,
+          title: item.description,
+          type: item.items.enum.length > 8 ? 'select' : 'buttons',
+          options: item.items.enum,
+          args: {
+            multipleSelect: true,
+          },
+        })
+      );
     }
     log('Unknown array property type');
     return m('');
@@ -125,32 +129,47 @@ export default class JSONSchemaForm {
     if (item.readOnly) return m('');
 
     if ('enum' in item) {
-      return m(selectGroup, this.bind({
-        name: key,
-        title: item.description,
-        options: item.enum,
-        type: 'select',
-        args: {
-          multipleSelect: false,
-        },
-      }));
+      return m(
+        selectGroup,
+        this.bind({
+          name: key,
+          title: item.description,
+          options: item.enum,
+          type: 'select',
+          args: {
+            multipleSelect: false,
+          },
+        })
+      );
     }
     switch (item.type) {
       case 'integer': {
-        return m(inputGroup, this.bind({ name: key, title: item.description, args: { type: 'number', step: 1 } }));
+        return m(
+          inputGroup,
+          this.bind({ name: key, title: item.description, args: { type: 'number', step: 1 } })
+        );
       }
       case 'number': {
-        return m(inputGroup, this.bind({ name: key, title: item.description, args: { type: 'number' } }));
+        return m(
+          inputGroup,
+          this.bind({ name: key, title: item.description, args: { type: 'number' } })
+        );
       }
       case 'boolean': {
-        return m(inputGroup, this.bind({ name: key, title: item.description, args: { type: 'checkbox' } }));
+        return m(
+          inputGroup,
+          this.bind({ name: key, title: item.description, args: { type: 'checkbox' } })
+        );
       }
       case 'array': {
         return this._renderArrayProperty(key, item);
       }
       case 'string':
       default: {
-        return m(inputGroup, this.bind({ name: key, title: item.description, args: { type: 'text' } }));
+        return m(
+          inputGroup,
+          this.bind({ name: key, title: item.description, args: { type: 'text' } })
+        );
       }
     }
   }

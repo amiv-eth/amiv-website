@@ -38,86 +38,93 @@ function reloadLocalStorage() {
 
 export function login(username, password) {
   reloadLocalStorage();
-  return m.request({
-    method: 'POST',
-    url: `${apiUrl}/sessions`,
-    data: { username, password },
-  }).then((result) => {
-    const dt = new Date();
-    log('logged in!');
-    log(result);
-    APISession.token = result.token;
-    APISession.etag = result._etag;
-    APISession.id = result._id;
-    APISession.authenticated = true;
-    APISession.username = username;
-    APISession.userId = result.user;
-    localStorage.setItem('token', result.token);
-    localStorage.setItem('username', username);
-    localStorage.setItem('userId', result.user);
-    localStorage.setItem('id', result._id);
-    localStorage.setItem('etag', result._etag);
-    APISession.lastChecked = dt.getTime();
-  });
+  return m
+    .request({
+      method: 'POST',
+      url: `${apiUrl}/sessions`,
+      data: { username, password },
+    })
+    .then(result => {
+      const dt = new Date();
+      log('logged in!');
+      log(result);
+      APISession.token = result.token;
+      APISession.etag = result._etag;
+      APISession.id = result._id;
+      APISession.authenticated = true;
+      APISession.username = username;
+      APISession.userId = result.user;
+      localStorage.setItem('token', result.token);
+      localStorage.setItem('username', username);
+      localStorage.setItem('userId', result.user);
+      localStorage.setItem('id', result._id);
+      localStorage.setItem('etag', result._etag);
+      APISession.lastChecked = dt.getTime();
+    });
 }
 
 export function logout() {
   reloadLocalStorage();
   APISession.authenticated = false;
-  return m.request({
-    method: 'DELETE',
-    url: `${apiUrl}/sessions/${APISession.id}`,
-    headers: {
-      Authorization: `Token ${APISession.token}`,
-      'If-Match': APISession.etag,
-    },
-  }).then(() => {
-    log('logged out!');
-    APISession.token = '';
-    APISession.authenticated = false;
-    localStorage.removeItem('token');
-    localStorage.removeItem('username');
-    localStorage.removeItem('userId');
-    localStorage.removeItem('id');
-    localStorage.removeItem('etag');
-    // m.route.set('/login');
-  }).catch(() => {
-    APISession.authenticated = false;
-    // m.route.set('/login');
-  });
+  return m
+    .request({
+      method: 'DELETE',
+      url: `${apiUrl}/sessions/${APISession.id}`,
+      headers: {
+        Authorization: `Token ${APISession.token}`,
+        'If-Match': APISession.etag,
+      },
+    })
+    .then(() => {
+      log('logged out!');
+      APISession.token = '';
+      APISession.authenticated = false;
+      localStorage.removeItem('token');
+      localStorage.removeItem('username');
+      localStorage.removeItem('userId');
+      localStorage.removeItem('id');
+      localStorage.removeItem('etag');
+      // m.route.set('/login');
+    })
+    .catch(() => {
+      APISession.authenticated = false;
+      // m.route.set('/login');
+    });
 }
 
 export function checkLogin() {
   const dt = new Date();
   reloadLocalStorage();
   if (APISession.authenticated === false) {
-    return new Promise(() => { });
+    return new Promise(() => {});
   } else if (dt.getTime() > APISession.lastChecked + 5000) {
-    return m.request({
-      method: 'GET',
-      url: `${apiUrl}/sessions/${APISession.id}`,
-      headers: {
-        Authorization: `Token ${APISession.token}`,
-      },
-    }).then((result) => {
-      const dt2 = new Date();
-      log('session is still valid!');
-      APISession.authenticated = true;
-      APISession.etag = result._etag;
-      APISession.lastChecked = dt2.getTime();
-    }).catch((e) => {
-      log('session is not valid');
-      log(e);
-      APISession.authenticated = false;
-      localStorage.removeItem('session');
-      localStorage.removeItem('username');
-      localStorage.removeItem('userId');
-      localStorage.removeItem('id');
-      localStorage.removeItem('etag');
-      localStorage.removeItem('token');
-    });
+    return m
+      .request({
+        method: 'GET',
+        url: `${apiUrl}/sessions/${APISession.id}`,
+        headers: {
+          Authorization: `Token ${APISession.token}`,
+        },
+      })
+      .then(result => {
+        const dt2 = new Date();
+        log('session is still valid!');
+        APISession.authenticated = true;
+        APISession.etag = result._etag;
+        APISession.lastChecked = dt2.getTime();
+      })
+      .catch(e => {
+        log('session is not valid');
+        log(e);
+        APISession.authenticated = false;
+        localStorage.removeItem('username');
+        localStorage.removeItem('userId');
+        localStorage.removeItem('id');
+        localStorage.removeItem('etag');
+        localStorage.removeItem('token');
+      });
   }
-  return new Promise(() => { });
+  return new Promise(() => {});
 }
 
 export function isLoggedIn() {
