@@ -8,13 +8,16 @@ ButtonCSS.addStyle('.blue-button', {
 });
 
 export default class ButtonComponent {
-  static view(vnode) {
-    const defaultProps = {
+  static oninit(vnode) {
+    this.defaultProps = {
       className: 'blue-button',
       element: 'button',
       disabled: vnode.attrs.active === false,
       label: 'Unnamed button',
     };
-    return m(Button, { ...defaultProps, ...vnode.attrs });
+  }
+  
+  static view(vnode) {
+    return m(Button, { ...this.defaultProps, ...vnode.attrs });
   }
 }
