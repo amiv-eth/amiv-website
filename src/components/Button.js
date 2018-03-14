@@ -8,7 +8,7 @@ ButtonCSS.addStyle('.blue-button', {
 });
 
 export default class ButtonComponent {
-  static oninit(vnode) {
+  constructor(vnode) {
     this.defaultProps = {
       className: 'blue-button',
       element: 'button',
@@ -17,7 +17,7 @@ export default class ButtonComponent {
     };
   }
 
-  static view(vnode) {
+  view(vnode) {
     return m(Button, { ...this.defaultProps, ...vnode.attrs });
   }
 }
