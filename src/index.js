@@ -7,7 +7,7 @@ import eventDetails from './views/events/eventDetails';
 import profile from './views/profile';
 import layout from './views/layout';
 import amivLayout from './views/amiv/amivLayout';
-import amiv from './views/amiv';
+import frontpage from './views/frontpage';
 import login from './views/login';
 import statuten from './views/amiv/statuten';
 import contact from './views/contact';
@@ -21,7 +21,7 @@ import companyDetail from './views/companies/companyDetail';
 m.route(document.body, '/', {
   '/': {
     render() {
-      return m(layout, m(amivLayout, m(amiv)));
+      return m(layout, m(amivLayout, m(frontpage)));
     },
   },
   '/amiv/statuten': {

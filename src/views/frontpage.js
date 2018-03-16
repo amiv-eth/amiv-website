@@ -1,7 +1,7 @@
 import m from 'mithril';
 
-module.exports = {
-  view() {
+export default class Frontpage {
+  static view() {
     return m('div', 'example AMIV content');
-  },
-};
+  }
+}
