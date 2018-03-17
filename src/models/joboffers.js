@@ -7,6 +7,11 @@ const date = `${new Date().toISOString().split('.')[0]}Z`;
 
 let querySaved = {};
 
+/**
+ * Get the loaded list of joboffers.
+ *
+ * @return {array}
+ */
 export function getList() {
   if (!this.list) {
     return [];
@@ -14,10 +19,21 @@ export function getList() {
   return this.list;
 }
 
+/**
+ * Get the selected joboffer.
+ *
+ * @return {Object} `joboffer` object returned by the AMIV API.
+ */
 export function getSelectedOffer() {
   return this.selectedOffer;
 }
 
+/**
+ * Load joboffers from the AMIV API
+ *
+ * @param {*} query filter and sort query for the API request.
+ * @return {Promise} exports for additional response handling
+ */
 export function load(query = {}) {
   querySaved = query;
 
@@ -46,6 +62,11 @@ export function load(query = {}) {
     });
 }
 
+/**
+ * Select a joboffer from the list.
+ *
+ * @param {String} offerId joboffer id from AMIV API
+ */
 export function selectOffer(offerId) {
   this.selectedOffer = this.getList().find(item => item._id === offerId);
   if (!this.selectedOffer) {
@@ -61,6 +82,11 @@ export function selectOffer(offerId) {
   }
 }
 
+/**
+ * Reload joboffer list with the same query as before.
+ *
+ * @return {Promise} exports for additional response handling
+ */
 export function reload() {
   return load(querySaved);
 }

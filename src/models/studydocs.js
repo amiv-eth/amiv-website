@@ -4,6 +4,11 @@ import { getToken } from './auth';
 
 let querySaved = {};
 
+/**
+ * Get the loaded list of studydocuments.
+ *
+ * @return {array}
+ */
 export function getList() {
   if (typeof this.list === 'undefined') {
     return [];
@@ -11,6 +16,12 @@ export function getList() {
   return this.list;
 }
 
+/**
+ * Load studydocuments from the AMIV API
+ *
+ * @param {*} query filter and sort query for the API request.
+ * @return {Promise} exports for additional response handling
+ */
 export function load(query = {}) {
   querySaved = query;
   const queryEncoded = m.buildQueryString({ where: JSON.stringify(query) });
@@ -28,6 +39,12 @@ export function load(query = {}) {
     });
 }
 
+/**
+ * Get Suggestions from already existing entries for a specified field of `studydocument`.
+ *
+ * @param {String} field entity field which should be searched.
+ * @param {String} input search string
+ */
 export function getInputSuggestions(field, input) {
   const query = {};
   query[field] = { $regex: `^(?i).*${input}.*` };
@@ -47,10 +64,21 @@ export function getInputSuggestions(field, input) {
   });
 }
 
+/**
+ * Reload studydocument list with the same query as before.
+ *
+ * @return {Promise} exports for additional response handling
+ */
 export function reload() {
   return load(querySaved);
 }
 
+/**
+ * Store a new studydocument in the AMIV API.
+ *
+ * @param {Object} doc studydocument object to be stored in the AMIV API.
+ * @return {Promise} exports for additional response handling
+ */
 export function addNew(doc) {
   if (typeof doc !== 'object') {
     return new Promise(() => {}); // empty promise
