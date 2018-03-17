@@ -4,7 +4,9 @@
     grid-template-columns: repeat(12, 1fr);
     grid-gap: 30px;
     background-color: aqua;
+    align-content: center;
     text-align: center;
+    border: none;
     
     // Hot sector on the frontpage
     .hot-row {
@@ -18,25 +20,34 @@
         display: grid;
         grid-template-columns: repeat(2, 1fr);
         grid-gap: 30px;
+        border: none;
 
         .hot-first-card {
             background-color: red;
-            grid-column-start: 1;
-            grid-column-end: 2;
             grid-row-start: 1;
             grid-row-end: 3;
+            // TODO: Title, Picture and shit
         }
 
         .hot-card {
             background-color: yellow;
+            // TODO: Title, Picture and shit
         }
     }
 
     .frontpage-row{
-        background-color: greenyellow;
         grid-column-start: 1;
-        grid-column-end: 4;
-        grid-row-start: 7;
-        grid-row-end: 10;
+        grid-column-end: 13;
+
+        // Grid declaration for sub items, 3 frame columns
+        display: grid;
+        border: none;
+        grid-template-columns: repeat(3, 1fr);
+        grid-gap: 30px;
+
+        .frontpage-card{
+            background-color: greenyellow;
+            // TODO: Title, Picture and shit
+        }   
     }
 }
