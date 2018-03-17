@@ -3,8 +3,7 @@ import * as studydocs from '../../models/studydocs';
 import { apiUrl } from '../../models/config';
 import { isLoggedIn } from '../../models/auth';
 import { Error401 } from '../errors';
-import { Button, Checkbox } from '../../components';
-//import { Checkbox } from "polythene-mithril"
+import { Button, Checkbox, RadioGroup } from '../../components';
 
 const tableHeadings = ['title', 'type'];
 
@@ -65,6 +64,19 @@ export default class studydocList {
           label: 'Add new',
           events: { onclick: () => m.route.set('/studydocuments/new') },
         }),
+        m(RadioGroup, {
+          name: 'Departement',
+          buttons: [
+            {
+              value: '1',
+              label: 'D-MAVT',
+            },
+            {
+              value: '2',
+              label: 'D-ITET',
+            },
+          ],
+        }),
       ]),
       m('div.content', [
         m('table', [
@@ -74,7 +86,7 @@ export default class studydocList {
             studydocs
               .getList()
               .map(doc =>
-                m('tr', { class:'list-items', onclick: () => this.selectDocument(doc) }, [
+                m('tr', { class: 'list-items', onclick: () => this.selectDocument(doc) }, [
                   m('td', doc.title),
                   m('td', doc.type),
                 ])
