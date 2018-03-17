@@ -9,8 +9,19 @@
   grid-template-columns: 20% 30% auto;
   .filter{
     display: grid;
-    grid-template-columns: auto;
+    grid-template-rows: auto auto auto auto;
+    align-content: start;
     grid-gap: 10px;
+    form{
+      display: grid;
+      grid-row: auto auto;
+      border-bottom: solid  1px black;
+    }
+    .department-check, .type-check{
+      display: grid;
+      grid-row: auto auto;
+      border-bottom: solid 1px black;
+    }
   }
   .content{
     overflow-y:scroll;

@@ -3,7 +3,7 @@ import * as studydocs from '../../models/studydocs';
 import { apiUrl } from '../../models/config';
 import { isLoggedIn } from '../../models/auth';
 import { Error401 } from '../errors';
-import { Button, Checkbox, RadioGroup } from '../../components';
+import { Button, Checkbox, RadioGroup, TextField } from '../../components';
 
 const tableHeadings = ['title', 'type'];
 
@@ -70,34 +70,39 @@ export default class studydocList {
           },
           [
             m(
-              'input',
+              TextField,
               {
-                type: 'text',
-                oninput: m.withAttr('value', value => {
-                  this.search = value;
-                }),
+                label: 'Enter search...',
+                onChange: state => {
+                  this.search = state.value;
+                },
               },
               ''
             ),
             m(Button, { label: 'Search' }),
           ]
         ),
-        m(Checkbox, {
-          label: 'D-ITET',
-          onChange: state => this.changeFilter('department', 'itet', state.checked),
-        }),
-        m(Checkbox, {
-          label: 'D-MAVT',
-          onChange: state => this.changeFilter('department', 'mavt', state.checked),
-        }),
-        m(Checkbox, {
-          label: 'Zusammenfassung',
-          onChange: state => this.changeFilter('type', 'cheat sheets', state.checked),
-        }),
-        m(Checkbox, {
-          label: 'Alte Prüfungen',
-          onChange: state => this.changeFilter('type', 'exams', state.checked),
-        }),
+        m('div.department-check', [
+          m(Checkbox, {
+            label: 'D-ITET',
+            onChange: state => this.changeFilter('department', 'itet', state.checked),
+          }),
+          m(Checkbox, {
+            label: 'D-MAVT',
+            onChange: state => this.changeFilter('department', 'mavt', state.checked),
+          }),
+        ]),
+        m('div.type-check', [
+          m(Checkbox, {
+            label: 'Zusammenfassung',
+            onChange: state => this.changeFilter('type', 'cheat sheets', state.checked),
+          }),
+          m(Checkbox, {
+            label: 'Alte Prüfungen',
+            onChange: state => this.changeFilter('type', 'exams', state.checked),
+          }),
+        ]),
+
         m(Button, {
           label: 'Add new',
           events: { onclick: () => m.route.set('/studydocuments/new') },
