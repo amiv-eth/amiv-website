@@ -4,7 +4,7 @@
   "description": "AMIV website",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "ospec",
     "docs": "doxdox 'src/**/*.js' --layout bootstrap --output DOCUMENTATION.html",
     "docs-md": "doxdox 'src/**/*.js' --layout markdown --output DOCUMENTATION.md",
     "start": "webpack -d --watch",
@@ -52,6 +52,8 @@
     "url-loader": "^1.0.1",
     "markdown-loader": "^2.0.2",
     "style-loader": "^0.20.3",
-    "string-replace-loader": "^2.1.1"
+    "string-replace-loader": "^2.1.1",
+    "reify": "^0.14.2",
+    "dom-storage": "^2.0.2"
   }
 }

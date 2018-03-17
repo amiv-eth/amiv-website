@@ -41,11 +41,11 @@ export function getToken() {
 
 function reloadLocalStorage() {
   if (localStorage.getItem('token') !== null) {
-    APISession.token = localStorage.token;
-    APISession.id = localStorage.id;
-    APISession.username = localStorage.username;
-    APISession.userId = localStorage.userId;
-    APISession.etag = localStorage.etag;
+    APISession.token = localStorage.getItem('token');
+    APISession.id = localStorage.getItem('id');
+    APISession.username = localStorage.getItem('username');
+    APISession.userId = localStorage.getItem('userId');
+    APISession.etag = localStorage.getItem('etag');
     APISession.lastChecked = 0;
     APISession.authenticated = true;
   }
@@ -76,6 +76,7 @@ export function login(username, password) {
       APISession.authenticated = true;
       APISession.username = username;
       APISession.userId = result.user;
+      log(APISession.username);
       localStorage.setItem('token', result.token);
       localStorage.setItem('username', username);
       localStorage.setItem('userId', result.user);
@@ -92,7 +93,6 @@ export function login(username, password) {
  */
 export function logout() {
   reloadLocalStorage();
-  APISession.authenticated = false;
   return m
     .request({
       method: 'DELETE',
@@ -164,5 +164,6 @@ export function checkLogin() {
  * @return {Boolean} `true` if authentication data is available
  */
 export function isLoggedIn() {
+  log(`UserId: ${APISession.userId}`);
   return APISession.authenticated;
 }
