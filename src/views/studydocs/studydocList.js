@@ -5,11 +5,12 @@ import { isLoggedIn } from '../../models/auth';
 import { Error401 } from '../errors';
 import { Button } from '../../components';
 
-const tableHeadings = ['title', 'lecture', 'professor', 'semester', 'author', 'download'];
+const tableHeadings = ['title', 'type'];
 
 export default class studydocList {
   constructor(vnode) {
     this.vnode = vnode;
+    this.doc = {};
   }
 
   static oninit() {
@@ -17,8 +18,8 @@ export default class studydocList {
     this.search = '';
   }
 
-  static selectDocument(str) {
-     alert(str);
+  static selectDocument(doc) {
+    this.doc = doc;
   }
 
   static view() {
@@ -66,27 +67,40 @@ export default class studydocList {
           m('thead', m('tr', tableHeadings.map(header => m('th', header)))),
           m(
             'tbody',
-            studydocs
-              .getList()
-              .map(doc =>
-                m('tr', { onclick: () => this.selectDocument(doc.title) }, [
-                  m('td', doc.title),
-                  m('td', doc.lecture),
-                  m('td', doc.professor),
-                  m('td', doc.semester),
-                  m('td', doc.author),
-                  m(
-                    'td',
-                    doc.files.map(item =>
-                      m('a', { href: `${apiUrl}${item.file}`, target: '_blank' }, item.name)
-                    )
-                  ),
-                ])
+            studydocs.getList().map(doc =>
+              m(
+                'tr',
+                { onclick: () => this.selectDocument(doc) },
+                [m('td', doc.title), m('td', 'type')]
+                // m(
+                //   'td',
+                //   doc.files.map(item =>
+                //     m('a', { href: `${apiUrl}${item.file}`, target: '_blank' }, item.name)
+                //   //   )
+                // ),
               )
+            )
           ),
         ]),
       ]),
-      m('div.details', [m('table', [m('p', ['Details that rock!'])])]),
+      this.doc
+        ? m('div.details', [
+            m('table', [
+              m('tr', this.doc.title),
+              m('tr', this.doc.lecture),
+              m('tr', this.doc.professor),
+              m('tr', this.doc.semester),
+              m('tr', this.doc.author),
+              m(Button, {
+                label: 'Download',
+                events: {
+                  onclick: () =>
+                    m.route.set('a', { href: `${apiUrl}${this.doc.file}`, target: '_blank' }, this.doc.title),
+                },
+              }),
+            ]),
+          ])
+        : null,
     ]);
   }
 }
