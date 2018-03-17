@@ -70,9 +70,9 @@ export default class studydocList {
             studydocs
               .getList()
               .map(doc =>
-                m('tr', { onclick: () => this.selectDocument(doc) }, [
+                m('tr', { class:'list-items', onclick: () => this.selectDocument(doc) }, [
                   m('td', doc.title),
-                  m('td', 'type'),
+                  m('td', doc.type),
                 ])
               )
           ),
