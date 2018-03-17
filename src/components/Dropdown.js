@@ -2,12 +2,13 @@ import m from 'mithril';
 
 export default class DropdownComponent {
   constructor() {
-    this.data = m.prop([{ name: 'alice', id: 1 }, { name: 'bob', id: 2 }]);
-    this.selectedId = m.prop();
+    this.selectedId = 0;
   }
-  view(ctrl) {
-    return m('select', { onchange: m.withAttr('value', ctrl.selectedId) }, [
-      this.data().map(person => m('option', { value: person.id }, person.name)),
-    ]);
+  view(vnode) {
+    return m(
+      'select',
+      { onchange: m.withAttr('value', vnode.selectedId), ...this.defaultProps, ...vnode.attrs },
+      [vnode.attrs.data.map(label => m('option', { value: label.id }, label.name))]
+    );
   }
 }

@@ -3,7 +3,7 @@ import * as studydocs from '../../models/studydocs';
 import { apiUrl } from '../../models/config';
 import { isLoggedIn } from '../../models/auth';
 import { Error401 } from '../errors';
-import { Button, Checkbox, TextField } from '../../components';
+import { Button, Checkbox, TextField, Dropdown } from '../../components';
 
 const tableHeadings = ['title', 'type'];
 const filterNames = {
@@ -108,6 +108,7 @@ export default class studydocList {
           ])
         ),
 
+        m(Dropdown, { data: [{ name: '1. Semester', id: 1 }, { name: '2. Semester', id: 2 }] }),
         m(Button, {
           label: 'Add new',
           events: { onclick: () => m.route.set('/studydocuments/new') },
