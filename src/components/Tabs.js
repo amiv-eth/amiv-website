@@ -17,6 +17,7 @@ export default class TabComponent {
   constructor() {
     this.defaultProps = {
       className: 'themed-tabs',
+      activeSelected: true,
     };
   }
 
