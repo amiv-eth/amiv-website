@@ -94,8 +94,7 @@ export default class studydocList {
               m(Button, {
                 label: 'Download',
                 events: {
-                  onclick: () =>
-                    m.route.set('a', { href: `${apiUrl}${this.doc.file}`, target: '_blank' }, this.doc.title),
+                  onclick: () => window.open(`${apiUrl}${this.doc.files[0].file}`, '_blank'),
                 },
               }),
             ]),
