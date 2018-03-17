@@ -1,14 +1,14 @@
 import m from 'mithril';
 import { Checkbox } from 'polythene-mithril';
-import { CheckboxCSS } from 'polythene-css';
+// import { CheckboxCSS } from 'polythene-css';
 
-CheckboxCSS.addStyle('.my-checkbox', {});
+// CheckboxCSS.addStyle('.my-checkbox', {});
 
 export default class CheckboxComponent {
   constructor() {
     this.defaultProps = {
-      className: 'my-checkbox',
-      label: 'Unnamed checkbox',
+      // className: 'my-checkbox',
+      // label: 'Unnamed checkbox',
     };
   }
 

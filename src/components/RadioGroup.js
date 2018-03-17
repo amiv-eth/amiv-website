@@ -1,13 +1,13 @@
 import m from 'mithril';
 import { RadioGroup } from 'polythene-mithril';
+// import { RadioGroupCSS } from 'polythene-css';
+
+// RadioGroupCSS.addStyle('', {})
 
 export default class RadioGroupComponent {
-  constructor(vnode) {
+  constructor() {
     this.defaultProps = {
-      className: 'blue-RadioGroup',
-      element: 'RadioGroup',
-      disabled: vnode.attrs.active === false,
-      label: 'Unnamed RadioGroup',
+      // className: 'blue-RadioGroup',
     };
   }
 
