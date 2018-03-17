@@ -107,11 +107,11 @@ export default class studydocList {
         m('div.content-grid', [
           tableHeadings.map(header => m('div.list-header', header)),
           studydocs
-              .getList()
-              .map(doc =>
-                  [m('div.list-item', {onclick: () => this.selectDocument(doc) }, doc.title),
-                  m('div.list-item', {onclick: () => this.selectDocument(doc) }, doc.type),]
-                )
+            .getList()
+            .map(doc => [
+              m('div.list-item', { onclick: () => this.selectDocument(doc) }, doc.title),
+              m('div.list-item', { onclick: () => this.selectDocument(doc) }, doc.type),
+            ]),
         ]),
       ]),
       this.doc
