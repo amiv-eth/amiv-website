@@ -133,6 +133,8 @@ export default class studydocNew {
           this.doc.files = e.target.files;
           if (this.doc.files.length > 0) {
             this.isValid = true;
+          } else {
+            this.isValid = false;
           }
         },
       }),

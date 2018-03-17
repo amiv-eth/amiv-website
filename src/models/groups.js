@@ -5,6 +5,11 @@ import { error } from './log';
 
 let querySaved = '';
 
+/**
+ * Get the loaded list of groups.
+ *
+ * @return {array} `group` objects returned by the AMIV API.
+ */
 export function getList() {
   if (this.groups === undefined) {
     return [];
@@ -12,6 +17,11 @@ export function getList() {
   return this.groups;
 }
 
+/**
+ * Get the memberships for the authenticated user.
+ *
+ * @return {array} `groupmembership` objects with embedded groups returned by the AMIV API.
+ */
 export function getMemberships() {
   if (this.memberships === undefined) {
     return [];
@@ -19,6 +29,12 @@ export function getMemberships() {
   return this.memberships;
 }
 
+/**
+ * Enroll the authenticated user to a group
+ *
+ * @param {String} groupId
+ * @return {Promise} exports for additional response handling
+ */
 export function enroll(groupId) {
   return m
     .request({
@@ -46,6 +62,13 @@ export function enroll(groupId) {
     });
 }
 
+/**
+ * Withdraw membership of the authenticated user from a group.
+ *
+ * @param {String} groupMembershipId groupmembership id
+ * @param {String} etag value given by AMIV API to be used as `If-Match` header.
+ * @return {Promise} exports for additional response handling
+ */
 export function withdraw(groupMembershipId, etag) {
   return m
     .request({
@@ -66,6 +89,12 @@ export function withdraw(groupMembershipId, etag) {
     });
 }
 
+/**
+ * Load groups from the AMIV API.
+ *
+ * @param {*} query filter and sort query for the API request.
+ * @return {Promise} exports for additional response handling
+ */
 export function load(query = {}) {
   const queryEncoded = m.buildQueryString({ where: JSON.stringify(query) });
   querySaved = query;
@@ -88,6 +117,11 @@ export function load(query = {}) {
     });
 }
 
+/**
+ * Load groupmemberships of the authenticated user from the AMIV API.
+ *
+ * @return {Promise} exports for additional response handling
+ */
 export function loadMemberships() {
   const queryEncoded = m.buildQueryString({
     where: JSON.stringify({ user: getUserId() }),
@@ -111,6 +145,11 @@ export function loadMemberships() {
     });
 }
 
+/**
+ * Reload event list with the same query as before.
+ *
+ * @return {Promise} exports for additional response handling
+ */
 export function reload() {
   return load(querySaved);
 }
