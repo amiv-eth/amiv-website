@@ -20,7 +20,7 @@ export default class studydocList {
   static view() {
     if (!isLoggedIn()) return m(Error401);
 
-    return m('div', [
+    return m('div#studydoc-list', [
       m(
         'form',
         {
