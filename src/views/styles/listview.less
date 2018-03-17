@@ -1,11 +1,13 @@
 .listview {
-  div {
-    border: none;
+  
+  div.filter, div.content {
+    border-right: solid 1px black;
   }
   display: grid;
-  grid-template-columns: auto auto auto;
+  grid-template-columns: 20% auto auto;
   .filter{
-
+    display: grid;
+    grid-template-columns: auto;
   }
   .content{
     table {

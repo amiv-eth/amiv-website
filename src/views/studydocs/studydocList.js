@@ -57,13 +57,6 @@ export default class studydocList {
             m(Button, { label: 'Search' }),
           ]
         ),
-        m(Checkbox, {
-          label: 'checkbox_text'
-        }),
-        m(Button, {
-          label: 'Add new',
-          events: { onclick: () => m.route.set('/studydocuments/new') },
-        }),
         m(RadioGroup, {
           name: 'Departement',
           buttons: [
@@ -76,6 +69,13 @@ export default class studydocList {
               label: 'D-ITET',
             },
           ],
+        }),
+        m(Checkbox, {
+          label: 'checkbox_text',
+        }),
+        m(Button, {
+          label: 'Add new',
+          events: { onclick: () => m.route.set('/studydocuments/new') },
         }),
       ]),
       m('div.content', [
@@ -102,12 +102,12 @@ export default class studydocList {
               m('tr', this.doc.professor),
               m('tr', this.doc.semester),
               m('tr', this.doc.author),
-                m(Button, {
-                  label: 'Download',
-                  events: {
-                    onclick: () => window.open(`${apiUrl}${this.doc.files[0].file}`, '_blank'),
-                  },
-                }),
+              m(Button, {
+                label: 'Download',
+                events: {
+                  onclick: () => window.open(`${apiUrl}${this.doc.files[0].file}`, '_blank'),
+                },
+              }),
             ]),
           ])
         : null,
