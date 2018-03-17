@@ -24,7 +24,7 @@ function changeLanguage(lang) {
 
 function getLang() {
   let lang;
-  if (navigator.languages != undefined) lang = navigator.languages[0];
+  if (navigator.languages !== undefined) [lang] = navigator.languages;
   else lang = navigator.language;
 
   if (lang.indexOf('de') !== -1) {
