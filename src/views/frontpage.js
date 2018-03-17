@@ -1,11 +1,13 @@
 import m from 'mithril';
+import { apiUrl } from '../models/config';
 import * as events from '../models/events';
 
 const date = `${new Date().toISOString().split('.')[0]}Z`;
 
 // Render the frontpage cards, with href and imageurl
 const renderCards = item => {
-  const { title, href, imageurl } = item;
+  const { title, href } = item;
+  const imageurl = item.img_infoscreen ? `${apiUrl}${item.img_infoscreen.file}` : null;
   return m(
     'div.frontpage-card',
     { style: `background-image: url(${imageurl})` },
@@ -15,7 +17,8 @@ const renderCards = item => {
 
 // Render the Hot Cards, with link and imageurl
 const renderHotCards = (item, index) => {
-  const { title, href, imageurl } = item;
+  const { title, href } = item;
+  const imageurl = item.img_infoscreen ? `${apiUrl}${item.img_infoscreen.file}` : null;
   if (index === 0) {
     return m(
       'div.hot-first-card',
@@ -43,7 +46,7 @@ export default class Frontpage {
       sort: ['-priority', 'time_advertising_start'],
     });
 
-    this.events = events.getList().slice(0, 3);
+    this.events = events.getList().slice(6, 9);
 
     // MOCKDATA
     this.hot = [
