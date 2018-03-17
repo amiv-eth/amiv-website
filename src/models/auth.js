@@ -12,14 +12,29 @@ const APISession = {
   lastChecked: 0,
 };
 
+/**
+ * Get the `userId` of the authenticated user.
+ *
+ * @return {String} user id
+ */
 export function getUserId() {
   return APISession.userId;
 }
 
+/**
+ * Get the `username` of the authenticated user.
+ *
+ * @return {String} username
+ */
 export function getUsername() {
   return APISession.username;
 }
 
+/**
+ * Get the `api token` of the authenticated user.
+ *
+ * @return {String} api token
+ */
 export function getToken() {
   return APISession.token;
 }
@@ -36,6 +51,13 @@ function reloadLocalStorage() {
   }
 }
 
+/**
+ * Authenticate a user.
+ *
+ * @param {String} username user to be authenticated
+ * @param {String} password password to be used
+ * @return {Promise} exports for additional response handling
+ */
 export function login(username, password) {
   reloadLocalStorage();
   return m
@@ -63,6 +85,11 @@ export function login(username, password) {
     });
 }
 
+/**
+ * Revoke current authentication.
+ *
+ * @return {Promise} exports for additional response handling
+ */
 export function logout() {
   reloadLocalStorage();
   APISession.authenticated = false;
@@ -92,6 +119,11 @@ export function logout() {
     });
 }
 
+/**
+ * Check if the stored authentication data is still valid.
+ *
+ * @return {Promise} exports for additional response handling
+ */
 export function checkLogin() {
   const dt = new Date();
   reloadLocalStorage();
@@ -127,6 +159,10 @@ export function checkLogin() {
   return new Promise(() => {});
 }
 
+/**
+ * Check if authentication data is available.
+ * @return {Boolean} `true` if authentication data is available
+ */
 export function isLoggedIn() {
   return APISession.authenticated;
 }

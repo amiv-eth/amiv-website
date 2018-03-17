@@ -18,6 +18,7 @@ import jobOfferList from './views/jobs/jobofferList';
 import jobOfferDetails from './views/jobs/jobofferDetails';
 import companyList from './views/companies/companyList';
 import companyDetail from './views/companies/companyDetail';
+import './views/styles/base.less';
 
 getLang();
 

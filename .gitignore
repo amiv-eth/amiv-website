@@ -3,3 +3,5 @@ package-lock.json
 dist
 .vscode
 npm-debug.log
+DOCUMENTATION.html
+DOCUMENTATION.md

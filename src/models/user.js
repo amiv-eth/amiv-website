@@ -3,7 +3,12 @@ import { apiUrl } from './config';
 import { getToken, getUserId } from './auth';
 import { log, error } from './log';
 
-// update data of logged in user
+/**
+ * Update data of the authenticated user.
+ *
+ * @param {Object} options any subset of user properties.
+ * @return {Promise} exports for additional response handling
+ */
 export function update(options) {
   log(this.user._etag);
 
@@ -27,7 +32,11 @@ export function update(options) {
     });
 }
 
-// get available data of logged in user
+/**
+ * Get available user data of the authenticated user.
+ *
+ * @return {Object} `user` object returned by the AMIV API.
+ */
 export function get() {
   if (typeof this.user === 'undefined') {
     return {};
@@ -36,6 +45,11 @@ export function get() {
 }
 
 // load information of logged in user
+/**
+ * Load user data of the authenticated user from the AMIV API.
+ *
+ * @return {Promise} exports for additional response handling
+ */
 export function load() {
   return m
     .request({
