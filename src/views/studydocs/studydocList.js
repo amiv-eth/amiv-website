@@ -17,9 +17,9 @@ export default class studydocList {
     studydocs.load();
     this.search = '';
     this.filter = {
-      department: { itet: 0, mavt: 0 },
-      type: { 'cheat sheets': 0, exams: 0 },
-      semester: { '1': 0 },
+      department: {},
+      type: {},
+      semester: {},
     };
   }
 
@@ -30,7 +30,6 @@ export default class studydocList {
   static changeFilter(filterKey, filterValue, checked) {
     this.filter[filterKey][filterValue] = checked;
     const query = {};
-    console.log(`Filter: ${this.filter}`);
     Object.keys(this.filter).forEach(key => {
       let queryValue = '';
       Object.keys(this.filter[key]).forEach(subKey => {
@@ -100,6 +99,14 @@ export default class studydocList {
           m(Checkbox, {
             label: 'Alte Prüfungen',
             onChange: state => this.changeFilter('type', 'exams', state.checked),
+          }),
+          m(Checkbox, {
+            label: 'Unterichts Unterlagen',
+            onChange: state => this.changeFilter('type', 'lecture documents', state.checked),
+          }),
+          m(Checkbox, {
+            label: 'Übungsserien',
+            onChange: state => this.changeFilter('type', 'exercises', state.checked),
           }),
         ]),
 
