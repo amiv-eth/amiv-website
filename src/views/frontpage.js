@@ -1,11 +1,4 @@
 import m from 'mithril';
-<<<<<<< HEAD
-import { i18n } from '../models/language';
-
-export default class Frontpage {
-  static view() {
-    return m('div', i18n('example content'));
-=======
 import * as events from '../models/events';
 
 const date = `${new Date().toISOString().split('.')[0]}Z`;
@@ -94,6 +87,5 @@ export default class Frontpage {
       m('div.frontpage-row', this.jobs.map(item => renderCards(item))),
       m('div.frontpage-row', this.socialmedia.map(item => renderCards(item))),
     ]);
->>>>>>> origin
   }
 }
