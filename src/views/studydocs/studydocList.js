@@ -10,12 +10,12 @@ const tableHeadings = ['title', 'type'];
 export default class studydocList {
   constructor(vnode) {
     this.vnode = vnode;
+    this.doc = {};
   }
 
   static oninit() {
     studydocs.load();
     this.search = '';
-    this.doc = {};
     this.filter = {
       department: {"itet": 0, "mavt": 0},
       type: {"cheat sheets": 0, "exams": 0},
@@ -114,19 +114,14 @@ export default class studydocList {
         }),
       ]),
       m('div.content', [
-        m('table', [
-          m('thead', m('tr', tableHeadings.map(header => m('th', header)))),
-          m(
-            'tbody',
-            studydocs
+        m('div.content-grid', [
+          tableHeadings.map(header => m('div.list-header', header)),
+          studydocs
               .getList()
               .map(doc =>
-                m('tr', { class: 'list-items', onclick: () => this.selectDocument(doc) }, [
-                  m('td', doc.title),
-                  m('td', doc.type),
-                ])
-              )
-          ),
+                  [m('div.list-item', {onclick: () => this.selectDocument(doc) }, doc.title),
+                  m('div.list-item', {onclick: () => this.selectDocument(doc) }, doc.type),]
+                )
         ]),
       ]),
       this.doc

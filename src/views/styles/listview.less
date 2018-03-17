@@ -1,9 +1,9 @@
 .listview {
   div.filter, div.content {
-    border-right: dotted 3px black;
+    border-right: solid 1px black;
   }
-  div.filter, div.content, div.details {
-    padding: 10px;
+  div.filter, div.details {
+    padding: 5px;
   }
   display: grid;
   grid-template-columns: 20% 30% auto;
@@ -13,11 +13,20 @@
     grid-gap: 10px;
   }
   .content{
-    table {
-      width: 100%;
-      text-align: left;
-      tr.list-items {
-        cursor: pointer;
+    overflow-y:scroll;
+    height: 500px;
+    div.content-grid {
+      display:grid;
+      grid-template-columns: 70% auto;
+      grid-row-gap: 5px;
+      div{
+        padding: 10px;
+      }
+      div.list-header {
+        border-bottom: solid 1px black;
+      }
+      div.list-item {
+        cursor: pointer
       }
     }
   }
