@@ -3,7 +3,6 @@
     display: grid;
     grid-template-columns: repeat(12, 1fr);
     grid-gap: 30px;
-    background-color: aqua;
     align-content: center;
     text-align: center;
     border: none;
@@ -14,7 +13,7 @@
         grid-column-start: 1;
         grid-column-end: 13;
         grid-row-start: 1;
-        grid-row-end: 7;
+        grid-row-end: 15;
 
         // Grid declaration for sub items, 2 frame columns
         display: grid;
@@ -30,7 +29,7 @@
         }
 
         .hot-card {
-            background-color: yellow;
+            background-color: aqua;
             // TODO: Title, Picture and shit
         }
     }
@@ -47,6 +46,8 @@
 
         .frontpage-card{
             background-color: greenyellow;
+            grid-row-start: 1;
+            grid-row-end: 8;
             // TODO: Title, Picture and shit
         }   
     }
