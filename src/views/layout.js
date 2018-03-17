@@ -1,6 +1,6 @@
 import m from 'mithril';
 import { i18n, switchLanguage } from '../models/language';
-import { Button, Tabs } from '../components';
+import { Tabs, Button } from '../components';
 import { checkLogin, isLoggedIn, logout } from '../models/auth';
 
 const defaultTabs = ['AMIV', 'Events', 'Studienunterlagen', 'Jobs'];
@@ -72,6 +72,10 @@ export default class Layout {
         },
         tabs: this.tabs.map(tab => ({ label: tab })),
         selectedTab: this.selectedTabIndex,
+      }),
+      m(Button, {
+        label: i18n('language_button'),
+        events: { onclick: () => switchLanguage() },
       }),
       m('main', vnode.children),
     ]);
