@@ -1,14 +1,13 @@
 import m from 'mithril';
 import * as events from '../models/events';
-import './styles/frontpage.less';
 
 const date = `${new Date().toISOString().split('.')[0]}Z`;
 
-const renderCards = item => m('div', { class: 'frontpage-card' }, item);
+const renderCards = item => m('div.frontpage-card', item);
 
 const renderHotCards = (item, index) => {
-  if (index === 0) return m('div', { class: 'hot-first-card' }, item);
-  return m('div', { class: 'hot-card' }, item);
+  if (index === 0) return m('div.hot-first-card', item);
+  return m('div.hot-card', item);
 };
 
 export default class Frontpage {
@@ -30,15 +29,11 @@ export default class Frontpage {
     this.jobs = ['google', 'less than google', 'abb', 'accenture'];
   }
 
-  static oninit() {
-    console.log('init');
-  }
-
   view() {
-    return m('div', { class: 'container' }, [
-      m('div', { class: 'hot-row' }, this.hot.map((item, index) => renderHotCards(item, index))),
-      m('div', { class: 'frontpage-row' }, this.events.map(item => renderCards(item))),
-      m('div', { class: 'frontpage-row' }, this.jobs.map(item => renderCards(item))),
+    return m('div#frontpage-container', [
+      m('div.hot-row', this.hot.map((item, index) => renderHotCards(item, index))),
+      m('div.frontpage-row', this.events.map(item => renderCards(item))),
+      m('div.frontpage-row', this.jobs.map(item => renderCards(item))),
     ]);
   }
 }
