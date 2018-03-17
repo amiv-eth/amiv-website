@@ -35,6 +35,10 @@ export default class ButtonComponent {
     };
   }
 
+  onbeforeupdate(vnode) {
+    this.defaultProps.disabled = vnode.attrs.active === false;
+  }
+
   view(vnode) {
     return m(Button, { ...this.defaultProps, ...vnode.attrs });
   }

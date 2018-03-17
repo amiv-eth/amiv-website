@@ -4,8 +4,8 @@ import * as events from '../models/events';
 const date = `${new Date().toISOString().split('.')[0]}Z`;
 
 const renderCards = item => {
-  const { title } = item;
-  return m('div.frontpage-card', title);
+  const { title, href } = item;
+  return m('div.frontpage-card', m('a', { href }, title));
 };
 
 const renderHotCards = (item, index) => {
@@ -29,16 +29,16 @@ export default class Frontpage {
 
     // MOCKDATA
     this.hot = [{ title: 'super hot' }, { title: 'also pretty hot' }, { title: 'kinda hot' }];
-    this.jobs = [
-      { title: 'google' },
-      { title: 'less than google' },
-      { title: 'abb' },
-      { title: 'accenture' },
+    this.jobs = [{ title: 'google' }, { title: 'abb' }, { title: 'accenture' }];
+    this.socialmedia = [
+      { title: 'Facebook', href: 'https://www.facebook.com/AMIV.ETHZ/' },
+      { title: 'Instagram', href: 'https://www.instagram.com/amiv_eth/?hl=de' },
+      { title: 'Twitter', href: 'https://twitter.com/amiv_ethz?lang=de' },
     ];
   }
 
   onbeforeupdate() {
-    this.events = events.getList().slice(0, 4);
+    this.events = events.getList().slice(0, 3);
   }
 
   view() {
@@ -46,6 +46,7 @@ export default class Frontpage {
       m('div.hot-row', this.hot.map((item, index) => renderHotCards(item, index))),
       m('div.frontpage-row', this.events.map(item => renderCards(item))),
       m('div.frontpage-row', this.jobs.map(item => renderCards(item))),
+      m('div.frontpage-row', this.socialmedia.map(item => renderCards(item))),
     ]);
   }
 }
