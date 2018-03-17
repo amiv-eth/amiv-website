@@ -82,19 +82,6 @@ export default class studydocList {
             m(Button, { label: 'Search' }),
           ]
         ),
-        m(RadioGroup, {
-          name: 'Departement',
-          buttons: [
-            {
-              value: '1',
-              label: 'D-MAVT',
-            },
-            {
-              value: '2',
-              label: 'D-ITET',
-            },
-          ],
-        }),
         m(Checkbox, {
           label: 'D-ITET',
           onChange: state => this.changeFilter('department', 'itet', state.checked),
@@ -105,9 +92,11 @@ export default class studydocList {
         }),
         m(Checkbox, {
           label: 'Zusammenfassung',
+          onChange: state => this.changeFilter('type', 'cheat sheets', state.checked),
         }),
         m(Checkbox, {
           label: 'Alte Prüfungen',
+          onChange: state => this.changeFilter('type', 'exams', state.checked),
         }),
         m(Button, {
           label: 'Add new',
