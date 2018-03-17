@@ -6,6 +6,16 @@ import { Error401 } from '../errors';
 import { Button, Checkbox, RadioGroup, TextField } from '../../components';
 
 const tableHeadings = ['title', 'type'];
+const filterNames = {
+  department: { itet: 'D-ITET', mavt: 'D-MAVT' },
+  type: {
+    'cheat sheet': 'Zusammenfassung',
+    exams: 'Alte Prüfungen',
+    'lecture documents': 'Unterichts Unterlagen',
+    exercies: 'Übungsserien',
+  },
+  semester: { 1: '1. Semester', 2: '2. Semester', 3: '3. Semester' },
+};
 
 export default class studydocList {
   constructor(vnode) {
@@ -16,11 +26,15 @@ export default class studydocList {
   static oninit() {
     studydocs.load();
     this.search = '';
-    this.filter = {
-      department: {},
-      type: {},
-      semester: {},
-    };
+    this.filter = {};
+    Object.keys(filterNames).forEach(key => {
+      let filterValue = {};
+      Object.keys(filterNames[key]).forEach(subKey => {
+        filterValue[subKey] = false;
+      });
+      this.filter[key] = filterValue;
+    });
+    console.log(this.filter);
   }
 
   static selectDocument(doc) {
@@ -82,34 +96,17 @@ export default class studydocList {
             m(Button, { label: 'Search' }),
           ]
         ),
-        m('div.department-check', [
-          m(Checkbox, {
-            label: 'D-ITET',
-            onChange: state => this.changeFilter('department', 'itet', state.checked),
-          }),
-          m(Checkbox, {
-            label: 'D-MAVT',
-            onChange: state => this.changeFilter('department', 'mavt', state.checked),
-          }),
-        ]),
-        m('div.type-check', [
-          m(Checkbox, {
-            label: 'Zusammenfassung',
-            onChange: state => this.changeFilter('type', 'cheat sheets', state.checked),
-          }),
-          m(Checkbox, {
-            label: 'Alte Prüfungen',
-            onChange: state => this.changeFilter('type', 'exams', state.checked),
-          }),
-          m(Checkbox, {
-            label: 'Unterichts Unterlagen',
-            onChange: state => this.changeFilter('type', 'lecture documents', state.checked),
-          }),
-          m(Checkbox, {
-            label: 'Übungsserien',
-            onChange: state => this.changeFilter('type', 'exercises', state.checked),
-          }),
-        ]),
+
+        Object.keys(filterNames).map(key =>
+          m('div.check', [
+            Object.keys(filterNames[key]).map(subKey =>
+              m(Checkbox, {
+                label: filterNames[key][subKey],
+                onChange: state => this.changeFilter(key, subKey, state.checked),
+              })
+            ),
+          ])
+        ),
 
         m(Button, {
           label: 'Add new',
