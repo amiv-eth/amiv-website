@@ -16,6 +16,7 @@ export default class Layout {
     checkLogin();
     this.setTabs();
     this.selectedTabIndex = 0;
+    this.lastTabIndex = this.selectedTabIndex;
     this.wasLoggedIn = isLoggedIn();
   }
 
@@ -57,8 +58,11 @@ export default class Layout {
   onupdate() {
     if (this.wasLoggedIn !== isLoggedIn()) this.selectedTabIndex = 0;
     this.wasLoggedIn = isLoggedIn();
+    if (this.lastTabIndex !== this.selectedTabIndex) {
+      this.lastTabIndex = this.selectedTabIndex;
+      this.selectTab(this.selectedTabIndex);
+    }
     this.setTabs();
-    this.selectTab(this.selectedTabIndex);
   }
 
   view(vnode) {
