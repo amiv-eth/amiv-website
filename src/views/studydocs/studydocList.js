@@ -72,12 +72,6 @@ export default class studydocList {
                 'tr',
                 { onclick: () => this.selectDocument(doc) },
                 [m('td', doc.title), m('td', 'type')]
-                // m(
-                //   'td',
-                //   doc.files.map(item =>
-                //     m('a', { href: `${apiUrl}${item.file}`, target: '_blank' }, item.name)
-                //   //   )
-                // ),
               )
             )
           ),
