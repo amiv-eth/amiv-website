@@ -22,6 +22,15 @@ export default class studydocList {
     this.doc = doc;
   }
 
+  static changeFilter(key, value, filter) {
+    const query = {
+      $or: [
+        { key: { $regex: `^(?i).*${value}.*` } },
+      ],
+    };
+    studydocs.load(query);
+  }
+
   static view() {
     if (!isLoggedIn()) return m(Error401);
 
@@ -71,7 +80,17 @@ export default class studydocList {
           ],
         }),
         m(Checkbox, {
-          label: 'checkbox_text',
+          label: 'D-ITET',
+          //onChange: state => this.changeFilter("Departement", "D-ITET", state.checked),
+        }),
+        m(Checkbox, {
+          label: 'D-MAVT',
+        }),
+        m(Checkbox, {
+          label: 'Zusammenfassung',
+        }),
+        m(Checkbox, {
+          label: 'Alte Prüfungen',
         }),
         m(Button, {
           label: 'Add new',

@@ -2,12 +2,14 @@ import m from 'mithril';
 import { Checkbox } from "polythene-mithril"
 import { CheckboxCSS } from 'polythene-css';
 
+CheckboxCSS.addStyle('.my-checkbox', {
+});
+
 export default class CheckboxComponent {
   constructor(vnode) {
     this.defaultProps = {
-      className: 'themed-checkbox',
+      className: 'my-checkbox',
       element: 'checkbox',
-      disabled: vnode.attrs.active === false,
       label: 'Unnamed checkbox',
     };
   }
