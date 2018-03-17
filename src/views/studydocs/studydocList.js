@@ -10,31 +10,38 @@ const tableHeadings = ['title', 'type'];
 export default class studydocList {
   constructor(vnode) {
     this.vnode = vnode;
-    this.doc = {};
-    this.filter = {
-      mavt: 0,
-      itet: 0,
-      type: 0,
-      semester: 0,
-    };
   }
 
   static oninit() {
     studydocs.load();
     this.search = '';
+    this.doc = {};
+    this.filter = {
+      department: {"itet": 0, "mavt": 0},
+      // type: {"cheat sheets": 0, "exams": 0},
+      // semester: {"first":0},
+    };
   }
 
   static selectDocument(doc) {
     this.doc = doc;
   }
 
-  static changeFilter(key, value) {
-    this.filter[key] = value;
-    const query = {
-      $or: [{ departement: {} }],
-    };
-    for (let i = 0; i < this.filter.length; i += 1) {
-      query[i] = this.filter[i];
+  static changeFilter(filterKey, filterValue, checked) {
+    this.filter[filterKey][filterValue] = checked;
+    console.log(this.filter);
+    let query = {};
+    for(var key in this.filter)
+    {
+      let queryValue = "";
+      for(var subKey in this.filter[filterKey])
+        if(this.filter[key][subKey])
+          queryValue += subKey + "|";
+      if(queryValue.length > 0) queryValue = queryValue.substring(0,queryValue.length-1);
+      console.log("filterKey: "+filterKey);
+      console.log("queryValue: "+queryValue);
+      if(queryValue.length > 0)
+      query[filterKey] = {$regex: `^(?i).*${queryValue}.*` };
     }
     studydocs.load(query);
   }
@@ -89,10 +96,11 @@ export default class studydocList {
         }),
         m(Checkbox, {
           label: 'D-ITET',
-          onChange: state => this.changeFilter('itet', state.checked),
+          onChange: state => this.changeFilter('department', 'itet', state.checked),
         }),
         m(Checkbox, {
           label: 'D-MAVT',
+          onChange: state => this.changeFilter('department', 'mavt', state.checked),
         }),
         m(Checkbox, {
           label: 'Zusammenfassung',
