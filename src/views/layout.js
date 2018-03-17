@@ -1,44 +1,78 @@
 import m from 'mithril';
 import { checkLogin, isLoggedIn, logout } from '../models/auth';
+import { Tabs } from '../components';
 
-const layoutCommon = [
-  m('a', { href: '/', oncreate: m.route.link }, 'AMIV'),
-  m('a', { href: '/events', oncreate: m.route.link }, 'Events'),
-  m('a', { href: '/studydocuments', oncreate: m.route.link }, 'Studienunterlagen'),
-  m('a', { href: '/jobs', oncreate: m.route.link }, 'Jobs'),
-];
+const defaultTabs = ['AMIV', 'Events', 'Studienunterlagen', 'Jobs'];
+const tabsLoggedOut = ['Login'];
+const tabsLoggedIn = ['Profil', 'Logout'];
 
-const layoutLoggedOut = vnode =>
-  m('div', [
-    m('nav', [layoutCommon, m('a', { href: '/login', oncreate: m.route.link }, 'Login')]),
-    m('main', vnode.children),
-  ]);
-
-const layoutLoggedIn = vnode =>
-  m('div', [
-    m('nav', [
-      layoutCommon,
-      m('a', { href: '/profile', oncreate: m.route.link }, 'Profil'),
-      m(
-        'a',
-        {
-          href: '/',
-          onclick: () => {
-            logout().then(() => {
-              m.route.set('/');
-            });
-            return false;
-          },
-        },
-        'Logout'
-      ),
-    ]),
-    m('main', vnode.children),
-  ]);
-
-module.exports = {
-  oninit: checkLogin,
-  view(vnode) {
-    return isLoggedIn() ? layoutLoggedIn(vnode) : layoutLoggedOut(vnode);
-  },
+const gotoRoute = route => {
+  const current = m.route.get();
+  if (current !== route) m.route.set(route);
 };
+
+export default class Layout {
+  constructor() {
+    checkLogin();
+    this.setTabs();
+    this.selectedTabIndex = 0;
+    this.wasLoggedIn = isLoggedIn();
+  }
+
+  setTabs() {
+    const tabOptions = isLoggedIn() ? tabsLoggedIn : tabsLoggedOut;
+    this.tabs = [...defaultTabs, ...tabOptions];
+  }
+
+  selectTab(tabIndex) {
+    const tabString = this.tabs[tabIndex];
+    switch (tabString) {
+      case 'AMIV':
+        gotoRoute('/');
+        break;
+      case 'Events':
+        gotoRoute('/events');
+        break;
+      case 'Studienunterlagen':
+        gotoRoute('/studydocuments');
+        break;
+      case 'Jobs':
+        gotoRoute('/jobs');
+        break;
+      case 'Profil':
+        gotoRoute('/profile');
+        break;
+      case 'Logout':
+        gotoRoute('/');
+        logout();
+        break;
+      case 'Login':
+        gotoRoute('/login');
+        break;
+      default:
+        console.log('Tab not known!');
+    }
+  }
+
+  onupdate() {
+    if (this.wasLoggedIn !== isLoggedIn()) {
+      this.selectedTabIndex = 0;
+      this.wasLoggedIn = isLoggedIn();
+      this.setTabs();
+    }
+  }
+
+  view(vnode) {
+    return m('div#amiv-container', [
+      m(Tabs, {
+        onChange: ({ index }) => {
+          this.selectedTabIndex = index;
+          this.selectTab(index);
+        },
+        tabs: this.tabs.map(tab => ({ label: tab })),
+        selectedTab: this.selectedTabIndex,
+      }),
+      m('main', vnode.children),
+    ]);
+  }
+}

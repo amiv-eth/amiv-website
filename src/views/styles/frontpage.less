@@ -1,9 +1,57 @@
 #frontpage-container {
-    width: 800px;
+    // Grid general settings
     display: grid;
     grid-template-columns: repeat(12, 1fr);
-
+    grid-gap: 30px;
+    align-content: center;
+    text-align: center;
+    border: none;
+    
+    // Hot sector on the frontpage
     .hot-row {
-        background-color: aqua;
+        // Grid of 12 frame colums
+        grid-column-start: 1;
+        grid-column-end: 13;
+        grid-row-start: 1;
+        grid-row-end: 15;
+
+        // Grid declaration for sub items, 2 frame columns
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-gap: 30px;
+        border: none;
+
+        .hot-first-card {
+            background-color: red;
+            grid-row-start: 1;
+            grid-row-end: 3;
+            background-size: cover;
+            background-position: centre-centre;
+        }
+
+        .hot-card {
+            background-color: yellow;
+            background-size: cover;
+            background-position: centre-centre;
+        }
+    }
+
+    .frontpage-row{
+        grid-column-start: 1;
+        grid-column-end: 13;
+
+        // Grid declaration for sub items, 3 frame columns
+        display: grid;
+        border: none;
+        grid-template-columns: repeat(3, 1fr);
+        grid-gap: 30px;
+
+        .frontpage-card{
+            background-color: yellowgreen;
+            grid-row-start: 1;
+            grid-row-end: 8;
+            background-size: cover;
+            background-position: centre-centre;
+        }   
     }
 }
