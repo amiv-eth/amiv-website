@@ -3,11 +3,15 @@ import * as events from '../models/events';
 
 const date = `${new Date().toISOString().split('.')[0]}Z`;
 
-const renderCards = item => m('div.frontpage-card', item);
+const renderCards = item => {
+  const { title } = item;
+  return m('div.frontpage-card', title);
+};
 
 const renderHotCards = (item, index) => {
-  if (index === 0) return m('div.hot-first-card', item);
-  return m('div.hot-card', item);
+  const { title } = item;
+  if (index === 0) return m('div.hot-first-card', title);
+  return m('div.hot-card', title);
 };
 
 export default class Frontpage {
@@ -21,12 +25,22 @@ export default class Frontpage {
       sort: ['-priority', 'time_advertising_start'],
     });
 
-    // this.events = events.getList().slice(0, 3);
+    this.events = events.getList().slice(0, 3);
+    console.log(this.events);
 
     // MOCKDATA
-    this.hot = ['super hot', 'also pretty hot', 'kinda hot'];
-    this.events = ['cool event', 'another event', 'sorta cool', 'something'];
-    this.jobs = ['google', 'less than google', 'abb', 'accenture'];
+    this.hot = [{ title: 'super hot' }, { title: 'also pretty hot' }, { title: 'kinda hot' }];
+    this.jobs = [
+      { title: 'google' },
+      { title: 'less than google' },
+      { title: 'abb' },
+      { title: 'accenture' },
+    ];
+  }
+
+  onbeforeupdate() {
+    this.events = events.getList().slice(0, 4);
+    console.log(this.events);
   }
 
   view() {
