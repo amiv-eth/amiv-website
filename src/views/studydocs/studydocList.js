@@ -17,9 +17,9 @@ export default class studydocList {
     studydocs.load();
     this.search = '';
     this.filter = {
-      department: {"itet": 0, "mavt": 0},
-      type: {"cheat sheets": 0, "exams": 0},
-      semester: {"1":0 },
+      department: { itet: 0, mavt: 0 },
+      type: { 'cheat sheets': 0, exams: 0 },
+      semester: { '1': 0 },
     };
   }
 
@@ -29,20 +29,21 @@ export default class studydocList {
 
   static changeFilter(filterKey, filterValue, checked) {
     this.filter[filterKey][filterValue] = checked;
-    let query = {};
-    for(var key in this.filter)
-    {
-      let queryValue = "";
-      for(var subKey in this.filter[key])
-        if(this.filter[key][subKey])
-          queryValue += subKey + "|";
+    const query = {};
+    console.log(`Filter: ${this.filter}`);
+    Object.keys(this.filter).forEach(key => {
+      let queryValue = '';
+      Object.keys(this.filter[key]).forEach(subKey => {
+        if (this.filter[key][subKey]) {
+          queryValue += `${subKey}|`;
+        }
+      });
 
-      if(queryValue.length > 0)
-      {
-        queryValue = queryValue.substring(0,queryValue.length-1);
-        query[key] = {$regex: `^(?i).*${queryValue}.*` };
+      if (queryValue.length > 0) {
+        queryValue = queryValue.substring(0, queryValue.length - 1);
+        query[key] = { $regex: `^(?i).*${queryValue}.*` };
       }
-    }
+    });
     studydocs.load(query);
   }
 
