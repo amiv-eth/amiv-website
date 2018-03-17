@@ -78,7 +78,6 @@ export default class Frontpage {
 
   onbeforeupdate() {
     this.events = events.getList().slice(0, 3);
-    console.log(this.events);
   }
 
   view() {

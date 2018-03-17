@@ -138,7 +138,7 @@ export default class EventDetails {
       } else {
         let participantNotice = '';
         if (events.getSignupForSelectedEvent() !== 'undefined') {
-          participantNotice = m('You signed up for this event.');
+          participantNotice = m('span', 'You signed up for this event.');
         }
         eventSignupForm = m('div', ['The registration period is over.', participantNotice]);
       }
