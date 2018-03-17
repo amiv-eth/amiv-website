@@ -5,28 +5,34 @@ import english from '../languages/en.json';
 let currentLang;
 
 function changeLanguage(lang) {
+  i18n.translator.reset();
   if (lang === 'de') {
     // i18n.setLanguage('de');
     console.log('set language to german');
     currentLang = 'de';
-    i18n.translator.reset();
     i18n.translator.add(german);
-    i18n.translator.applyToHTML();
+    // i18n.translator.applyToHTML();
   } else {
     // i18n.setLanguage('en');
     console.log('set language to english');
     currentLang = 'en';
-    i18n.translator.reset();
     i18n.translator.add(english);
-    i18n.translator.applyToHTML();
+    // i18n.translator.applyToHTML();
   }
+  localStorage.setItem('lanuage', currentLang);
 }
 
 function getLang() {
-  let lang;
-  if (navigator.languages !== undefined) [lang] = navigator.languages;
-  else lang = navigator.language;
-
+  let lang = localStorage.getItem('lanuage');
+  console.log(lang);
+  if (!lang) {
+    if (navigator.languages !== undefined) {
+      lang = navigator.languages.toString();
+      console.log(lang);
+    } else {
+      lang = navigator.language;
+    }
+  }
   if (lang.indexOf('de') !== -1) {
     changeLanguage('de');
   } else {
