@@ -3,15 +3,33 @@ import * as events from '../models/events';
 
 const date = `${new Date().toISOString().split('.')[0]}Z`;
 
+// Render the frontpage cards, with href and imageurl
 const renderCards = item => {
-  const { title, href } = item;
-  return m('div.frontpage-card', m('a', { href }, title));
+  const { title, href, imageurl } = item;
+  return m(
+    'div.frontpage-card',
+    { style: `background-image: url(${imageurl})` },
+    m('a', { href }, title)
+  );
 };
 
+// Render the Hot Cards, with link and imageurl
 const renderHotCards = (item, index) => {
-  const { title } = item;
-  if (index === 0) return m('div.hot-first-card', title);
-  return m('div.hot-card', title);
+  const { title, href, imageurl } = item;
+  if (index === 0) {
+    return m(
+      'div.hot-first-card',
+      {
+        style: `background-image: url(${imageurl})`,
+      },
+      m('a', { href }, title)
+    );
+  }
+  return m(
+    'div.hot-card',
+    { style: `background-image: url(${imageurl})` },
+    m('a', { href }, title)
+  );
 };
 
 export default class Frontpage {
@@ -28,12 +46,33 @@ export default class Frontpage {
     this.events = events.getList().slice(0, 3);
 
     // MOCKDATA
-    this.hot = [{ title: 'super hot' }, { title: 'also pretty hot' }, { title: 'kinda hot' }];
-    this.jobs = [{ title: 'google' }, { title: 'abb' }, { title: 'accenture' }];
+    this.hot = [
+      {
+        title: 'super hot',
+        imageurl: 'http://www.heilpraxisnet.de/wp-content/uploads/2016/04/bier-lagern-1024x724.jpg',
+      },
+      { title: 'also pretty hot' },
+      { title: 'kinda hot' },
+    ];
+    this.jobs = [{ title: 'Google' }, { title: 'ABB' }, { title: 'Accenture' }];
     this.socialmedia = [
-      { title: 'Facebook', href: 'https://www.facebook.com/AMIV.ETHZ/' },
-      { title: 'Instagram', href: 'https://www.instagram.com/amiv_eth/?hl=de' },
-      { title: 'Twitter', href: 'https://twitter.com/amiv_ethz?lang=de' },
+      {
+        title: 'Facebook',
+        href: 'https://www.facebook.com/AMIV.ETHZ/',
+        imageurl: 'https://upload.wikimedia.org/wikipedia/commons/c/c2/F_icon.svg',
+      },
+      {
+        title: 'Instagram',
+        href: 'https://www.instagram.com/amiv_eth/?hl=de',
+        imageurl:
+          'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Instagram_logo_2016.svg/2000px-Instagram_logo_2016.svg.png',
+      },
+      {
+        title: 'Twitter',
+        href: 'https://twitter.com/amiv_ethz?lang=de',
+        imageurl:
+          'https://upload.wikimedia.org/wikipedia/de/thumb/9/9f/Twitter_bird_logo_2012.svg/1200px-Twitter_bird_logo_2012.svg.png',
+      },
     ];
   }
 
