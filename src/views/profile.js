@@ -166,35 +166,69 @@ class announceSubscriptionForm {
 
 // shows group memberships and allows to withdraw and enroll for selected groups.
 class groupMemberships {
-  static oninit() {
+  oninit() {
     groups.load({ allow_self_enrollment: true });
     groups.loadMemberships();
     this.busy = [];
+    this.confirm = [];
   }
 
-  static view() {
+  view() {
     return m('div', [
       m(
         'div',
         groups.getMemberships().map(membership => {
-          const buttonArgs = {
-            events: {
-              onclick: () => {
-                this.busy[membership.group._id] = true;
-                groups
-                  .withdraw(membership._id, membership._etag)
-                  .then(() => {
-                    this.busy[membership.group._id] = false;
-                  })
-                  .catch(() => {
-                    this.busy[membership.group._id] = false;
-                  });
-              },
-            },
-          };
+          const buttonArgs = {};
+          let buttons;
 
           if (this.busy[membership.group._id]) {
             buttonArgs.disabled = true;
+          }
+
+          if (this.confirm[membership.group._id]) {
+            buttons = [
+              m(Button, {
+                ...buttonArgs,
+                label: 'cancel',
+                className: 'flat-button',
+                events: {
+                  onclick: () => {
+                    this.confirm[membership.group._id] = false;
+                    this.busy[membership.group._id] = false;
+                  },
+                },
+              }),
+              m('span', ' '),
+              m(Button, {
+                ...buttonArgs,
+                label: 'confirm',
+                events: {
+                  onclick: () => {
+                    this.busy[membership.group._id] = true;
+                    groups
+                      .withdraw(membership._id, membership._etag)
+                      .then(() => {
+                        this.busy[membership.group._id] = false;
+                        this.confirm[membership.group._id] = false;
+                      })
+                      .catch(() => {
+                        this.busy[membership.group._id] = false;
+                        this.confirm[membership.group._id] = false;
+                      });
+                  },
+                },
+              }),
+            ];
+          } else {
+            buttons = m(Button, {
+              ...buttonArgs,
+              label: 'withdraw',
+              events: {
+                onclick: () => {
+                  this.confirm[membership.group._id] = true;
+                },
+              },
+            });
           }
 
           return m('div', [
@@ -202,7 +236,7 @@ class groupMemberships {
             membership.expiry === undefined
               ? undefined
               : m('span', `(expires on ${membership.expiry})`),
-            m(Button, { ...buttonArgs, label: 'withdraw' }),
+            buttons,
           ]);
         })
       ),
