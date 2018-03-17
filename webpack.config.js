@@ -23,10 +23,12 @@ const config = {
       {
         test: /\.js$/, // Check for all js files
         exclude: /node_modules/,
-        use: [{
-          loader: 'babel-loader',
-          options: { presets: ['env'] },
-        }],
+        use: [
+          {
+            loader: 'babel-loader',
+            options: { presets: ['env'] },
+          },
+        ],
       },
       {
         test: /src\/views\/companies\/markdown\/[a-zA-Z\d-]{3,}\.md$/, // Check for all .md files in /companies/markdown
@@ -41,6 +43,20 @@ const config = {
           },
           {
             loader: 'markdown-loader', // Converts Markdown to HTML
+          },
+        ],
+      },
+      {
+        test: /\.less$/,
+        use: [
+          {
+            loader: 'style-loader', // creates style nodes from JS strings
+          },
+          {
+            loader: 'css-loader', // translates CSS into CommonJS
+          },
+          {
+            loader: 'less-loader', // compiles Less to CSS
           },
         ],
       },
