@@ -3,7 +3,8 @@ import * as studydocs from '../../models/studydocs';
 import { apiUrl } from '../../models/config';
 import { isLoggedIn } from '../../models/auth';
 import { Error401 } from '../errors';
-import { Button } from '../../components';
+import { Button, Checkbox } from '../../components';
+//import { Checkbox } from "polythene-mithril"
 
 const tableHeadings = ['title', 'type'];
 
@@ -57,6 +58,9 @@ export default class studydocList {
             m(Button, { label: 'Search' }),
           ]
         ),
+        m(Checkbox, {
+          label: 'checkbox_text'
+        }),
         m(Button, {
           label: 'Add new',
           events: { onclick: () => m.route.set('/studydocuments/new') },
@@ -86,12 +90,12 @@ export default class studydocList {
               m('tr', this.doc.professor),
               m('tr', this.doc.semester),
               m('tr', this.doc.author),
-              m(Button, {
-                label: 'Download',
-                events: {
-                  onclick: () => window.open(`${apiUrl}${this.doc.files[0].file}`, '_blank'),
-                },
-              }),
+                m(Button, {
+                  label: 'Download',
+                  events: {
+                    onclick: () => window.open(`${apiUrl}${this.doc.files[0].file}`, '_blank'),
+                  },
+                }),
             ]),
           ])
         : null,
