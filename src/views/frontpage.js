@@ -46,7 +46,7 @@ export default class Frontpage {
       sort: ['-priority', 'time_advertising_start'],
     });
 
-    this.events = events.getList().slice(6, 9);
+    this.events = events.getList().slice(0, 3);
 
     // MOCKDATA
     this.hot = [
