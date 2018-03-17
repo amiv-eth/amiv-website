@@ -3,7 +3,7 @@ import * as studydocs from '../../models/studydocs';
 import { apiUrl } from '../../models/config';
 import { isLoggedIn } from '../../models/auth';
 import { Error401 } from '../errors';
-import { Button, Checkbox, RadioGroup, TextField } from '../../components';
+import { Button, Checkbox, TextField } from '../../components';
 
 const tableHeadings = ['title', 'type'];
 const filterNames = {
@@ -28,7 +28,7 @@ export default class studydocList {
     this.search = '';
     this.filter = {};
     Object.keys(filterNames).forEach(key => {
-      let filterValue = {};
+      const filterValue = {};
       Object.keys(filterNames[key]).forEach(subKey => {
         filterValue[subKey] = false;
       });
