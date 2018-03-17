@@ -3,7 +3,7 @@ import * as studydocs from '../../models/studydocs';
 import { apiUrl } from '../../models/config';
 import { isLoggedIn } from '../../models/auth';
 import { Error401 } from '../errors';
-import { Button, Checkbox, RadioGroup, TextField } from '../../components';
+import { Button, Checkbox, TextField } from '../../components';
 
 const tableHeadings = ['title', 'type'];
 const filterNames = {
