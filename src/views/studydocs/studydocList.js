@@ -11,6 +11,12 @@ export default class studydocList {
   constructor(vnode) {
     this.vnode = vnode;
     this.doc = {};
+    this.filter = {
+      mavt: 0,
+      itet: 0,
+      type: 0,
+      semester: 0,
+    };
   }
 
   static oninit() {
@@ -22,12 +28,14 @@ export default class studydocList {
     this.doc = doc;
   }
 
-  static changeFilter(key, value, filter) {
+  static changeFilter(key, value) {
+    this.filter[key] = value;
     const query = {
-      $or: [
-        { key: { $regex: `^(?i).*${value}.*` } },
-      ],
+      $or: [{ departement: {} }],
     };
+    for (let i = 0; i < this.filter.length; i += 1) {
+      query[i] = this.filter[i];
+    }
     studydocs.load(query);
   }
 
@@ -81,7 +89,7 @@ export default class studydocList {
         }),
         m(Checkbox, {
           label: 'D-ITET',
-          //onChange: state => this.changeFilter("Departement", "D-ITET", state.checked),
+          onChange: state => this.changeFilter('itet', state.checked),
         }),
         m(Checkbox, {
           label: 'D-MAVT',
