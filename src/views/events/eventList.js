@@ -1,4 +1,5 @@
 import m from 'mithril';
+import { i18n } from '../../models/language';
 import * as events from '../../models/events';
 
 const date = `${new Date().toISOString().split('.')[0]}Z`;
@@ -26,10 +27,10 @@ export default class EventList {
     return m('table', [
       m('thead', [
         m('tr', [
-          m('th', 'Title'),
-          m('th', 'Starting time'),
-          m('th', 'Signup count'),
-          m('th', 'Spots'),
+          m('th', i18n('event.title')),
+          m('th', i18n('event.start_time')),
+          m('th', i18n('event.signup_count')),
+          m('th', i18n('event.spots')),
         ]),
       ]),
       m(

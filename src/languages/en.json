@@ -3,7 +3,7 @@
         "AMIV": "AMIV",
         "Events": "Events",
         "Studienunterlagen": "Study Documents",
-        "Jobs": "Jobs",
+        "Jobs": "Jobbies",
         "Login": "Login",
         "Profil": "Profile",
         "example content": "blablabla",
@@ -12,7 +12,11 @@
         "Statuten": "Statuten in english",
         "Kommissionen": "Commissions",
         "Protokolle": "Protocols",
-        "change language": "switch to german"
+        "language_button": "DE",
+        "event.title": "Title",
+        "event.start_time": "Starting time",
+        "event.signup_count": "Signup count",
+        "event.spots": "Spots"
 
     }
 }

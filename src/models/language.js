@@ -1,22 +1,17 @@
-import m from 'mithril';
 import i18n from 'i18n4v';
 import german from '../languages/de.json';
 import english from '../languages/en.json';
 
-const languages = {
-  en: english,
-  de: german,
-};
-
 let currentLang;
 
-function changeLanuage(lang) {
+function changeLanguage(lang) {
   if (lang === 'de') {
     // i18n.setLanguage('de');
     console.log('set language to german');
     currentLang = 'de';
     i18n.translator.reset();
     i18n.translator.add(german);
+    i18n.translator.applyToHTML();
   } else {
     // i18n.setLanguage('en');
     console.log('set language to english');
@@ -27,16 +22,28 @@ function changeLanuage(lang) {
   }
 }
 
-function switchLanguage() {
-  if (currentLang === 'en') {
-    changeLanuage('de');
+function getLang() {
+  let lang;
+  if (navigator.languages != undefined) lang = navigator.languages[0];
+  else lang = navigator.language;
+
+  if (lang.indexOf('de') !== -1) {
+    changeLanguage('de');
   } else {
-    changeLanuage('en');
+    changeLanguage('en');
   }
 }
-i18n.selectLanguage(['en', 'de'], (err, lang) => {
-  console.log(m.route.get());
-  i18n.translator.add(languages[lang] ? languages[lang] : languages.en);
-});
 
-export { i18n, changeLanuage, switchLanguage };
+function switchLanguage() {
+  if (currentLang === 'en') {
+    changeLanguage('de');
+  } else {
+    changeLanguage('en');
+  }
+}
+
+function currentLanguage() {
+  return currentLang;
+}
+
+export { i18n, changeLanguage, switchLanguage, currentLanguage, getLang };

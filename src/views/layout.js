@@ -10,7 +10,7 @@ const layoutCommon = [
   m('a', { href: '/studydocuments', oncreate: m.route.link }, i18n('Studienunterlagen')),
   m('a', { href: '/jobs', oncreate: m.route.link }, i18n('Jobs')),
   m(Button, {
-    label: i18n('change language'),
+    label: i18n('language_button'),
     events: { onclick: () => switchLanguage() },
   }),
 ];

@@ -4,7 +4,7 @@
         "Events": "Events",
         "Studienunterlagen": "Studienunterlagen",
         "Jobs": "Jobs",
-        "Login": "Login",
+        "Login": "Loginblabl",
         "Profil": "Profil",
         "example content": "beispiel Inhalte",
         "Vorstand": "Vorstand",
@@ -12,7 +12,11 @@
         "Statuten": "Statuten",
         "Kommissionen": "Kommissionen",
         "Protokolle": "Protokolle",
-        "change language": "zu englisch wechseln"
+        "language_button": "EN",
+        "event.title": "TItel",
+        "event.start_time": "Start Zeit",
+        "event.signup_count": "Anmeldungen",
+        "event.spots": "Freie Plätze"
 
     }
 }
