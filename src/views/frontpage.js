@@ -7,7 +7,7 @@ const date = `${new Date().toISOString().split('.')[0]}Z`;
 // Render the frontpage cards, with href and imageurl
 const renderCards = item => {
   const { title, href } = item;
-  const imageurl = item.img_infoscreen ? `${apiUrl}${item.img_infoscreen.file}` : null;
+  const imageurl = item.img_infoscreen ? `${apiUrl}${item.img_infoscreen.file}` : '';
   return m(
     'div.frontpage-card',
     { style: `background-image: url(${imageurl})` },
@@ -18,7 +18,7 @@ const renderCards = item => {
 // Render the Hot Cards, with link and imageurl
 const renderHotCards = (item, index) => {
   const { title, href } = item;
-  const imageurl = item.img_infoscreen ? `${apiUrl}${item.img_infoscreen.file}` : null;
+  const imageurl = item.img_infoscreen ? `${apiUrl}${item.img_infoscreen.file}` : '';
   if (index === 0) {
     return m(
       'div.hot-first-card',
@@ -85,9 +85,13 @@ export default class Frontpage {
 
   view() {
     return m('div#frontpage-container', [
+      m('h2', "What's HOT right now?"),
       m('div.hot-row', this.hot.map((item, index) => renderHotCards(item, index))),
+      m('h2', 'Events'),
       m('div.frontpage-row', this.events.map(item => renderCards(item))),
+      m('h2', 'Jobs'),
       m('div.frontpage-row', this.jobs.map(item => renderCards(item))),
+      m('h2', 'Join us on social media!'),
       m('div.frontpage-row', this.socialmedia.map(item => renderCards(item))),
     ]);
   }
