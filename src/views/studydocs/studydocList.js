@@ -19,7 +19,7 @@ export default class studydocList {
     this.filter = {
       department: {"itet": 0, "mavt": 0},
       type: {"cheat sheets": 0, "exams": 0},
-      semester: {"first":0},
+      semester: {"1":0 },
     };
   }
 
