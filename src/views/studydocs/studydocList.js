@@ -59,27 +59,27 @@ export default class studydocList {
       ),
       m( 'div.content',[
         m('table', [
-          m('thead', m('tr', tableHeadings.map(header => m('th', header)))),
-          m(
-            'tbody',
-            studydocs
-              .getList()
-              .map(doc =>
-                m('tr', [
-                  m('td', doc.title),
-                  m('td', doc.lecture),
-                  m('td', doc.professor),
-                  m('td', doc.semester),
-                  m('td', doc.author),
-                  m(
-                    'td',
-                    doc.files.map(item =>
-                      m('a', { href: `${apiUrl}${item.file}`, target: '_blank' }, item.name)
-                    )
-                  ),
-                ])
-              )
-          ),
+          m('thead',
+          m('tr', tableHeadings.map(header => m('th', header)))),
+            m('tbody',
+              studydocs
+                .getList()
+                .map(doc =>
+                  m('tr',  {onclick:alert('You clicked me !')},[
+                    m('td', doc.title),
+                    m('td', doc.lecture),
+                    m('td', doc.professor),
+                    m('td', doc.semester),
+                    m('td', doc.author),
+                    m(
+                      'td',
+                      doc.files.map(item =>
+                        m('a', { href: `${apiUrl}${item.file}`, target: '_blank' }, item.name)
+                      )
+                    ),
+                  ])
+                )
+            ),
         ]),
       ]),
       m('div.details',[
