@@ -7,6 +7,11 @@ const date = `${new Date().toISOString().split('.')[0]}Z`;
 
 let querySaved = '';
 
+/**
+ * Get the loaded list of events.
+ *
+ * @return {array}
+ */
 export function getList() {
   if (typeof this.list === 'undefined') {
     return [];
@@ -14,18 +19,37 @@ export function getList() {
   return this.list;
 }
 
+/**
+ * Get the selected event.
+ *
+ * @return {Object} `event` object returned by the AMIV API.
+ */
 export function getSelectedEvent() {
   return this.selectedEvent;
 }
 
+/**
+ * Get signup data for the selected event and the authenticated user.
+ *
+ * @return {Object} `eventsignup` object returned by the AMIV API.
+ */
 export function getSignupForSelectedEvent() {
   return this.selectedEventSignup;
 }
 
+/**
+ * Check if signup data of the authenticated user for the selected event have been loaded.
+ *
+ * @return {Boolean}
+ */
 export function signupForSelectedEventHasLoaded() {
   return this.selectedEventSignupLoaded;
 }
 
+/**
+ * Load signup data of the authenticated user for the selected event.
+ * @return {Promise} exports for additional response handling
+ */
 export function loadSignupForSelectedEvent() {
   const queryString = m.buildQueryString({
     where: JSON.stringify({
@@ -112,6 +136,11 @@ export function _signupEmailForSelectedEvent(additionalFieldsString, email) {
     });
 }
 
+/**
+ * Sign up the authenticated user for the selected event.
+ *
+ * @return {Promise} exports for additional response handling
+ */
 export function signupForSelectedEvent(additionalFields, email = '') {
   let additionalFieldsString;
   if (
@@ -132,6 +161,11 @@ export function signupForSelectedEvent(additionalFields, email = '') {
   return Promise.reject(new Error('Signup not allowed'));
 }
 
+/**
+ * Sign off the authenticated user from the selected event.
+ *
+ * @return {Promise} exports for additional response handling
+ */
 export function signoffForSelectedEvent() {
   if (isLoggedIn() && typeof this.selectedEventSignup !== 'undefined') {
     m
@@ -151,6 +185,12 @@ export function signoffForSelectedEvent() {
   }
 }
 
+/**
+ * Load events from the AMIV API
+ *
+ * @param {*} query filter and sort query for the API request.
+ * @return {Promise} exports for additional response handling
+ */
 export function load(query = {}) {
   querySaved = query;
 
@@ -181,6 +221,11 @@ export function load(query = {}) {
     });
 }
 
+/**
+ * Select an event from the event list.
+ *
+ * @param {String} eventId event id from AMIV API
+ */
 export function selectEvent(eventId) {
   this.selectedEvent = this.getList().find(item => item._id === eventId);
   if (typeof this.selectedEvent === 'undefined') {
@@ -197,6 +242,11 @@ export function selectEvent(eventId) {
   }
 }
 
+/**
+ * Reload event list with the same query as before.
+ *
+ * @return {Promise} exports for additional response handling
+ */
 export function reload() {
   return load(querySaved);
 }
