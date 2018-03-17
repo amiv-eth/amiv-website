@@ -67,13 +67,14 @@ export default class studydocList {
           m('thead', m('tr', tableHeadings.map(header => m('th', header)))),
           m(
             'tbody',
-            studydocs.getList().map(doc =>
-              m(
-                'tr',
-                { onclick: () => this.selectDocument(doc) },
-                [m('td', doc.title), m('td', 'type')]
+            studydocs
+              .getList()
+              .map(doc =>
+                m('tr', { onclick: () => this.selectDocument(doc) }, [
+                  m('td', doc.title),
+                  m('td', 'type'),
+                ])
               )
-            )
           ),
         ]),
       ]),
