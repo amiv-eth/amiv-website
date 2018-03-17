@@ -9,7 +9,6 @@ export default class CheckboxComponent {
   constructor(vnode) {
     this.defaultProps = {
       className: 'my-checkbox',
-      element: 'checkbox',
       label: 'Unnamed checkbox',
     };
   }
