@@ -26,7 +26,6 @@ export default class Frontpage {
     });
 
     this.events = events.getList().slice(0, 3);
-    console.log(this.events);
 
     // MOCKDATA
     this.hot = [{ title: 'super hot' }, { title: 'also pretty hot' }, { title: 'kinda hot' }];
@@ -40,7 +39,6 @@ export default class Frontpage {
 
   onbeforeupdate() {
     this.events = events.getList().slice(0, 4);
-    console.log(this.events);
   }
 
   view() {

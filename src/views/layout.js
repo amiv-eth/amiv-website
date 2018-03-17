@@ -1,44 +1,44 @@
 import m from 'mithril';
 import { checkLogin, isLoggedIn, logout } from '../models/auth';
+import { Tabs } from '../components';
 
-const layoutCommon = [
-  m('a', { href: '/', oncreate: m.route.link }, 'AMIV'),
-  m('a', { href: '/events', oncreate: m.route.link }, 'Events'),
-  m('a', { href: '/studydocuments', oncreate: m.route.link }, 'Studienunterlagen'),
-  m('a', { href: '/jobs', oncreate: m.route.link }, 'Jobs'),
+const defaultTabs = [
+  { label: 'AMIV', href: '/', oncreate: m.route.link },
+  { label: 'Events', href: '/events', oncreate: m.route.link },
+  { label: 'Studienunterlagen', href: '/studydocuments', oncreate: m.route.link },
+  { label: 'Jobs', href: '/jobs', oncreate: m.route.link },
 ];
 
-const layoutLoggedOut = vnode =>
-  m('div', [
-    m('nav', [layoutCommon, m('a', { href: '/login', oncreate: m.route.link }, 'Login')]),
-    m('main', vnode.children),
-  ]);
+const tabsLoggedOut = () => [
+  {
+    label: 'Login',
+    href: '/login',
+    oncreate: m.route.link,
+  },
+];
 
-const layoutLoggedIn = vnode =>
-  m('div', [
-    m('nav', [
-      layoutCommon,
-      m('a', { href: '/profile', oncreate: m.route.link }, 'Profil'),
-      m(
-        'a',
-        {
-          href: '/',
-          onclick: () => {
-            logout().then(() => {
-              m.route.set('/');
-            });
-            return false;
-          },
-        },
-        'Logout'
-      ),
-    ]),
-    m('main', vnode.children),
-  ]);
+const tabsLoggedIn = () => [
+  { label: 'Profil', href: '/profile', oncreate: m.route.link },
+  {
+    label: 'Logout',
+    events: {
+      onclick: () => {
+        logout().then(() => {
+          m.route.set('/');
+        });
+        return false;
+      },
+    },
+  },
+];
 
 module.exports = {
   oninit: checkLogin,
   view(vnode) {
-    return isLoggedIn() ? layoutLoggedIn(vnode) : layoutLoggedOut(vnode);
+    const tabOptions = isLoggedIn() ? tabsLoggedIn(vnode) : tabsLoggedOut(vnode);
+    return m('div', [
+      m(Tabs, { tabs: [...defaultTabs, ...tabOptions] }),
+      m('main', vnode.children),
+    ]);
   },
 };
