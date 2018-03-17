@@ -2,43 +2,75 @@ import m from 'mithril';
 import { checkLogin, isLoggedIn, logout } from '../models/auth';
 import { Tabs } from '../components';
 
-const defaultTabs = [
-  { label: 'AMIV', href: '/', oncreate: m.route.link },
-  { label: 'Events', href: '/events', oncreate: m.route.link },
-  { label: 'Studienunterlagen', href: '/studydocuments', oncreate: m.route.link },
-  { label: 'Jobs', href: '/jobs', oncreate: m.route.link },
-];
+const defaultTabs = ['AMIV', 'Events', 'Studienunterlagen', 'Jobs'];
+const tabsLoggedOut = ['Login'];
+const tabsLoggedIn = ['Profil', 'Logout'];
 
-const tabsLoggedOut = () => [
-  {
-    label: 'Login',
-    href: '/login',
-    oncreate: m.route.link,
-  },
-];
+const gotoRoute = route => {
+  const current = m.route.get();
+  if (current !== route) m.route.set(route);
+};
 
-const tabsLoggedIn = () => [
-  { label: 'Profil', href: '/profile', oncreate: m.route.link },
-  {
-    label: 'Logout',
-    events: {
-      onclick: () => {
-        logout().then(() => {
-          m.route.set('/');
-        });
-        return false;
-      },
-    },
-  },
-];
+export default class Layout {
+  constructor() {
+    checkLogin();
+    this.setTabs();
+    this.selectedTabIndex = 0;
+    this.wasLoggedIn = isLoggedIn();
+  }
 
-module.exports = {
-  oninit: checkLogin,
+  setTabs() {
+    const tabOptions = isLoggedIn() ? tabsLoggedIn : tabsLoggedOut;
+    this.tabs = [...defaultTabs, ...tabOptions];
+  }
+
+  selectTab(tabIndex) {
+    const tabString = this.tabs[tabIndex];
+    switch (tabString) {
+      case 'AMIV':
+        gotoRoute('/');
+        break;
+      case 'Events':
+        gotoRoute('/events');
+        break;
+      case 'Studienunterlagen':
+        gotoRoute('/studydocuments');
+        break;
+      case 'Jobs':
+        gotoRoute('/jobs');
+        break;
+      case 'Profil':
+        gotoRoute('/profile');
+        break;
+      case 'Logout':
+        gotoRoute('/');
+        logout();
+        break;
+      case 'Login':
+        gotoRoute('/login');
+        break;
+      default:
+        console.log('Tab not known!');
+    }
+  }
+
+  onupdate() {
+    if (this.wasLoggedIn !== isLoggedIn()) this.selectedTabIndex = 0;
+    this.wasLoggedIn = isLoggedIn();
+    this.setTabs();
+    this.selectTab(this.selectedTabIndex);
+  }
+
   view(vnode) {
-    const tabOptions = isLoggedIn() ? tabsLoggedIn(vnode) : tabsLoggedOut(vnode);
     return m('div', [
-      m(Tabs, { tabs: [...defaultTabs, ...tabOptions] }),
+      m(Tabs, {
+        onChange: ({ index }) => {
+          this.selectedTabIndex = index;
+        },
+        tabs: this.tabs.map(tab => ({ label: tab })),
+        selectedTab: this.selectedTabIndex,
+      }),
       m('main', vnode.children),
     ]);
-  },
-};
+  }
+}
