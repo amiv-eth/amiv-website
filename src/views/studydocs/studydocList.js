@@ -4,6 +4,7 @@ import { apiUrl } from '../../models/config';
 import { isLoggedIn } from '../../models/auth';
 import { Error401 } from '../errors';
 import { Button, Checkbox, TextField, Dropdown } from '../../components';
+import { lecture } from '../studydocs/lecture';
 
 const tableHeadings = ['title', 'type'];
 const filterNames = {
@@ -14,31 +15,6 @@ const filterNames = {
     'lecture documents': 'Unterichts Unterlagen',
     exercies: 'Übungsserien',
   },
-};
-
-const subjects = {
-  itet: [
-    ['Digitaltechnik', 'Analysis 1', 'Netzwerke und Schaltungen 1', 'Informatik 1'],
-    ['Koma'],
-    ['Physics 2'],
-    [],
-    [],
-    [],
-  ],
-  mavt: [
-    [
-      'Analysis 1',
-      'Werkstoffe und Fertigung 1',
-      'Lineare Algebra 1',
-      'Chemie',
-      'Maschinenelemente',
-    ],
-    ['Innovationsprozess'],
-    ['Dynamics', 'Thermodynamik 1', 'Philosophie'],
-    ['Fluiddynamik1', 'Thermodynamik 2'],
-    [],
-    [],
-  ],
 };
 
 export default class studydocList {
@@ -68,18 +44,18 @@ export default class studydocList {
   static lectureData() {
     const data = [];
     if (this.filter.department.itet || !this.filter.department.mavt) {
-      for (let i = 0; i < subjects.itet[this.semester - 1].length; i += 1) {
+      for (let i = 0; i < lecture.itet[this.semester - 1].length; i += 1) {
         data.push({
-          id: subjects.itet[this.semester - 1][i],
-          name: subjects.itet[this.semester - 1][i],
+          id: lecture.itet[this.semester - 1][i],
+          name: lecture.itet[this.semester - 1][i],
         });
       }
     }
     if (this.filter.department.mavt || !this.filter.department.itet) {
-      for (let i = 0; i < subjects.mavt[this.semester - 1].length; i += 1) {
+      for (let i = 0; i < lecture.mavt[this.semester - 1].length; i += 1) {
         data.push({
-          id: subjects.mavt[this.semester - 1][i],
-          name: subjects.mavt[this.semester - 1][i],
+          id: lecture.mavt[this.semester - 1][i],
+          name: lecture.mavt[this.semester - 1][i],
         });
       }
     }
