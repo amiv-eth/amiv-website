@@ -59,6 +59,10 @@ export default class studydocList {
       });
       this.filter[key] = filterValue;
     });
+    this.filter.semester = {};
+    for (let i = 0; i < 6; i += 1) {
+      this.filter.semester[String(i)] = false;
+    }
   }
   static selectDocument(doc) {
     this.doc = doc;
@@ -155,7 +159,9 @@ export default class studydocList {
               { id: 6, name: '6. Semester' },
             ],
             onchange: event => {
+              this.changeFilter('semester', this.semester, false);
               this.semester = event.target.value;
+              this.changeFilter('semester', this.semester, true);
             },
           }),
           m(Dropdown, {
