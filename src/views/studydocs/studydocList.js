@@ -64,7 +64,6 @@ export default class studydocList {
       this.filter[key] = filterValue;
     });
   }
-
   static selectDocument(doc) {
     this.doc = doc;
   }
@@ -145,7 +144,9 @@ export default class studydocList {
               { id: 5, name: '5. Semester' },
               { id: 6, name: '6. Semester' },
             ],
-            onchange: sem => console.log(sem), // ({this.semester = semester})
+            onchange: event => {
+              this.semester = event.target.value;
+            },
           }),
         ]),
         m(Button, {
