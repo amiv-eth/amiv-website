@@ -1,11 +1,13 @@
 import m from 'mithril';
 import { apiUrl } from 'config';
 import * as studydocs from '../../models/studydocs';
+import { isLoggedIn } from '../../models/auth';
+import { Error401 } from '../errors';
 import { Button, FilterView } from '../../components';
 import { lecture } from '../studydocs/lecture';
 
 const tableHeadings = ['title', 'type'];
-const filterNames = {
+const filterStudyDocs = {
   department: { itet: 'D-ITET', mavt: 'D-MAVT' },
   type: {
     'cheat sheet': 'Zusammenfassung',
@@ -26,14 +28,6 @@ export default class studydocList {
     this.semester = 1;
     this.lecture = 'Fach';
     this.search = '';
-    this.filter = {};
-    Object.keys(filterNames).forEach(key => {
-      const filterValue = {};
-      Object.keys(filterNames[key]).forEach(subKey => {
-        filterValue[subKey] = false;
-      });
-      this.filter[key] = filterValue;
-    });
   }
 
   selectDocument(doc) {
@@ -60,8 +54,8 @@ export default class studydocList {
     }
     return data;
   }
-
-  changeFilter(filterKey, filterValue, checked) {
+  /*
+  static changeFilter(filterKey, filterValue, checked) {
     this.filter[filterKey][filterValue] = checked;
     this.updateFilter();
   }
@@ -85,12 +79,20 @@ export default class studydocList {
     query.lecture = { $regex: `^(?i).*${this.lecture}.*` };
     studydocs.load(query);
   }
+  */
 
   view() {
     return m('div#studydoc-list', [
       m('div.filter', [
-        m(FilterView, {hasSearchField: true, onsearch: () => alert('your search: ')}),
-        /*m(
+        m(FilterView, {
+          searchField: true,
+          onsearch: () => alert('your search: '),
+          checkbox: true,
+          filterNames: filterStudyDocs,
+          onloadDoc: query => studydocs.load(query),
+        }),
+
+        /* m(
           'form',
           {
             onsubmit: e => {
@@ -121,11 +123,11 @@ export default class studydocList {
           ]
         ),
 
-        Object.keys(filterNames).map(key =>
+        Object.keys(filterStudyDocs).map(key =>
           m('div.check', [
-            Object.keys(filterNames[key]).map(subKey =>
+            Object.keys(filterStudyDocs[key]).map(subKey =>
               m(Checkbox, {
-                label: filterNames[key][subKey],
+                label: filterStudyDocs[key][subKey],
                 onChange: state => this.changeFilter(key, subKey, state.checked),
               })
             ),
@@ -157,7 +159,7 @@ export default class studydocList {
         m(Button, {
           label: 'Add new',
           events: { onclick: () => m.route.set('/studydocuments/new') },
-        }),*/
+        }), */
       ]),
       m('div.content', [
         m('div.content-grid', [
