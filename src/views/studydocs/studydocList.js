@@ -34,7 +34,7 @@ const subjects = {
       'Maschinenelemente',
     ],
     ['Innovationsprozess'],
-    ['Dynamics', 'Thermodynamik 1'],
+    ['Dynamics', 'Thermodynamik 1', 'Philosophie'],
     ['Fluiddynamik1', 'Thermodynamik 2'],
     [],
     [],
@@ -50,6 +50,7 @@ export default class studydocList {
   static oninit() {
     studydocs.load();
     this.semester = 1;
+    this.lecture = 'Fach';
     this.search = '';
     this.filter = {};
     Object.keys(filterNames).forEach(key => {
@@ -59,16 +60,12 @@ export default class studydocList {
       });
       this.filter[key] = filterValue;
     });
-    this.filter.semester = {};
-    for (let i = 0; i < 6; i += 1) {
-      this.filter.semester[String(i)] = false;
-    }
   }
   static selectDocument(doc) {
     this.doc = doc;
   }
 
-  static courseData() {
+  static lectureData() {
     const data = [];
     if (this.filter.department.itet || !this.filter.department.mavt) {
       for (let i = 0; i < subjects.itet[this.semester - 1].length; i += 1) {
@@ -85,6 +82,10 @@ export default class studydocList {
 
   static changeFilter(filterKey, filterValue, checked) {
     this.filter[filterKey][filterValue] = checked;
+    this.updateFilter();
+  }
+
+  static updateFilter() {
     const query = {};
     Object.keys(this.filter).forEach(key => {
       let queryValue = '';
@@ -99,6 +100,8 @@ export default class studydocList {
         query[key] = { $regex: `^(?i).*${queryValue}.*` };
       }
     });
+    query.semester = { $regex: `^(?i).*${String(this.semester)}.*` };
+    query.lecture = { $regex: `^(?i).*${this.lecture}.*` };
     studydocs.load(query);
   }
 
@@ -159,15 +162,16 @@ export default class studydocList {
               { id: 6, name: '6. Semester' },
             ],
             onchange: event => {
-              this.changeFilter('semester', this.semester, false);
               this.semester = event.target.value;
-              this.changeFilter('semester', this.semester, true);
+              this.updateFilter();
             },
           }),
           m(Dropdown, {
-            data: this.courseData(),
+            data: this.lectureData(),
             onchange: event => {
-              this.course = event.target.value;
+              this.lecture = event.target.value;
+              this.updateFilter();
+              console.log(this.lecture);
             },
           }),
         ]),
