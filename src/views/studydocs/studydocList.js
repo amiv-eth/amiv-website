@@ -1,7 +1,7 @@
 import m from 'mithril';
 import { apiUrl } from 'config';
 import * as studydocs from '../../models/studydocs';
-import { Button, Checkbox, TextField, Dropdown } from '../../components';
+import { Button, FilterView } from '../../components';
 import { lecture } from '../studydocs/lecture';
 
 const tableHeadings = ['title', 'type'];
@@ -89,7 +89,8 @@ export default class studydocList {
   view() {
     return m('div#studydoc-list', [
       m('div.filter', [
-        m(
+        m(FilterView, {hasSearchField: true, onsearch: () => alert('your search: ')}),
+        /*m(
           'form',
           {
             onsubmit: e => {
@@ -156,7 +157,7 @@ export default class studydocList {
         m(Button, {
           label: 'Add new',
           events: { onclick: () => m.route.set('/studydocuments/new') },
-        }),
+        }),*/
       ]),
       m('div.content', [
         m('div.content-grid', [
