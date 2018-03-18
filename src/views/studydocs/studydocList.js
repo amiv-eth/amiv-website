@@ -14,7 +14,10 @@ const filterNames = {
     'lecture documents': 'Unterichts Unterlagen',
     exercies: 'Übungsserien',
   },
+};
+const filterNamesDropdown = {
   semester: { 1: '1. Semester', 2: '2. Semester', 3: '3. Semester' },
+  subject: { 0: 'Digitaltechnik' },
 };
 
 export default class studydocList {
@@ -107,8 +110,16 @@ export default class studydocList {
             ),
           ])
         ),
-
-        m(Dropdown, { data: [{ name: '1. Semester', id: 1 }, { name: '2. Semester', id: 2 }] }),
+        m('div.drop', [
+          Object.keys(filterNamesDropdown).map(key =>
+            m(Dropdown, {
+              data: Object.keys(filterNamesDropdown[key]).map(subKey => ({
+                id: subKey,
+                name: filterNamesDropdown[key][subKey],
+              })),
+            })
+          ),
+        ]),
         m(Button, {
           label: 'Add new',
           events: { onclick: () => m.route.set('/studydocuments/new') },
