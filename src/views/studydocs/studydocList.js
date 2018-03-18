@@ -17,7 +17,14 @@ const filterNames = {
 };
 const filterNamesDropdown = {
   semester: { 1: '1. Semester', 2: '2. Semester', 3: '3. Semester' },
-  subject: { 0: 'Digitaltechnik' },
+};
+const subjects = {
+  itet: [
+    ['Digitaltechnik', 'Analysis 1', 'Netzwerke und Schaltungen 1', 'Informatik 1'],
+    ['Koma'],
+    ['Physics 2'],
+  ],
+  mavt: [['', '', '', '']],
 };
 
 export default class studydocList {
