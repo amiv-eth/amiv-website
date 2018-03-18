@@ -33,16 +33,12 @@ const subjects = {
       'Chemie',
       'Maschinenelemente',
     ],
+    [],
     ['Dynamics', 'Thermodynamik 1'],
     ['Fluiddynamik1', 'Thermodynamik 2'],
     [],
     [],
-    [],
   ],
-};
-
-const filterNamesDropdown = {
-  semester: { 1: '1. Semester', 2: '2. Semester', 3: '3. Semester' },
 };
 
 export default class studydocList {
@@ -66,6 +62,21 @@ export default class studydocList {
   }
   static selectDocument(doc) {
     this.doc = doc;
+  }
+
+  static courseData() {
+    let data = [];
+    if (this.filter.department.itet || !this.filter.department.mavt) {
+      for (let i = 0; i < subjects.itet[this.semester].length; i++) {
+        data.push({ id: i+1, name: subjects.itet[this.semester][i] });
+      }
+    }
+    if (this.filter.department.mavt || !this.filter.department.itet) {
+      for (let i = 0; i < subjects.mavt[this.semester].length; i++) {
+        data.push({ id: i+1, name: subjects.mavt[this.semester][i] });
+      }
+    }
+    return data;
   }
 
   static changeFilter(filterKey, filterValue, checked) {
@@ -146,6 +157,12 @@ export default class studydocList {
             ],
             onchange: event => {
               this.semester = event.target.value;
+            },
+          }),
+          m(Dropdown, {
+            data: this.courseData(),
+            onchange: event => {
+              this.course = event.target.value;
             },
           }),
         ]),
