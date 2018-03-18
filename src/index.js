@@ -1,5 +1,6 @@
 // src/index.js
 import m from 'mithril';
+import { getLang } from './models/language';
 import studydocList from './views/studydocs/studydocList';
 import studydocNew from './views/studydocs/studydocNew';
 import eventList from './views/events/eventList';
@@ -18,6 +19,8 @@ import jobOfferDetails from './views/jobs/jobofferDetails';
 import companyList from './views/companies/companyList';
 import companyDetail from './views/companies/companyDetail';
 import './views/styles/base.less';
+
+getLang();
 
 m.route(document.body, '/', {
   '/': {

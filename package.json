@@ -30,6 +30,7 @@
     "eslint": "^4.10.0",
     "eslint-config-airbnb-base": "^12.1.0",
     "eslint-plugin-import": "^2.8.0",
+    "i18n4v": "^0.2.2",
     "mithril": "^1.1.5",
     "polythene-css": "^1.0.0",
     "polythene-mithril": "^1.0.0",
