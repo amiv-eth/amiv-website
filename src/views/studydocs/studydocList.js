@@ -15,6 +15,25 @@ const filterNames = {
     exercies: 'Übungsserien',
   },
 };
+
+const subjects = {
+  itet: [[], [], [], [], [], []],
+  mavt: [
+    [
+      'Analysis 1',
+      'Werkstoffe und Fertigung 1',
+      'Lineare Algebra 1',
+      'Chemie',
+      'Maschinenelemente',
+    ],
+    ['Dynamics', 'Thermodynamik 1'],
+    ['Fluiddynamik1', 'Thermodynamik 2'],
+    [],
+    [],
+    [],
+  ],
+};
+
 const filterNamesDropdown = {
   semester: { 1: '1. Semester', 2: '2. Semester', 3: '3. Semester' },
   subject: { 0: 'Digitaltechnik' },
@@ -115,7 +134,7 @@ export default class studydocList {
             m(Dropdown, {
               data: Object.keys(filterNamesDropdown[key]).map(subKey => ({
                 id: subKey,
-                name: filterNamesDropdown[key][subKey],
+                name: filterNamesaDropdown[key][subKey],
               })),
             })
           ),
