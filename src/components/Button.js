@@ -7,6 +7,11 @@ ButtonCSS.addStyle('.blue-button', {
   color_light_text: 'white',
 });
 
+ButtonCSS.addStyle('.flat-button', {
+  color_light_background: 'white',
+  color_light_text: 'gray',
+});
+
 /**
  * Generic button component
  *

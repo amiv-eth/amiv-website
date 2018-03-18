@@ -3,9 +3,43 @@ import * as studydocs from '../../models/studydocs';
 import { apiUrl } from '../../models/config';
 import { isLoggedIn } from '../../models/auth';
 import { Error401 } from '../errors';
-import { Button, Checkbox, TextField } from '../../components';
+import { Button, Checkbox, TextField, Dropdown } from '../../components';
 
 const tableHeadings = ['title', 'type'];
+const filterNames = {
+  department: { itet: 'D-ITET', mavt: 'D-MAVT' },
+  type: {
+    'cheat sheet': 'Zusammenfassung',
+    exams: 'Alte Prüfungen',
+    'lecture documents': 'Unterichts Unterlagen',
+    exercies: 'Übungsserien',
+  },
+};
+
+const subjects = {
+  itet: [
+    ['Digitaltechnik', 'Analysis 1', 'Netzwerke und Schaltungen 1', 'Informatik 1'],
+    ['Koma'],
+    ['Physics 2'],
+    [],
+    [],
+    [],
+  ],
+  mavt: [
+    [
+      'Analysis 1',
+      'Werkstoffe und Fertigung 1',
+      'Lineare Algebra 1',
+      'Chemie',
+      'Maschinenelemente',
+    ],
+    ['Innovationsprozess'],
+    ['Dynamics', 'Thermodynamik 1', 'Philosophie'],
+    ['Fluiddynamik1', 'Thermodynamik 2'],
+    [],
+    [],
+  ],
+};
 
 export default class studydocList {
   constructor(vnode) {
@@ -15,20 +49,49 @@ export default class studydocList {
 
   static oninit() {
     studydocs.load();
+    this.semester = 1;
+    this.lecture = 'Fach';
     this.search = '';
-    this.filter = {
-      department: {},
-      type: {},
-      semester: {},
-    };
+    this.filter = {};
+    Object.keys(filterNames).forEach(key => {
+      const filterValue = {};
+      Object.keys(filterNames[key]).forEach(subKey => {
+        filterValue[subKey] = false;
+      });
+      this.filter[key] = filterValue;
+    });
   }
-
   static selectDocument(doc) {
     this.doc = doc;
   }
 
+  static lectureData() {
+    const data = [];
+    if (this.filter.department.itet || !this.filter.department.mavt) {
+      for (let i = 0; i < subjects.itet[this.semester - 1].length; i += 1) {
+        data.push({
+          id: subjects.itet[this.semester - 1][i],
+          name: subjects.itet[this.semester - 1][i],
+        });
+      }
+    }
+    if (this.filter.department.mavt || !this.filter.department.itet) {
+      for (let i = 0; i < subjects.mavt[this.semester - 1].length; i += 1) {
+        data.push({
+          id: subjects.mavt[this.semester - 1][i],
+          name: subjects.mavt[this.semester - 1][i],
+        });
+      }
+    }
+    return data;
+  }
+
   static changeFilter(filterKey, filterValue, checked) {
     this.filter[filterKey][filterValue] = checked;
+    this.updateFilter();
+  }
+
+  static updateFilter() {
     const query = {};
     Object.keys(this.filter).forEach(key => {
       let queryValue = '';
@@ -43,6 +106,8 @@ export default class studydocList {
         query[key] = { $regex: `^(?i).*${queryValue}.*` };
       }
     });
+    query.semester = { $regex: `^(?i).*${String(this.semester)}.*` };
+    query.lecture = { $regex: `^(?i).*${this.lecture}.*` };
     studydocs.load(query);
   }
 
@@ -81,35 +146,40 @@ export default class studydocList {
             m(Button, { label: 'Search' }),
           ]
         ),
-        m('div.department-check', [
-          m(Checkbox, {
-            label: 'D-ITET',
-            onChange: state => this.changeFilter('department', 'itet', state.checked),
-          }),
-          m(Checkbox, {
-            label: 'D-MAVT',
-            onChange: state => this.changeFilter('department', 'mavt', state.checked),
-          }),
-        ]),
-        m('div.type-check', [
-          m(Checkbox, {
-            label: 'Zusammenfassung',
-            onChange: state => this.changeFilter('type', 'cheat sheets', state.checked),
-          }),
-          m(Checkbox, {
-            label: 'Alte Prüfungen',
-            onChange: state => this.changeFilter('type', 'exams', state.checked),
-          }),
-          m(Checkbox, {
-            label: 'Unterichts Unterlagen',
-            onChange: state => this.changeFilter('type', 'lecture documents', state.checked),
-          }),
-          m(Checkbox, {
-            label: 'Übungsserien',
-            onChange: state => this.changeFilter('type', 'exercises', state.checked),
-          }),
-        ]),
 
+        Object.keys(filterNames).map(key =>
+          m('div.check', [
+            Object.keys(filterNames[key]).map(subKey =>
+              m(Checkbox, {
+                label: filterNames[key][subKey],
+                onChange: state => this.changeFilter(key, subKey, state.checked),
+              })
+            ),
+          ])
+        ),
+        m('div.drop', [
+          m(Dropdown, {
+            data: [
+              { id: 1, name: '1. Semester' },
+              { id: 2, name: '2. Semester' },
+              { id: 3, name: '3. Semester' },
+              { id: 4, name: '4. Semester' },
+              { id: 5, name: '5. Semester' },
+              { id: 6, name: '6. Semester' },
+            ],
+            onchange: event => {
+              this.semester = event.target.value;
+              this.updateFilter();
+            },
+          }),
+          m(Dropdown, {
+            data: this.lectureData(),
+            onchange: event => {
+              this.lecture = event.target.value;
+              this.updateFilter();
+            },
+          }),
+        ]),
         m(Button, {
           label: 'Add new',
           events: { onclick: () => m.route.set('/studydocuments/new') },
