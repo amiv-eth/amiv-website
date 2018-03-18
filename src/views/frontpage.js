@@ -7,7 +7,7 @@ const date = `${new Date().toISOString().split('.')[0]}Z`;
 // Render the Hot Cards, with link and imageurl
 const renderHotCards = (item, index) => {
   const { title, href } = item;
-  const imageurl = item.img_infoscreen ? `${apiUrl}${item.img_infoscreen.file}` : '';
+  const imageurl = item.img_poster ? `${apiUrl}${item.img_poster.file}` : '';
   if (index === 0) {
     return m(
       'div.hot-first-card',
@@ -112,7 +112,7 @@ export default class Frontpage {
   }
 
   onbeforeupdate() {
-    this.events = events.getList().slice(4, 7);
+    this.events = events.getList().slice(0, 3);
   }
 
   view() {
