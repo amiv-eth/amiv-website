@@ -3,7 +3,7 @@ import * as studydocs from '../../models/studydocs';
 import { apiUrl } from '../../models/config';
 import { isLoggedIn } from '../../models/auth';
 import { Error401 } from '../errors';
-import { Button, Checkbox, TextField, Dropdown } from '../../components';
+import { Button, Checkbox, TextField, Dropdown, FilterView } from '../../components';
 import { lecture } from '../studydocs/lecture';
 
 const tableHeadings = ['title', 'type'];
@@ -92,7 +92,8 @@ export default class studydocList {
 
     return m('div#studydoc-list', [
       m('div.filter', [
-        m(
+        m(FilterView, {hasSearchField: true, onsearch: () => alert('your search: ')}),
+        /*m(
           'form',
           {
             onsubmit: e => {
@@ -159,7 +160,7 @@ export default class studydocList {
         m(Button, {
           label: 'Add new',
           events: { onclick: () => m.route.set('/studydocuments/new') },
-        }),
+        }),*/
       ]),
       m('div.content', [
         m('div.content-grid', [
