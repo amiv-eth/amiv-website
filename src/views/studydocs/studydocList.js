@@ -33,7 +33,7 @@ const subjects = {
       'Chemie',
       'Maschinenelemente',
     ],
-    [],
+    ['Innovationsprozess'],
     ['Dynamics', 'Thermodynamik 1'],
     ['Fluiddynamik1', 'Thermodynamik 2'],
     [],
@@ -49,7 +49,7 @@ export default class studydocList {
 
   static oninit() {
     studydocs.load();
-    this.semester = 0;
+    this.semester = 1;
     this.search = '';
     this.filter = {};
     Object.keys(filterNames).forEach(key => {
@@ -65,15 +65,15 @@ export default class studydocList {
   }
 
   static courseData() {
-    let data = [];
+    const data = [];
     if (this.filter.department.itet || !this.filter.department.mavt) {
-      for (let i = 0; i < subjects.itet[this.semester].length; i++) {
-        data.push({ id: i+1, name: subjects.itet[this.semester][i] });
+      for (let i = 0; i < subjects.itet[this.semester - 1].length; i += 1) {
+        data.push({ id: i + 1, name: subjects.itet[this.semester - 1][i] });
       }
     }
     if (this.filter.department.mavt || !this.filter.department.itet) {
-      for (let i = 0; i < subjects.mavt[this.semester].length; i++) {
-        data.push({ id: i+1, name: subjects.mavt[this.semester][i] });
+      for (let i = 0; i < subjects.mavt[this.semester - 1].length; i += 1) {
+        data.push({ id: i + 1, name: subjects.mavt[this.semester - 1][i] });
       }
     }
     return data;
@@ -82,7 +82,6 @@ export default class studydocList {
   static changeFilter(filterKey, filterValue, checked) {
     this.filter[filterKey][filterValue] = checked;
     const query = {};
-    console.log(`Filter: ${this.filter}`);
     Object.keys(this.filter).forEach(key => {
       let queryValue = '';
       Object.keys(this.filter[key]).forEach(subKey => {
