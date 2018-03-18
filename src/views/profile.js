@@ -222,15 +222,35 @@ class groupMemberships {
     groups.loadMemberships();
     this.busy = [];
     this.confirm = [];
+    this.query = '';
   }
 
   view() {
+    // Searchbar for groups
+    const filterForm = m('div', [
+      m(inputGroup, {
+        name: 'group_search',
+        title: 'Search groups',
+        oninput: e => {
+          this.query = e.target.value;
+          if (this.query.length > 0) {
+            this.isValid = true;
+          }
+        },
+      }),
+    ]);
+
     return m('div', [
+      filterForm,
       m(
         'div',
         groups.getMemberships().map(membership => {
           const buttonArgs = {};
           let buttons;
+
+          if (this.query.length > 0 && !new RegExp(this.query, 'gi').test(membership.group.name)) {
+            return m('');
+          }
 
           if (this.busy[membership.group._id]) {
             buttonArgs.disabled = true;
@@ -295,8 +315,13 @@ class groupMemberships {
         'div',
         groups.getList().map(group => {
           if (groups.getMemberships().some(element => element.group._id === group._id)) {
-            return m.trust('');
+            return m('');
           }
+
+          if (this.query.length > 0 && !new RegExp(this.query, 'gi').test(group.name)) {
+            return m('');
+          }
+
           const buttonArgs = {
             events: {
               onclick: () => {
