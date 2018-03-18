@@ -53,6 +53,7 @@ export default class studydocList {
 
   static oninit() {
     studydocs.load();
+    this.semester = 0;
     this.search = '';
     this.filter = {};
     Object.keys(filterNames).forEach(key => {
@@ -62,7 +63,6 @@ export default class studydocList {
       });
       this.filter[key] = filterValue;
     });
-    console.log(this.filter);
   }
 
   static selectDocument(doc) {
@@ -136,14 +136,17 @@ export default class studydocList {
           ])
         ),
         m('div.drop', [
-          Object.keys(filterNamesDropdown).map(key =>
-            m(Dropdown, {
-              data: Object.keys(filterNamesDropdown[key]).map(subKey => ({
-                id: subKey,
-                name: filterNamesaDropdown[key][subKey],
-              })),
-            })
-          ),
+          m(Dropdown, {
+            data: [
+              { id: 1, name: '1. Semester' },
+              { id: 2, name: '2. Semester' },
+              { id: 3, name: '3. Semester' },
+              { id: 4, name: '4. Semester' },
+              { id: 5, name: '5. Semester' },
+              { id: 6, name: '6. Semester' },
+            ],
+            onchange: sem => console.log(sem), // ({this.semester = semester})
+          }),
         ]),
         m(Button, {
           label: 'Add new',
