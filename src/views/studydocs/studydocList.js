@@ -21,6 +21,9 @@ const subjects = {
     ['Digitaltechnik', 'Analysis 1', 'Netzwerke und Schaltungen 1', 'Informatik 1'],
     ['Koma'],
     ['Physics 2'],
+    [],
+    [],
+    [],
   ],
   mavt: [
     [
