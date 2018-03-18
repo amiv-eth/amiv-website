@@ -69,12 +69,18 @@ export default class studydocList {
     const data = [];
     if (this.filter.department.itet || !this.filter.department.mavt) {
       for (let i = 0; i < subjects.itet[this.semester - 1].length; i += 1) {
-        data.push({ id: subjects.itet[this.semester - 1][i], name: subjects.itet[this.semester - 1][i] });
+        data.push({
+          id: subjects.itet[this.semester - 1][i],
+          name: subjects.itet[this.semester - 1][i],
+        });
       }
     }
     if (this.filter.department.mavt || !this.filter.department.itet) {
       for (let i = 0; i < subjects.mavt[this.semester - 1].length; i += 1) {
-        data.push({ id: subjects.mavt[this.semester - 1][i], name: subjects.mavt[this.semester - 1][i] });
+        data.push({
+          id: subjects.mavt[this.semester - 1][i],
+          name: subjects.mavt[this.semester - 1][i],
+        });
       }
     }
     return data;
