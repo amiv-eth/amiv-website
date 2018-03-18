@@ -1,0 +1,22 @@
+{
+    "values": {
+        "AMIV": "AMIV",
+        "Events": "Events",
+        "Studienunterlagen": "Studienunterlagen",
+        "Jobs": "Jobs",
+        "Login": "Login",
+        "Profil": "Profil",
+        "example content": "beispiel Inhalte",
+        "Vorstand": "Vorstand",
+        "Aufenthaltsraum": "Aufenthaltsraum",
+        "Statuten": "Statuten",
+        "Kommissionen": "Kommissionen",
+        "Protokolle": "Protokolle",
+        "language_button": "EN",
+        "event.title": "TItel",
+        "event.start_time": "Start Zeit",
+        "event.signup_count": "Anmeldungen",
+        "event.spots": "Freie Plätze"
+
+    }
+}
