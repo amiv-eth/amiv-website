@@ -17,7 +17,11 @@ const filterNames = {
 };
 
 const subjects = {
-  itet: [[], [], [], [], [], []],
+  itet: [
+    ['Digitaltechnik', 'Analysis 1', 'Netzwerke und Schaltungen 1', 'Informatik 1'],
+    ['Koma'],
+    ['Physics 2'],
+  ],
   mavt: [
     [
       'Analysis 1',
@@ -36,14 +40,6 @@ const subjects = {
 
 const filterNamesDropdown = {
   semester: { 1: '1. Semester', 2: '2. Semester', 3: '3. Semester' },
-};
-const subjects = {
-  itet: [
-    ['Digitaltechnik', 'Analysis 1', 'Netzwerke und Schaltungen 1', 'Informatik 1'],
-    ['Koma'],
-    ['Physics 2'],
-  ],
-  mavt: [['', '', '', '']],
 };
 
 export default class studydocList {
