@@ -1,5 +1,5 @@
 import m from 'mithril';
-import { i18n } from '../../models/language';
+import { i18n, currentLanguage } from '../../models/language';
 import * as events from '../../models/events';
 
 const date = `${new Date().toISOString().split('.')[0]}Z`;
@@ -43,7 +43,14 @@ export default class EventList {
               m('td', event.time_start),
               m('td', event.signup_count),
               m('td', event.spots),
-              m('td', m('a', { href: `/events/${event._id}`, oncreate: m.route.link }, 'Details')),
+              m(
+                'td',
+                m(
+                  'a',
+                  { href: `/${currentLanguage()}/events/${event._id}`, oncreate: m.route.link },
+                  'Details'
+                )
+              ),
             ])
           )
       ),

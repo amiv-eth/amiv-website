@@ -1,8 +1,6 @@
 import m from 'mithril';
 import * as studydocs from '../../models/studydocs';
 import { apiUrl } from '../../models/config';
-import { isLoggedIn } from '../../models/auth';
-import { Error401 } from '../errors';
 import { Button, Checkbox, TextField, Dropdown } from '../../components';
 
 const tableHeadings = ['title', 'type'];
@@ -113,8 +111,6 @@ export default class studydocList {
   }
 
   view() {
-    if (!isLoggedIn()) return m(Error401);
-
     return m('div#studydoc-list', [
       m('div.filter', [
         m(

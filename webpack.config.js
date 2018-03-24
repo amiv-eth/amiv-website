@@ -31,7 +31,7 @@ const config = {
         ],
       },
       {
-        test: /src\/views\/companies\/markdown\/[a-zA-Z\d-]{3,}\.md$/, // Check for all .md files in /companies/markdown
+        test: /src\/views\/companies\/markdown\/[a-zA-Z\d-]{3,}\.[a-z]{2}\.md$/, // Check for all .md files in /companies/markdown
         use: [
           {
             loader: 'file-loader', // Writes the generated HTML to a file
