@@ -1,5 +1,5 @@
 import m from 'mithril';
-import { isLoggedIn, getUsername, login } from '../models/auth';
+import { getUsername, login } from '../models/auth';
 import * as user from '../models/user';
 import * as groups from '../models/groups';
 import inputGroup from './form/inputGroup';
@@ -351,9 +351,6 @@ class groupMemberships {
 // shows all submodules defined above
 export default class profile {
   static oninit() {
-    if (!isLoggedIn()) {
-      m.route.set('/');
-    }
     user.load();
   }
 

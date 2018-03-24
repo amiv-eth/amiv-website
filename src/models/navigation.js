@@ -1,17 +1,22 @@
 import m from 'mithril';
 import { checkLogin, isLoggedIn } from '../models/auth';
+import { currentLanguage } from './language';
 
 const defaultTabs = ['AMIV', 'Events', 'Studienunterlagen', 'Jobs'];
 const tabsLoggedOut = ['Login'];
 const tabsLoggedIn = ['Profile', 'Logout'];
 const tabToUrl = {
-  AMIV: { href: '/', onupdate: m.route.link, index: 0 },
-  Events: { href: '/events', onupdate: m.route.link, index: 1 },
-  Studienunterlagen: { href: '/studydocuments', onupdate: m.route.link, index: 2 },
-  Jobs: { href: '/jobs', onupdate: m.route.link, index: 3 },
-  Login: { href: '/login', onupdate: m.route.link, index: 4 },
-  Profile: { href: '/profile', onupdate: m.route.link, index: 4 },
-  Logout: { href: '/logout', onupdate: m.route.link, index: 5 },
+  AMIV: { href: `/${currentLanguage()}/`, onupdate: m.route.link, index: 0 },
+  Events: { href: `/${currentLanguage()}/events`, onupdate: m.route.link, index: 1 },
+  Studienunterlagen: {
+    href: `/${currentLanguage()}/studydocuments`,
+    onupdate: m.route.link,
+    index: 2,
+  },
+  Jobs: { href: `/${currentLanguage()}/jobs`, onupdate: m.route.link, index: 3 },
+  Login: { href: `/${currentLanguage()}/login`, onupdate: m.route.link, index: 4 },
+  Profile: { href: `/${currentLanguage()}/profile`, onupdate: m.route.link, index: 4 },
+  Logout: { href: `/${currentLanguage()}/logout`, onupdate: m.route.link, index: 5 },
 };
 
 export default class Navigation {

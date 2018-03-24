@@ -1,6 +1,7 @@
 import m from 'mithril';
 import { apiUrl } from '../../models/config';
 import * as jobs from '../../models/joboffers';
+import { currentLanguage } from '../../models/language';
 
 const date = `${new Date().toISOString().split('.')[0]}Z`;
 
@@ -36,7 +37,14 @@ export default class JobOfferList {
                 m('img', { src: `${apiUrl}${job.logo.file}`, width: '150px', alt: job.company })
               ),
               m('td', job.title),
-              m('td', m('a', { href: `/jobs/${job._id}`, oncreate: m.route.link }, 'Details')),
+              m(
+                'td',
+                m(
+                  'a',
+                  { href: `/${currentLanguage()}/jobs/${job._id}`, oncreate: m.route.link },
+                  'Details'
+                )
+              ),
             ])
           )
       ),

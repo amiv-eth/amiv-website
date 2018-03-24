@@ -96,8 +96,6 @@ export default class studydocList {
   }
 
   view() {
-    if (!isLoggedIn()) return m(Error401);
-
     return m('div#studydoc-list', [
       m('div.filter', [
         // create filterview with checkboxes
