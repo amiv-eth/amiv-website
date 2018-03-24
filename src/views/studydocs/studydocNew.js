@@ -131,7 +131,7 @@ export default class studydocNew {
         },
         onchange: e => {
           this.doc.files = e.target.files;
-          if (this.doc.files.length > 0) {
+          if (this.doc.files && this.doc.files.length > 0) {
             this.isValid = true;
           } else {
             this.isValid = false;
