@@ -1,8 +1,8 @@
 import m from 'mithril';
 import { apiUrl } from './config';
 import { getToken, getUserId, isLoggedIn } from './auth';
+import { currentLanguage } from './language';
 
-const lang = 'de';
 const date = `${new Date().toISOString().split('.')[0]}Z`;
 
 let querySaved = '';
@@ -214,8 +214,8 @@ export function load(query = {}) {
     .then(result => {
       this.list = result._items.map(event => {
         const newEvent = Object.assign({}, event);
-        newEvent.title = newEvent[`title_${lang}`];
-        newEvent.description = newEvent[`description_${lang}`];
+        newEvent.title = newEvent[`title_${currentLanguage()}`];
+        newEvent.description = newEvent[`description_${currentLanguage()}`];
         return newEvent;
       });
     });
