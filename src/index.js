@@ -10,6 +10,7 @@ import layout from './views/layout';
 import amivLayout from './views/amiv/amivLayout';
 import frontpage from './views/frontpage';
 import login from './views/login';
+import logout from './views/logout';
 import statuten from './views/amiv/statuten';
 import contact from './views/contact';
 import aufenthaltsraum from './views/amiv/aufenthaltsraum';
@@ -46,6 +47,11 @@ m.route(document.body, '/', {
   '/login': {
     render() {
       return m(layout, m(login));
+    },
+  },
+  '/logout': {
+    render() {
+      return m(layout, m(logout));
     },
   },
   '/amiv/board': {
