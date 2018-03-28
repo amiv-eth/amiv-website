@@ -1,3 +1,4 @@
+import m from 'mithril';
 import i18n from 'i18n4v';
 import german from '../languages/de.json';
 import english from '../languages/en.json';
@@ -38,10 +39,11 @@ function loadLanguage() {
 
 function switchLanguage() {
   if (_currentLanguage === 'en') {
-    changeLanguage('de');
+    _currentLanguage = 'de';
   } else {
-    changeLanguage('en');
+    _currentLanguage = 'en';
   }
+  m.route.set(`/${_currentLanguage}${m.route.get().substring(3)}`);
 }
 
 function currentLanguage() {

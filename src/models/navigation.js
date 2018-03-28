@@ -5,26 +5,29 @@ import { currentLanguage } from './language';
 const defaultTabs = ['AMIV', 'Events', 'Studienunterlagen', 'Jobs'];
 const tabsLoggedOut = ['Login'];
 const tabsLoggedIn = ['Profile', 'Logout'];
-const tabToUrl = {
-  AMIV: { href: `/${currentLanguage()}/`, onupdate: m.route.link, index: 0 },
-  Events: { href: `/${currentLanguage()}/events`, onupdate: m.route.link, index: 1 },
-  Studienunterlagen: {
-    href: `/${currentLanguage()}/studydocuments`,
-    onupdate: m.route.link,
-    index: 2,
-  },
-  Jobs: { href: `/${currentLanguage()}/jobs`, onupdate: m.route.link, index: 3 },
-  Login: { href: `/${currentLanguage()}/login`, onupdate: m.route.link, index: 4 },
-  Profile: { href: `/${currentLanguage()}/profile`, onupdate: m.route.link, index: 4 },
-  Logout: { href: `/${currentLanguage()}/logout`, onupdate: m.route.link, index: 5 },
-};
+
+function tabToUrl() {
+  return {
+    AMIV: { href: `/${currentLanguage()}/`, onupdate: m.route.link, index: 0 },
+    Events: { href: `/${currentLanguage()}/events`, onupdate: m.route.link, index: 1 },
+    Studienunterlagen: {
+      href: `/${currentLanguage()}/studydocuments`,
+      onupdate: m.route.link,
+      index: 2,
+    },
+    Jobs: { href: `/${currentLanguage()}/jobs`, onupdate: m.route.link, index: 3 },
+    Login: { href: `/${currentLanguage()}/login`, onupdate: m.route.link, index: 4 },
+    Profile: { href: `/${currentLanguage()}/profile`, onupdate: m.route.link, index: 4 },
+    Logout: { href: `/${currentLanguage()}/logout`, onupdate: m.route.link, index: 5 },
+  };
+}
 
 export default class Navigation {
   constructor() {
     checkLogin();
     this._wasLoggedIn = isLoggedIn();
     this._selectedTabIndex = 0;
-    Object.values(tabToUrl)
+    Object.values(tabToUrl())
       .filter(tab => m.route.get().includes(tab.href))
       .forEach(tab => {
         this._selectedTabIndex = tab.index;
@@ -50,7 +53,7 @@ export default class Navigation {
     this._tabs.forEach(tab => {
       this._tabOptions.tabs.push({
         label: tab,
-        url: tabToUrl[tab],
+        url: tabToUrl()[tab],
       });
     });
   }
@@ -60,7 +63,7 @@ export default class Navigation {
   }
 
   onupdate() {
-    Object.values(tabToUrl)
+    Object.values(tabToUrl())
       .filter(tab => m.route.get().includes(tab.href))
       .forEach(tab => {
         this._selectedTabIndex = tab.index;
