@@ -36,7 +36,7 @@ export default class studydocList {
     this.doc = {};
   }
 
-  static oninit() {
+  oninit() {
     studydocs.load();
 
     // initialize values for filter
@@ -44,15 +44,12 @@ export default class studydocList {
     this.lecture = 'Fach';
     this.search = '';
   }
-  static selectDocument(doc) {
+
+  selectDocument(doc) {
     this.doc = doc;
   }
 
-  // dynamic lecture data based on selected semester and department
-  static lectureData() {
-    if (!filter.state || !filter.state.department) {
-      return [];
-    }
+  lectureData() {
     const data = [];
     if (filter.state.department.itet || !filter.state.department.mavt) {
       for (let i = 0; i < lecture.itet[this.semester - 1].length; i += 1) {
@@ -73,7 +70,32 @@ export default class studydocList {
     return data;
   }
 
-  static view() {
+  changeFilter(filterKey, filterValue, checked) {
+    this.filter[filterKey][filterValue] = checked;
+    this.updateFilter();
+  }
+
+  updateFilter() {
+    const query = {};
+    Object.keys(this.filter).forEach(key => {
+      let queryValue = '';
+      Object.keys(this.filter[key]).forEach(subKey => {
+        if (this.filter[key][subKey]) {
+          queryValue += `${subKey}|`;
+        }
+      });
+
+      if (queryValue.length > 0) {
+        queryValue = queryValue.substring(0, queryValue.length - 1);
+        query[key] = { $regex: `^(?i).*${queryValue}.*` };
+      }
+    });
+    query.semester = { $regex: `^(?i).*${String(this.semester)}.*` };
+    query.lecture = { $regex: `^(?i).*${this.lecture}.*` };
+    studydocs.load(query);
+  }
+
+  view() {
     if (!isLoggedIn()) return m(Error401);
 
     return m('div#studydoc-list', [
