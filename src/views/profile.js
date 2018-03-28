@@ -4,6 +4,7 @@ import * as user from '../models/user';
 import * as groups from '../models/groups';
 import inputGroup from './form/inputGroup';
 import { Button } from '../components';
+import { i18n } from '../models/language';
 
 // shows all relevant user information
 class showUserInfo {
@@ -12,14 +13,17 @@ class showUserInfo {
 
     if (user.get().membership !== 'none') {
       if (user.get().rfid !== undefined && user.get().rfid.length === 6) {
-        freeBeerNotice = m('div', 'You are allowed to get free beer!');
+        freeBeerNotice = m('div', i18n('profile.free_beer'));
       } else {
-        freeBeerNotice = m('div', 'Set your RFID below to get free beer!');
+        freeBeerNotice = m('div', i18n('profile.set_rfid'));
       }
     }
 
     return m('div', [
-      m('div', [m('span', 'Membership: '), m('span', user.get().membership)]),
+      m('div', [
+        m('span', `${i18n('profile.membership')}: `),
+        m('span', i18n(`${user.get().membership}_member`)),
+      ]),
       freeBeerNotice,
     ]);
   }
@@ -87,12 +91,12 @@ class changePasswordForm {
       buttons = [
         m(Button, {
           ...buttonArgs,
-          label: 'change password',
+          label: i18n('profile.change_password'),
           events: { onclick: () => this.submit() },
         }),
         m(Button, {
           disabled: this.password_old.length === 0,
-          label: 'Revert to LDAP',
+          label: i18n('profile.revert_to_ldap'),
           events: {
             onclick: () => {
               this.password1 = '';
@@ -105,16 +109,16 @@ class changePasswordForm {
     } else {
       buttons = m(Button, {
         ...buttonArgs,
-        label: 'set password',
+        label: i18n('profile.set_password'),
         events: { onclick: () => this.submit() },
       });
     }
 
     return m('div', [
-      m('div', 'Requirements: min 8 characters, upper and lower case letters and numbers'),
+      m('div', i18n('profile.password_requirements')),
       m(inputGroup, {
         name: 'password_old',
-        title: 'Old Password',
+        title: i18n('profile.old_password'),
         type: 'password',
         value: this.password_old,
         oninput: e => {
@@ -124,7 +128,7 @@ class changePasswordForm {
       }),
       m(inputGroup, {
         name: 'password1',
-        title: 'New Password',
+        title: i18n('profile.new_password'),
         type: 'password',
         value: this.password1,
         oninput: e => {
@@ -134,7 +138,7 @@ class changePasswordForm {
       }),
       m(inputGroup, {
         name: 'password2',
-        title: 'Repeat',
+        title: i18n('profile.repeat_password'),
         type: 'password',
         value: this.password2,
         oninput: e => {
@@ -175,7 +179,7 @@ class rfidForm {
     return m('div', [
       m(inputGroup, {
         name: 'rfid',
-        title: 'RFID',
+        title: i18n('profile.rfid'),
         value: this.rfid,
         oninput: e => {
           this.rfid = e.target.value;
@@ -210,7 +214,9 @@ class announceSubscriptionForm {
 
     return m(Button, {
       ...buttonArgs,
-      label: user.get().send_newsletter ? 'unsubscribe from Newsletter' : 'subscribe to Newsletter',
+      label: user.get().send_newsletter
+        ? i18n('profile.newsletter_unsubscribe')
+        : i18n('profile.newsletter_subscribe'),
     });
   }
 }
@@ -230,7 +236,7 @@ class groupMemberships {
     const filterForm = m('div', [
       m(inputGroup, {
         name: 'group_search',
-        title: 'Search groups',
+        title: i18n('profile.search_groups'),
         oninput: e => {
           this.query = e.target.value;
           if (this.query.length > 0) {
@@ -260,7 +266,7 @@ class groupMemberships {
             buttons = [
               m(Button, {
                 ...buttonArgs,
-                label: 'cancel',
+                label: i18n('cancel'),
                 className: 'flat-button',
                 events: {
                   onclick: () => {
@@ -272,7 +278,7 @@ class groupMemberships {
               m('span', ' '),
               m(Button, {
                 ...buttonArgs,
-                label: 'confirm',
+                label: i18n('confirm'),
                 events: {
                   onclick: () => {
                     this.busy[membership.group._id] = true;
@@ -293,7 +299,7 @@ class groupMemberships {
           } else {
             buttons = m(Button, {
               ...buttonArgs,
-              label: 'withdraw',
+              label: i18n('withdraw'),
               events: {
                 onclick: () => {
                   this.confirm[membership.group._id] = true;
@@ -306,7 +312,7 @@ class groupMemberships {
             m('span', membership.group.name),
             membership.expiry === undefined
               ? undefined
-              : m('span', `(expires on ${membership.expiry})`),
+              : m('span', `(${i18n('profile.expire_on', { date: membership.expiry })})`),
             buttons,
           ]);
         })
@@ -341,7 +347,10 @@ class groupMemberships {
           if (this.busy[group._id]) {
             buttonArgs.disabled = true;
           }
-          return m('div', [m('span', group.name), m(Button, { ...buttonArgs, label: 'enroll' })]);
+          return m('div', [
+            m('span', group.name),
+            m(Button, { ...buttonArgs, label: i18n('enroll') }),
+          ]);
         })
       ),
     ]);

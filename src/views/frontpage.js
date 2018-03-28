@@ -1,6 +1,7 @@
 import m from 'mithril';
 import { apiUrl } from '../models/config';
 import * as events from '../models/events';
+import { i18n } from '../models/language';
 
 const date = `${new Date().toISOString().split('.')[0]}Z`;
 
@@ -117,13 +118,13 @@ export default class Frontpage {
 
   view() {
     return m('div#frontpage-container', [
-      m('h2', "What's HOT right now?"),
+      m('h2', i18n('frontpage.whats_hot')),
       m('div.hot-row', this.hot.map((item, index) => renderHotCards(item, index))),
-      m('h2', 'Events'),
+      m('h2', i18n('Events')),
       m('div.frontpage-row', this.events.map(item => renderCards(item))),
       m('h2', 'Jobs'),
       m('div.frontpage-row', this.jobs.map(item => renderCards(item))),
-      m('h2', 'Join us on social media!'),
+      m('h2', i18n('frontpage.social_media')),
       m('div.frontpage-row', [
         renderFacebookCard(this.facebook),
         renderInstagramCard(this.instagram),
