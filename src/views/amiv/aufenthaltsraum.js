@@ -1,9 +1,6 @@
 import m from 'mithril';
 
-//  Link welcher zur Registrierung des Kaffe- und Bierautomaten.
-function getLink() {
-  return ' https://www.amiv.ethz.ch/dienste/rfid-register';
-}
+const rfidLink = 'https://www.amiv.ethz.ch/dienste/rfid-register';
 
 module.exports = {
   view() {
@@ -54,7 +51,7 @@ module.exports = {
       ]),
       m('pre', [
         '*= Für den Gratisbezug von Bier und Kaffee ist eine einmalige Registrierung der Legi nötig. Diese kann ',
-        m('a', { href: getLink() }, 'hier'),
+        m('a', { href: rfidLink }, 'hier'),
         ' einfach online getätigt werden.',
       ]),
       m('h4', 'Zugang'),
