@@ -47,7 +47,7 @@ export default class studydocList {
     this.doc = {};
   }
 
-  static oninit() {
+  oninit() {
     studydocs.load();
     this.semester = 1;
     this.lecture = 'Fach';
@@ -61,11 +61,12 @@ export default class studydocList {
       this.filter[key] = filterValue;
     });
   }
-  static selectDocument(doc) {
+
+  selectDocument(doc) {
     this.doc = doc;
   }
 
-  static lectureData() {
+  lectureData() {
     const data = [];
     if (this.filter.department.itet || !this.filter.department.mavt) {
       for (let i = 0; i < subjects.itet[this.semester - 1].length; i += 1) {
@@ -86,12 +87,12 @@ export default class studydocList {
     return data;
   }
 
-  static changeFilter(filterKey, filterValue, checked) {
+  changeFilter(filterKey, filterValue, checked) {
     this.filter[filterKey][filterValue] = checked;
     this.updateFilter();
   }
 
-  static updateFilter() {
+  updateFilter() {
     const query = {};
     Object.keys(this.filter).forEach(key => {
       let queryValue = '';
@@ -111,7 +112,7 @@ export default class studydocList {
     studydocs.load(query);
   }
 
-  static view() {
+  view() {
     if (!isLoggedIn()) return m(Error401);
 
     return m('div#studydoc-list', [
