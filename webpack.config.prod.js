@@ -1,5 +1,5 @@
-import { optimize } from 'webpack';
-import CompressionPlugin from 'compression-webpack-plugin';
+const webpack = require('webpack');
+const CompressionPlugin = require('compression-webpack-plugin');
 
 const config = {
   context: `${__dirname}/src`, // `__dirname` is root of project and `src` is source
@@ -31,12 +31,42 @@ const config = {
           options: { presets: ['env'] },
         }],
       },
+      {
+        test: /src\/views\/companies\/markdown\/[a-zA-Z\d-]{3,}\.md$/, // Check for all .md files in /companies/markdown
+        use: [
+          {
+            loader: 'file-loader', // Writes the generated HTML to a file
+            options: {
+              name: '[name].html',
+              outputPath: 'companies/',
+              publicPath: 'dist/companies/',
+            },
+          },
+          {
+            loader: 'markdown-loader', // Converts Markdown to HTML
+          },
+        ],
+      },
+      {
+        test: /\.less$/,
+        use: [
+          {
+            loader: 'style-loader', // creates style nodes from JS strings
+          },
+          {
+            loader: 'css-loader', // translates CSS into CommonJS
+          },
+          {
+            loader: 'less-loader', // compiles Less to CSS
+          },
+        ],
+      },
     ],
   },
 
   plugins: [
-    new optimize.UglifyJsPlugin(),
-    new optimize.AggressiveMergingPlugin(),
+    new webpack.optimize.UglifyJsPlugin(),
+    new webpack.optimize.AggressiveMergingPlugin(),
     new CompressionPlugin({
       asset: '[path].gz[query]',
       algorithm: 'gzip',
@@ -49,4 +79,4 @@ const config = {
   devtool: '', // No source map for production build
 };
 
-export default config;
+module.exports = config;
