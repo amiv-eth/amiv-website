@@ -31,10 +31,82 @@ if (verbose !== true) {
   m.route.prefix('');
 }
 
-function onmatch(args, requestedPath, component) {
+// routes which require authentication
+const routesAuth = [
+  {
+    url: '/:language/studydocuments',
+    view: () => m(studydocList),
+  },
+  {
+    url: '/:language/studydocuments/new',
+    view: () => m(studydocNew),
+  },
+  {
+    url: '/:language/profile',
+    view: vnode => m(profile, vnode.attrs),
+  },
+];
+
+// routes without restrictions
+const routes = [
+  {
+    url: '/:language',
+    view: () => m(amivLayout, m(frontpage)),
+  },
+  {
+    url: '/:language/amiv/statuten',
+    view: () => m(amivLayout, m(statuten)),
+  },
+  {
+    url: '/:language/amiv/board',
+    view: () => m(amivLayout, m(board)),
+  },
+  {
+    url: '/:language/amiv/aufenthaltsraum',
+    view: () => m(amivLayout, m(aufenthaltsraum)),
+  },
+  {
+    url: '/:language/contact',
+    view: () => m(contact),
+  },
+  {
+    url: '/:language/login',
+    view: () => m(login),
+  },
+  {
+    url: '/:language/logout',
+    view: () => m(logout),
+  },
+  {
+    url: '/:language/events',
+    view: () => m(eventList),
+  },
+  {
+    url: '/:language/events/:eventId',
+    view: vnode => m(eventDetails, vnode.attrs),
+  },
+  {
+    url: '/:language/jobs',
+    view: () => m(jobOfferList),
+  },
+  {
+    url: '/:language/jobs/:jobId',
+    view: vnode => m(jobOfferDetails, vnode.attrs),
+  },
+  {
+    url: '/:language/companies',
+    view: () => m(companyList),
+  },
+  {
+    url: '/:language/companies/:companyId',
+    view: vnode => m(companyDetail, vnode.attrs),
+  },
+];
+
+function onmatch(args, route) {
   if (isLanguageValid(args.language)) {
     changeLanguage(args.language);
-    return component;
+    return { view: vnode => m(layout, route.view(vnode)) };
   }
   return {
     view() {
@@ -42,171 +114,40 @@ function onmatch(args, requestedPath, component) {
     },
   };
 }
-function onmatchAuthenticated(args, requestedPath, component) {
-  if (!isLoggedIn()) {
-    // m.route.set(`/${currentLanguage()}/login`);
-    return {
-      view() {
-        return m(layout, m(Error401));
+
+function generateRoutes() {
+  const result = {
+    '/': {
+      onmatch() {
+        m.route.set(`/${currentLanguage()}/`);
+      },
+    },
+  };
+
+  routes.forEach(r => {
+    result[r.url] = {
+      onmatch: args => onmatch(args, r),
+    };
+  });
+
+  routesAuth.forEach(r => {
+    result[r.url] = {
+      onmatch(args) {
+        if (!isLoggedIn()) {
+          // m.route.set(`/${currentLanguage()}/login`);
+          return {
+            view() {
+              return m(layout, m(Error401));
+            },
+          };
+        }
+
+        return onmatch(args, r);
       },
     };
-  }
-  return onmatch(args, requestedPath, component);
+  });
+
+  m.route(document.body, '/', result);
 }
 
-m.route(document.body, '/', {
-  '/': {
-    onmatch() {
-      m.route.set(`/${currentLanguage()}/`);
-    },
-  },
-  '/:language': {
-    onmatch(args, requestedPath) {
-      return onmatch(args, requestedPath, {
-        view() {
-          return m(layout, m(amivLayout, m(frontpage)));
-        },
-      });
-    },
-  },
-  '/:language/amiv/statuten': {
-    onmatch(args, requestedPath) {
-      return onmatch(args, requestedPath, {
-        view() {
-          return m(layout, m(amivLayout, m(statuten)));
-        },
-      });
-    },
-  },
-  '/:language/contact': {
-    onmatch(args, requestedPath) {
-      return onmatch(args, requestedPath, {
-        view() {
-          return m(layout, m(contact));
-        },
-      });
-    },
-  },
-  '/:language/amiv/aufenthaltsraum': {
-    onmatch(args, requestedPath) {
-      return onmatch(args, requestedPath, {
-        view() {
-          return m(layout, m(amivLayout, m(aufenthaltsraum)));
-        },
-      });
-    },
-  },
-  '/:language/login': {
-    onmatch(args, requestedPath) {
-      return onmatch(args, requestedPath, {
-        view() {
-          return m(layout, m(login));
-        },
-      });
-    },
-  },
-  '/:language/logout': {
-    onmatch(args, requestedPath) {
-      return onmatch(args, requestedPath, {
-        view() {
-          return m(layout, m(logout));
-        },
-      });
-    },
-  },
-  '/:language/amiv/board': {
-    onmatch(args, requestedPath) {
-      return onmatch(args, requestedPath, {
-        view() {
-          return m(layout, m(amivLayout, m(board)));
-        },
-      });
-    },
-  },
-  '/:language/studydocuments': {
-    onmatch(args, requestedPath) {
-      return onmatchAuthenticated(args, requestedPath, {
-        view() {
-          return m(layout, m(studydocList));
-        },
-      });
-    },
-  },
-  '/:language/studydocuments/new': {
-    onmatch(args, requestedPath) {
-      return onmatchAuthenticated(args, requestedPath, {
-        view() {
-          return m(layout, m(studydocNew));
-        },
-      });
-    },
-  },
-  '/:language/events': {
-    onmatch(args, requestedPath) {
-      return onmatch(args, requestedPath, {
-        view() {
-          return m(layout, m(eventList));
-        },
-      });
-    },
-  },
-  '/:language/events/:eventId': {
-    onmatch(args, requestedPath) {
-      return onmatch(args, requestedPath, {
-        view(vnode) {
-          return m(layout, m(eventDetails, vnode.attrs));
-        },
-      });
-    },
-  },
-  '/:language/jobs': {
-    onmatch(args, requestedPath) {
-      return onmatch(args, requestedPath, {
-        view() {
-          return m(layout, m(jobOfferList));
-        },
-      });
-    },
-  },
-  '/:language/jobs/:jobId': {
-    onmatch(args, requestedPath) {
-      return onmatch(args, requestedPath, {
-        view(vnode) {
-          return m(layout, m(jobOfferDetails, vnode.attrs));
-        },
-      });
-    },
-  },
-  '/:language/profile': {
-    onmatch(args, requestedPath) {
-      return onmatchAuthenticated(args, requestedPath, {
-        view(vnode) {
-          return m(layout, m(profile, vnode.attrs));
-        },
-      });
-    },
-  },
-  '/:language/companies': {
-    onmatch(args, requestedPath) {
-      return onmatch(args, requestedPath, {
-        view() {
-          return m(layout, m(companyList));
-        },
-      });
-    },
-  },
-  '/:language/companies/:companyId': {
-    onmatch(args, requestedPath) {
-      return onmatch(args, requestedPath, {
-        view(vnode) {
-          return m(layout, m(companyDetail, vnode.attrs));
-        },
-      });
-    },
-  },
-  '/:404...': {
-    view() {
-      return m(layout, m(Error404));
-    },
-  },
-});
+generateRoutes();

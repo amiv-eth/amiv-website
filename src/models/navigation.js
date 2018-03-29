@@ -1,6 +1,6 @@
 import m from 'mithril';
 import { checkLogin, isLoggedIn } from '../models/auth';
-import { currentLanguage } from './language';
+import { currentLanguage, i18n } from './language';
 
 const defaultTabs = ['AMIV', 'Events', 'Studienunterlagen', 'Jobs'];
 const tabsLoggedOut = ['Login'];
@@ -52,7 +52,7 @@ export default class Navigation {
     this._tabOptions.tabs = [];
     this._tabs.forEach(tab => {
       this._tabOptions.tabs.push({
-        label: tab,
+        label: i18n(tab),
         url: tabToUrl()[tab],
       });
     });
