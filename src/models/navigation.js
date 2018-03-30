@@ -22,6 +22,11 @@ function tabToUrl() {
   };
 }
 
+/**
+ * Navigation model to store the current state of the main navigation.
+ *
+ * @return {Navigation} Navigation state model
+ */
 export default class Navigation {
   constructor() {
     checkLogin();

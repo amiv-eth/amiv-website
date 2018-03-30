@@ -4,6 +4,25 @@ import { RadioGroup } from 'polythene-mithril';
 
 // RadioGroupCSS.addStyle('', {})
 
+/**
+ * Generic RadioGroup component
+ *
+ * Attributes:
+ *
+ *   - `buttons` list of radio button options
+ *   - `name` field name
+ *   - `className` *optional*
+ *   - `onChange` *optional*
+ *
+ * Examples:
+ *
+ *     m(RadioGroupComponent, {
+ *         buttons: ['Option 1', 'Option 2'],
+ *         name: 'optionName',
+ *     })
+ *
+ * @return {RadioGroupComponent} generic checkbox as mithril component.
+ */
 export default class RadioGroupComponent {
   constructor() {
     this.defaultProps = {
