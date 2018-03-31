@@ -26,10 +26,12 @@ const config = {
       {
         test: /\.js$/, // Check for all js files
         exclude: /node_modules/,
-        use: [{
-          loader: 'babel-loader',
-          options: { presets: ['env'] },
-        }],
+        use: [
+          {
+            loader: 'babel-loader',
+            options: { presets: ['env'] },
+          },
+        ],
       },
       {
         test: /src\/views\/companies\/markdown\/[a-zA-Z\d-]{3,}\.[a-z]{2}\.md$/, // Check for all .md files in /companies/markdown

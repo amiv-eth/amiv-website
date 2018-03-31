@@ -44,6 +44,14 @@ const config = {
           {
             loader: 'markdown-loader', // Converts Markdown to HTML
           },
+          {
+            loader: 'string-replace-loader', // Adds /#! prefix to local urls
+            options: {
+              search: '\[(.*)\]\(\/(.*)\)',
+              replace: '(/#!$1',
+              flags: 'g',
+            },
+          },
         ],
       },
       {
