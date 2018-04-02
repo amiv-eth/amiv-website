@@ -1,5 +1,5 @@
 import m from 'mithril';
-import { i18n } from '../../models/language';
+import { i18n, currentLanguage } from '../../models/language';
 
 module.exports = {
   view(vnode) {
@@ -10,7 +10,7 @@ module.exports = {
           m(
             'a',
             {
-              href: '/amiv/board',
+              href: `/${currentLanguage()}/amiv/board`,
               oncreate: m.route.link,
             },
             i18n('Vorstand')
@@ -21,10 +21,10 @@ module.exports = {
           m(
             'a',
             {
-              href: '/amiv/aufenthaltsraum',
+              href: `/${currentLanguage()}/amiv/about`,
               oncreate: m.route.link,
             },
-            i18n('Aufenthaltsraum')
+            i18n('About AMIV')
           )
         ),
         m(
@@ -32,7 +32,7 @@ module.exports = {
           m(
             'a',
             {
-              href: '/amiv/statuten',
+              href: `/${currentLanguage()}/amiv/statutes`,
               oncreate: m.route.link,
             },
             i18n('Statuten')
@@ -43,7 +43,7 @@ module.exports = {
           m(
             'a',
             {
-              href: '/amiv/comissions',
+              href: `/${currentLanguage()}/amiv/commissions`,
               oncreate: m.route.link,
             },
             i18n('Kommissionen')

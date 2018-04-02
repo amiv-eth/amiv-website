@@ -1,5 +1,5 @@
 // lecture names sorted by department and semester
-export const lecture = {
+export const lectures = {
   itet: [
     ['Digitaltechnik', 'Analysis 1', 'Netzwerke und Schaltungen 1', 'Informatik 1'],
     ['Koma'],
