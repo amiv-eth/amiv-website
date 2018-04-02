@@ -14,10 +14,11 @@ import amivLayout from './views/amiv/amivLayout';
 import frontpage from './views/frontpage';
 import login from './views/login';
 import logout from './views/logout';
-import statuten from './views/amiv/statuten';
+import statutes from './views/amiv/statutes';
 import contact from './views/contact';
 import aufenthaltsraum from './views/amiv/aufenthaltsraum';
 import board from './views/amiv/board';
+import commissions from './views/amiv/commissions';
 import jobOfferList from './views/jobs/jobofferList';
 import jobOfferDetails from './views/jobs/jobofferDetails';
 import companyList from './views/companies/companyList';
@@ -54,12 +55,16 @@ const routes = [
     view: () => m(amivLayout, m(frontpage)),
   },
   {
-    url: '/:language/amiv/statuten',
-    view: () => m(amivLayout, m(statuten)),
+    url: '/:language/amiv/statutes',
+    view: () => m(amivLayout, m(statutes)),
   },
   {
     url: '/:language/amiv/board',
     view: () => m(amivLayout, m(board)),
+  },
+  {
+    url: '/:language/amiv/commissions',
+    view: () => m(amivLayout, m(commissions)),
   },
   {
     url: '/:language/amiv/aufenthaltsraum',

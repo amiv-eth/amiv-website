@@ -47,9 +47,46 @@ const config = {
           {
             loader: 'string-replace-loader', // Adds /#! prefix to local urls
             options: {
-              search: '\[(.*)\]\(\/(.*)\)',
+              search: '\[(.*)\]\((\/(?!dist).*)\)',
               replace: '(/#!$1',
               flags: 'g',
+            },
+          },
+        ],
+      },
+      {
+        test: /src\/views\/amiv\/markdown\/[a-zA-Z\d-]{3,}\.[a-z]{2}\.md$/, // Check for all .md files in /amiv/markdown
+        use: [
+          {
+            loader: 'file-loader', // Writes the generated HTML to a file
+            options: {
+              name: '[name].html',
+              outputPath: 'amiv/',
+              publicPath: 'dist/amiv/',
+            },
+          },
+          {
+            loader: 'markdown-loader', // Converts Markdown to HTML
+          },
+          {
+            loader: 'string-replace-loader', // Adds /#! prefix to local urls
+            options: {
+              search: '\[(.*)\]\((\/(?!dist).*)\)',
+              replace: '(/#!$1',
+              flags: 'g',
+            },
+          },
+        ],
+      },
+      {
+        test: /src\/views\/amiv\/html\/[a-zA-Z\d-]{3,}\.html$/, // Check for all .html files in /amiv/html
+        use: [
+          {
+            loader: 'file-loader', // Writes the generated HTML to a file
+            options: {
+              name: '[name].html',
+              outputPath: 'amiv/',
+              publicPath: 'dist/amiv/',
             },
           },
         ],
@@ -65,6 +102,20 @@ const config = {
           },
           {
             loader: 'less-loader', // compiles Less to CSS
+          },
+        ],
+      },
+      {
+        test: /\.(png|jp(e*)g|svg)$/,
+        use: [
+          {
+            loader: 'url-loader',
+            options: {
+              limit: 8000, // Convert images < 8kb to base64 strings
+              name: '[name].[ext]',
+              outputPath: 'images/',
+              publicPath: 'dist/images/',
+            },
           },
         ],
       },
