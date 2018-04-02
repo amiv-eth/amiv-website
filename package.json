@@ -47,6 +47,7 @@
     "eslint-config-prettier": "^2.9.0",
     "eslint-plugin-prettier": "^2.6.0",
     "file-loader": "^1.1.11",
+    "url-loader": "^1.0.1",
     "less": "^3.0.1",
     "less-loader": "^4.1.0",
     "markdown-loader": "^2.0.2",
