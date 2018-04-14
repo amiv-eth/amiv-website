@@ -3,7 +3,7 @@ import * as studydocs from '../../models/studydocs';
 import { apiUrl } from '../../models/config';
 import { isLoggedIn } from '../../models/auth';
 import { Error401 } from '../errors';
-import { Button, FilterView } from '../../components';
+import { Button, FilterView, Dropdown } from '../../components';
 import { lecture } from '../studydocs/lecture';
 
 const tableHeadings = ['title', 'type'];
@@ -81,7 +81,7 @@ export default class studydocList {
   */
 
   static view() {
-    if (!isLoggedIn()) return m(Error401);
+    // if (!isLoggedIn()) return m(Error401);
 
     return m('div#studydoc-list', [
       m('div.filter', [
@@ -92,48 +92,6 @@ export default class studydocList {
           filterNames: filterStudyDocs,
           onloadDoc: query => studydocs.load(query),
         }),
-
-        /* m(
-          'form',
-          {
-            onsubmit: e => {
-              e.preventDefault();
-              const query = {
-                $or: [
-                  { title: { $regex: `^(?i).*${this.search}.*` } },
-                  { lecture: { $regex: `^(?i).*${this.search}.*` } },
-                  { professor: { $regex: `^(?i).*${this.search}.*` } },
-                  { author: { $regex: `^(?i).*${this.search}.*` } },
-                ],
-              };
-              studydocs.load(query);
-            },
-          },
-          [
-            m(
-              TextField,
-              {
-                label: 'Enter search...',
-                onChange: state => {
-                  this.search = state.value;
-                },
-              },
-              ''
-            ),
-            m(Button, { label: 'Search' }),
-          ]
-        ),
-
-        Object.keys(filterStudyDocs).map(key =>
-          m('div.check', [
-            Object.keys(filterStudyDocs[key]).map(subKey =>
-              m(Checkbox, {
-                label: filterStudyDocs[key][subKey],
-                onChange: state => this.changeFilter(key, subKey, state.checked),
-              })
-            ),
-          ])
-        ),
         m('div.drop', [
           m(Dropdown, {
             data: [
@@ -144,23 +102,23 @@ export default class studydocList {
               { id: 5, name: '5. Semester' },
               { id: 6, name: '6. Semester' },
             ],
-            onchange: event => {
-              this.semester = event.target.value;
-              this.updateFilter();
-            },
+            // onchange: event => {
+            //   // this.semester = event.target.value;
+            //   // this.updateFilter();
+            // },
           }),
-          m(Dropdown, {
-            data: this.lectureData(),
-            onchange: event => {
-              this.lecture = event.target.value;
-              this.updateFilter();
-            },
-          }),
+          // m(Dropdown, {
+          //   // data: this.lectureData(),
+          //   // onchange: event => {
+          //   //   // this.lecture = event.target.value;
+          //   //   // this.updateFilter();
+          //   // },
+          // }),
         ]),
-        m(Button, {
-          label: 'Add new',
-          events: { onclick: () => m.route.set('/studydocuments/new') },
-        }), */
+        // m(Button, {
+        //   label: 'Add new',
+        //   events: { onclick: () => m.route.set('/studydocuments/new') },
+        // }),
       ]),
       m('div.content', [
         m('div.content-grid', [
