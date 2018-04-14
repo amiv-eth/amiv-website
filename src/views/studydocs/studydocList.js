@@ -3,17 +3,28 @@ import { apiUrl } from 'config';
 import * as studydocs from '../../models/studydocs';
 import { isLoggedIn } from '../../models/auth';
 import { Error401 } from '../errors';
-import { Button, FilterView } from '../../components';
+import { Button, FilterView, Dropdown } from '../../components';
 import { lecture } from '../studydocs/lecture';
+import * as Filter from '../../models/Filter';
 
 const tableHeadings = ['title', 'type'];
-const filterStudyDocs = {
+const filterStudyDocsCheck = {
   department: { itet: 'D-ITET', mavt: 'D-MAVT' },
   type: {
     'cheat sheet': 'Zusammenfassung',
     exams: 'Alte Prüfungen',
     'lecture documents': 'Unterichts Unterlagen',
     exercies: 'Übungsserien',
+  },
+};
+const filterStudyDocsDrop = {
+  semester: {
+    1: '1. Semester',
+    2: '2. Semester',
+    3: '3. Semester',
+    4: '4. Semester',
+    5: '5. Semester',
+    6: '6. Semester',
   },
 };
 
@@ -34,9 +45,12 @@ export default class studydocList {
     this.doc = doc;
   }
 
-  lectureData() {
+  static lectureData() {
+    if (!Filter.filter || !Filter.filter.department) {
+      return [];
+    }
     const data = [];
-    if (this.filter.department.itet || !this.filter.department.mavt) {
+    if (Filter.filter.department.itet || !Filter.filter.department.mavt) {
       for (let i = 0; i < lecture.itet[this.semester - 1].length; i += 1) {
         data.push({
           id: lecture.itet[this.semester - 1][i],
@@ -44,7 +58,7 @@ export default class studydocList {
         });
       }
     }
-    if (this.filter.department.mavt || !this.filter.department.itet) {
+    if (Filter.filter.department.mavt || !Filter.filter.department.itet) {
       for (let i = 0; i < lecture.mavt[this.semester - 1].length; i += 1) {
         data.push({
           id: lecture.mavt[this.semester - 1][i],
@@ -81,58 +95,19 @@ export default class studydocList {
   }
   */
 
-  view() {
+  static view() {
+    if (!isLoggedIn()) return m(Error401);
+
     return m('div#studydoc-list', [
       m('div.filter', [
         m(FilterView, {
           searchField: true,
           onsearch: () => alert('your search: '),
           checkbox: true,
-          filterNames: filterStudyDocs,
+          filterDrop: filterStudyDocsDrop,
+          filterCheck: filterStudyDocsCheck,
           onloadDoc: query => studydocs.load(query),
         }),
-
-        /* m(
-          'form',
-          {
-            onsubmit: e => {
-              e.preventDefault();
-              const query = {
-                $or: [
-                  { title: { $regex: `^(?i).*${this.search}.*` } },
-                  { lecture: { $regex: `^(?i).*${this.search}.*` } },
-                  { professor: { $regex: `^(?i).*${this.search}.*` } },
-                  { author: { $regex: `^(?i).*${this.search}.*` } },
-                ],
-              };
-              studydocs.load(query);
-            },
-          },
-          [
-            m(
-              TextField,
-              {
-                label: 'Enter search...',
-                onChange: state => {
-                  this.search = state.value;
-                },
-              },
-              ''
-            ),
-            m(Button, { label: 'Search' }),
-          ]
-        ),
-
-        Object.keys(filterStudyDocs).map(key =>
-          m('div.check', [
-            Object.keys(filterStudyDocs[key]).map(subKey =>
-              m(Checkbox, {
-                label: filterStudyDocs[key][subKey],
-                onChange: state => this.changeFilter(key, subKey, state.checked),
-              })
-            ),
-          ])
-        ),
         m('div.drop', [
           m(Dropdown, {
             data: [
@@ -144,22 +119,19 @@ export default class studydocList {
               { id: 6, name: '6. Semester' },
             ],
             onchange: event => {
+              Filter.changeFilter('semester', this.semester, false);
               this.semester = event.target.value;
-              this.updateFilter();
+              Filter.changeFilter('semester', this.semester, true);
             },
           }),
           m(Dropdown, {
             data: this.lectureData(),
             onchange: event => {
               this.lecture = event.target.value;
-              this.updateFilter();
+              Filter.changeFilter('semester', this.lecture, true);
             },
           }),
         ]),
-        m(Button, {
-          label: 'Add new',
-          events: { onclick: () => m.route.set('/studydocuments/new') },
-        }), */
       ]),
       m('div.content', [
         m('div.content-grid', [
