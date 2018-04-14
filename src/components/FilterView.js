@@ -1,5 +1,6 @@
 import m from 'mithril';
 import { Button, Checkbox, TextField } from '../components';
+import * as Filter from '../models/Filter';
 
 export default class FilterViewComponent {
   constructor() {
@@ -7,41 +8,17 @@ export default class FilterViewComponent {
     this.search = '';
     this.defaultProps = {};
   }
-  changeFilter(filterKey, filterValue, checked) {
-    this.filter[filterKey][filterValue] = checked;
-    this.updateFilter();
-  }
-
-  updateFilter() {
-    const query = {};
-    Object.keys(this.filter).forEach(key => {
-      let queryValue = '';
-      Object.keys(this.filter[key]).forEach(subKey => {
-        if (this.filter[key][subKey]) {
-          queryValue += `${subKey}|`;
-        }
-      });
-
-      if (queryValue.length > 0) {
-        queryValue = queryValue.substring(0, queryValue.length - 1);
-        query[key] = { $regex: `^(?i).*${queryValue}.*` };
-      }
-    });
-    query.semester = { $regex: `^(?i).*${String(this.semester)}.*` };
-    query.lecture = { $regex: `^(?i).*${this.lecture}.*` };
-    this.onloadDoc(query);
-  }
 
   view(vnode) {
     this.filterNames = vnode.attrs.filterNames;
-    this.filter = {};
+    Filter.filter = {};
     this.onloadDoc = vnode.attrs.onloadDoc;
     Object.keys(this.filterNames).forEach(key => {
       const filterValue = {};
       Object.keys(this.filterNames[key]).forEach(subKey => {
         filterValue[subKey] = false;
       });
-      this.filter[key] = filterValue;
+      Filter.filter[key] = filterValue;
     });
     return [
       /*
@@ -81,7 +58,7 @@ export default class FilterViewComponent {
                 Object.keys(this.filterNames[key]).map(subKey =>
                   m(Checkbox, {
                     label: this.filterNames[key][subKey],
-                    onChange: state => this.changeFilter(key, subKey, state.checked),
+                    onChange: state => Filter.changeFilter(key, subKey, state.checked),
                   })
                 ),
               ])
