@@ -2,7 +2,6 @@
 export const filter = {};
 
 export function changeFilter(filterKey, filterValue, checked) {
-  console.log(this.filter);
   this.filter[filterKey][filterValue] = checked;
   const query = {};
   Object.keys(this.filter).forEach(key => {
@@ -19,5 +18,6 @@ export function changeFilter(filterKey, filterValue, checked) {
   });
   query.semester = { $regex: `^(?i).*${String(this.semester)}.*` };
   query.lecture = { $regex: `^(?i).*${this.lecture}.*` };
-  this.onloadDoc(query);
+  // this.onloadDoc(query);
+  console.log(this.filter);
 }
