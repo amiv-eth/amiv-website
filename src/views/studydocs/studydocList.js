@@ -96,7 +96,7 @@ export default class studydocList {
   */
 
   static view() {
-    //  if (!isLoggedIn()) return m(Error401);
+    if (!isLoggedIn()) return m(Error401);
 
     return m('div#studydoc-list', [
       m('div.filter', [
