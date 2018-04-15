@@ -10,16 +10,24 @@ export default class FilterViewComponent {
   }
 
   view(vnode) {
-    this.filterNames = vnode.attrs.filterNames;
-    Filter.filter = {};
-    this.onloadDoc = vnode.attrs.onloadDoc;
-    Object.keys(this.filterNames).forEach(key => {
-      const filterValue = {};
-      Object.keys(this.filterNames[key]).forEach(subKey => {
-        filterValue[subKey] = false;
-      });
-      Filter.filter[key] = filterValue;
+    this.filterNames = {};
+    Object.keys(vnode.attrs.filterCheck).forEach(key => {
+      this.filterNames[key] = vnode.attrs.filterCheck[key];
     });
+    Object.keys(vnode.attrs.filterDrop).forEach(key => {
+      this.filterNames[key] = vnode.attrs.filterDrop[key];
+    });
+    this.onloadDoc = vnode.attrs.onloadDoc;
+    if (Object.keys(Filter.filter).length === 0) {
+      Filter.filter = {};
+      Object.keys(this.filterNames).forEach(key => {
+        const filterValue = {};
+        Object.keys(this.filterNames[key]).forEach(subKey => {
+          filterValue[subKey] = false;
+        });
+        Filter.filter[key] = filterValue;
+      });
+    }
     return [
       /*
           Attributes:
@@ -51,13 +59,13 @@ export default class FilterViewComponent {
     - check boxes: whether filter has a check boxes lists
 */
 
-      vnode.attrs.checkbox && this.filterNames
+      vnode.attrs.checkbox && vnode.attrs.filterCheck
         ? [
-            Object.keys(this.filterNames).map(key =>
+            Object.keys(vnode.attrs.filterCheck).map(key =>
               m('div.check', [
-                Object.keys(this.filterNames[key]).map(subKey =>
+                Object.keys(vnode.attrs.filterCheck[key]).map(subKey =>
                   m(Checkbox, {
-                    label: this.filterNames[key][subKey],
+                    label: vnode.attrs.filterCheck[key][subKey],
                     onChange: state => Filter.changeFilter(key, subKey, state.checked),
                   })
                 ),
