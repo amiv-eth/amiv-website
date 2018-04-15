@@ -5,7 +5,7 @@ import { isLoggedIn } from '../../models/auth';
 import { Error401 } from '../errors';
 import { Button, FilterView, Dropdown } from '../../components';
 import { lecture } from '../studydocs/lecture';
-import * as Filter from '../../models/Filter';
+import * as filter from '../../models/filter';
 
 const tableHeadings = ['title', 'type'];
 // define filters for check boxes
@@ -38,6 +38,8 @@ export default class studydocList {
 
   oninit() {
     studydocs.load();
+
+    // initialize values for filter
     this.semester = 1;
     this.lecture = 'Fach';
     this.search = '';
@@ -47,12 +49,13 @@ export default class studydocList {
     this.doc = doc;
   }
 
+  // dynamic lecture data based on selected semester and department
   static lectureData() {
-    if (!Filter.filter || !Filter.filter.department) {
+    if (!filter.state || !filter.state.department) {
       return [];
     }
     const data = [];
-    if (Filter.filter.department.itet || !Filter.filter.department.mavt) {
+    if (filter.state.department.itet || !filter.state.department.mavt) {
       for (let i = 0; i < lecture.itet[this.semester - 1].length; i += 1) {
         data.push({
           id: lecture.itet[this.semester - 1][i],
@@ -60,7 +63,7 @@ export default class studydocList {
         });
       }
     }
-    if (Filter.filter.department.mavt || !Filter.filter.department.itet) {
+    if (filter.state.department.mavt || !filter.state.department.itet) {
       for (let i = 0; i < lecture.mavt[this.semester - 1].length; i += 1) {
         data.push({
           id: lecture.mavt[this.semester - 1][i],
@@ -72,10 +75,11 @@ export default class studydocList {
   }
 
   static view() {
-    if (!isLoggedIn()) return m(Error401);
+    //if (!isLoggedIn()) return m(Error401);
 
     return m('div#studydoc-list', [
       m('div.filter', [
+        // create filterview with checkboxes
         m(FilterView, {
           searchField: true,
           onsearch: () => alert('your search: '),
@@ -84,6 +88,7 @@ export default class studydocList {
           filterCheck: filterStudyDocsCheck,
           onloadDoc: query => studydocs.load(query),
         }),
+        // add aditional dropdowns for semester and lecture
         m('div.drop', [
           m(Dropdown, {
             data: [
@@ -95,20 +100,21 @@ export default class studydocList {
               { id: 6, name: '6. Semester' },
             ],
             onchange: event => {
-              Filter.changeFilter('semester', this.semester, false);
+              filter.changeFilter('semester', this.semester, false);
               this.semester = event.target.value;
-              Filter.changeFilter('semester', this.semester, true);
+              filter.changeFilter('semester', this.semester, true);
             },
           }),
           m(Dropdown, {
             data: this.lectureData(),
             onchange: event => {
               this.lecture = event.target.value;
-              Filter.changeFilter('semester', this.lecture, true);
+              filter.changeFilter('semester', this.lecture, true);
             },
           }),
         ]),
       ]),
+      // filtered content view
       m('div.content', [
         m('div.content-grid', [
           tableHeadings.map(header => m('div.list-header', header)),
@@ -120,6 +126,7 @@ export default class studydocList {
             ]),
         ]),
       ]),
+      // detail view of selected studydoc item
       this.doc
         ? m('div.details', [
             m('table', [

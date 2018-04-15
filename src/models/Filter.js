@@ -1,13 +1,16 @@
 // handles all filter functions
-export const filter = {};
+export const state = {};
 
+// set filter-state at key,value with checked
 export function changeFilter(filterKey, filterValue, checked) {
-  this.filter[filterKey][filterValue] = checked;
+  this.state[filterKey][filterValue] = checked;
+
+  // get right query for filter-state
   const query = {};
-  Object.keys(this.filter).forEach(key => {
+  Object.keys(this.state).forEach(key => {
     let queryValue = '';
-    Object.keys(this.filter[key]).forEach(subKey => {
-      if (this.filter[key][subKey]) {
+    Object.keys(this.state[key]).forEach(subKey => {
+      if (this.state[key][subKey]) {
         queryValue += `${subKey}|`;
       }
     });
