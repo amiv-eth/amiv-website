@@ -1,6 +1,6 @@
 import m from 'mithril';
 import { Button, Checkbox, TextField } from '../components';
-import * as Filter from '../models/Filter';
+import * as filter from '../models/filter';
 
 export default class FilterViewComponent {
   constructor() {
@@ -18,14 +18,14 @@ export default class FilterViewComponent {
       this.filterNames[key] = vnode.attrs.filterDrop[key];
     });
     this.onloadDoc = vnode.attrs.onloadDoc;
-    if (Object.keys(Filter.filter).length === 0) {
-      Filter.filter = {};
+    if (Object.keys(filter.state).length === 0) {
+      filter.state = {};
       Object.keys(this.filterNames).forEach(key => {
         const filterValue = {};
         Object.keys(this.filterNames[key]).forEach(subKey => {
           filterValue[subKey] = false;
         });
-        Filter.filter[key] = filterValue;
+        filter.state[key] = filterValue;
       });
     }
     return [
@@ -37,7 +37,7 @@ export default class FilterViewComponent {
         ? m(
             'form',
             {
-              // onsubmit: ,
+              // onsubmit: , add later...
             },
             [
               m(
@@ -66,7 +66,7 @@ export default class FilterViewComponent {
                 Object.keys(vnode.attrs.filterCheck[key]).map(subKey =>
                   m(Checkbox, {
                     label: vnode.attrs.filterCheck[key][subKey],
-                    onChange: state => Filter.changeFilter(key, subKey, state.checked),
+                    onChange: state => filter.changeFilter(key, subKey, state.checked),
                   })
                 ),
               ])
