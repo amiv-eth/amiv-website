@@ -8,6 +8,7 @@ import { lecture } from '../studydocs/lecture';
 import * as Filter from '../../models/Filter';
 
 const tableHeadings = ['title', 'type'];
+// define filters for check boxes
 const filterStudyDocsCheck = {
   department: { itet: 'D-ITET', mavt: 'D-MAVT' },
   type: {
@@ -17,6 +18,7 @@ const filterStudyDocsCheck = {
     exercies: 'Übungsserien',
   },
 };
+// define filters for dropdown menu
 const filterStudyDocsDrop = {
   semester: {
     1: '1. Semester',
@@ -67,32 +69,6 @@ export default class studydocList {
     }
     return data;
   }
-  /*
-  static changeFilter(filterKey, filterValue, checked) {
-    this.filter[filterKey][filterValue] = checked;
-    this.updateFilter();
-  }
-
-  static updateFilter() {
-    const query = {};
-    Object.keys(this.filter).forEach(key => {
-      let queryValue = '';
-      Object.keys(this.filter[key]).forEach(subKey => {
-        if (this.filter[key][subKey]) {
-          queryValue += `${subKey}|`;
-        }
-      });
-
-      if (queryValue.length > 0) {
-        queryValue = queryValue.substring(0, queryValue.length - 1);
-        query[key] = { $regex: `^(?i).*${queryValue}.*` };
-      }
-    });
-    query.semester = { $regex: `^(?i).*${String(this.semester)}.*` };
-    query.lecture = { $regex: `^(?i).*${this.lecture}.*` };
-    studydocs.load(query);
-  }
-  */
 
   static view() {
     if (!isLoggedIn()) return m(Error401);

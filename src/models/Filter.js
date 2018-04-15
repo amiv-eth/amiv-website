@@ -18,6 +18,5 @@ export function changeFilter(filterKey, filterValue, checked) {
   });
   query.semester = { $regex: `^(?i).*${String(this.semester)}.*` };
   query.lecture = { $regex: `^(?i).*${this.lecture}.*` };
-  // this.onloadDoc(query);
-  console.log(this.filter);
+  // this.onloadDoc(query); add later again... due to api being down...
 }
