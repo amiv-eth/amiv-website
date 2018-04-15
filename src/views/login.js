@@ -1,6 +1,8 @@
 import m from 'mithril';
 import { login } from '../models/auth';
 import { Button } from '../components';
+import { i18n } from '../models/language';
+import InputGroup from './form/inputGroup';
 
 module.exports = {
   username: '',
@@ -22,21 +24,26 @@ module.exports = {
               });
           },
         },
-        m('h3', 'Login'),
+        m('h3', i18n('Login')),
         m('p', this.error),
-        m('input.input[type=text][placeholder=Username]', {
-          oninput: m.withAttr('value', value => {
-            this.username = value;
-          }),
+        m(InputGroup, {
+          name: 'username',
+          title: i18n('username'),
           value: this.username,
+          oninput: e => {
+            this.username = e.target.value;
+          },
         }),
-        m('input.input[placeholder=Password][type=password]', {
-          oninput: m.withAttr('value', value => {
-            this.password = value;
-          }),
+        m(InputGroup, {
+          name: 'password',
+          title: i18n('password'),
           value: this.password,
+          type: 'password',
+          oninput: e => {
+            this.password = e.target.value;
+          },
         }),
-        m(Button, { label: 'Login' })
+        m(Button, { label: i18n('Login') })
       ),
     ]);
   },

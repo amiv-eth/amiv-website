@@ -1,7 +1,5 @@
 import m from 'mithril';
 import * as studydocs from '../../models/studydocs';
-import { isLoggedIn } from '../../models/auth';
-import { Error401 } from '../errors';
 import inputGroup from '../form/inputGroup';
 import selectGroup from '../form/selectGroup';
 import { Button } from '../../components';
@@ -34,8 +32,6 @@ export default class studydocNew {
   }
 
   view() {
-    if (!isLoggedIn()) return m(Error401);
-
     return m('form', [
       m(inputGroup, {
         name: 'title',
@@ -131,7 +127,7 @@ export default class studydocNew {
         },
         onchange: e => {
           this.doc.files = e.target.files;
-          if (this.doc.files.length > 0) {
+          if (this.doc.files && this.doc.files.length > 0) {
             this.isValid = true;
           } else {
             this.isValid = false;

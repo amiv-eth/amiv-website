@@ -1,6 +1,9 @@
 // src/index.js
 import m from 'mithril';
-import { getLang } from './models/language';
+import { loadLanguage, currentLanguage, changeLanguage, isLanguageValid } from './models/language';
+import { verbose } from './models/config';
+import { Error404, Error401 } from './views/errors';
+import { isLoggedIn } from './models/auth';
 import studydocList from './views/studydocs/studydocList';
 import studydocNew from './views/studydocs/studydocNew';
 import eventList from './views/events/eventList';
@@ -10,92 +13,146 @@ import layout from './views/layout';
 import amivLayout from './views/amiv/amivLayout';
 import frontpage from './views/frontpage';
 import login from './views/login';
-import statuten from './views/amiv/statuten';
+import logout from './views/logout';
+import statutes from './views/amiv/statutes';
 import contact from './views/contact';
-import aufenthaltsraum from './views/amiv/aufenthaltsraum';
+import about from './views/amiv/about';
 import board from './views/amiv/board';
+import commissions from './views/amiv/commissions';
 import jobOfferList from './views/jobs/jobofferList';
 import jobOfferDetails from './views/jobs/jobofferDetails';
 import companyList from './views/companies/companyList';
 import companyDetail from './views/companies/companyDetail';
 import './views/styles/base.less';
 
-getLang();
+loadLanguage();
 
-m.route(document.body, '/', {
-  '/': {
-    render() {
-      return m(layout, m(amivLayout, m(frontpage)));
-    },
+if (verbose !== true) {
+  // set to pathname strategy (Please note that the production server needs to support this)
+  m.route.prefix('');
+}
+
+// routes which require authentication
+const routesAuth = [
+  {
+    url: '/:language/studydocuments',
+    view: () => m(studydocList),
   },
-  '/amiv/statuten': {
-    render() {
-      return m(layout, m(amivLayout, m(statuten)));
-    },
+  {
+    url: '/:language/studydocuments/new',
+    view: () => m(studydocNew),
   },
-  '/contact': {
-    render() {
-      return m(layout, m(contact));
-    },
+  {
+    url: '/:language/profile',
+    view: vnode => m(profile, vnode.attrs),
   },
-  '/amiv/aufenthaltsraum': {
-    render() {
-      return m(layout, m(amivLayout, m(aufenthaltsraum)));
-    },
+];
+
+// routes without restrictions
+const routes = [
+  {
+    url: '/:language',
+    view: () => m(amivLayout, m(frontpage)),
   },
-  '/login': {
-    render() {
-      return m(layout, m(login));
-    },
+  {
+    url: '/:language/amiv/statutes',
+    view: () => m(amivLayout, m(statutes)),
   },
-  '/amiv/board': {
-    render() {
-      return m(layout, m(amivLayout, m(board)));
-    },
+  {
+    url: '/:language/amiv/board',
+    view: () => m(amivLayout, m(board)),
   },
-  '/studydocuments': {
-    render() {
-      return m(layout, m(studydocList));
-    },
+  {
+    url: '/:language/amiv/commissions',
+    view: () => m(amivLayout, m(commissions)),
   },
-  '/studydocuments/new': {
-    render() {
-      return m(layout, m(studydocNew));
-    },
+  {
+    url: '/:language/amiv/about',
+    view: () => m(amivLayout, m(about)),
   },
-  '/events': {
-    render() {
-      return m(layout, m(eventList));
-    },
+  {
+    url: '/:language/contact',
+    view: () => m(contact),
   },
-  '/events/:eventId': {
-    render(vnode) {
-      return m(layout, m(eventDetails, vnode.attrs));
-    },
+  {
+    url: '/:language/login',
+    view: () => m(login),
   },
-  '/jobs': {
-    render() {
-      return m(layout, m(jobOfferList));
-    },
+  {
+    url: '/:language/logout',
+    view: () => m(logout),
   },
-  '/jobs/:jobId': {
-    render(vnode) {
-      return m(layout, m(jobOfferDetails, vnode.attrs));
-    },
+  {
+    url: '/:language/events',
+    view: () => m(eventList),
   },
-  '/profile': {
-    render(vnode) {
-      return m(layout, m(profile, vnode.attrs));
-    },
+  {
+    url: '/:language/events/:eventId',
+    view: vnode => m(eventDetails, vnode.attrs),
   },
-  '/companies': {
-    render() {
-      return m(layout, m(companyList));
-    },
+  {
+    url: '/:language/jobs',
+    view: () => m(jobOfferList),
   },
-  '/companies/:companyId': {
-    render(vnode) {
-      return m(layout, m(companyDetail, vnode.attrs));
-    },
+  {
+    url: '/:language/jobs/:jobId',
+    view: vnode => m(jobOfferDetails, vnode.attrs),
   },
-});
+  {
+    url: '/:language/companies',
+    view: () => m(companyList),
+  },
+  {
+    url: '/:language/companies/:companyId',
+    view: vnode => m(companyDetail, vnode.attrs),
+  },
+];
+
+function onmatch(args, route) {
+  if (isLanguageValid(args.language)) {
+    changeLanguage(args.language);
+    return { view: vnode => m(layout, route.view(vnode)) };
+  }
+  return {
+    view() {
+      return m(layout, m(Error404));
+    },
+  };
+}
+
+function generateRoutes() {
+  const result = {
+    '/': {
+      onmatch() {
+        m.route.set(`/${currentLanguage()}/`);
+      },
+    },
+  };
+
+  routes.forEach(r => {
+    result[r.url] = {
+      onmatch: args => onmatch(args, r),
+    };
+  });
+
+  routesAuth.forEach(r => {
+    result[r.url] = {
+      onmatch(args) {
+        if (!isLoggedIn()) {
+          // m.route.set(`/${currentLanguage()}/login`);
+          return {
+            view() {
+              return m(layout, m(Error401));
+            },
+          };
+        }
+
+        return onmatch(args, r);
+      },
+    };
+  });
+
+  m.route(document.body, '/', result);
+}
+
+generateRoutes();

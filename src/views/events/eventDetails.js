@@ -1,4 +1,5 @@
 import m from 'mithril';
+import marked from 'marked';
 import * as EmailValidator from 'email-validator';
 import * as events from '../../models/events';
 import { log } from '../../models/log';
@@ -150,7 +151,7 @@ export default class EventDetails {
       m('span', events.getSelectedEvent().time_start),
       m('span', events.getSelectedEvent().signup_count),
       m('span', events.getSelectedEvent().spots),
-      m('p', events.getSelectedEvent().description_de),
+      m('p', m.trust(marked(events.getSelectedEvent().description_de))),
       eventSignupForm,
     ]);
   }

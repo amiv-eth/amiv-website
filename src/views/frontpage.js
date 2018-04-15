@@ -1,24 +1,14 @@
 import m from 'mithril';
 import { apiUrl } from '../models/config';
 import * as events from '../models/events';
+import { i18n } from '../models/language';
 
 const date = `${new Date().toISOString().split('.')[0]}Z`;
-
-// Render the frontpage cards, with href and imageurl
-const renderCards = item => {
-  const { title, href } = item;
-  const imageurl = item.img_infoscreen ? `${apiUrl}${item.img_infoscreen.file}` : '';
-  return m(
-    'div.frontpage-card',
-    { style: `background-image: url(${imageurl})` },
-    m('a', { href }, title)
-  );
-};
 
 // Render the Hot Cards, with link and imageurl
 const renderHotCards = (item, index) => {
   const { title, href } = item;
-  const imageurl = item.img_infoscreen ? `${apiUrl}${item.img_infoscreen.file}` : '';
+  const imageurl = item.img_poster ? `${apiUrl}${item.img_poster.file}` : '';
   if (index === 0) {
     return m(
       'div.hot-first-card',
@@ -30,6 +20,47 @@ const renderHotCards = (item, index) => {
   }
   return m(
     'div.hot-card',
+    { style: `background-image: url(${imageurl})` },
+    m('a', { href }, title)
+  );
+};
+
+// Render the frontpage cards, with href and imageurl
+const renderCards = item => {
+  const { title, href } = item;
+  const imageurl = item.img_poster ? `${apiUrl}${item.img_poster.file}` : '';
+  return m(
+    'div.frontpage-row-card',
+    { style: `background-image: url(${imageurl})` },
+    m('a', { href }, title)
+  );
+};
+
+// Render Facebook cards, with href and imageurl
+const renderFacebookCard = item => {
+  const { title, href, imageurl } = item;
+  return m(
+    'div.frontpage-row-card',
+    { style: `background-image: url(${imageurl})` },
+    m('a', { href }, title)
+  );
+};
+
+// Render Instagram cards, with href and imageurl
+const renderInstagramCard = item => {
+  const { title, href, imageurl } = item;
+  return m(
+    'div.frontpage-row-card',
+    { style: `background-image: url(${imageurl})` },
+    m('a', { href }, title)
+  );
+};
+
+// Render SocialMedia cards, with href and imageurl
+const renderTwitterCard = item => {
+  const { title, href, imageurl } = item;
+  return m(
+    'div.frontpage-row-card',
     { style: `background-image: url(${imageurl})` },
     m('a', { href }, title)
   );
@@ -58,25 +89,27 @@ export default class Frontpage {
       { title: 'kinda hot' },
     ];
     this.jobs = [{ title: 'Google' }, { title: 'ABB' }, { title: 'Accenture' }];
-    this.socialmedia = [
-      {
-        title: 'Facebook',
-        href: 'https://www.facebook.com/AMIV.ETHZ/',
-        imageurl: 'https://upload.wikimedia.org/wikipedia/commons/c/c2/F_icon.svg',
-      },
-      {
-        title: 'Instagram',
-        href: 'https://www.instagram.com/amiv_eth/?hl=de',
-        imageurl:
-          'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Instagram_logo_2016.svg/2000px-Instagram_logo_2016.svg.png',
-      },
-      {
-        title: 'Twitter',
-        href: 'https://twitter.com/amiv_ethz?lang=de',
-        imageurl:
-          'https://upload.wikimedia.org/wikipedia/de/thumb/9/9f/Twitter_bird_logo_2012.svg/1200px-Twitter_bird_logo_2012.svg.png',
-      },
-    ];
+
+    // Social Media Attributes, with their different APIs
+    this.facebook = {
+      title: 'Facebook',
+      href: 'https://www.facebook.com/AMIV.ETHZ/',
+      imageurl:
+        'http://www.fub.se/sites/www.fub.se/files/styles/artikelbild_full/public/facebook-logotyp.jpg?itok=e244p_Sa',
+    };
+
+    this.instagram = {
+      title: 'Instagram',
+      href: 'https://www.instagram.com/amiv_eth/?hl=de',
+      imageurl:
+        'https://i2.wp.com/www.newscouch.de/wp-content/uploads/2017/11/insta-logo.jpg?fit=2569%2C1761&ssl=1',
+    };
+
+    this.twitter = {
+      title: 'Twitter',
+      href: 'https://twitter.com/amiv_ethz',
+      imageurl: 'https://rngeternal.com/wp-content/uploads/2017/12/twitter-logo.png',
+    };
   }
 
   onbeforeupdate() {
@@ -85,14 +118,18 @@ export default class Frontpage {
 
   view() {
     return m('div#frontpage-container', [
-      m('h2', "What's HOT right now?"),
+      m('h2', i18n('frontpage.whats_hot')),
       m('div.hot-row', this.hot.map((item, index) => renderHotCards(item, index))),
-      m('h2', 'Events'),
+      m('h2', i18n('Events')),
       m('div.frontpage-row', this.events.map(item => renderCards(item))),
       m('h2', 'Jobs'),
       m('div.frontpage-row', this.jobs.map(item => renderCards(item))),
-      m('h2', 'Join us on social media!'),
-      m('div.frontpage-row', this.socialmedia.map(item => renderCards(item))),
+      m('h2', i18n('frontpage.social_media')),
+      m('div.frontpage-row', [
+        renderFacebookCard(this.facebook),
+        renderInstagramCard(this.instagram),
+        renderTwitterCard(this.twitter),
+      ]),
     ]);
   }
 }

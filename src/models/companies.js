@@ -1,4 +1,5 @@
 import m from 'mithril';
+import { currentLanguage } from './language';
 
 // ensure that all markdown files are compiled
 require.context('../views/companies/markdown');
@@ -12,7 +13,7 @@ require.context('../views/companies/markdown');
 export default function load(companyId) {
   // dynamically load compiled html files
   return m.request({
-    url: `/dist/companies/${companyId}.html`,
+    url: `/dist/companies/${companyId}.${currentLanguage()}.html`,
     method: 'GET',
     deserialize: response => response,
   });

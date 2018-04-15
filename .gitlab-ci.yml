@@ -2,6 +2,7 @@ image: node:latest
 
 stages:
   - lint
+  - build
 
 before_script:
   - npm install
@@ -11,3 +12,9 @@ eslint:
   when: always
   script:
     - npm run lint
+
+build:
+  stage: build
+  when: always
+  script:
+    - npm run build

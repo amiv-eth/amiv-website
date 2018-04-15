@@ -36,7 +36,7 @@ export default class studydocList {
     this.doc = {};
   }
 
-  static oninit() {
+  oninit() {
     studydocs.load();
 
     // initialize values for filter
@@ -44,7 +44,8 @@ export default class studydocList {
     this.lecture = 'Fach';
     this.search = '';
   }
-  static selectDocument(doc) {
+
+  selectDocument(doc) {
     this.doc = doc;
   }
 
