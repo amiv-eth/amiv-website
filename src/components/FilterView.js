@@ -37,7 +37,7 @@ export default class FilterViewComponent {
         ? m(
             'form',
             {
-              // onsubmit: ,
+              // onsubmit: , add later...
             },
             [
               m(
