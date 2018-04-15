@@ -1,8 +1,17 @@
 import m from 'mithril';
 import { i18n } from '../../models/language';
 import * as events from '../../models/events';
+import { FilterView } from '../../components';
 
 const date = `${new Date().toISOString().split('.')[0]}Z`;
+
+const filterEventsCheck = {
+  type: {
+    cool: 'Coole Events',
+    intelligent: 'Bildungs Events',
+    gaming: 'Gaming Events',
+  },
+};
 
 export default class EventList {
   static oninit() {
@@ -24,29 +33,43 @@ export default class EventList {
   }
 
   static view() {
-    return m('table', [
-      m('thead', [
-        m('tr', [
-          m('th', i18n('event.title')),
-          m('th', i18n('event.start_time')),
-          m('th', i18n('event.signup_count')),
-          m('th', i18n('event.spots')),
-        ]),
+    return m('div#studydoc-list', [
+      m('div.filter', [
+        m(FilterView, {
+          searchField: true,
+          onsearch: () => alert('your search: '),
+          checkbox: true,
+          filterCheck: filterEventsCheck,
+          filterDrop: {},
+        }),
       ]),
-      m(
-        'tbody',
-        events
-          .getList()
-          .map(event =>
-            m('tr', [
-              m('td', event.title),
-              m('td', event.time_start),
-              m('td', event.signup_count),
-              m('td', event.spots),
-              m('td', m('a', { href: `/events/${event._id}`, oncreate: m.route.link }, 'Details')),
-            ])
-          )
-      ),
+      // m('table', [
+      //   m('thead', [
+      //     m('tr', [
+      //       m('th', i18n('event.title')),
+      //       m('th', i18n('event.start_time')),
+      //       m('th', i18n('event.signup_count')),
+      //       m('th', i18n('event.spots')),
+      //     ]),
+      //   ]),
+      //   m(
+      //     'tbody',
+      //     events
+      //       .getList()
+      //       .map(event =>
+      //         m('tr', [
+      //           m('td', event.title),
+      //           m('td', event.time_start),
+      //           m('td', event.signup_count),
+      //           m('td', event.spots),
+      //           m(
+      //             'td',
+      //             m('a', { href: `/events/${event._id}`, oncreate: m.route.link }, 'Details')
+      //           ),
+      //         ])
+      //       )
+      //   ),
+      // ]),
     ]);
   }
 }
