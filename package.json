@@ -21,7 +21,7 @@
   "license": "ISC",
   "dependencies": {
     "ajv": "^5.5.0",
-    "email-validator": "^1.1.1",
+    "email-validator": "^2.0.3",
     "i18n4v": "^0.2.2",
     "mithril": "^1.1.5",
     "polythene-css": "^1.0.0",
