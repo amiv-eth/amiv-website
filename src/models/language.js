@@ -22,7 +22,7 @@ function changeLanguage(language) {
     _currentLanguage = 'en';
     i18n.translator.add(english);
   }
-  localStorage.setItem('lanuage', _currentLanguage);
+  localStorage.setItem('language', _currentLanguage);
 }
 
 /**
@@ -42,7 +42,7 @@ function isLanguageValid(language) {
  * This function sets the current language accordingly.
  */
 function loadLanguage() {
-  let lang = localStorage.getItem('lanuage');
+  let lang = localStorage.getItem('language');
   if (!lang) {
     if (navigator.languages !== undefined) {
       lang = navigator.languages.toString();
