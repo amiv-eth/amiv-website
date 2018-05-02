@@ -6,6 +6,7 @@ stages:
 
 before_script:
   - npm install
+  - echo "$CONFIGURATION" > src/models/config.js
 
 eslint:
   stage: lint
