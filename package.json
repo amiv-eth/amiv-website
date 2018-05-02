@@ -26,7 +26,8 @@
     "mithril": "^1.1.5",
     "polythene-css": "^1.0.0",
     "polythene-mithril": "^1.0.0",
-    "marked": "^0.3.18"
+    "marked": "^0.3.18",
+    "raven-js": "^3.24.2"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",

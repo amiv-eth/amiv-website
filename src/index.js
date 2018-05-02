@@ -1,7 +1,8 @@
 // src/index.js
 import m from 'mithril';
+import Raven from 'raven-js';
 import { loadLanguage, currentLanguage, changeLanguage, isLanguageValid } from './models/language';
-import { verbose } from './models/config';
+import { verbose, sentryUrl } from './models/config';
 import { Error404, Error401 } from './views/errors';
 import { isLoggedIn } from './models/auth';
 import studydocList from './views/studydocs/studydocList';
@@ -25,134 +26,138 @@ import companyList from './views/companies/companyList';
 import companyDetail from './views/companies/companyDetail';
 import './views/styles/base.less';
 
-loadLanguage();
+Raven.config(sentryUrl).install();
 
-if (verbose !== true) {
-  // set to pathname strategy (Please note that the production server needs to support this)
-  m.route.prefix('');
-}
+Raven.context(() => {
+  loadLanguage();
 
-// routes which require authentication
-const routesAuth = [
-  {
-    url: '/:language/studydocuments',
-    view: () => m(studydocList),
-  },
-  {
-    url: '/:language/studydocuments/new',
-    view: () => m(studydocNew),
-  },
-  {
-    url: '/:language/profile',
-    view: vnode => m(profile, vnode.attrs),
-  },
-];
-
-// routes without restrictions
-const routes = [
-  {
-    url: '/:language',
-    view: () => m(amivLayout, m(frontpage)),
-  },
-  {
-    url: '/:language/amiv/statutes',
-    view: () => m(amivLayout, m(statutes)),
-  },
-  {
-    url: '/:language/amiv/board',
-    view: () => m(amivLayout, m(board)),
-  },
-  {
-    url: '/:language/amiv/commissions',
-    view: () => m(amivLayout, m(commissions)),
-  },
-  {
-    url: '/:language/amiv/about',
-    view: () => m(amivLayout, m(about)),
-  },
-  {
-    url: '/:language/contact',
-    view: () => m(contact),
-  },
-  {
-    url: '/:language/login',
-    view: () => m(login),
-  },
-  {
-    url: '/:language/logout',
-    view: () => m(logout),
-  },
-  {
-    url: '/:language/events',
-    view: () => m(eventList),
-  },
-  {
-    url: '/:language/events/:eventId',
-    view: vnode => m(eventDetails, vnode.attrs),
-  },
-  {
-    url: '/:language/jobs',
-    view: () => m(jobOfferList),
-  },
-  {
-    url: '/:language/jobs/:jobId',
-    view: vnode => m(jobOfferDetails, vnode.attrs),
-  },
-  {
-    url: '/:language/companies',
-    view: () => m(companyList),
-  },
-  {
-    url: '/:language/companies/:companyId',
-    view: vnode => m(companyDetail, vnode.attrs),
-  },
-];
-
-function onmatch(args, route) {
-  if (isLanguageValid(args.language)) {
-    changeLanguage(args.language);
-    return { view: vnode => m(layout, route.view(vnode)) };
+  if (verbose !== true) {
+    // set to pathname strategy (Please note that the production server needs to support this)
+    m.route.prefix('');
   }
-  return {
-    view() {
-      return m(layout, m(Error404));
+
+  // routes which require authentication
+  const routesAuth = [
+    {
+      url: '/:language/studydocuments',
+      view: () => m(studydocList),
     },
-  };
-}
-
-function generateRoutes() {
-  const result = {
-    '/': {
-      onmatch() {
-        m.route.set(`/${currentLanguage()}/`);
-      },
+    {
+      url: '/:language/studydocuments/new',
+      view: () => m(studydocNew),
     },
-  };
+    {
+      url: '/:language/profile',
+      view: vnode => m(profile, vnode.attrs),
+    },
+  ];
 
-  routes.forEach(r => {
-    result[r.url] = {
-      onmatch: args => onmatch(args, r),
-    };
-  });
+  // routes without restrictions
+  const routes = [
+    {
+      url: '/:language',
+      view: () => m(amivLayout, m(frontpage)),
+    },
+    {
+      url: '/:language/amiv/statutes',
+      view: () => m(amivLayout, m(statutes)),
+    },
+    {
+      url: '/:language/amiv/board',
+      view: () => m(amivLayout, m(board)),
+    },
+    {
+      url: '/:language/amiv/commissions',
+      view: () => m(amivLayout, m(commissions)),
+    },
+    {
+      url: '/:language/amiv/about',
+      view: () => m(amivLayout, m(about)),
+    },
+    {
+      url: '/:language/contact',
+      view: () => m(contact),
+    },
+    {
+      url: '/:language/login',
+      view: () => m(login),
+    },
+    {
+      url: '/:language/logout',
+      view: () => m(logout),
+    },
+    {
+      url: '/:language/events',
+      view: () => m(eventList),
+    },
+    {
+      url: '/:language/events/:eventId',
+      view: vnode => m(eventDetails, vnode.attrs),
+    },
+    {
+      url: '/:language/jobs',
+      view: () => m(jobOfferList),
+    },
+    {
+      url: '/:language/jobs/:jobId',
+      view: vnode => m(jobOfferDetails, vnode.attrs),
+    },
+    {
+      url: '/:language/companies',
+      view: () => m(companyList),
+    },
+    {
+      url: '/:language/companies/:companyId',
+      view: vnode => m(companyDetail, vnode.attrs),
+    },
+  ];
 
-  routesAuth.forEach(r => {
-    result[r.url] = {
-      onmatch(args) {
-        if (!isLoggedIn()) {
-          // m.route.set(`/${currentLanguage()}/login`);
-          return {
-            view() {
-              return m(layout, m(Error401));
-            },
-          };
-        }
-
-        return onmatch(args, r);
+  function onmatch(args, route) {
+    if (isLanguageValid(args.language)) {
+      changeLanguage(args.language);
+      return { view: vnode => m(layout, route.view(vnode)) };
+    }
+    return {
+      view() {
+        return m(layout, m(Error404));
       },
     };
-  });
+  }
 
-  m.route(document.body, '/', result);
-}
+  function generateRoutes() {
+    const result = {
+      '/': {
+        onmatch() {
+          m.route.set(`/${currentLanguage()}/`);
+        },
+      },
+    };
 
-generateRoutes();
+    routes.forEach(r => {
+      result[r.url] = {
+        onmatch: args => onmatch(args, r),
+      };
+    });
+
+    routesAuth.forEach(r => {
+      result[r.url] = {
+        onmatch(args) {
+          if (!isLoggedIn()) {
+            // m.route.set(`/${currentLanguage()}/login`);
+            return {
+              view() {
+                return m(layout, m(Error401));
+              },
+            };
+          }
+
+          return onmatch(args, r);
+        },
+      };
+    });
+
+    m.route(document.body, '/', result);
+  }
+
+  generateRoutes();
+});
