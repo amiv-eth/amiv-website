@@ -26,7 +26,7 @@ const config = {
         use: [
           {
             loader: 'babel-loader',
-            options: { presets: ['env'] },
+            options: { presets: [['env', { targets: "last 2 years"}]] },
           },
         ],
       },
@@ -121,6 +121,14 @@ const config = {
       },
     ],
   },
+
+  // Dynamically include config
+  resolve: {
+    alias: {
+      config: `${__dirname}/config.js`,
+    },
+  },
+
 
   devtool: 'eval-source-map', // Default development sourcemap
 };

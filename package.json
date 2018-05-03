@@ -54,11 +54,12 @@
     "doxdox": "^2.0.3",
     "less": "^3.0.1",
     "less-loader": "^4.1.0",
-    "css-loader": "^0.28.11",
-    "file-loader": "^1.1.11",
-    "url-loader": "^1.0.1",
     "markdown-loader": "^2.0.2",
+    "prettier": "1.11.1",
+    "string-replace-loader": "^2.1.1",
     "style-loader": "^0.20.3",
-    "string-replace-loader": "^2.1.1"
+    "url-loader": "^1.0.1",
+    "webpack": "^3.8.1",
+    "webpack-dev-server": "^2.9.3"
   }
 }

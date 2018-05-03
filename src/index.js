@@ -1,8 +1,8 @@
 // src/index.js
 import m from 'mithril';
 import Raven from 'raven-js';
+import { verbose, sentryUrl } from 'config';
 import { loadLanguage, currentLanguage, changeLanguage, isLanguageValid } from './models/language';
-import { verbose, sentryUrl } from './models/config';
 import { Error404, Error401 } from './views/errors';
 import { isLoggedIn } from './models/auth';
 import studydocList from './views/studydocs/studydocList';
