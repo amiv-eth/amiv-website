@@ -1,6 +1,6 @@
 import m from 'mithril';
+import { apiUrl } from 'config';
 import * as studydocs from '../../models/studydocs';
-import { apiUrl } from '../../models/config';
 import { Button, Checkbox, TextField, Dropdown } from '../../components';
 
 const tableHeadings = ['title', 'type'];

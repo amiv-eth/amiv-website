@@ -1,4 +1,4 @@
-import { verbose } from './config';
+import { verbose } from 'config';
 
 /**
  * Print `log message` to the console if verbose is enabled.

@@ -15,4 +15,10 @@ module.exports = {
     'prettier/prettier': 'error',
   },
   plugins: ['prettier'],
+  // Activate the resolver plugin, required to recognize the 'config' resolver
+  settings: {
+    'import/resolver': {
+        webpack: {},
+    },
+  },
 };

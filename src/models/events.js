@@ -1,5 +1,5 @@
 import m from 'mithril';
-import { apiUrl } from './config';
+import { apiUrl } from 'config';
 import { getToken, getUserId, isLoggedIn } from './auth';
 import { currentLanguage } from './language';
 

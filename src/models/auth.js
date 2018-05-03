@@ -1,5 +1,5 @@
 import m from 'mithril';
-import { apiUrl } from './config';
+import { apiUrl } from 'config';
 import { log } from './log';
 
 const APISession = {
