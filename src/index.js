@@ -1,7 +1,7 @@
 // src/index.js
 import m from 'mithril';
 import Raven from 'raven-js';
-import { verbose, sentryUrl } from 'config';
+import { verbose, sentryUrl, sentryEnvironment } from 'config';
 import { loadLanguage, currentLanguage, changeLanguage, isLanguageValid } from './models/language';
 import { Error404, Error401 } from './views/errors';
 import { isLoggedIn } from './models/auth';
@@ -26,7 +26,9 @@ import companyList from './views/companies/companyList';
 import companyDetail from './views/companies/companyDetail';
 import './views/styles/base.less';
 
-Raven.config(sentryUrl).install();
+Raven.config(sentryUrl, {
+  environment: sentryEnvironment,
+}).install();
 
 Raven.context(() => {
   loadLanguage();

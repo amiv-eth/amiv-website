@@ -11,4 +11,9 @@ export const verbose = true;
 /**
  * Url used to send error logs
  */
-export const sentryUrl = 'https://13e4a08420af47b3b4c2e9fe3442bfd8@sentry.amiv.ethz.ch/4';
+export const sentryUrl = 'https://ef94924605564855bccc26a8ea6f7cfd@sentry.amiv.ethz.ch/4';
+
+/**
+ * Environment to categorise the logging messages
+ */
+export const sentryEnvironment = 'development';
