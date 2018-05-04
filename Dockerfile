@@ -29,6 +29,8 @@ WORKDIR /public
 # Copy files from first stage
 COPY --from=build /index.html /public/
 COPY --from=build /dist /public/dist
+# Serve index.html for every file which is not found on the server
+RUN ln index.html 404.html
 
 # Run server (-g will automatically serve the gzipped files if possible)
 CMD ["/usr/local/bin/http-server", "-g", "/public"]
