@@ -18,7 +18,7 @@ class ImageGroup {
     let tasks;
 
     if (group.image) {
-      image = m('img', { src: group.image });
+      image = m('img', { src: `/${group.image}` });
     } else {
       image = m('div.no-image', i18n('no image'));
     }
@@ -86,7 +86,7 @@ export default class Board {
     let image;
 
     if (boardImage) {
-      image = m('img', { src: boardImage });
+      image = m('img', { src: `/${boardImage}` });
     } else {
       image = m('div.no-image', i18n('no image'));
     }

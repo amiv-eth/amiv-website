@@ -18,7 +18,7 @@ class Commission {
     const contactInfo = [];
 
     if (commission.image) {
-      image = m('img', { src: commission.image });
+      image = m('img', { src: `/${commission.image}` });
     } else {
       image = m('div.no-image', i18n('no image'));
     }
