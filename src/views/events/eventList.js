@@ -1,5 +1,5 @@
 import m from 'mithril';
-import { i18n } from '../../models/language';
+// import { i18n } from '../../models/language';
 import * as events from '../../models/events';
 import { FilterView } from '../../components';
 
