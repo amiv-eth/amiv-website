@@ -37,7 +37,6 @@ export default class EventList {
       m('div.filter', [
         m(FilterView, {
           searchField: true,
-          onsearch: () => alert('your search: '),
           checkbox: true,
           filterCheck: filterEventsCheck,
           filterDrop: {},
