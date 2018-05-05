@@ -28,6 +28,7 @@ const filterStudyDocsDrop = {
     5: '5. Semester',
     6: '6. Semester',
   },
+  lecture: {},
 };
 
 export default class studydocList {
@@ -37,15 +38,13 @@ export default class studydocList {
   }
 
   oninit() {
-    studydocs.load();
-
     // initialize values for filter
     this.semester = 1;
-    this.lectures = 'Fach';
+    this.lecture = 'Fach';
     this.search = '';
   }
 
-  selectDocument(doc) {
+  static selectDocument(doc) {
     this.doc = doc;
   }
 
@@ -55,22 +54,41 @@ export default class studydocList {
       return [];
     }
     const data = [];
-    if (filter.state.department.itet || !filter.state.department.mavt) {
-      for (let i = 0; i < lectures.itet[this.semester - 1].length; i += 1) {
-        data.push({
-          id: lectures.itet[this.semester - 1][i],
-          name: lectures.itet[this.semester - 1][i],
-        });
+    data.push({
+      id: 'all',
+      name: 'Alle Fächer',
+    });
+    let newLectureIndex = this.lecture !== 'all';
+    if (this.semester > 0) {
+      if (filter.state.department.itet || !filter.state.department.mavt) {
+        for (let i = 0; i < lectures.itet[this.semester - 1].length; i += 1) {
+          data.push({
+            id: lectures.itet[this.semester - 1][i],
+            name: lectures.itet[this.semester - 1][i],
+          });
+          if (this.lecture === lectures.itet[this.semester - 1][i]) {
+            newLectureIndex = false;
+          }
+        }
+      }
+      if (filter.state.department.mavt || !filter.state.department.itet) {
+        for (let i = 0; i < lectures.mavt[this.semester - 1].length; i += 1) {
+          data.push({
+            id: lectures.mavt[this.semester - 1][i],
+            name: lectures.mavt[this.semester - 1][i],
+          });
+          if (this.lecture === lectures.mavt[this.semester - 1][i]) {
+            newLectureIndex = false;
+          }
+        }
       }
     }
-    if (filter.state.department.mavt || !filter.state.department.itet) {
-      for (let i = 0; i < lectures.mavt[this.semester - 1].length; i += 1) {
-        data.push({
-          id: lectures.mavt[this.semester - 1][i],
-          name: lectures.mavt[this.semester - 1][i],
-        });
-      }
+    if (newLectureIndex) {
+      filter.state.lecture[this.lecture] = false;
+      this.lecture = 'all';
     }
+    const dropdown = document.getElementById('dropdown_lecture');
+    if (dropdown) dropdown.value = this.lecture;
     return data;
   }
 
@@ -91,6 +109,7 @@ export default class studydocList {
         m('div.drop', [
           m(Dropdown, {
             data: [
+              { id: 'all', name: 'Alle Semester' },
               { id: 1, name: '1. Semester' },
               { id: 2, name: '2. Semester' },
               { id: 3, name: '3. Semester' },
@@ -102,16 +121,26 @@ export default class studydocList {
               filter.changeFilter('semester', this.semester, false);
               this.semester = event.target.value;
               filter.changeFilter('semester', this.semester, true);
+              studydocs.load(filter.query);
+              console.log(filter.query);
             },
           }),
           m(Dropdown, {
+            id: 'dropdown_lecture',
             data: this.lecturesData(),
             onchange: event => {
-              this.lectures = event.target.value;
-              filter.changeFilter('semester', this.lectures, true);
+              filter.changeFilter('lecture', this.lecture, false);
+              this.lecture = event.target.value;
+              filter.changeFilter('lecture', this.lecture, true);
+              studydocs.load(filter.query);
+              console.log(filter.query);
             },
           }),
         ]),
+        m(Button, {
+          label: 'Add new',
+          events: { onclick: () => m.route.set('studydocuments/new') },
+        }),
       ]),
       // filtered content view
       m('div.content', [
@@ -130,7 +159,7 @@ export default class studydocList {
         ? m('div.details', [
             m('table', [
               m('tr', this.doc.title),
-              m('tr', this.doc.lectures),
+              m('tr', this.doc.lecture),
               m('tr', this.doc.professor),
               m('tr', this.doc.semester),
               m('tr', this.doc.author),
