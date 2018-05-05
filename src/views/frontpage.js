@@ -1,6 +1,7 @@
 import m from 'mithril';
 import { apiUrl } from 'config';
 import * as events from '../models/events';
+import * as jobs from '../models/joboffers';
 import { i18n } from '../models/language';
 
 const date = `${new Date().toISOString().split('.')[0]}Z`;
@@ -76,8 +77,16 @@ export default class Frontpage {
       },
       sort: ['-priority', 'time_advertising_start'],
     });
+    jobs.load({
+      where: {
+        time_end: { $gte: date },
+        show_website: true,
+      },
+      sort: ['time_end'],
+    });
 
     this.events = events.getList().slice(0, 3);
+    this.jobs = jobs.getList().slice(0, 3);
 
     // MOCKDATA
     this.hot = [
@@ -88,7 +97,6 @@ export default class Frontpage {
       { title: 'also pretty hot' },
       { title: 'kinda hot' },
     ];
-    this.jobs = [{ title: 'Google' }, { title: 'ABB' }, { title: 'Accenture' }];
 
     // Social Media Attributes, with their different APIs
     this.facebook = {
@@ -114,6 +122,7 @@ export default class Frontpage {
 
   onbeforeupdate() {
     this.events = events.getList().slice(0, 3);
+    this.jobs = jobs.getList().slice(0, 3);
   }
 
   view() {
