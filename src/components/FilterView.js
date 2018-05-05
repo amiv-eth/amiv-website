@@ -5,7 +5,6 @@ import * as filter from '../models/filter';
 export default class FilterViewComponent {
   constructor() {
     this.filterNames = null;
-    this.search = '';
     this.defaultProps = {};
   }
 
@@ -27,38 +26,47 @@ export default class FilterViewComponent {
         });
         filter.state[key] = filterValue;
       });
+      filter.state.searchField = '';
+      filter.updateFilter();
+      if (vnode.attrs.onloadDoc) vnode.attrs.onloadDoc(filter.query);
     }
     return [
       /*
-          Attributes:
+        Attributes:
           - search: whether filter has a search field
       */
       vnode.attrs.searchField
         ? m(
             'form',
             {
-              // onsubmit: , add later...
+              onsubmit: () => {
+                filter.updateFilter();
+                vnode.attrs.onloadDoc(filter.query);
+                return false;
+              },
             },
             [
               m(
                 TextField,
                 {
-                  label: 'Enter search...',
+                  label: 'Search',
                   onChange: state => {
-                    this.search = state.value;
+                    filter.state.searchField = state.value;
                   },
                 },
                 ''
               ),
-              m(Button, { label: 'Search' }),
+              m(Button, {
+                label: 'Search',
+              }),
             ]
           )
         : null,
-      /*
-    Attributes:
-    - check boxes: whether filter has a check boxes lists
-*/
 
+      /*
+        Attributes:
+          - check boxes: whether filter has a check boxes lists
+      */
       vnode.attrs.checkbox && vnode.attrs.filterCheck
         ? [
             Object.keys(vnode.attrs.filterCheck).map(key =>
@@ -66,7 +74,10 @@ export default class FilterViewComponent {
                 Object.keys(vnode.attrs.filterCheck[key]).map(subKey =>
                   m(Checkbox, {
                     label: vnode.attrs.filterCheck[key][subKey],
-                    onChange: state => filter.changeFilter(key, subKey, state.checked),
+                    onChange: state => {
+                      filter.changeFilter(key, subKey, state.checked);
+                      vnode.attrs.onloadDoc(filter.query);
+                    },
                   })
                 ),
               ])

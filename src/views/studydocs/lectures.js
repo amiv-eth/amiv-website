@@ -6,7 +6,6 @@ export const lectures = {
     ['Physics 2'],
     [],
     [],
-    [],
   ],
   mavt: [
     [
@@ -19,7 +18,6 @@ export const lectures = {
     ['Innovationsprozess'],
     ['Dynamics', 'Thermodynamik 1', 'Philosophie'],
     ['Fluiddynamik1', 'Thermodynamik 2'],
-    [],
     [],
   ],
 };
