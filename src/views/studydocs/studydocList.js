@@ -82,7 +82,6 @@ export default class studydocList {
         // create filterview with checkboxes
         m(FilterView, {
           searchField: true,
-          onsearch: () => alert('your search: '),
           checkbox: true,
           filterDrop: filterStudyDocsDrop,
           filterCheck: filterStudyDocsCheck,
