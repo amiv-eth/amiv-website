@@ -8,6 +8,16 @@ export default class FilterViewComponent {
     this.defaultProps = {};
   }
 
+  /**
+   * Attributes:
+   *
+   *   - `searchfield` searchfield activated
+   *   - `checkbox` checkboxes activated
+   *   - `filterDrop` list of dropdown filters
+   *   - `filterCheck` list of checkbox filters
+   *   - `onloadDoc` function called to load doc with new query
+   *
+   */
   view(vnode) {
     this.filterNames = {};
     Object.keys(vnode.attrs.filterCheck).forEach(key => {
@@ -62,11 +72,6 @@ export default class FilterViewComponent {
             ]
           )
         : null,
-      /*
-    Attributes:
-    - check boxes: whether filter has a check boxes lists
-*/
-
       vnode.attrs.checkbox && vnode.attrs.filterCheck
         ? [
             Object.keys(vnode.attrs.filterCheck).map(key =>

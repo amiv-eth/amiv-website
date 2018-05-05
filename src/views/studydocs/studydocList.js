@@ -4,12 +4,14 @@ import * as studydocs from '../../models/studydocs';
 import { isLoggedIn } from '../../models/auth';
 import { Error401 } from '../errors';
 import { Button, FilterView, Dropdown } from '../../components';
-import { lectures } from '../studydocs/lectures';
+import { lectures } from './lectures';
 import * as filter from '../../models/filter';
+import { currentLanguage } from '../../models/language';
 
+let dropdownLecture = {};
 const tableHeadings = ['title', 'type'];
 // define filters for check boxes
-const filterStudyDocsCheck = {
+const filterStudydocsCheck = {
   department: { itet: 'D-ITET', mavt: 'D-MAVT' },
   type: {
     'cheat sheet': 'Zusammenfassung',
@@ -19,14 +21,13 @@ const filterStudyDocsCheck = {
   },
 };
 // define filters for dropdown menu
-const filterStudyDocsDrop = {
+const filterStudydocsDrop = {
   semester: {
     1: '1. Semester',
     2: '2. Semester',
     3: '3. Semester',
     4: '4. Semester',
-    5: '5. Semester',
-    6: '6. Semester',
+    5: '5+ Semester',
   },
   lecture: {},
 };
@@ -87,22 +88,31 @@ export default class studydocList {
       filter.state.lecture[this.lecture] = false;
       this.lecture = 'all';
     }
-    const dropdown = document.getElementById('dropdown_lecture');
-    if (dropdown) dropdown.value = this.lecture;
+    if (dropdownLecture) dropdownLecture.value = this.lecture;
     return data;
   }
 
   static view() {
     if (!isLoggedIn()) return m(Error401);
-
+    dropdownLecture = m(Dropdown, {
+      id: 'dropdown_lecture',
+      data: this.lecturesData(),
+      onchange: event => {
+        filter.changeFilter('lecture', this.lecture, false);
+        this.lecture = event.target.value;
+        filter.changeFilter('lecture', this.lecture, true);
+        studydocs.load(filter.query);
+        console.log(filter.query);
+      },
+    });
     return m('div#studydoc-list', [
       m('div.filter', [
         // create filterview with checkboxes
         m(FilterView, {
           searchField: true,
           checkbox: true,
-          filterDrop: filterStudyDocsDrop,
-          filterCheck: filterStudyDocsCheck,
+          filterDrop: filterStudydocsDrop,
+          filterCheck: filterStudydocsCheck,
           onloadDoc: query => studydocs.load(query),
         }),
         // add aditional dropdowns for semester and lectures
@@ -114,8 +124,7 @@ export default class studydocList {
               { id: 2, name: '2. Semester' },
               { id: 3, name: '3. Semester' },
               { id: 4, name: '4. Semester' },
-              { id: 5, name: '5. Semester' },
-              { id: 6, name: '6. Semester' },
+              { id: 5, name: '5+ Semester' },
             ],
             onchange: event => {
               filter.changeFilter('semester', this.semester, false);
@@ -125,21 +134,11 @@ export default class studydocList {
               console.log(filter.query);
             },
           }),
-          m(Dropdown, {
-            id: 'dropdown_lecture',
-            data: this.lecturesData(),
-            onchange: event => {
-              filter.changeFilter('lecture', this.lecture, false);
-              this.lecture = event.target.value;
-              filter.changeFilter('lecture', this.lecture, true);
-              studydocs.load(filter.query);
-              console.log(filter.query);
-            },
-          }),
+          dropdownLecture,
         ]),
         m(Button, {
           label: 'Add new',
-          events: { onclick: () => m.route.set('studydocuments/new') },
+          events: { onclick: () => m.route.set(`/${currentLanguage()}/studydocuments/new`) },
         }),
       ]),
       // filtered content view

@@ -1,6 +1,25 @@
 import m from 'mithril';
 
 /**
+ * Generic Dropdown component
+ *
+ * Attributes:
+ *
+ *   - `data` array containing objects like `{ id: 1, name: 'Value 1' }`
+ *   - `onchange` *optional*
+ *
+ * Examples:
+ *
+ *     m(DropdownComponent, {
+ *         data: [
+ *             { id: 1, name: 'Value 1' },
+ *             { id: 2, name: 'Value 2' },
+ *         ],
+ *         onchange: event => {
+ *             // some event handling
+ *         },
+ *     })
+ *
  * @return {DropdownComponent} generic dropdown input as mithril component.
  */
 export default class DropdownComponent {

@@ -1,5 +1,4 @@
 import m from 'mithril';
-// import { i18n } from '../../models/language';
 import * as events from '../../models/events';
 import { FilterView } from '../../components';
 
@@ -42,33 +41,6 @@ export default class EventList {
           filterDrop: {},
         }),
       ]),
-      // m('table', [
-      //   m('thead', [
-      //     m('tr', [
-      //       m('th', i18n('event.title')),
-      //       m('th', i18n('event.start_time')),
-      //       m('th', i18n('event.signup_count')),
-      //       m('th', i18n('event.spots')),
-      //     ]),
-      //   ]),
-      //   m(
-      //     'tbody',
-      //     events
-      //       .getList()
-      //       .map(event =>
-      //         m('tr', [
-      //           m('td', event.title),
-      //           m('td', event.time_start),
-      //           m('td', event.signup_count),
-      //           m('td', event.spots),
-      //           m(
-      //             'td',
-      //             m('a', { href: `/events/${event._id}`, oncreate: m.route.link }, 'Details')
-      //           ),
-      //         ])
-      //       )
-      //   ),
-      // ]),
     ]);
   }
 }
