@@ -1,6 +1,6 @@
 import m from 'mithril';
 import marked from 'marked';
-import { apiUrl } from '../../models/config';
+import { apiUrl } from 'config';
 import * as jobs from '../../models/joboffers';
 import { log } from '../../models/log';
 

@@ -1,5 +1,5 @@
 import m from 'mithril';
-import { apiUrl } from '../models/config';
+import { apiUrl } from 'config';
 import * as events from '../models/events';
 import { i18n } from '../models/language';
 

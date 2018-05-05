@@ -1,4 +1,5 @@
 import m from 'mithril';
+import { apiUrl } from 'config';
 import * as studydocs from '../../models/studydocs';
 import { apiUrl } from '../../models/config';
 import { isLoggedIn } from '../../models/auth';

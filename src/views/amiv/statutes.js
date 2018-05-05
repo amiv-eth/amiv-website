@@ -20,7 +20,7 @@ export default class Statutes {
     if (this.content) return;
 
     m.request({
-      url: statutes,
+      url: `/${statutes}`,
       method: 'GET',
       deserialize: response => {
         this.content = response;

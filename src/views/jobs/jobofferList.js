@@ -1,5 +1,5 @@
 import m from 'mithril';
-import { apiUrl } from '../../models/config';
+import { apiUrl } from 'config';
 import * as jobs from '../../models/joboffers';
 import { currentLanguage } from '../../models/language';
 
