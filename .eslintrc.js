@@ -12,6 +12,7 @@ module.exports = {
     'no-underscore-dangle': 0,
     'no-console': 0,
     'import/prefer-default-export': 0,
+    'camelcase': 0,
     'prettier/prettier': 'error',
   },
   plugins: ['prettier'],

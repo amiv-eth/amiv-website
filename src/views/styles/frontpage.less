@@ -10,18 +10,18 @@
     h2 {
         text-align: center;
         color: blue;
-        font-family: 'Times New Roman', Times, serif;
         grid-column-start: 1;
         grid-column-end: 13;
     }
     
     // Hot sector on the frontpage
     .hot-row {
+        height: 400px;
+
         // Grid of 12 frame colums
         grid-column-start: 1;
         grid-column-end: 13;
         grid-row-start: 2;
-        grid-row-end: 15;
 
         // Grid declaration for sub items, 2 frame columns
         display: grid;
@@ -31,6 +31,7 @@
 
         .hot-first-card {
             background-color: red;
+            grid-column: 1;
             grid-row-start: 1;
             grid-row-end: 3;
             background-size: cover;
@@ -38,7 +39,7 @@
         }
 
         .hot-card {
-            background-color: yellow;
+            grid-column: 2;
             background-size: cover;
             background-position: centre-centre;
         }
@@ -50,16 +51,11 @@
 
         // Grid declaration for sub items, 3 frame columns
         display: grid;
-        border: none;
         grid-template-columns: repeat(3, 1fr);
         grid-gap: 30px;
 
         .frontpage-row-card{
-            background-color: yellowgreen;
-            grid-row-start: 1;
-            grid-row-end: 8;
-            background-size: cover;
-            background-position: centre-centre;
+            height: 200px;
         }
     }
 }

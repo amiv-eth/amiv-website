@@ -1,29 +1,19 @@
 import m from 'mithril';
-import { apiUrl } from 'config';
 import * as events from '../models/events';
 import * as jobs from '../models/joboffers';
 import { i18n } from '../models/language';
+import { Card } from '../components';
 
 const date = `${new Date().toISOString().split('.')[0]}Z`;
 
 // Render the Hot Cards, with link and imageurl
 const renderHotCards = (item, index) => {
-  const { title, href } = item;
-  let { imageurl } = item;
-  if (item.img_poster) imageurl = `${apiUrl}${item.img_poster.file}`;
-  const style = imageurl ? `background-image: url(${imageurl})` : '';
-  if (index === 0) return m('div.hot-first-card', { style }, m('a', { href }, title));
-  return m('div.hot-card', { style }, m('a', { href }, title));
+  if (index === 0) return m('div.hot-first-card', m(Card, item));
+  return m('div.hot-card', m(Card, item));
 };
 
 // Render the frontpage cards, with href and imageurl
-const renderRowCards = item => {
-  const { title, href } = item;
-  let { imageurl } = item;
-  if (item.img_poster) imageurl = `${apiUrl}${item.img_poster.file}`;
-  const style = imageurl ? `background-image: url(${imageurl})` : '';
-  return m('div.frontpage-row-card', { style }, m('a', { href }, title));
-};
+const renderRowCards = item => m('div.frontpage-row-card', m(Card, item));
 
 export default class Frontpage {
   constructor() {
