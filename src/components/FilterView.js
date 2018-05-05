@@ -27,6 +27,8 @@ export default class FilterViewComponent {
         });
         filter.state[key] = filterValue;
       });
+      filter.updateFilter();
+      vnode.attrs.onloadDoc(filter.query);
     }
     return [
       /*
@@ -66,7 +68,10 @@ export default class FilterViewComponent {
                 Object.keys(vnode.attrs.filterCheck[key]).map(subKey =>
                   m(Checkbox, {
                     label: vnode.attrs.filterCheck[key][subKey],
-                    onChange: state => filter.changeFilter(key, subKey, state.checked),
+                    onChange: state => {
+                      filter.changeFilter(key, subKey, state.checked);
+                      vnode.attrs.onloadDoc(filter.query);
+                    },
                   })
                 ),
               ])
