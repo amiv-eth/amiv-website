@@ -9,21 +9,11 @@ const date = `${new Date().toISOString().split('.')[0]}Z`;
 // Render the Hot Cards, with link and imageurl
 const renderHotCards = (item, index) => {
   const { title, href } = item;
-  const imageurl = item.img_poster ? `${apiUrl}${item.img_poster.file}` : '';
-  if (index === 0) {
-    return m(
-      'div.hot-first-card',
-      {
-        style: `background-image: url(${imageurl})`,
-      },
-      m('a', { href }, title)
-    );
-  }
-  return m(
-    'div.hot-card',
-    { style: `background-image: url(${imageurl})` },
-    m('a', { href }, title)
-  );
+  let { imageurl } = item;
+  if (item.img_poster) imageurl = `${apiUrl}${item.img_poster.file}`;
+  const style = imageurl ? `background-image: url(${imageurl})` : '';
+  if (index === 0) return m('div.hot-first-card', { style }, m('a', { href }, title));
+  return m('div.hot-card', { style }, m('a', { href }, title));
 };
 
 // Render the frontpage cards, with href and imageurl
