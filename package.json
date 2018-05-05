@@ -34,7 +34,7 @@
     "eslint-plugin-import": "^2.8.0",
     "i18n4v": "^0.2.2",
     "mithril": "^1.1.5",
-    "npm": "^5.7.1",
+    "npm": "^5.8.0",
     "polythene-css": "^1.0.0",
     "polythene-mithril": "^1.0.0",
     "uglifyjs-webpack-plugin": "^1.0.1",
