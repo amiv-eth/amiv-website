@@ -7,7 +7,7 @@ export function updateFilter() {
   Object.keys(this.state).forEach(key => {
     let queryValue = '';
     Object.keys(this.state[key]).forEach(subKey => {
-      if (this.state[key][subKey] && subKey !== 'all') {
+      if (this.state[key][subKey] && subKey !== 'all' && key !== 'searchField') {
         queryValue += `${subKey}|`;
       }
     });
@@ -16,6 +16,9 @@ export function updateFilter() {
       this.query[key] = { $regex: `^(?i).*${queryValue}.*` };
     }
   });
+  if (this.state.searchField !== '') {
+    this.query.title = { $regex: `^(?i).*${this.state.searchField}.*` };
+  }
 }
 export function changeFilter(filterKey, filterValue, checked) {
   this.state[filterKey][filterValue] = checked;
