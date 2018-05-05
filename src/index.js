@@ -1,7 +1,7 @@
 // src/index.js
 import m from 'mithril';
 import Raven from 'raven-js';
-import { verbose, sentryUrl, sentryEnvironment } from 'config';
+import { sentryUrl, sentryEnvironment } from 'config';
 import { loadLanguage, currentLanguage, changeLanguage, isLanguageValid } from './models/language';
 import { Error404, Error401 } from './views/errors';
 import { isLoggedIn } from './models/auth';
@@ -33,10 +33,8 @@ Raven.config(sentryUrl, {
 Raven.context(() => {
   loadLanguage();
 
-  if (verbose !== true) {
-    // set to pathname strategy (Please note that the production server needs to support this)
-    m.route.prefix('');
-  }
+  // set to pathname strategy (Please note that the production server needs to support this)
+  m.route.prefix('');
 
   // routes which require authentication
   const routesAuth = [
