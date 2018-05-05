@@ -16,6 +16,9 @@ const config = {
     port: 9000,
     hot: true,
     index: 'index.html',
+    historyApiFallback: {
+      index: 'index.html',
+    },
   },
 
   module: {
@@ -26,7 +29,7 @@ const config = {
         use: [
           {
             loader: 'babel-loader',
-            options: { presets: [['env', { targets: "last 2 years"}]] },
+            options: { presets: [['env', { targets: 'last 2 years' }]] },
           },
         ],
       },
@@ -44,14 +47,6 @@ const config = {
           {
             loader: 'markdown-loader', // Converts Markdown to HTML
           },
-          {
-            loader: 'string-replace-loader', // Adds /#! prefix to local urls
-            options: {
-              search: '\[(.*)\]\((\/(?!dist).*)\)',
-              replace: '(/#!$1',
-              flags: 'g',
-            },
-          },
         ],
       },
       {
@@ -67,14 +62,6 @@ const config = {
           },
           {
             loader: 'markdown-loader', // Converts Markdown to HTML
-          },
-          {
-            loader: 'string-replace-loader', // Adds /#! prefix to local urls
-            options: {
-              search: '\[(.*)\]\((\/(?!dist).*)\)',
-              replace: '(/#!$1',
-              flags: 'g',
-            },
           },
         ],
       },
@@ -128,7 +115,6 @@ const config = {
       config: `${__dirname}/config.js`,
     },
   },
-
 
   devtool: 'eval-source-map', // Default development sourcemap
 };
