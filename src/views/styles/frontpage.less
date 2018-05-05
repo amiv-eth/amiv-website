@@ -16,8 +16,6 @@
     
     // Hot sector on the frontpage
     .hot-row {
-        height: 400px;
-
         // Grid of 12 frame colums
         grid-column-start: 1;
         grid-column-end: 13;
@@ -25,23 +23,24 @@
 
         // Grid declaration for sub items, 2 frame columns
         display: grid;
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(3, 1fr);
         grid-gap: 30px;
         border: none;
 
         .hot-first-card {
             background-color: red;
-            grid-column: 1;
+            grid-column-start: 1;
+            grid-column-end: 3;
             grid-row-start: 1;
             grid-row-end: 3;
-            background-size: cover;
-            background-position: centre-centre;
+            padding-top: (9 / 16) * 100%;
+            position: relative; 
+            height: 0;
         }
 
         .hot-card {
-            grid-column: 2;
-            background-size: cover;
-            background-position: centre-centre;
+            grid-column: 3 / 4;
+            position: relative; 
         }
     }
 
@@ -55,7 +54,9 @@
         grid-gap: 30px;
 
         .frontpage-row-card{
-            height: 200px;
+            padding-top: (9 / 16) * 100%;
+            position: relative; 
+            height: 0;
         }
     }
 }
