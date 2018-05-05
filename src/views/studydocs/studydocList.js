@@ -49,7 +49,11 @@ export default class studydocList {
     this.doc = doc;
   }
 
-  lectureData() {
+  // dynamic lectures data based on selected semester and department
+  static lecturesData() {
+    if (!filter.state || !filter.state.department) {
+      return [];
+    }
     const data = [];
     if (filter.state.department.itet || !filter.state.department.mavt) {
       for (let i = 0; i < lectures.itet[this.semester - 1].length; i += 1) {
@@ -70,32 +74,9 @@ export default class studydocList {
     return data;
   }
 
-  changeFilter(filterKey, filterValue, checked) {
-    this.filter[filterKey][filterValue] = checked;
-    this.updateFilter();
-  }
+  static view() {
+    if (!isLoggedIn()) return m(Error401);
 
-  updateFilter() {
-    const query = {};
-    Object.keys(this.filter).forEach(key => {
-      let queryValue = '';
-      Object.keys(this.filter[key]).forEach(subKey => {
-        if (this.filter[key][subKey]) {
-          queryValue += `${subKey}|`;
-        }
-      });
-
-      if (queryValue.length > 0) {
-        queryValue = queryValue.substring(0, queryValue.length - 1);
-        query[key] = { $regex: `^(?i).*${queryValue}.*` };
-      }
-    });
-    query.semester = { $regex: `^(?i).*${String(this.semester)}.*` };
-    query.lecture = { $regex: `^(?i).*${this.lecture}.*` };
-    studydocs.load(query);
-  }
-
-  view() {
     return m('div#studydoc-list', [
       m('div.filter', [
         // create filterview with checkboxes
