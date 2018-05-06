@@ -1,7 +1,7 @@
 const config = {
   context: `${__dirname}/src`, // `__dirname` is root of project and `src` is source
 
-  entry: './index.js',
+  entry: ['babel-polyfill', './index.js'],
 
   output: {
     path: `${__dirname}/dist`, // `dist` is the destination

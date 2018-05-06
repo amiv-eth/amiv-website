@@ -4,6 +4,11 @@
 export const apiUrl = 'https://api-dev.amiv.ethz.ch';
 
 /**
+ * OAuth2 client id
+ */
+export const OAuthId = 'Local Tool';
+
+/**
  * Enable/Disable verbose output.
  */
 export const verbose = true;

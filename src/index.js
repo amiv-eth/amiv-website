@@ -3,8 +3,8 @@ import m from 'mithril';
 import Raven from 'raven-js';
 import { sentryUrl, sentryEnvironment } from 'config';
 import { loadLanguage, currentLanguage, changeLanguage, isLanguageValid } from './models/language';
-import { Error404, Error401 } from './views/errors';
-import { isLoggedIn, checkLogin } from './models/auth';
+import { Error404 } from './views/errors';
+import { login, isLoggedIn, checkLogin } from './models/auth';
 import studydocList from './views/studydocs/studydocList';
 import studydocNew from './views/studydocs/studydocNew';
 import eventList from './views/events/eventList';
@@ -13,7 +13,6 @@ import profile from './views/profile';
 import layout from './views/layout';
 import amivLayout from './views/amiv/amivLayout';
 import frontpage from './views/frontpage';
-import login from './views/login';
 import logout from './views/logout';
 import statutes from './views/amiv/statutes';
 import contact from './views/contact';
@@ -80,10 +79,6 @@ Raven.context(() => {
       view: () => m(contact),
     },
     {
-      url: '/:language/login',
-      view: () => m(login),
-    },
-    {
       url: '/:language/logout',
       view: () => m(logout),
     },
@@ -144,10 +139,11 @@ Raven.context(() => {
       result[r.url] = {
         onmatch(args) {
           if (!isLoggedIn()) {
+            login();
             // m.route.set(`/${currentLanguage()}/login`);
             return {
               view() {
-                return m(layout, m(Error401));
+                return m(layout, m(''));
               },
             };
           }

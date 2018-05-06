@@ -4,6 +4,11 @@
 export const apiUrl = 'https://api.amiv.ethz.ch';
 
 /**
+ * OAuth2 client id
+ */
+export const OAuthId = 'AMIV Website';
+
+/**
  * Enable/Disable verbose output.
  */
 export const verbose = false;

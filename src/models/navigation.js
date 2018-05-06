@@ -16,7 +16,7 @@ function tabToUrl() {
       index: 2,
     },
     Jobs: { href: `/${currentLanguage()}/jobs`, onupdate: m.route.link, index: 3 },
-    Login: { href: `/${currentLanguage()}/login`, onupdate: m.route.link, index: 4 },
+    Login: { href: `/${currentLanguage()}/profile`, onupdate: m.route.link, index: 4 },
     Profile: { href: `/${currentLanguage()}/profile`, onupdate: m.route.link, index: 4 },
     Logout: { href: `/${currentLanguage()}/logout`, onupdate: m.route.link, index: 5 },
   };

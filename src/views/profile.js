@@ -1,5 +1,6 @@
 import m from 'mithril';
-import { getUsername, login } from '../models/auth';
+import { apiUrl } from 'config';
+import { log } from '../models/log';
 import * as user from '../models/user';
 import * as groups from '../models/groups';
 import inputGroup from './form/inputGroup';
@@ -37,25 +38,51 @@ class changePasswordForm {
     this.password2 = '';
   }
 
-  submit() {
+  static _createSession(password) {
+    const userData = user.get();
+    const username = userData.nethz || userData.email;
+
+    return m.request({
+      method: 'POST',
+      url: `${apiUrl}/sessions`,
+      data: { username, password },
+    });
+  }
+
+  static _deleteSession(session) {
+    return m.request({
+      method: 'DELETE',
+      url: `${apiUrl}/sessions/${session._id}`,
+      headers: {
+        Authorization: session.token,
+        'If-Match': session._etag,
+      },
+    });
+  }
+
+  async submit() {
     const password = this.password1;
     this.busy = true;
 
-    // renew authentication token, so we are allowed to change the password
-    login(getUsername(), this.password_old);
-    user
-      .update({ password })
-      .then(() => {
-        this.busy = false;
-        this.password_old = '';
-        this.password1 = '';
-        this.password2 = '';
-      })
-      .catch(() => {
-        this.busy = false;
-        this.password_old = '';
-        this.password2 = '';
-      });
+    try {
+      const session = await changePasswordForm._createSession(this.password_old);
+
+      await user.update({ password }, session.token);
+      await changePasswordForm._deleteSession(session);
+
+      this.password1 = '';
+    } catch ({ _error: { code } }) {
+      // TODO: show error message
+      if (code === 401) {
+        log('Authentication failed.');
+      } else {
+        log(`An error occurred: ${code}`);
+      }
+    }
+
+    this.busy = false;
+    this.password_old = '';
+    this.password2 = '';
   }
 
   // Password policy:

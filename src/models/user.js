@@ -1,27 +1,25 @@
 import m from 'mithril';
 import { apiUrl } from 'config';
 import { getToken, getUserId } from './auth';
-import { log, error } from './log';
+import { error } from './log';
 
 /**
  * Update data of the authenticated user.
+ * If a specific token should be used, specify it as the second parameter.
  *
  * @param {Object} options any subset of user properties.
+ * @param {string} token API token (optional)
  * @return {Promise} exports for additional response handling
  */
-export function update(options) {
-  log(this.user._etag);
-
+export function update(options, token) {
   return m
     .request({
       method: 'PATCH',
       url: `${apiUrl}/users/${getUserId()}`,
-      headers: getToken()
-        ? {
-            Authorization: `Token ${getToken()}`,
-            'If-Match': this.user._etag,
-          }
-        : { 'If-Match': this.user._etag },
+      headers: {
+        Authorization: token || getToken(),
+        'If-Match': this.user._etag,
+      },
       data: options,
     })
     .then(result => {
