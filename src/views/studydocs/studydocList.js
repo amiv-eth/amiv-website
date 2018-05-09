@@ -6,27 +6,27 @@ import { Error401 } from '../errors';
 import { Button, FilterView, Dropdown } from '../../components';
 import { lectures } from '../studydocs/lectures';
 import * as filter from '../../models/filter';
+import { currentLanguage } from '../../models/language';
 
 const tableHeadings = ['title', 'type'];
 // define filters for check boxes
-const filterStudyDocsCheck = {
+const filterStudydocsCheck = {
   department: { itet: 'D-ITET', mavt: 'D-MAVT' },
   type: {
     'cheat sheet': 'Zusammenfassung',
     exams: 'Alte Prüfungen',
     'lectures documents': 'Unterichts Unterlagen',
-    exercies: 'Übungsserien',
+    exercises: 'Übungsserien',
   },
 };
 // define filters for dropdown menu
-const filterStudyDocsDrop = {
+const filterStudydocsDrop = {
   semester: {
     1: '1. Semester',
     2: '2. Semester',
     3: '3. Semester',
     4: '4. Semester',
-    5: '5. Semester',
-    6: '6. Semester',
+    '5+': '5+ Semester',
   },
   lecture: {},
 };
@@ -101,8 +101,8 @@ export default class studydocList {
         m(FilterView, {
           searchField: true,
           checkbox: true,
-          filterDrop: filterStudyDocsDrop,
-          filterCheck: filterStudyDocsCheck,
+          filterDrop: filterStudydocsDrop,
+          filterCheck: filterStudydocsCheck,
           onloadDoc: query => studydocs.load(query),
         }),
         // add aditional dropdowns for semester and lectures
@@ -114,8 +114,7 @@ export default class studydocList {
               { id: 2, name: '2. Semester' },
               { id: 3, name: '3. Semester' },
               { id: 4, name: '4. Semester' },
-              { id: 5, name: '5. Semester' },
-              { id: 6, name: '6. Semester' },
+              { id: '5+', name: '5+ Semester' },
             ],
             onchange: event => {
               filter.changeFilter('semester', this.semester, false);
@@ -139,7 +138,7 @@ export default class studydocList {
         ]),
         m(Button, {
           label: 'Add new',
-          events: { onclick: () => m.route.set('studydocuments/new') },
+          events: { onclick: () => m.route.set(`/${currentLanguage()}studydocuments/new`) },
         }),
       ]),
       // filtered content view

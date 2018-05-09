@@ -32,7 +32,7 @@ export default class FilterViewComponent {
     }
     return [
       /*
-          Attributes:
+        Attributes:
           - search: whether filter has a search field
       */
       vnode.attrs.searchField
@@ -62,11 +62,11 @@ export default class FilterViewComponent {
             ]
           )
         : null,
-      /*
-    Attributes:
-    - check boxes: whether filter has a check boxes lists
-*/
 
+      /*
+        Attributes:
+          - check boxes: whether filter has a check boxes lists
+      */
       vnode.attrs.checkbox && vnode.attrs.filterCheck
         ? [
             Object.keys(vnode.attrs.filterCheck).map(key =>
