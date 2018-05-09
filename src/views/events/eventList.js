@@ -1,17 +1,10 @@
 import m from 'mithril';
-import { currentLanguage } from '../../models/language';
+import { i18n, currentLanguage } from '../../models/language';
 import * as events from '../../models/events';
 import { FilterView } from '../../components';
+import { log } from '../../models/log';
 
 const date = `${new Date().toISOString().split('.')[0]}Z`;
-
-const filterEventsCheck = {
-  type: {
-    cool: 'Coole Events',
-    intelligent: 'Bildungs Events',
-    gaming: 'Gaming Events',
-  },
-};
 
 export default class EventList {
   static oninit() {
@@ -36,10 +29,32 @@ export default class EventList {
     return m('div#studydoc-list', [
       m('div.filter', [
         m(FilterView, {
-          searchField: true,
-          checkbox: true,
-          filterCheck: filterEventsCheck,
-          filterDrop: {},
+          fields: [
+            {
+              type: 'text',
+              key: 'title',
+              label: i18n('events.searchfield'),
+              min_length: 3,
+            },
+            {
+              type: 'button',
+              label: i18n('search'),
+            },
+            {
+              type: 'checkbox',
+              key: 'price',
+              label: i18n('events.price'),
+              default: ['free', 'small_fee'],
+              values: [
+                { value: 'free', label: i18n('events.free') },
+                { value: 'small_fee', label: i18n('events.small_fee') },
+              ],
+            },
+          ],
+          onchange: () => {
+            // TODO: implement event filtering
+            log('Event filtering not implemented yet.');
+          },
         }),
       ]),
       m(

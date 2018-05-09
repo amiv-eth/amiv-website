@@ -1,89 +1,192 @@
 import m from 'mithril';
-import { Button, Checkbox, TextField } from '../components';
-import * as filter from '../models/filter';
+import { Button, Checkbox, Dropdown, TextField } from '../components';
 
+/**
+ * FilterViewComponent
+ *
+ * Attributes:
+ *
+ *   - `onchange` used to apply the new filter.
+ *   - `fields` specifies filter configuration
+ *
+ * `fields` example:
+ *
+ * ```json
+ * [
+ *   {
+ *     type: 'text',
+ *     key: 'key1',
+ *     label: 'some label',
+ *     default: 'default value',
+ *     // minimum length required to trigger `onchange`
+ *     min_length: 3,
+ *   },
+ *   {
+ *     type: 'checkbox',
+ *     key: 'key2',
+ *     label: 'group label',
+ *     default: ['value1', 'value2'],
+ *     values: [
+ *       { label: 'Label 1', value: 'value1' },
+ *       { label: 'Label 2', value: 'value2' },
+ *       { label: 'Label 3', value: 'value3' },
+ *     ],
+ *   },
+ *   {
+ *     type: 'dropdown',
+ *     key: 'key3',
+ *     default: 'value2',
+ *     values: [
+ *       { label: 'Label 1', value: 'value1' },
+ *       { label: 'Label 2', value: 'value2' },
+ *       { label: 'Label 3', value: 'value3' },
+ *     ],
+ *   },
+ *   {
+ *     type: 'dropdown',
+ *     key: 'key4',
+ *     default: 'value2',
+ *     values: values => [],
+ *   },
+ *   {
+ *     type: 'button',
+ *     key: 'key5',
+ *     label: 'some label',
+ *     events: {
+ *       onclick: () => dosomething(),
+ *     },
+ *   },
+ * ]
+ * ```
+ *
+ * Default behavior of buttons is to trigger `onchange`.
+ */
 export default class FilterViewComponent {
   constructor() {
-    this.filterNames = null;
-    this.defaultProps = {};
+    this.values = {};
+  }
+
+  oninit(vnode) {
+    this.onchange = vnode.attrs.onchange;
+    this.notify();
+  }
+
+  notify() {
+    this.onchange(this.values);
+  }
+
+  _createTextField(field) {
+    const min_length = field.min_length || 0;
+    this.values[field.key] = this.values[field.key] || field.default || '';
+
+    return m(TextField, {
+      label: field.label || '',
+      value: this.values[field.key],
+      onChange: state => {
+        this.values[field.key] = state.value;
+        if (state.value.length >= min_length) {
+          this.notify();
+        }
+      },
+    });
+  }
+
+  _createCheckboxGroup(field) {
+    const items = [];
+    this.values[field.key] = this.values[field.key] || field.default || [];
+
+    if (field.label) {
+      items.push(m('h4', field.label));
+    }
+
+    if (typeof field.values === 'function') {
+      const values = field.values(this.values);
+      values.map(item => items.push(this._createCheckbox(field.key, item.label, item.value)));
+    } else {
+      field.values.map(item => items.push(this._createCheckbox(field.key, item.label, item.value)));
+    }
+
+    return m('div.check', items);
+  }
+
+  _createCheckbox(key, label, value) {
+    return m(Checkbox, {
+      checked: this.values[key].includes(value),
+      onChange: state => {
+        if (state.checked) {
+          this.values[key].push(value);
+        } else {
+          const i = this.values[key].indexOf(value);
+          if (i !== -1) {
+            this.values[key].splice(i, 1);
+          }
+        }
+        this.notify();
+      },
+      label,
+    });
+  }
+
+  _createDropdown(field) {
+    let data;
+    this.values[field.key] = this.values[field.key] || field.default || '';
+
+    if (typeof field.values === 'function') {
+      data = field.values(this.values);
+    } else {
+      data = field.values;
+    }
+
+    // TODO: make this work
+    let invalidSelection = true;
+    data.forEach(item => {
+      if (item.value === this.values[field.key]) {
+        invalidSelection = false;
+      }
+    });
+    if (invalidSelection === 0) {
+      this.values[field.key] = field.default || '';
+    }
+
+    return m(Dropdown, {
+      data,
+      selected: this.values[field.key],
+      onchange: event => {
+        this.values[field.key] = event.target.value;
+        this.notify();
+      },
+    });
+  }
+
+  _createButton(options) {
+    const events = options.events || {};
+    if (!events.onclick) {
+      // default onclick behavior
+      events.onclick = () => this.notify();
+    }
+
+    return m(Button, {
+      label: options.label,
+      events,
+    });
   }
 
   view(vnode) {
-    this.filterNames = {};
-    Object.keys(vnode.attrs.filterCheck).forEach(key => {
-      this.filterNames[key] = vnode.attrs.filterCheck[key];
-    });
-    Object.keys(vnode.attrs.filterDrop).forEach(key => {
-      this.filterNames[key] = vnode.attrs.filterDrop[key];
-    });
-    this.onloadDoc = vnode.attrs.onloadDoc;
-    if (Object.keys(filter.state).length === 0) {
-      filter.state = {};
-      Object.keys(this.filterNames).forEach(key => {
-        const filterValue = {};
-        Object.keys(this.filterNames[key]).forEach(subKey => {
-          filterValue[subKey] = false;
-        });
-        filter.state[key] = filterValue;
-      });
-      filter.state.searchField = '';
-      filter.updateFilter();
-      if (vnode.attrs.onloadDoc) vnode.attrs.onloadDoc(filter.query);
-    }
-    return [
-      /*
-        Attributes:
-          - search: whether filter has a search field
-      */
-      vnode.attrs.searchField
-        ? m(
-            'form',
-            {
-              onsubmit: () => {
-                filter.updateFilter();
-                vnode.attrs.onloadDoc(filter.query);
-                return false;
-              },
-            },
-            [
-              m(
-                TextField,
-                {
-                  label: 'Search',
-                  onChange: state => {
-                    filter.state.searchField = state.value;
-                  },
-                },
-                ''
-              ),
-              m(Button, {
-                label: 'Search',
-              }),
-            ]
-          )
-        : null,
+    const { fields } = vnode.attrs;
+    const views = [];
 
-      /*
-        Attributes:
-          - check boxes: whether filter has a check boxes lists
-      */
-      vnode.attrs.checkbox && vnode.attrs.filterCheck
-        ? [
-            Object.keys(vnode.attrs.filterCheck).map(key =>
-              m('div.check', [
-                Object.keys(vnode.attrs.filterCheck[key]).map(subKey =>
-                  m(Checkbox, {
-                    label: vnode.attrs.filterCheck[key][subKey],
-                    onChange: state => {
-                      filter.changeFilter(key, subKey, state.checked);
-                      vnode.attrs.onloadDoc(filter.query);
-                    },
-                  })
-                ),
-              ])
-            ),
-          ]
-        : null,
-    ];
+    fields.forEach(field => {
+      if (field.type === 'text') {
+        views.push(this._createTextField(field));
+      } else if (field.type === 'checkbox') {
+        views.push(this._createCheckboxGroup(field));
+      } else if (field.type === 'dropdown') {
+        views.push(this._createDropdown(field));
+      } else if (field.type === 'button') {
+        views.push(this._createButton(field));
+      }
+    });
+
+    return views;
   }
 }
