@@ -5,16 +5,18 @@ import m from 'mithril';
  *
  * Attributes:
  *
- *   - `data` array containing objects like `{ id: 1, name: 'Value 1' }`
- *   - `onchange` *optional*
+ *   - `data` array containing available options for selection
+ *   - `selected` *optional* set value of the option which should be selected (default: first option)
+ *   - `onchange` *optional* event handler when the selection has changed
  *
  * Examples:
  *
  *     m(DropdownComponent, {
  *         data: [
- *             { id: 1, name: 'Value 1' },
- *             { id: 2, name: 'Value 2' },
+ *             { label: 'Label 1', value: 'value1' },
+ *             { label: 'Label 2', value: 'value2' },
  *         ],
+ *         selected: this.values[field.key],
  *         onchange: event => {
  *             // some event handling
  *         },
@@ -23,14 +25,23 @@ import m from 'mithril';
  * @return {DropdownComponent} generic dropdown input as mithril component.
  */
 export default class DropdownComponent {
-  constructor() {
-    this.selectedId = 0;
+  oninit(vnode) {
+    this.selectedId = vnode.attrs.selectedId || 0;
   }
+
   view(vnode) {
     return m(
       'select',
-      { onchange: m.withAttr('value', vnode.selectedId), ...this.defaultProps, ...vnode.attrs },
-      [vnode.attrs.data.map(label => m('option', { value: label.id }, label.name))]
+      { onchange: m.withAttr('value', this.selectedId), ...this.defaultProps, ...vnode.attrs },
+      [
+        vnode.attrs.data.map(item =>
+          m(
+            'option',
+            { value: item.value, selected: vnode.attrs.selected === item.value },
+            item.label
+          )
+        ),
+      ]
     );
   }
 }

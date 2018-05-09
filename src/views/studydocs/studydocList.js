@@ -3,33 +3,11 @@ import { apiUrl } from 'config';
 import * as studydocs from '../../models/studydocs';
 import { isLoggedIn } from '../../models/auth';
 import { Error401 } from '../errors';
-import { Button, FilterView, Dropdown } from '../../components';
+import { Button, FilterView } from '../../components';
 import { lectures } from '../studydocs/lectures';
-import * as filter from '../../models/filter';
-import { currentLanguage } from '../../models/language';
+import { i18n, currentLanguage } from '../../models/language';
 
 const tableHeadings = ['title', 'type'];
-// define filters for check boxes
-const filterStudydocsCheck = {
-  department: { itet: 'D-ITET', mavt: 'D-MAVT' },
-  type: {
-    'cheat sheet': 'Zusammenfassung',
-    exams: 'Alte Prüfungen',
-    'lectures documents': 'Unterichts Unterlagen',
-    exercises: 'Übungsserien',
-  },
-};
-// define filters for dropdown menu
-const filterStudydocsDrop = {
-  semester: {
-    1: '1. Semester',
-    2: '2. Semester',
-    3: '3. Semester',
-    4: '4. Semester',
-    '5+': '5+ Semester',
-  },
-  lecture: {},
-};
 
 export default class studydocList {
   constructor(vnode) {
@@ -49,46 +27,36 @@ export default class studydocList {
   }
 
   // dynamic lectures data based on selected semester and department
-  static lecturesData() {
-    if (!filter.state || !filter.state.department) {
+  static loadLectures(values) {
+    if (!values.department) {
       return [];
     }
+
     const data = [];
     data.push({
-      id: 'all',
-      name: 'Alle Fächer',
+      value: 'all',
+      label: i18n('studydocs.lectures_all'),
     });
-    let newLectureIndex = this.lecture !== 'all';
-    if (this.semester > 0) {
-      if (filter.state.department.itet || !filter.state.department.mavt) {
-        for (let i = 0; i < lectures.itet[this.semester - 1].length; i += 1) {
+
+    if (values.semester !== 'all') {
+      if (values.department.includes('itet')) {
+        for (let i = 0; i < lectures.itet[values.semester].length; i += 1) {
           data.push({
-            id: lectures.itet[this.semester - 1][i],
-            name: lectures.itet[this.semester - 1][i],
+            value: lectures.itet[values.semester][i],
+            label: lectures.itet[values.semester][i],
           });
-          if (this.lecture === lectures.itet[this.semester - 1][i]) {
-            newLectureIndex = false;
-          }
         }
       }
-      if (filter.state.department.mavt || !filter.state.department.itet) {
-        for (let i = 0; i < lectures.mavt[this.semester - 1].length; i += 1) {
+      if (values.department.includes('mavt')) {
+        for (let i = 0; i < lectures.mavt[values.semester].length; i += 1) {
           data.push({
-            id: lectures.mavt[this.semester - 1][i],
-            name: lectures.mavt[this.semester - 1][i],
+            value: lectures.mavt[values.semester][i],
+            label: lectures.mavt[values.semester][i],
           });
-          if (this.lecture === lectures.mavt[this.semester - 1][i]) {
-            newLectureIndex = false;
-          }
         }
       }
     }
-    if (newLectureIndex) {
-      filter.state.lecture[this.lecture] = false;
-      this.lecture = 'all';
-    }
-    const dropdown = document.getElementById('dropdown_lecture');
-    if (dropdown) dropdown.value = this.lecture;
+
     return data;
   }
 
@@ -99,48 +67,85 @@ export default class studydocList {
       m('div.filter', [
         // create filterview with checkboxes
         m(FilterView, {
-          searchField: true,
-          checkbox: true,
-          filterDrop: filterStudydocsDrop,
-          filterCheck: filterStudydocsCheck,
-          onloadDoc: query => studydocs.load(query),
-        }),
-        // add aditional dropdowns for semester and lectures
-        m('div.drop', [
-          m(Dropdown, {
-            data: [
-              { id: 'all', name: 'Alle Semester' },
-              { id: 1, name: '1. Semester' },
-              { id: 2, name: '2. Semester' },
-              { id: 3, name: '3. Semester' },
-              { id: 4, name: '4. Semester' },
-              { id: '5+', name: '5+ Semester' },
-            ],
-            onchange: event => {
-              filter.changeFilter('semester', this.semester, false);
-              this.semester = event.target.value;
-              filter.changeFilter('semester', this.semester, true);
-              studydocs.load(filter.query);
-              console.log(filter.query);
+          fields: [
+            {
+              type: 'text',
+              key: 'title',
+              label: i18n('studydocs.searchfield'),
+              min_length: 3,
             },
-          }),
-          m(Dropdown, {
-            id: 'dropdown_lecture',
-            data: this.lecturesData(),
-            onchange: event => {
-              filter.changeFilter('lecture', this.lecture, false);
-              this.lecture = event.target.value;
-              filter.changeFilter('lecture', this.lecture, true);
-              studydocs.load(filter.query);
-              console.log(filter.query);
+            {
+              type: 'button',
+              label: i18n('search'),
             },
-          }),
-        ]),
-        m(Button, {
-          label: 'Add new',
-          events: { onclick: () => m.route.set(`/${currentLanguage()}studydocuments/new`) },
+            {
+              type: 'checkbox',
+              key: 'department',
+              label: i18n('studydocs.department'),
+              default: ['itet', 'mavt'],
+              values: [{ value: 'itet', label: 'D-ITET' }, { value: 'mavt', label: 'D-MAVT' }],
+            },
+            {
+              type: 'checkbox',
+              key: 'type',
+              label: i18n('studydocs.type'),
+              default: ['cheat sheet', 'exams', 'lecture documents', 'exercises'],
+              values: [
+                { value: 'cheat sheet', label: i18n('studydocs.summaries') },
+                { value: 'exams', label: i18n('studydocs.old_exams') },
+                { value: 'lecture documents', label: i18n('studydocs.lecture_documents') },
+                { value: 'exercises', label: i18n('studydocs.exercises') },
+              ],
+            },
+            {
+              type: 'dropdown',
+              key: 'semester',
+              default: 'all',
+              values: [
+                { value: 'all', label: i18n('studydocs.semester_all') },
+                { value: '1', label: i18n('studydocs.semester1') },
+                { value: '2', label: i18n('studydocs.semester2') },
+                { value: '3', label: i18n('studydocs.semester3') },
+                { value: '4', label: i18n('studydocs.semester4') },
+                { value: '5+', label: i18n('studydocs.semester5+') },
+              ],
+            },
+            {
+              type: 'dropdown',
+              key: 'lecture',
+              default: 'all',
+              values: this.loadLectures,
+            },
+            {
+              type: 'button',
+              label: i18n('studydocs.upload'),
+              events: {
+                onclick: () => m.route.set(`/${currentLanguage()}/studydocuments/new`),
+              },
+            },
+          ],
+          onchange: values => {
+            const query = {};
+
+            Object.keys(values).forEach(key => {
+              let value = values[key];
+
+              if (Array.isArray(value)) {
+                query[key] = { $in: value };
+              } else if (key === 'semester' && value !== 'all') {
+                query[key] = value;
+              } else if (key === 'lecture' && value !== 'all') {
+                query[key] = value;
+              } else if (key === 'title' && value.length > 0) {
+                value = value.substring(0, value.length - 1);
+                query[key] = { $regex: `^(?i).*${value}.*` };
+              }
+            });
+            studydocs.load(query);
+          },
         }),
       ]),
+
       // filtered content view
       m('div.content', [
         m('div.content-grid', [
@@ -153,6 +158,7 @@ export default class studydocList {
             ]),
         ]),
       ]),
+
       // detail view of selected studydoc item
       this.doc
         ? m('div.details', [
@@ -170,7 +176,7 @@ export default class studydocList {
               }),
             ]),
           ])
-        : null,
+        : m(''),
     ]);
   }
 }
