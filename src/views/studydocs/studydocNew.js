@@ -3,11 +3,13 @@ import * as studydocs from '../../models/studydocs';
 import inputGroup from '../form/inputGroup';
 import selectGroup from '../form/selectGroup';
 import { Button } from '../../components';
+import { currentLanguage, i18n } from '../../models/language';
 
 export default class studydocNew {
   oninit() {
     this.doc = { type: 'exams' };
     this.isValid = false;
+    this.isBusy = false;
   }
 
   static _getInputSuggestions(field, input, callback) {
@@ -24,18 +26,20 @@ export default class studydocNew {
     }
   }
 
-  submit() {
-    if (this.isValid) {
-      studydocs.addNew(this.doc);
-      m.route.set('/studydocuments');
+  async submit() {
+    if (this.isValid && !this.isBusy) {
+      this.isBusy = true;
+      await studydocs.addNew(this.doc);
+      this.isBusy = false;
+      m.route.set(`/${currentLanguage()}/studydocuments`);
     }
   }
 
   view() {
-    return m('form', [
+    return m('form', { onsubmit: () => false }, [
       m(inputGroup, {
         name: 'title',
-        title: 'Title',
+        title: i18n('studydocs.title'),
         oninput: e => {
           this.doc.title = e.target.value;
         },
@@ -44,7 +48,7 @@ export default class studydocNew {
       }),
       m(inputGroup, {
         name: 'professor',
-        title: 'Professor',
+        title: i18n('studydocs.professor'),
         oninput: e => {
           this.doc.professor = e.target.value;
         },
@@ -53,7 +57,7 @@ export default class studydocNew {
       }),
       m(inputGroup, {
         name: 'author',
-        title: 'Author',
+        title: i18n('studydocs.author'),
         oninput: e => {
           this.doc.author = e.target.value;
         },
@@ -62,7 +66,7 @@ export default class studydocNew {
       }),
       m(selectGroup, {
         name: 'semester',
-        title: 'Semester',
+        title: i18n('studydocs.semester'),
         type: 'select',
         onchange: e => {
           this.doc.semester = e.target.value;
@@ -77,7 +81,7 @@ export default class studydocNew {
       }),
       m(selectGroup, {
         name: 'department',
-        title: 'Department',
+        title: i18n('studydocs.department'),
         type: 'select',
         onchange: e => {
           this.doc.department = e.target.value;
@@ -86,7 +90,7 @@ export default class studydocNew {
       }),
       m(inputGroup, {
         name: 'lecture',
-        title: 'Lecture',
+        title: i18n('studydocs.lecture'),
         oninput: e => {
           this.doc.lecture = e.target.value;
         },
@@ -95,7 +99,7 @@ export default class studydocNew {
       }),
       m(inputGroup, {
         name: 'course_year',
-        title: 'Course Year',
+        title: i18n('studydocs.course_year'),
         type: 'number',
         args: {
           placeholder: new Date().getFullYear(),
@@ -106,21 +110,21 @@ export default class studydocNew {
       }),
       m(selectGroup, {
         name: 'type',
-        title: 'Type',
+        title: i18n('studydocs.type'),
         type: 'select',
         onchange: e => {
           this.doc.type = e.target.value;
         },
         options: [
-          { value: 'exams', text: 'Exam' },
-          { value: 'cheat sheets', text: 'Cheat sheet' },
-          { value: 'lecture documents', text: 'Lecture Document' },
-          { value: 'exercises', text: 'Exercise' },
+          { value: 'exams', text: i18n('studydocs.old_exams') },
+          { value: 'cheat sheets', text: i18n('studydocs.summaries') },
+          { value: 'lecture documents', text: i18n('studydocs.lecture_documents') },
+          { value: 'exercises', text: i18n('studydocs.exercises') },
         ],
       }),
       m(inputGroup, {
         name: 'files',
-        title: 'Files',
+        title: i18n('studydocs.files'),
         args: {
           type: 'file',
           multiple: 1,
@@ -136,8 +140,8 @@ export default class studydocNew {
       }),
       m(Button, {
         name: 'submit',
-        label: 'Submit',
-        active: this.isValid,
+        label: this.isBusy ? i18n('studydocs.uploading') : i18n('studydocs.upload'),
+        active: this.isValid && !this.isBusy,
         events: {
           onclick: () => this.submit(),
         },

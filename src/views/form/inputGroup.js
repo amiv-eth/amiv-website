@@ -25,7 +25,7 @@ export default class InputGroup {
       args = {};
     }
     args.value = vnode.attrs.value;
-    args.type = vnode.attrs.type;
+    args.type = vnode.attrs.type || args.type;
     args.onchange = vnode.attrs.onchange;
     args.oninput = vnode.attrs.oninput;
     args.getSuggestions = vnode.attrs.getSuggestions;
