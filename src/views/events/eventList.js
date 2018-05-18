@@ -57,7 +57,40 @@ export default class EventList {
           },
         }),
       ]),
-      m(
+
+      // filtered content view
+      m('div.content', [
+        m('div.content-grid', [
+          tableHeadings.map(header => m('div.list-header', header)),
+          studydocs
+            .getList()
+            .map(doc => [
+              m('div.list-item', { onclick: () => this.selectDocument(doc) }, doc.title),
+              m('div.list-item', { onclick: () => this.selectDocument(doc) }, doc.type),
+            ]),
+        ]),
+      ]),
+
+      // detail view of selected studydoc item
+      this.doc
+        ? m('div.details', [
+            m('table', [
+              m('tr', this.doc.title),
+              m('tr', this.doc.lecture),
+              m('tr', this.doc.professor),
+              m('tr', this.doc.semester),
+              m('tr', this.doc.author),
+              m(Button, {
+                label: 'Download',
+                events: {
+                  onclick: () => window.open(`${apiUrl}${this.doc.files[0].file}`, '_blank'),
+                },
+              }),
+            ]),
+          ])
+        : m(''),
+    ]);
+    /* m(
         'tbody',
         events
           .getList()
@@ -78,6 +111,6 @@ export default class EventList {
             ])
           )
       ),
-    ]);
+    ]); */
   }
 }

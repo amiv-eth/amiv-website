@@ -24,10 +24,11 @@
     "babel-polyfill": "^6.26.0",
     "email-validator": "^2.0.3",
     "i18n4v": "^0.2.2",
+    "marked": "^0.3.18",
     "mithril": "^1.1.5",
+    "mithril-infinite": "^1.2.4",
     "polythene-css": "^1.0.0",
     "polythene-mithril": "^1.0.0",
-    "marked": "^0.3.18",
     "raven-js": "^3.24.2"
   },
   "devDependencies": {
