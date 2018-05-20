@@ -78,6 +78,9 @@ export default class JSONSchemaForm {
   }
 
   validate() {
+    // do nothing if schema is undefined
+    if (!this.schema) return;
+
     // validate the new data against the schema
     const validate = this.ajv.getSchema('schema');
     this.valid = validate(this.data);

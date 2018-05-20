@@ -1,62 +1,83 @@
 import m from 'mithril';
 import marked from 'marked';
 import * as EmailValidator from 'email-validator';
-import * as events from '../../models/events';
 import { log } from '../../models/log';
 import { isLoggedIn } from '../../models/auth';
 import inputGroup from '../form/inputGroup';
 import { Button } from '../../components';
 import JSONSchemaForm from '../form/jsonSchemaForm';
+import { i18n } from '../../models/language';
 
 class EventSignupForm extends JSONSchemaForm {
   oninit(vnode) {
-    super.oninit(vnode);
+    this.event = vnode.attrs.event;
+    super.oninit(
+      Object.assign({}, vnode, {
+        attrs: {
+          schema:
+            this.event.additional_fields === undefined
+              ? undefined
+              : JSON.parse(this.event.additional_fields),
+        },
+      })
+    );
     this.email = '';
     this.emailErrors = [];
     this.emailValid = false;
     if (isLoggedIn()) {
-      events.loadSignupForSelectedEvent().then(() => {
-        if (typeof events.getSignupForSelectedEvent() !== 'undefined') {
-          this.data = JSON.parse(events.getSignupForSelectedEvent().additional_fields) || {};
+      this.event.loadSignup().then(() => {
+        if (this.event.signupData) {
+          this.data = JSON.parse(this.event.signupData.additional_fields) || {};
         }
       });
     }
   }
 
-  signup() {
-    events
-      .signupForSelectedEvent(super.getValue(), this.email)
-      .then(() => log('Successfully signed up for the event!'))
-      .catch(() => log('Could not sign up of the event!'));
+  async signup() {
+    try {
+      await this.event.signup(super.getValue(), this.email);
+    } catch (err) {
+      log(err);
+    }
   }
 
   signoff() {
-    events.signoffForSelectedEvent();
+    try {
+      this.event.signoff();
+    } catch (err) {
+      log(err);
+    }
     this.validate();
   }
 
   view() {
-    // do not render anything if there is no data yet
-    if (typeof events.getSelectedEvent() === 'undefined') return m('');
-
     if (isLoggedIn()) {
       // do not render form if there is no signup data of the current user
-      if (!events.signupForSelectedEventHasLoaded()) return m('span', 'Loading...');
+      if (!this.event.hasSignupDataLoaded) return m('span', i18n('loading'));
 
       const elements = this.renderFormElements();
-      elements.push(this._renderSignupButton());
-      if (typeof events.getSignupForSelectedEvent() !== 'undefined') {
-        elements.unshift(m('div', 'You have already signed up. Update your data below.'));
+      if (!this.event.signupData || (this.event.signupData && this.event.additional_fields)) {
+        elements.push(this._renderSignupButton());
+      }
+      if (this.event.signupData) {
+        elements.unshift(
+          m(
+            'div',
+            `${i18n('events.signed_up')} ${
+              this.event.additional_fields ? i18n('events.update_data') : ''
+            }`
+          )
+        );
         elements.push(this._renderSignoffButton());
       }
-      return m('form', elements);
-    } else if (events.getSelectedEvent().allow_email_signup) {
+      return m('form', { onsubmit: () => false }, elements);
+    } else if (this.event.allow_email_signup) {
       const elements = this.renderFormElements();
       elements.push(this._renderEmailField());
       elements.push(this._renderSignupButton());
       return m('form', elements);
     }
-    return m('div', 'This event is for AMIV members only.');
+    return m('div', i18n('events.amiv_members_only'));
   }
 
   isValid() {
@@ -69,7 +90,7 @@ class EventSignupForm extends JSONSchemaForm {
   _renderEmailField() {
     return m(inputGroup, {
       name: 'email',
-      title: 'Email',
+      title: i18n('email'),
       args: {
         type: 'text',
       },
@@ -83,7 +104,7 @@ class EventSignupForm extends JSONSchemaForm {
           this.emailErrors = [];
         } else {
           this.emailValid = false;
-          this.emailErrors = ['Not a valid email address'];
+          this.emailErrors = [i18n('email_invalid')];
         }
       },
       getErrors: () => this.emailErrors,
@@ -94,7 +115,7 @@ class EventSignupForm extends JSONSchemaForm {
   _renderSignupButton() {
     return m(Button, {
       name: 'signup',
-      label: 'Signup',
+      label: i18n('events.signup'),
       active: super.isValid(),
       events: {
         onclick: () => this.signup(),
@@ -105,7 +126,7 @@ class EventSignupForm extends JSONSchemaForm {
   _renderSignoffButton() {
     return m(Button, {
       name: 'signoff',
-      label: 'Delete signup',
+      label: i18n('events.delete_signup'),
       active: true,
       events: {
         onclick: () => this.signoff(),
@@ -115,43 +136,43 @@ class EventSignupForm extends JSONSchemaForm {
 }
 
 export default class EventDetails {
-  static oninit(vnode) {
-    events.selectEvent(vnode.attrs.eventId);
+  oninit(vnode) {
+    this.controller = vnode.attrs.controller;
   }
 
-  static view() {
-    if (typeof events.getSelectedEvent() === 'undefined') {
-      return m('');
+  view() {
+    const event = this.controller.selectedEvent;
+    if (!event) {
+      return m('h1', i18n('events.not_found'));
     }
 
     let eventSignupForm;
     const now = new Date();
-    const registerStart = new Date(events.getSelectedEvent().time_register_start);
-    const registerEnd = new Date(events.getSelectedEvent().time_register_end);
+    const registerStart = new Date(event.time_register_start);
+    const registerEnd = new Date(event.time_register_end);
     if (registerStart <= now) {
       if (registerEnd >= now) {
-        eventSignupForm = m(EventSignupForm, {
-          schema:
-            events.getSelectedEvent().additional_fields === undefined
-              ? undefined
-              : JSON.parse(events.getSelectedEvent().additional_fields),
-        });
+        eventSignupForm = m(EventSignupForm, { event });
       } else {
         let participantNotice = '';
-        if (events.getSignupForSelectedEvent() !== 'undefined') {
-          participantNotice = m('span', 'You signed up for this event.');
+        if (event.hasSignupDataLoaded && event.signupData) {
+          participantNotice = m('span', i18n('events.signed_up'));
         }
-        eventSignupForm = m('div', ['The registration period is over.', participantNotice]);
+        eventSignupForm = m('div', [i18n('events.registration_over'), participantNotice]);
       }
     } else {
-      eventSignupForm = m('div', `The registration starts at ${registerStart}`);
+      eventSignupForm = m('div', i18n('events.registration_starts_at', { time: registerStart }));
     }
-    return m('div', [
-      m('h1', events.getSelectedEvent().title_de),
-      m('span', events.getSelectedEvent().time_start),
-      m('span', events.getSelectedEvent().signup_count),
-      m('span', events.getSelectedEvent().spots),
-      m('p', m.trust(marked(events.getSelectedEvent().description_de))),
+    return m('div.event-details', [
+      m('h1', event.title),
+      m('div', event.time_start),
+      m(
+        'div',
+        event.spots === undefined
+          ? i18n('events.no_registration')
+          : i18n('events.%n_spots_available', event.spots - event.signup_count)
+      ),
+      m('p', m.trust(marked(event.description))),
       eventSignupForm,
     ]);
   }

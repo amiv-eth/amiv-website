@@ -25,7 +25,7 @@ export class Event {
     const queryString = m.buildQueryString({
       where: JSON.stringify({
         user: getUserId(),
-        event: this.getSelectedEvent()._id,
+        event: this._id,
       }),
     });
 
@@ -37,27 +37,28 @@ export class Event {
       },
     });
     if (response._items.length === 1) {
-      [this.signup] = response._items;
+      [this._signup] = response._items;
     } else {
-      this.signup = undefined;
+      this._signup = undefined;
     }
     this.signupLoaded = true;
-    return this.signup;
+    return this._signup;
   }
 
   /**
    * Checks if the signup data has been loaded.
    * @return {Boolean}
    */
-  hasSignupLoaded() {
+  get hasSignupDataLoaded() {
     return this.signupLoaded;
   }
 
   /**
    * Get signup data of the authenticated user.
+   * @return {object} signup data
    */
-  getSignup() {
-    return this.signup;
+  get signupData() {
+    return this._signup;
   }
 
   /**
@@ -65,17 +66,17 @@ export class Event {
    * @return {Promise}
    */
   async signoff() {
-    if (!this.signup) return;
+    if (!this._signup) return;
 
     await m.request({
       method: 'DELETE',
-      url: `${apiUrl}/eventsignups/${this.signup._id}`,
+      url: `${apiUrl}/eventsignups/${this._signup._id}`,
       headers: {
         Authorization: getToken(),
-        'If-Match': this.signup._etag,
+        'If-Match': this._signup._etag,
       },
     });
-    this.signup = undefined;
+    this._signup = undefined;
   }
 
   /**
@@ -85,15 +86,15 @@ export class Event {
    * @return {Promise}
    */
   async signup(additionalFields, email = '') {
-    let additionalFieldsString = '';
-    if (this.selectedEvent.additional_fields) {
+    let additionalFieldsString;
+    if (this.additional_fields) {
       additionalFieldsString = JSON.stringify(additionalFields);
     }
 
-    if (this.signup) {
-      this._updateSignup(additionalFieldsString);
+    if (this._signup) {
+      return this._updateSignup(additionalFieldsString);
     }
-    this._createSignup(additionalFieldsString, email);
+    return this._createSignup(additionalFieldsString, email);
   }
 
   async _createSignup(additionalFieldsString, email = '') {
@@ -110,7 +111,7 @@ export class Event {
       throw new Error('Signup not allowed');
     }
 
-    this.signup = await m.request({
+    this._signup = await m.request({
       method: 'POST',
       url: `${apiUrl}/eventsignups`,
       data,
@@ -118,20 +119,22 @@ export class Event {
         Authorization: getToken(),
       },
     });
+    return this._signup;
   }
 
   async _updateSignup(additionalFieldsString) {
-    this.signup = await m.request({
+    this._signup = await m.request({
       method: 'PATCH',
-      url: `${apiUrl}/eventsignups/${this.signup._id}`,
+      url: `${apiUrl}/eventsignups/${this._signup._id}`,
       data: {
         additional_fields: additionalFieldsString,
       },
       headers: {
         Authorization: getToken(),
-        'If-Match': this.signup._etag,
+        'If-Match': this._signup._etag,
       },
     });
+    return this._signup;
   }
 }
 
@@ -140,28 +143,95 @@ export class EventController {
     this.query = query || {};
     // state pointer that is counted up every time the table is refreshed so
     // we can tell infinite scroll that the data-version has changed.
-    this.stateCounter = Stream(0);
+    this._stateCounter = Stream(0);
+  }
+
+  get stateCounter() {
+    return this._stateCounter();
   }
 
   refresh() {
-    this.stateCounter(this.stateCounter() + 1);
+    this._stateCounter(this.stateCounter + 1);
   }
 
-  infiniteScrollParams(item) {
+  infiniteScrollParams(item, before) {
+    const date = `${new Date().toISOString().split('.')[0]}Z`;
     return {
       item,
-      pageData: pageNum => this.getPageData(pageNum),
-      pageKey: pageNum => `${pageNum}-${this.stateCounter()}`,
+      before,
+      pageData: pageNum =>
+        this.getPageData(pageNum, {
+          where: {
+            time_advertising_end: { $lt: date },
+            $and: [
+              { $or: [{ time_start: null }, { time_start: { $lt: date } }] },
+              { $or: [{ time_end: null }, { time_end: { $lt: date } }] },
+            ],
+          },
+        }),
+      pageKey: pageNum => `${pageNum}-${this.stateCounter}`,
     };
   }
 
-  async getPageData(pageNum) {
+  /**
+   * Get page data according to saved query
+   * @param {number} pageNum
+   */
+  async getPageData(pageNum, additionalQuery = {}) {
+    const date = `${new Date().toISOString().split('.')[0]}Z`;
     // for some reason this is called before the object is instantiated.
-    // check this and return nothing
-    const query = Object.assign({}, this.query);
-    query.max_results = 10;
+    const query = Object.assign({}, this.query, additionalQuery);
+    query.where = query.where || {};
+    query.where.show_website = true;
+    query.where.time_advertising_start = { $lt: date };
+    query.max_results = query.max_results || 10;
     query.page = pageNum;
 
+    return EventController._getData(query);
+  }
+
+  /**
+   * Get all events with their registration open
+   */
+  async getWithOpenRegistration() {
+    const date = `${new Date().toISOString().split('.')[0]}Z`;
+    // for some reason this is called before the object is instantiated.
+    const query = Object.assign({}, this.query);
+    query.where = query.where || {};
+    query.where.show_website = true;
+    query.where.time_register_start = { $lt: date };
+    query.where.time_register_end = { $gt: date };
+
+    return EventController._getData(query);
+  }
+
+  /**
+   * Get all upcoming events
+   * @param {Boolean} skipRegistrationOpen skip events which have their registration open
+   */
+  async getUpcoming(skipRegistrationOpen = false) {
+    const date = `${new Date().toISOString().split('.')[0]}Z`;
+    // for some reason this is called before the object is instantiated.
+    const query = Object.assign({}, this.query);
+    query.where = query.where || {};
+    query.where.show_website = true;
+    if (!skipRegistrationOpen) {
+      query.where.time_start = { $gt: date };
+      query.where.time_advertising_end = { $gt: date };
+    } else {
+      query.where.time_start = { $gt: date };
+      query.where.time_advertising_end = { $gt: date };
+      query.where.$or = [
+        { time_register_end: { $lt: date } },
+        { time_register_start: { $gt: date } },
+      ];
+    }
+    query.where.time_advertising_start = { $lt: date };
+
+    return EventController._getData(query);
+  }
+
+  static async _getData(query) {
     // Parse query such that the backend understands it
     const parsedQuery = {};
     Object.keys(query).forEach(key => {
@@ -177,10 +247,12 @@ export class EventController {
       },
     });
     return response._items.map(event => {
+      const otherLanguage = currentLanguage() === 'en' ? 'de' : 'en';
       const newEvent = Object.assign({}, event);
-      newEvent.title = newEvent[`title_${currentLanguage()}`];
-      newEvent.description = newEvent[`description_${currentLanguage()}`];
-      return Event(newEvent);
+      newEvent.title = newEvent[`title_${currentLanguage()}`] || newEvent[`title_${otherLanguage}`];
+      newEvent.description =
+        newEvent[`description_${currentLanguage()}`] || newEvent[`description_${otherLanguage}`];
+      return new Event(newEvent);
     });
   }
 
@@ -193,7 +265,8 @@ export class EventController {
    * Load a specific event
    * @param {String} eventId
    */
-  static async loadEvent(eventId) {
+  async loadEvent(eventId) {
+    const otherLanguage = currentLanguage() === 'en' ? 'de' : 'en';
     const event = await m.request({
       method: 'GET',
       url: `${apiUrl}/events/${eventId}`,
@@ -201,8 +274,20 @@ export class EventController {
         Authorization: getToken(),
       },
     });
-    event.title = event[`title_${currentLanguage()}`];
-    event.description = event[`description_${currentLanguage()}`];
-    return Event(event);
+    event.title = event[`title_${currentLanguage()}`] || event[`title_${otherLanguage}`];
+    event.description =
+      event[`description_${currentLanguage()}`] || event[`description_${otherLanguage}`];
+    if (!event.show_website) {
+      throw new Error('Event not found');
+    }
+    this._selectedEvent = new Event(event);
+    return this._selectedEvent;
+  }
+
+  /**
+   * Get the previously loaded event
+   */
+  get selectedEvent() {
+    return this._selectedEvent;
   }
 }

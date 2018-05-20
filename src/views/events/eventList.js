@@ -1,32 +1,109 @@
 import m from 'mithril';
+import infinite from 'mithril-infinite';
 import { i18n, currentLanguage } from '../../models/language';
-import * as events from '../../models/events';
+import { EventController } from '../../models/events';
 import { FilterView } from '../../components';
 import { log } from '../../models/log';
+import EventDetails from './eventDetails';
 
-const date = `${new Date().toISOString().split('.')[0]}Z`;
-
-export default class EventList {
-  static oninit() {
-    events.load({
-      where: {
-        time_advertising_start: { $lte: date },
-        time_advertising_end: { $gte: date },
-        show_website: true,
+function renderEventListItem(event, className = '') {
+  return m(
+    'div',
+    {
+      class: `list-item ${className}`,
+      onclick: () => {
+        m.route.set(`/${currentLanguage()}/events/${event._id}`);
       },
-      sort: ['-priority', 'time_advertising_start'],
+    },
+    [m('h2', event.title), m('span', event.time_start), m('span', event.price)]
+  );
+}
+
+/**
+ * EventPromotionList
+ *
+ * Used to show upcoming events and events with open registration
+ */
+class EventPromotionList {
+  oninit(vnode) {
+    this.controller = vnode.attrs.controller;
+    this.stateCounter = this.controller.stateCounter;
+    this.withOpenRegistration = [];
+    this.upcoming = [];
+    this.controller.getWithOpenRegistration().then(events => {
+      this.withOpenRegistration = events;
+    });
+    this.controller.getUpcoming(true).then(events => {
+      this.upcoming = events;
     });
   }
 
-  static onbeforeupdate(vnode, old) {
-    // when attrs are different it means we changed route
-    if (vnode.attrs.id !== old.attrs.id) {
-      events.reload();
+  onbeforeupdate() {
+    if (this.stateCounter !== this.controller.stateCounter) {
+      this.controller.getWithOpenRegistration().then(events => {
+        this.withOpenRegistration = events;
+      });
+      this.controller.getUpcoming(true).then(events => {
+        this.upcoming = events;
+      });
     }
   }
 
-  static view() {
-    return m('div#studydoc-list', [
+  view() {
+    return [
+      m('div', this.withOpenRegistration.map(event => renderEventListItem(event, 'registration'))),
+      m('div', this.upcoming.map(event => renderEventListItem(event, 'upcoming'))),
+    ];
+  }
+}
+
+/**
+ * EventList class
+ *
+ * Used to show the events page including the FilterView and the event details page.
+ */
+export default class EventList {
+  constructor() {
+    this.controller = new EventController();
+    this.eventLoaded = false;
+  }
+
+  oninit(vnode) {
+    if (vnode.attrs.eventId) {
+      this.controller
+        .loadEvent(vnode.attrs.eventId)
+        .then(event => {
+          this.eventLoaded = true;
+          log(event);
+        })
+        .catch(err => {
+          this.eventLoaded = true;
+          log(err);
+        });
+    }
+  }
+
+  onbeforeupdate(vnode, old) {
+    // when attrs are different it means we changed route
+    if (vnode.attrs.id !== old.attrs.id) {
+      this.controller.reload();
+    }
+  }
+
+  view(vnode) {
+    let detailView;
+    if (vnode.attrs.eventId) {
+      if (this.eventLoaded) {
+        detailView = m('div.details', m(EventDetails, { controller: this.controller }));
+      } else {
+        // Do not show anything on details panel when event data has not been loaded.
+        detailView = m('');
+      }
+    } else {
+      detailView = m('div.details', m('h1', 'No event selected'));
+    }
+
+    return m('div#event-list', [
       m('div.filter', [
         m(FilterView, {
           fields: [
@@ -53,64 +130,22 @@ export default class EventList {
           ],
           onchange: () => {
             // TODO: implement event filtering
-            log('Event filtering not implemented yet.');
+            // log('Event filtering not implemented yet.');
           },
         }),
       ]),
-
-      // filtered content view
+      // event list
       m('div.content', [
-        m('div.content-grid', [
-          tableHeadings.map(header => m('div.list-header', header)),
-          studydocs
-            .getList()
-            .map(doc => [
-              m('div.list-item', { onclick: () => this.selectDocument(doc) }, doc.title),
-              m('div.list-item', { onclick: () => this.selectDocument(doc) }, doc.type),
-            ]),
-        ]),
-      ]),
-
-      // detail view of selected studydoc item
-      this.doc
-        ? m('div.details', [
-            m('table', [
-              m('tr', this.doc.title),
-              m('tr', this.doc.lecture),
-              m('tr', this.doc.professor),
-              m('tr', this.doc.semester),
-              m('tr', this.doc.author),
-              m(Button, {
-                label: 'Download',
-                events: {
-                  onclick: () => window.open(`${apiUrl}${this.doc.files[0].file}`, '_blank'),
-                },
-              }),
-            ]),
-          ])
-        : m(''),
-    ]);
-    /* m(
-        'tbody',
-        events
-          .getList()
-          .map(event =>
-            m('tr', [
-              m('td', event.title),
-              m('td', event.time_start),
-              m('td', event.signup_count),
-              m('td', event.spots),
-              m(
-                'td',
-                m(
-                  'a',
-                  { href: `/${currentLanguage()}/events/${event._id}`, oncreate: m.route.link },
-                  'Details'
-                )
-              ),
-            ])
+        m(
+          infinite,
+          this.controller.infiniteScrollParams(
+            event => renderEventListItem(event, 'past'),
+            m(EventPromotionList, { controller: this.controller })
           )
-      ),
-    ]); */
+        ),
+      ]),
+      // event details
+      detailView,
+    ]);
   }
 }

@@ -1,5 +1,5 @@
 import m from 'mithril';
-import * as events from '../models/events';
+import { EventController } from '../models/events';
 import * as jobs from '../models/joboffers';
 import { i18n } from '../models/language';
 import { Card } from '../components';
@@ -17,12 +17,13 @@ const renderRowCards = item => m('div.frontpage-row-card', m(Card, item));
 
 export default class Frontpage {
   constructor() {
-    events.load({
+    this.eventController = new EventController({
       where: {
         time_advertising_start: { $lte: date },
         time_advertising_end: { $gte: date },
         show_website: true,
       },
+      max_results: 3,
       sort: ['-priority', 'time_advertising_start'],
     });
     jobs.load({
@@ -33,7 +34,10 @@ export default class Frontpage {
       sort: ['time_end'],
     });
 
-    this.events = events.getList().slice(0, 3);
+    this.events = [];
+    this.eventController.getPageData(1).then(events => {
+      this.events = events;
+    });
     this.jobs = jobs.getList().slice(0, 3);
 
     // MOCKDATA
@@ -70,7 +74,6 @@ export default class Frontpage {
   }
 
   onbeforeupdate() {
-    this.events = events.getList().slice(0, 3);
     this.jobs = jobs.getList().slice(0, 3);
   }
 

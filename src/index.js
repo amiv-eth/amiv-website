@@ -8,7 +8,6 @@ import { login, isLoggedIn, checkLogin } from './models/auth';
 import studydocList from './views/studydocs/studydocList';
 import studydocNew from './views/studydocs/studydocNew';
 import eventList from './views/events/eventList';
-import eventDetails from './views/events/eventDetails';
 import profile from './views/profile';
 import layout from './views/layout';
 import frontpage from './views/frontpage';
@@ -93,7 +92,7 @@ Raven.context(() => {
     },
     {
       url: '/:language/events/:eventId',
-      view: vnode => m(eventDetails, vnode.attrs),
+      view: vnode => m(eventList, vnode.attrs),
     },
     {
       url: '/:language/jobs',
