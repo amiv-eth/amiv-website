@@ -140,6 +140,13 @@ export default class studydocList {
                 value = value.substring(0, value.length - 1);
                 query[key] = { $regex: `^(?i).*${value}.*` };
               }
+
+              if (query.department && query.department.$in.length === 2) {
+                delete query.department;
+              }
+              if (query.type && query.type.$in.length === 4) {
+                delete query.type;
+              }
             });
             studydocs.load(query);
           },
@@ -163,11 +170,15 @@ export default class studydocList {
       this.doc
         ? m('div.details', [
             m('table', [
-              m('tr', this.doc.title),
-              m('tr', this.doc.lecture),
-              m('tr', this.doc.professor),
-              m('tr', this.doc.semester),
-              m('tr', this.doc.author),
+              m('tr', [m('td', m('b', i18n('studydocs.title'))), m('td', this.doc.title)]),
+              m('tr', [m('td', m('b', i18n('studydocs.lecture'))), m('td', this.doc.lecture)]),
+              m('tr', [m('td', m('b', i18n('studydocs.professor'))), m('td', this.doc.professor)]),
+              m('tr', [m('td', m('b', i18n('studydocs.semester'))), m('td', this.doc.semester)]),
+              m('tr', [m('td', m('b', i18n('studydocs.author'))), m('td', this.doc.author)]),
+              m('tr', [
+                m('td', m('b', i18n('studydocs.department'))),
+                m('td', this.doc.department),
+              ]),
               m(Button, {
                 label: 'Download',
                 events: {
