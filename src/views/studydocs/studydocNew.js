@@ -7,7 +7,9 @@ import { currentLanguage, i18n } from '../../models/language';
 
 export default class studydocNew {
   oninit() {
-    this.doc = { type: 'exams' };
+    // We need to set the default values because they get only added to the request
+    // 'onchange' and thus do not appear in a request if the user does not change them
+    this.doc = { semester: 1, type: 'exams', department: 'itet' };
     this.isValid = false;
     this.isBusy = false;
   }
