@@ -40,6 +40,7 @@ class EventPromotionList {
 
   onbeforeupdate() {
     if (this.stateCounter !== this.controller.stateCounter) {
+      this.stateCounter = this.controller.stateCounter;
       this.controller.getWithOpenRegistration().then(events => {
         this.withOpenRegistration = events;
       });
@@ -72,9 +73,8 @@ export default class EventList {
     if (vnode.attrs.eventId) {
       this.controller
         .loadEvent(vnode.attrs.eventId)
-        .then(event => {
+        .then(() => {
           this.eventLoaded = true;
-          log(event);
         })
         .catch(err => {
           this.eventLoaded = true;
@@ -128,9 +128,29 @@ export default class EventList {
               ],
             },
           ],
-          onchange: () => {
-            // TODO: implement event filtering
-            // log('Event filtering not implemented yet.');
+          onchange: values => {
+            const query = {};
+            Object.keys(values).forEach(key => {
+              let value = values[key];
+
+              if (key === 'price') {
+                const conditions = [];
+
+                if (value.includes('free')) {
+                  conditions.push({ price: { $exists: false } }, { price: 0 });
+                }
+                if (value.includes('small_fee')) {
+                  conditions.push({ price: { $gt: 0 } });
+                }
+                if (conditions.length > 0) {
+                  query.$or = conditions;
+                }
+              } else if (key === 'title' && value.length > 0) {
+                value = value.substring(0, value.length - 1);
+                query[key] = { $regex: `^(?i).*${value}.*` };
+              }
+            });
+            this.controller.setQuery({ where: query });
           },
         }),
       ]),
