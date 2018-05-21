@@ -140,7 +140,7 @@ export class Event {
 
 export class EventController {
   constructor(query = {}) {
-    this.query = query || {};
+    this.query = query;
     // state pointer that is counted up every time the table is refreshed so
     // we can tell infinite scroll that the data-version has changed.
     this._stateCounter = Stream(0);
@@ -180,7 +180,7 @@ export class EventController {
   async getPageData(pageNum, additionalQuery = {}) {
     const date = `${new Date().toISOString().split('.')[0]}Z`;
     // for some reason this is called before the object is instantiated.
-    const query = Object.assign({}, this.query, additionalQuery);
+    const query = JSON.parse(JSON.stringify(Object.assign({}, this.query, additionalQuery)));
     query.where = query.where || {};
     query.where.show_website = true;
     query.where.time_advertising_start = { $lt: date };
@@ -196,7 +196,7 @@ export class EventController {
   async getWithOpenRegistration() {
     const date = `${new Date().toISOString().split('.')[0]}Z`;
     // for some reason this is called before the object is instantiated.
-    const query = Object.assign({}, this.query);
+    const query = JSON.parse(JSON.stringify(this.query || {}));
     query.where = query.where || {};
     query.where.show_website = true;
     query.where.time_register_start = { $lt: date };
@@ -212,15 +212,13 @@ export class EventController {
   async getUpcoming(skipRegistrationOpen = false) {
     const date = `${new Date().toISOString().split('.')[0]}Z`;
     // for some reason this is called before the object is instantiated.
-    const query = Object.assign({}, this.query);
+    const query = JSON.parse(JSON.stringify(this.query || {}));
     query.where = query.where || {};
     query.where.show_website = true;
     if (!skipRegistrationOpen) {
       query.where.time_start = { $gt: date };
-      query.where.time_advertising_end = { $gt: date };
     } else {
       query.where.time_start = { $gt: date };
-      query.where.time_advertising_end = { $gt: date };
       query.where.$or = [
         { time_register_end: { $lt: date } },
         { time_register_start: { $gt: date } },
@@ -257,7 +255,7 @@ export class EventController {
   }
 
   setQuery(query) {
-    this.query = query;
+    this.query = JSON.parse(JSON.stringify(query || {}));
     this.refresh();
   }
 
