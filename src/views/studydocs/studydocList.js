@@ -137,7 +137,7 @@ export default class studydocList {
               } else if (key === 'lecture' && value !== 'all') {
                 query[key] = value;
               } else if (key === 'title' && value.length > 0) {
-                value = value.substring(0, value.length - 1);
+                value = value.substring(0, value.length);
                 query[key] = { $regex: `^(?i).*${value}.*` };
               }
 

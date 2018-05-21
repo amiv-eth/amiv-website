@@ -84,7 +84,7 @@ export default class FilterViewComponent {
       value: this.values[field.key],
       onChange: state => {
         this.values[field.key] = state.value;
-        if (state.value.length >= min_length) {
+        if (state.value.length >= min_length || state.value.length === 0) {
           this.notify();
         }
       },
