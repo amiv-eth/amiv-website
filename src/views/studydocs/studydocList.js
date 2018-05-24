@@ -6,6 +6,7 @@ import { Error401 } from '../errors';
 import { Button, FilterView } from '../../components';
 import { lectures } from '../studydocs/lectures';
 import { i18n, currentLanguage } from '../../models/language';
+import { log } from '../../models/log';
 
 const tableHeadings = ['title', 'type'];
 
@@ -89,9 +90,9 @@ export default class studydocList {
               type: 'checkbox',
               key: 'type',
               label: i18n('studydocs.type'),
-              default: ['cheat sheet', 'exams', 'lecture documents', 'exercises'],
+              default: ['cheat sheets', 'exams', 'lecture documents', 'exercises'],
               values: [
-                { value: 'cheat sheet', label: i18n('studydocs.summaries') },
+                { value: 'cheat sheets', label: i18n('studydocs.summaries') },
                 { value: 'exams', label: i18n('studydocs.old_exams') },
                 { value: 'lecture documents', label: i18n('studydocs.lecture_documents') },
                 { value: 'exercises', label: i18n('studydocs.exercises') },
@@ -148,6 +149,7 @@ export default class studydocList {
                 delete query.type;
               }
             });
+            log(query);
             studydocs.load(query);
           },
         }),
