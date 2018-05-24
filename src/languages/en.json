@@ -70,6 +70,8 @@
         "profile.newsletter_subscribe": "subscribe to Newsletter",
         "profile.search_groups": "Search groups",
         "profile.expire_on": "expires on %{date}",
+        "studydocs.not_found": "Document not found",
+        "studydocs.no_selection": "No document selected",
         "studydocs.searchfield": "Enter title...",
         "studydocs.summaries": "Summaries",
         "studydocs.old_exams": "Old exams",

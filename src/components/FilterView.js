@@ -166,33 +166,40 @@ export default class FilterViewComponent {
   }
 
   _createDropdown(field) {
-    let data;
+    const options = {};
     this.values[field.key] = this.values[field.key] || field.default || '';
 
     if (typeof field.values === 'function') {
-      data = field.values(this.values);
+      options.data = field.values(this.values);
     } else {
-      data = field.values;
+      options.data = field.values;
+    }
+
+    if (field.disabled) {
+      if (typeof field.disabled === 'function') {
+        options.disabled = field.disabled();
+      } else {
+        options.disabled = field.disabled;
+      }
     }
 
     let invalidSelection = true;
-    data.forEach(item => {
+    options.data.forEach(item => {
       if (item.value === this.values[field.key]) {
         invalidSelection = false;
       }
     });
-    if (invalidSelection === 0) {
+    if (invalidSelection) {
       this.values[field.key] = field.default || '';
     }
 
-    return m(Dropdown, {
-      data,
-      selected: this.values[field.key],
-      onchange: event => {
-        this.values[field.key] = event.target.value;
-        this.notify();
-      },
-    });
+    options.selected = this.values[field.key];
+    options.onchange = event => {
+      this.values[field.key] = event.target.value;
+      this.notify();
+    };
+
+    return m(Dropdown, options);
   }
 
   _createButton(options) {

@@ -43,6 +43,10 @@ Raven.context(() => {
       view: () => m(studydocList),
     },
     {
+      url: '/:language/studydocuments/:documentId',
+      view: vnode => m(studydocList, vnode.attrs),
+    },
+    {
       url: '/:language/studydocuments/new',
       view: () => m(studydocNew),
     },

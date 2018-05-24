@@ -1,34 +1,41 @@
 import m from 'mithril';
 import { apiUrl } from 'config';
 import * as studydocs from '../../models/studydocs';
-import { isLoggedIn } from '../../models/auth';
-import { Error401 } from '../errors';
 import { Button, FilterView } from '../../components';
 import { lectures } from '../studydocs/lectures';
 import { i18n, currentLanguage } from '../../models/language';
-import { log } from '../../models/log';
 
-const tableHeadings = ['title', 'type'];
+const tableHeadings = ['title', 'author', 'type'];
 
-export default class studydocList {
-  constructor(vnode) {
+export default class StudydocList {
+  oninit(vnode) {
     this.vnode = vnode;
-    this.doc = {};
+    this.docLoaded = false;
+    this.lectureDropdownDisabled = true;
+
+    if (vnode.attrs.documentId) {
+      studydocs
+        .loadDocument(vnode.attrs.documentId)
+        .then(doc => {
+          this.selectDocument(doc);
+        })
+        .catch(() => {
+          this.selectDocument(undefined);
+        });
+    }
   }
 
-  oninit() {
-    // initialize values for filter
-    this.semester = 1;
-    this.lecture = 'Fach';
-    this.search = '';
-  }
-
-  static selectDocument(doc) {
+  selectDocument(doc) {
+    this.docLoaded = true;
     this.doc = doc;
   }
 
+  isLectureDropdownDisabled() {
+    return this.lectureDropdownDisabled;
+  }
+
   // dynamic lectures data based on selected semester and department
-  static loadLectures(values) {
+  loadLectures(values) {
     if (!values.department) {
       return [];
     }
@@ -57,12 +64,41 @@ export default class studydocList {
         }
       }
     }
+    this.lectureDropdownDisabled = data.length <= 1;
 
     return data;
   }
 
-  static view() {
-    if (!isLoggedIn()) return m(Error401);
+  view(vnode) {
+    let documentView;
+
+    if (this.docLoaded) {
+      if (this.doc) {
+        documentView = m('div.details', [
+          m('table', [
+            m('tr', [m('td', m('b', i18n('studydocs.title'))), m('td', this.doc.title)]),
+            m('tr', [m('td', m('b', i18n('studydocs.lecture'))), m('td', this.doc.lecture)]),
+            m('tr', [m('td', m('b', i18n('studydocs.professor'))), m('td', this.doc.professor)]),
+            m('tr', [m('td', m('b', i18n('studydocs.semester'))), m('td', this.doc.semester)]),
+            m('tr', [m('td', m('b', i18n('studydocs.author'))), m('td', this.doc.author)]),
+            m('tr', [m('td', m('b', i18n('studydocs.department'))), m('td', this.doc.department)]),
+            m(Button, {
+              label: 'Download',
+              events: {
+                onclick: () => window.open(`${apiUrl}${this.doc.files[0].file}`, '_blank'),
+              },
+            }),
+          ]),
+        ]);
+      } else {
+        documentView = m('div.details', m('h1', i18n('studydocs.not_found')));
+      }
+    } else if (vnode.attrs.documentId) {
+      // do not show anything until document has loaded.
+      documentView = m('');
+    } else {
+      documentView = m('div.details', m('h1', i18n('studydocs.no_selection')));
+    }
 
     return m('div#studydoc-list', [
       m('div.filter', [
@@ -87,18 +123,6 @@ export default class studydocList {
               values: [{ value: 'itet', label: 'D-ITET' }, { value: 'mavt', label: 'D-MAVT' }],
             },
             {
-              type: 'checkbox',
-              key: 'type',
-              label: i18n('studydocs.type'),
-              default: ['cheat sheets', 'exams', 'lecture documents', 'exercises'],
-              values: [
-                { value: 'cheat sheets', label: i18n('studydocs.summaries') },
-                { value: 'exams', label: i18n('studydocs.old_exams') },
-                { value: 'lecture documents', label: i18n('studydocs.lecture_documents') },
-                { value: 'exercises', label: i18n('studydocs.exercises') },
-              ],
-            },
-            {
               type: 'dropdown',
               key: 'semester',
               default: 'all',
@@ -115,7 +139,20 @@ export default class studydocList {
               type: 'dropdown',
               key: 'lecture',
               default: 'all',
+              disabled: this.isLectureDropdownDisabled,
               values: this.loadLectures,
+            },
+            {
+              type: 'checkbox',
+              key: 'type',
+              label: i18n('studydocs.type'),
+              default: ['cheat sheets', 'exams', 'lecture documents', 'exercises'],
+              values: [
+                { value: 'cheat sheets', label: i18n('studydocs.summaries') },
+                { value: 'exams', label: i18n('studydocs.old_exams') },
+                { value: 'lecture documents', label: i18n('studydocs.lecture_documents') },
+                { value: 'exercises', label: i18n('studydocs.exercises') },
+              ],
             },
             {
               type: 'button',
@@ -139,7 +176,12 @@ export default class studydocList {
                 query[key] = value;
               } else if (key === 'title' && value.length > 0) {
                 value = value.substring(0, value.length);
-                query[key] = { $regex: `^(?i).*${value}.*` };
+                query.$or = [
+                  { title: { $regex: `^(?i).*${value}.*` } },
+                  { lecture: { $regex: `^(?i).*${value}.*` } },
+                  { author: { $regex: `^(?i).*${value}.*` } },
+                  { professor: { $regex: `^(?i).*${value}.*` } },
+                ];
               }
 
               if (query.department && query.department.$in.length === 2) {
@@ -149,7 +191,6 @@ export default class studydocList {
                 delete query.type;
               }
             });
-            log(query);
             studydocs.load(query);
           },
         }),
@@ -162,34 +203,26 @@ export default class studydocList {
           studydocs
             .getList()
             .map(doc => [
-              m('div.list-item', { onclick: () => this.selectDocument(doc) }, doc.title),
-              m('div.list-item', { onclick: () => this.selectDocument(doc) }, doc.type),
+              m(
+                'div.list-item',
+                { onclick: () => m.route.set(`/${currentLanguage()}/studydocuments/${doc._id}`) },
+                doc.title
+              ),
+              m(
+                'div.list-item',
+                { onclick: () => m.route.set(`/${currentLanguage()}/studydocuments/${doc._id}`) },
+                doc.author
+              ),
+              m(
+                'div.list-item',
+                { onclick: () => m.route.set(`/${currentLanguage()}/studydocuments/${doc._id}`) },
+                doc.type
+              ),
             ]),
         ]),
       ]),
 
-      // detail view of selected studydoc item
-      this.doc
-        ? m('div.details', [
-            m('table', [
-              m('tr', [m('td', m('b', i18n('studydocs.title'))), m('td', this.doc.title)]),
-              m('tr', [m('td', m('b', i18n('studydocs.lecture'))), m('td', this.doc.lecture)]),
-              m('tr', [m('td', m('b', i18n('studydocs.professor'))), m('td', this.doc.professor)]),
-              m('tr', [m('td', m('b', i18n('studydocs.semester'))), m('td', this.doc.semester)]),
-              m('tr', [m('td', m('b', i18n('studydocs.author'))), m('td', this.doc.author)]),
-              m('tr', [
-                m('td', m('b', i18n('studydocs.department'))),
-                m('td', this.doc.department),
-              ]),
-              m(Button, {
-                label: 'Download',
-                events: {
-                  onclick: () => window.open(`${apiUrl}${this.doc.files[0].file}`, '_blank'),
-                },
-              }),
-            ]),
-          ])
-        : m(''),
+      documentView,
     ]);
   }
 }

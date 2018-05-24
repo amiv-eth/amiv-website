@@ -32,12 +32,27 @@ export function load(query = {}) {
       method: 'GET',
       url: `${apiUrl}/studydocuments?${queryEncoded}`,
       headers: {
-        Authorization: `Token ${getToken()}`,
+        Authorization: getToken(),
       },
     })
     .then(result => {
       this.list = result._items;
     });
+}
+
+/**
+ * Load a single document from the AMIV API
+ *
+ * @param {string} id
+ */
+export async function loadDocument(id) {
+  return m.request({
+    method: 'GET',
+    url: `${apiUrl}/studydocuments/${id}`,
+    headers: {
+      Authorization: getToken(),
+    },
+  });
 }
 
 /**
@@ -60,7 +75,7 @@ export function getInputSuggestions(field, input) {
     method: 'GET',
     url: `${apiUrl}/studydocuments?${queryEncoded}`,
     headers: {
-      Authorization: `Token ${getToken()}`,
+      Authorization: getToken(),
     },
   });
 }
@@ -100,7 +115,7 @@ export function addNew(doc) {
     url: `${apiUrl}/studydocuments`,
     data: form,
     headers: {
-      Authorization: `Token ${getToken()}`,
+      Authorization: getToken(),
     },
   });
 }
