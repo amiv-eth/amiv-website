@@ -14,15 +14,13 @@ export default class AMIV {
     return m.trust(this.content);
   }
 
-  _load() {
+  async _load() {
     if (this.content) return;
 
-    m.request({
+    this.content = await m.request({
       url: `/dist/amiv/about.${currentLanguage()}.html`,
       method: 'GET',
-      deserialize: response => {
-        this.content = response;
-      },
+      deserialize: response => response,
     });
   }
 }

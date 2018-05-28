@@ -1,26 +1,5 @@
 import m from 'mithril';
-import { checkLogin, isLoggedIn } from '../models/auth';
-import { currentLanguage, i18n } from './language';
-
-const defaultTabs = ['AMIV', 'Events', 'Studienunterlagen', 'Jobs'];
-const tabsLoggedOut = ['Login'];
-const tabsLoggedIn = ['Profile', 'Logout'];
-
-function tabToUrl() {
-  return {
-    AMIV: { href: `/${currentLanguage()}/`, onupdate: m.route.link, index: 0 },
-    Events: { href: `/${currentLanguage()}/events`, onupdate: m.route.link, index: 1 },
-    Studienunterlagen: {
-      href: `/${currentLanguage()}/studydocuments`,
-      onupdate: m.route.link,
-      index: 2,
-    },
-    Jobs: { href: `/${currentLanguage()}/jobs`, onupdate: m.route.link, index: 3 },
-    Login: { href: `/${currentLanguage()}/profile`, onupdate: m.route.link, index: 4 },
-    Profile: { href: `/${currentLanguage()}/profile`, onupdate: m.route.link, index: 4 },
-    Logout: { href: `/${currentLanguage()}/logout`, onupdate: m.route.link, index: 5 },
-  };
-}
+import { currentLanguage } from './language';
 
 /**
  * Navigation model to store the current state of the main navigation.
@@ -28,55 +7,110 @@ function tabToUrl() {
  * @return {Navigation} Navigation state model
  */
 export default class Navigation {
-  constructor() {
-    checkLogin();
-    this._wasLoggedIn = isLoggedIn();
-    this._selectedTabIndex = 0;
-    Object.values(tabToUrl())
-      .filter(tab => m.route.get().includes(tab.href))
-      .forEach(tab => {
-        this._selectedTabIndex = tab.index;
-      });
-
-    this._tabOptions = {
-      className: 'themed-tabs',
-      activeSelected: true,
-      element: 'tab',
-      selectedTab: this._selectedTabIndex,
-    };
-    this.setTabs();
+  constructor(items) {
+    this._items = items;
   }
 
-  setTabs() {
-    if (isLoggedIn()) {
-      this._tabs = [...defaultTabs, ...tabsLoggedIn];
-    } else {
-      this._tabs = [...defaultTabs, ...tabsLoggedOut];
-    }
-
-    this._tabOptions.tabs = [];
-    this._tabs.forEach(tab => {
-      this._tabOptions.tabs.push({
-        label: i18n(tab),
-        url: tabToUrl()[tab],
-      });
-    });
+  get items() {
+    return this._items;
   }
 
-  get tabs() {
-    return this._tabOptions;
+  get selectedIndex() {
+    return this._selectedIndex;
+  }
+
+  get selectedItem() {
+    return this._selectedIndex >= 0 ? this._items[this._selectedIndex] : undefined;
+  }
+
+  map(callback) {
+    return this._items.map(callback);
   }
 
   onupdate() {
-    Object.values(tabToUrl())
-      .filter(tab => m.route.get().includes(tab.href))
-      .forEach(tab => {
-        this._selectedTabIndex = tab.index;
-      });
-    this._tabOptions.selectedTab = this._selectedTabIndex;
-    if (this._wasLoggedIn !== isLoggedIn()) {
-      this._wasLoggedIn = isLoggedIn();
-      this.setTabs();
-    }
+    this._items.forEach(item => {
+      if (item.submenu) {
+        item.submenu.onupdate();
+      }
+    });
+    this._selectedIndex = this._checkMenuItemSelection();
+  }
+
+  _checkMenuItemSelection() {
+    let selectedIndex;
+    this._items.forEach((item, index) => {
+      const link = item.getLink();
+      if (
+        (link.length <= 4 && m.route.get() === link) ||
+        (link.length > 4 && m.route.get().includes(link)) ||
+        (item.submenu && item.submenu.selectedIndex)
+      ) {
+        selectedIndex = index;
+      }
+    });
+    this._selectedIndex = selectedIndex;
+    return this._selectedIndex;
   }
 }
+
+export const mainNavigation = new Navigation([
+  {
+    label: 'AMIV',
+    getLink: () => `/${currentLanguage()}/amiv/about`,
+    onupdate: m.route.link,
+    submenu: new Navigation([
+      {
+        label: 'About AMIV',
+        getLink: () => `/${currentLanguage()}/amiv/about`,
+        onupdate: m.route.link,
+      },
+      {
+        label: 'Board',
+        getLink: () => `/${currentLanguage()}/amiv/board`,
+        onupdate: m.route.link,
+      },
+      {
+        label: 'Commissions',
+        getLink: () => `/${currentLanguage()}/amiv/commissions`,
+        onupdate: m.route.link,
+      },
+      {
+        label: 'Statutes',
+        getLink: () => `/${currentLanguage()}/amiv/statutes`,
+        onupdate: m.route.link,
+      },
+      {
+        label: 'Minutes',
+        getLink: () => `/${currentLanguage()}/amiv/minutes`,
+        onupdate: m.route.link,
+      },
+    ]),
+  },
+  {
+    label: 'Events',
+    getLink: () => `/${currentLanguage()}/events`,
+    onupdate: m.route.link,
+  },
+  {
+    label: 'Studydocuments',
+    getLink: () => `/${currentLanguage()}/studydocuments`,
+    onupdate: m.route.link,
+  },
+  {
+    label: 'Jobs',
+    getLink: () => `/${currentLanguage()}/jobs`,
+    onupdate: m.route.link,
+    submenu: new Navigation([
+      {
+        label: 'Jobs',
+        getLink: () => `/${currentLanguage()}/jobs`,
+        onupdate: m.route.link,
+      },
+      {
+        label: 'Companies',
+        getLink: () => `/${currentLanguage()}/companies`,
+        onupdate: m.route.link,
+      },
+    ]),
+  },
+]);

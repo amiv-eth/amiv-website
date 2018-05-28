@@ -16,15 +16,13 @@ export default class Statutes {
     return m.trust(this.content);
   }
 
-  _load() {
+  async _load() {
     if (this.content) return;
 
-    m.request({
+    this.content = await m.request({
       url: `/${statutes}`,
       method: 'GET',
-      deserialize: response => {
-        this.content = response;
-      },
+      deserialize: response => response,
     });
   }
 }

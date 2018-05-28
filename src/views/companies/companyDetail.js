@@ -9,13 +9,6 @@ export default class companyDetail {
     });
   }
 
-  onbeforeupdate(vnode) {
-    // load markdown whenever component is reloaded
-    load(vnode.attrs.companyId).then(response => {
-      this.content = response;
-    });
-  }
-
   view() {
     return m.trust(this.content);
   }

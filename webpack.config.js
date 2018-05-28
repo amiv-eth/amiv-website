@@ -93,6 +93,20 @@ const config = {
         ],
       },
       {
+        test: /src\/views\/images\/[a-zA-Z\d\/]+\.(png|jp(e*)g|svg)$/,
+        use: [
+          {
+            loader: 'url-loader',
+            options: {
+              limit: 8000, // Convert images < 8kb to base64 strings
+              name: '[name].[ext]',
+              outputPath: '/',
+              publicPath: 'dist/',
+            },
+          },
+        ],
+      },
+      {
         test: /\.less$/,
         use: [
           {

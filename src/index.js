@@ -11,13 +11,13 @@ import eventList from './views/events/eventList';
 import eventDetails from './views/events/eventDetails';
 import profile from './views/profile';
 import layout from './views/layout';
-import amivLayout from './views/amiv/amivLayout';
 import frontpage from './views/frontpage';
 import logout from './views/logout';
 import statutes from './views/amiv/statutes';
 import contact from './views/contact';
 import about from './views/amiv/about';
 import board from './views/amiv/board';
+import minutes from './views/amiv/minutes';
 import commissions from './views/amiv/commissions';
 import jobOfferList from './views/jobs/jobofferList';
 import jobOfferDetails from './views/jobs/jobofferDetails';
@@ -56,23 +56,27 @@ Raven.context(() => {
   const routes = [
     {
       url: '/:language',
-      view: () => m(amivLayout, m(frontpage)),
+      view: () => m(frontpage),
     },
     {
       url: '/:language/amiv/statutes',
-      view: () => m(amivLayout, m(statutes)),
+      view: () => m(statutes),
     },
     {
       url: '/:language/amiv/board',
-      view: () => m(amivLayout, m(board)),
+      view: () => m(board),
     },
     {
       url: '/:language/amiv/commissions',
-      view: () => m(amivLayout, m(commissions)),
+      view: () => m(commissions),
     },
     {
       url: '/:language/amiv/about',
-      view: () => m(amivLayout, m(about)),
+      view: () => m(about),
+    },
+    {
+      url: '/:language/amiv/minutes',
+      view: () => m(minutes),
     },
     {
       url: '/:language/contact',

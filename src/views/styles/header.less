@@ -1,0 +1,90 @@
+@import './colors.less';
+@import './dimensions.less';
+
+header {
+  grid-area: header;
+  width: 100%;
+  display: block;
+
+  section.blue > div {
+    display: grid;
+    grid-template-columns: auto 1fr auto auto auto;
+    grid-template-areas: 
+        "logo main-navigation profile language-switcher";
+    
+    .logo {
+      grid-area: logo;
+    }
+
+    nav {
+      grid-area: main-navigation;
+      align-self: center;
+
+      a {
+        height: 100%;
+        padding: 1.3em;
+        font-size: 1.5em;
+        color: #fff;
+        text-decoration: none;
+
+        &:hover {
+          color: @color-red;
+        }
+
+        &.active {
+          background-color: @color-grey;
+          color: @color-dark-blue;
+          cursor: default;
+        }
+      }
+    }
+
+    .profile {
+      grid-area: profile;
+      align-self: center;
+
+      a {
+        height: 100%;
+        padding: 1.3em;
+        font-size: 1.5em;
+        color: #fff;
+        text-decoration: none;
+
+        &:hover {
+          color: @color-red;
+        }
+      }
+    }
+
+    .language-switcher {
+      grid-area: language-switcher;
+      align-self: center;
+    }
+  }
+
+  section.grey > div {
+    display: grid;
+
+    nav {
+      margin: 0 auto;
+
+      a {
+        display: inline-block;
+        height: 100%;
+        padding: 0.5em;
+        font-size: 1.5em;
+        color: #000;
+        text-decoration: none;
+
+        &:hover {
+          color: @color-red;
+        }
+
+        &.active {
+          color: @color-red;
+          cursor: default;
+        }
+      }
+    }
+  }
+}
