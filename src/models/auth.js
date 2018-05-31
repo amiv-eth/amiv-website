@@ -53,7 +53,7 @@ export function isLoggedIn() {
 /**
  * Redirect to OAuth2 landing page
  */
-export function login() {
+export function login(requestedPath) {
   session = {
     // Generate random state and reset currently stored session data
     state: randomString(32),
@@ -61,10 +61,11 @@ export function login() {
   };
   saveSession();
 
+  const redirectPath = requestedPath || m.route.get();
   const query = m.buildQueryString({
     response_type: 'token',
     client_id: OAuthId,
-    redirect_uri: window.location.origin,
+    redirect_uri: window.location.origin + redirectPath,
     state: session.state,
   });
 

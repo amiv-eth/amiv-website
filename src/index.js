@@ -137,10 +137,11 @@ Raven.context(() => {
 
     routesAuth.forEach(r => {
       result[r.url] = {
-        onmatch(args) {
+        async onmatch(args, requestedPath) {
+          await checkLogin();
+
           if (!isLoggedIn()) {
-            login();
-            // m.route.set(`/${currentLanguage()}/login`);
+            login(requestedPath);
             return {
               view() {
                 return m(layout, m(''));
