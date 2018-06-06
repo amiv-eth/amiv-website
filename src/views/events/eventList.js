@@ -45,6 +45,14 @@ export default class EventList extends FilteredListPage {
           label: i18n('search'),
         },
         {
+          type: 'button',
+          label: i18n('reset'),
+          className: 'flat-button',
+          events: {
+            onclick: 'reset',
+          },
+        },
+        {
           type: 'checkbox',
           key: 'price',
           label: i18n('events.price'),

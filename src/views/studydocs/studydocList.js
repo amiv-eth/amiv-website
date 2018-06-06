@@ -114,6 +114,17 @@ export default class StudydocList {
             {
               type: 'button',
               label: i18n('search'),
+              events: {
+                onclick: 'search',
+              },
+            },
+            {
+              type: 'button',
+              label: i18n('reset'),
+              className: 'flat-button',
+              events: {
+                onclick: 'reset',
+              },
             },
             {
               type: 'checkbox',

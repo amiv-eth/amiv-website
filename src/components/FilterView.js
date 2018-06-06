@@ -66,10 +66,25 @@ import { Button, Checkbox, Dropdown, TextField, RadioGroup } from '../components
  *       onclick: () => dosomething(),
  *     },
  *   },
+ *   {
+ *     type: 'button',
+ *     label: 'search button',
+ *     events: {
+ *       onclick: 'search',
+ *     },
+ *   },
+ *   {
+ *     type: 'button',
+ *     label: 'reset button',
+ *     events: {
+ *       onclick: 'reset',
+ *     },
+ *   },
  * ]
  * ```
  *
  * Default behavior of buttons is to trigger `onchange`.
+ * Other configurable values are `search` and `reset`.
  */
 
 export default class FilterViewComponent {
@@ -83,10 +98,22 @@ export default class FilterViewComponent {
         this.values[field.key] = field.default || '';
       });
     }
+    this.fields = vnode.attrs.fields;
   }
 
   notify() {
     this.onchange(this.values);
+  }
+
+  reset() {
+    this.fields.forEach(field => {
+      if (field.default instanceof Array) {
+        this.values[field.key] = JSON.parse(JSON.stringify(field.default || []));
+      } else {
+        this.values[field.key] = field.default || '';
+      }
+    });
+    this.notify();
   }
 
   _createTextField(field) {
@@ -107,7 +134,8 @@ export default class FilterViewComponent {
 
   _createCheckboxGroup(field) {
     const items = [];
-    this.values[field.key] = this.values[field.key] || field.default || [];
+    this.values[field.key] =
+      this.values[field.key] || JSON.parse(JSON.stringify(field.default || []));
 
     if (field.label) {
       items.push(m('h4', field.label));
@@ -202,24 +230,27 @@ export default class FilterViewComponent {
     return m(Dropdown, options);
   }
 
-  _createButton(options) {
-    const events = options.events || {};
-    if (!events.onclick) {
-      // default onclick behavior
-      events.onclick = () => this.notify();
+  _createButton(field) {
+    const options = { label: field.label };
+    options.events = field.events || {};
+    if (!options.events.onclick || options.events.onclick === 'search') {
+      // default onclick behavior / search behavior
+      options.events.onclick = () => this.notify();
+    } else if (options.events.onclick === 'reset') {
+      // reset behavior
+      options.events.onclick = () => this.reset();
+    }
+    if (field.className) {
+      options.className = field.className;
     }
 
-    return m(Button, {
-      label: options.label,
-      events,
-    });
+    return m(Button, options);
   }
 
-  view(vnode) {
-    const { fields } = vnode.attrs;
+  view() {
     const views = [];
 
-    fields.forEach(field => {
+    this.fields.forEach(field => {
       if (field.type === 'text') {
         views.push(this._createTextField(field));
       } else if (field.type === 'checkbox') {
