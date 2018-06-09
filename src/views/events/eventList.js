@@ -152,6 +152,16 @@ export default class EventList {
               { value: 'small_fee', label: i18n('events.small_fee') },
             ],
           },
+          {
+            type: 'radio',
+            label: i18n('events.restrictions'),
+            key: 'signup_restrictions',
+            default: 'members_only',
+            values: [
+              { label: i18n('events.open_for_all'), value: 'all' },
+              { label: i18n('events.open_for_amiv_members_only'), value: 'members_only' },
+            ],
+          },
         ],
         onchange: values => {
           const query = {};
@@ -170,6 +180,10 @@ export default class EventList {
               }
               if (conditions.length > 0) {
                 query.$and = [{ $or: conditions }];
+              }
+            } else if (key === 'signup_restrictions') {
+              if (value === 'all') {
+                query.allow_email_signup = true;
               }
             } else if (key === 'title' && value.length > 0) {
               query.title_en = { $regex: `^(?i).*${value}.*` };

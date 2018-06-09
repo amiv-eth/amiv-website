@@ -1,5 +1,5 @@
 import m from 'mithril';
-import { Button, Checkbox, Dropdown, TextField } from '../components';
+import { Button, Checkbox, Dropdown, TextField, RadioGroup } from '../components';
 
 /**
  * FilterViewComponent
@@ -26,6 +26,16 @@ import { Button, Checkbox, Dropdown, TextField } from '../components';
  *     key: 'key2',
  *     label: 'group label',
  *     default: ['value1', 'value2'],
+ *     values: [
+ *       { label: 'Label 1', value: 'value1' },
+ *       { label: 'Label 2', value: 'value2' },
+ *       { label: 'Label 3', value: 'value3' },
+ *     ],
+ *   },
+ *   {
+ *     type: 'radio',
+ *     key: 'key_radio',
+ *     default: 'value2',
  *     values: [
  *       { label: 'Label 1', value: 'value1' },
  *       { label: 'Label 2', value: 'value2' },
@@ -131,6 +141,30 @@ export default class FilterViewComponent {
     });
   }
 
+  _createRadioGroup(field) {
+    this.values[field.key] = this.values[field.key] || field.default || [];
+
+    const radioValues = JSON.parse(JSON.stringify(field.values));
+
+    return m('div.radio', [
+      field.label ? m('h4', field.label) : m(''),
+      m(RadioGroup, {
+        buttons: radioValues.map(value => {
+          const radioValue = value;
+          if (this.values[field.key] === value.value) {
+            radioValue.defaultChecked = true;
+          }
+          return radioValue;
+        }),
+        name: field.key,
+        onChange: state => {
+          this.values[field.key] = state.value;
+          this.notify();
+        },
+      }),
+    ]);
+  }
+
   _createDropdown(field) {
     let data;
     this.values[field.key] = this.values[field.key] || field.default || '';
@@ -183,6 +217,8 @@ export default class FilterViewComponent {
         views.push(this._createTextField(field));
       } else if (field.type === 'checkbox') {
         views.push(this._createCheckboxGroup(field));
+      } else if (field.type === 'radio') {
+        views.push(this._createRadioGroup(field));
       } else if (field.type === 'dropdown') {
         views.push(this._createDropdown(field));
       } else if (field.type === 'button') {
