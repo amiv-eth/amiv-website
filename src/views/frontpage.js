@@ -17,15 +17,13 @@ const renderRowCards = item => m('div.frontpage-row-card', m(Card, item));
 
 export default class Frontpage {
   constructor() {
-    this.eventController = new EventController({
-      where: {
-        time_advertising_start: { $lte: date },
-        time_advertising_end: { $gte: date },
-        show_website: true,
+    this.eventController = new EventController(
+      {
+        max_results: 3,
+        sort: ['-priority', 'time_advertising_start'],
       },
-      max_results: 3,
-      sort: ['-priority', 'time_advertising_start'],
-    });
+      false
+    );
     jobs.load({
       where: {
         time_end: { $gte: date },
@@ -35,7 +33,7 @@ export default class Frontpage {
     });
 
     this.events = [];
-    this.eventController.getPageData(1).then(events => {
+    this.eventController.upcomingEvents.getPageData(1).then(events => {
       this.events = events;
     });
     this.jobs = jobs.getList().slice(0, 3);

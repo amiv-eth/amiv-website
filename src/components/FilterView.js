@@ -61,14 +61,18 @@ import { Button, Checkbox, Dropdown, TextField } from '../components';
  *
  * Default behavior of buttons is to trigger `onchange`.
  */
-export default class FilterViewComponent {
-  constructor() {
-    this.values = {};
-  }
 
+export default class FilterViewComponent {
   oninit(vnode) {
     this.onchange = vnode.attrs.onchange;
-    this.notify();
+    if (vnode.attrs.values) {
+      this.values = vnode.attrs.values;
+    } else {
+      this.values = {};
+      vnode.attrs.fields.forEach(field => {
+        this.values[field.key] = field.default || '';
+      });
+    }
   }
 
   notify() {

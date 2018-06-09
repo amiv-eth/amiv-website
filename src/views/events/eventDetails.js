@@ -27,7 +27,7 @@ class EventSignupForm extends JSONSchemaForm {
     if (isLoggedIn()) {
       this.event.loadSignup().then(() => {
         if (this.event.signupData) {
-          this.data = JSON.parse(this.event.signupData.additional_fields) || {};
+          this.data = JSON.parse(this.event.signupData.additional_fields || '{}');
         }
       });
     }
