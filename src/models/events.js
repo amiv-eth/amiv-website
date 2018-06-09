@@ -163,8 +163,9 @@ export class EventListController extends PaginationController {
     return items.map(event => {
       const otherLanguage = currentLanguage() === 'en' ? 'de' : 'en';
       const newEvent = Object.assign({}, event);
-      newEvent.title = newEvent[`title_${currentLanguage()}`] || newEvent[`title_${otherLanguage}`];
-      newEvent.description =
+      newEvent.getTitle = () =>
+        newEvent[`title_${currentLanguage()}`] || newEvent[`title_${otherLanguage}`];
+      newEvent.getDescription = () =>
         newEvent[`description_${currentLanguage()}`] || newEvent[`description_${otherLanguage}`];
       return new Event(newEvent);
     });
@@ -291,8 +292,8 @@ export class EventController {
     if (!event.show_website) {
       throw new Error('Event not found');
     }
-    event.title = event[`title_${currentLanguage()}`] || event[`title_${otherLanguage}`];
-    event.description =
+    event.getTitle = () => event[`title_${currentLanguage()}`] || event[`title_${otherLanguage}`];
+    event.getDescription = () =>
       event[`description_${currentLanguage()}`] || event[`description_${otherLanguage}`];
     this._selectedEvent = new Event(event);
     return this._selectedEvent;

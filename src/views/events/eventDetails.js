@@ -164,7 +164,7 @@ export default class EventDetails {
       eventSignupForm = m('div', i18n('events.registration_starts_at', { time: registerStart }));
     }
     return m('div.event-details', [
-      m('h1', event.title),
+      m('h1', event.getTitle()),
       m('div', event.time_start),
       m(
         'div',
@@ -172,7 +172,7 @@ export default class EventDetails {
           ? i18n('events.no_registration')
           : i18n('events.%n_spots_available', event.spots - event.signup_count)
       ),
-      m('p', m.trust(marked(event.description))),
+      m('p', m.trust(marked(event.getDescription()))),
       eventSignupForm,
     ]);
   }

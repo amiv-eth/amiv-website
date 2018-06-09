@@ -22,7 +22,7 @@ function renderEventListItem(event, className = '') {
         m.route.set(`/${currentLanguage()}/events/${event._id}`);
       },
     },
-    [m('h2', event.title), m('span', event.time_start), m('span', event.price)]
+    [m('h2', event.getTitle()), m('span', event.time_start), m('span', event.price)]
   );
 }
 
