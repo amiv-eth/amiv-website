@@ -56,32 +56,32 @@ export default class Navigation {
 export const mainNavigation = new Navigation([
   {
     label: 'AMIV',
-    getLink: () => `/${currentLanguage()}/amiv/about`,
+    getLink: () => `/${currentLanguage()}/about`,
     onupdate: m.route.link,
     submenu: new Navigation([
       {
         label: 'About AMIV',
-        getLink: () => `/${currentLanguage()}/amiv/about`,
+        getLink: () => `/${currentLanguage()}/about`,
         onupdate: m.route.link,
       },
       {
         label: 'Board',
-        getLink: () => `/${currentLanguage()}/amiv/board`,
+        getLink: () => `/${currentLanguage()}/board`,
         onupdate: m.route.link,
       },
       {
         label: 'Commissions',
-        getLink: () => `/${currentLanguage()}/amiv/commissions`,
+        getLink: () => `/${currentLanguage()}/commissions`,
         onupdate: m.route.link,
       },
       {
         label: 'Statutes',
-        getLink: () => `/${currentLanguage()}/amiv/statutes`,
+        getLink: () => `/${currentLanguage()}/statutes`,
         onupdate: m.route.link,
       },
       {
         label: 'Minutes',
-        getLink: () => `/${currentLanguage()}/amiv/minutes`,
+        getLink: () => `/${currentLanguage()}/minutes`,
         onupdate: m.route.link,
       },
     ]),

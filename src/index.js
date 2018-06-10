@@ -59,23 +59,23 @@ Raven.context(() => {
       view: () => m(frontpage),
     },
     {
-      url: '/:language/amiv/statutes',
+      url: '/:language/statutes',
       view: () => m(statutes),
     },
     {
-      url: '/:language/amiv/board',
+      url: '/:language/board',
       view: () => m(board),
     },
     {
-      url: '/:language/amiv/commissions',
+      url: '/:language/commissions',
       view: () => m(commissions),
     },
     {
-      url: '/:language/amiv/about',
+      url: '/:language/about',
       view: () => m(about),
     },
     {
-      url: '/:language/amiv/minutes',
+      url: '/:language/minutes',
       view: () => m(minutes),
     },
     {
