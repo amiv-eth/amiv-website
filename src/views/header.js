@@ -3,6 +3,7 @@ import { mainNavigation } from '../models/navigation';
 import AmivLogo from './images/logo.svg';
 import { i18n, currentLanguage, switchLanguage } from '../models/language';
 import { Button } from '../components';
+import { isLoggedIn } from '../models/auth';
 
 export default class Header {
   static onbeforeupdate() {
@@ -58,14 +59,27 @@ export default class Header {
               )
             )
           ),
-          m(
-            'div.profile',
-            m(
-              'a',
-              { href: `/${currentLanguage()}/profile`, onupdate: m.route.link },
-              i18n('Profile')
-            )
-          ),
+          isLoggedIn()
+            ? m('div.profile', [
+                m(
+                  'a',
+                  { href: `/${currentLanguage()}/profile`, onupdate: m.route.link },
+                  i18n('Profile')
+                ),
+                m(
+                  'a',
+                  { href: `/${currentLanguage()}/logout`, onupdate: m.route.link },
+                  i18n('Logout')
+                ),
+              ])
+            : m(
+                'div.profile',
+                m(
+                  'a',
+                  { href: `/${currentLanguage()}/profile`, onupdate: m.route.link },
+                  i18n('Login')
+                )
+              ),
           m(
             'div.language-switcher',
             m(Button, {
