@@ -1,12 +1,4 @@
-# Sensirion
-
-## Contact
-
-Marco Höhener
-+41 44 927 11 96
-www.xing.to/Marco_Hoehener
-
-## Über uns
+## About Us
 
 Die Sensirion AG ist ein aus der ETH Zürich hervorgegangenes, innovatives und international tätiges Hightech Unternehmen mit Sitz am Zürichsee mit über 500 Mitarbeitenden.
 

@@ -88,6 +88,13 @@
         "events.searchfield": "Enter search text...",
         "events.price": "Price",
         "events.free": "Free",
-        "events.small_fee": "Small fee"
+        "events.small_fee": "Small fee",
+        "companies.contact_information": "Contact information",
+        "companies.email": "Email",
+        "companies.phone": "Phone",
+        "companies.website": "Website",
+        "companies.employees": "Employees",
+        "companies.employees_worldwide": "Worldwide",
+        "companies.employees_Switzerland": "in Switzerland"
     }
 }

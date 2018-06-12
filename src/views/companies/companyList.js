@@ -1,15 +1,31 @@
 import m from 'mithril';
-import load from '../../models/companies';
+import marked from 'marked';
+import { data } from './data/companies';
+import { i18n, currentLanguage } from '../../models/language';
 
-export default class companyList {
-  oninit() {
-    this.content = '';
-    load('list').then(response => {
-      this.content = response;
-    });
+class CompanyItem {
+  static _parseMarkdownText(text) {
+    // replace leading spaces when using multi-line strings
+    return marked(text.trim().replace(/\n[^\S\n]+/g, '\n'));
   }
 
-  view() {
-    return m.trust(this.content);
+  static view(vnode) {
+    return m(
+      'div',
+      m(
+        'a',
+        { href: `/${currentLanguage()}/companies/${vnode.attrs.key}`, onupdate: m.route.link },
+        vnode.attrs.company.name
+      )
+    );
+  }
+}
+
+export default class CompanyList {
+  static view() {
+    return m('div', [
+      m('h1', i18n('Companies')),
+      Object.entries(data).map(([key, company]) => m(CompanyItem, { key, company })),
+    ]);
   }
 }

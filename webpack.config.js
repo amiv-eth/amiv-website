@@ -93,6 +93,19 @@ const config = {
         ],
       },
       {
+        test: /src\/views\/companies\/logos\/[-_a-zA-Z\d\/]+\.(png|jp(e*)g|svg)$/,
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              name: '[name].[ext]',
+              outputPath: 'companies/',
+              publicPath: 'dist/companies/',
+            },
+          },
+        ],
+      },
+      {
         test: /src\/views\/images\/[a-zA-Z\d\/]+\.(png|jp(e*)g|svg)$/,
         use: [
           {

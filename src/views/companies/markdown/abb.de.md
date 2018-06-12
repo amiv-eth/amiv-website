@@ -1,17 +1,3 @@
-# ABB
-
-Webseite: [ABB Website](http://www.abb.ch/)
-
-Angestellte: 145'000 weltweit, 6'800 in der Schweiz
-
-## Kontakt
-
-ABB Schweiz AG
-Herr Marcel Winkelmann
-Brown Boveri Strasse 6
-5400 Baden
-hrmarketing@ch.abb.com
-
 ## Portrait
 
 ABB ist weltweit führend in der Energie- und Automationstechnik. Das Unternehmen ermöglicht seinen Kunden in der Energieversorgung und der Industrie, ihre Leistung zu verbessern und gleichzeitig die Umweltbelastung zu reduzieren. ABB beschäftigt rund 130'000 Mitarbeitende in über 100 Länder.
