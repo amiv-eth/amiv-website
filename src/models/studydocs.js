@@ -1,121 +1,116 @@
 import m from 'mithril';
 import { apiUrl } from 'config';
 import { getToken } from './auth';
-import Query from './query';
-
-let querySaved = {};
+import PaginationController from './pagination';
 
 /**
- * Get the loaded list of studydocuments.
+ * StudydocsController class
  *
- * @return {array}
+ * Managing studydocument list and handling of the currently selected event.
  */
-export function getList() {
-  if (typeof this.list === 'undefined') {
-    return [];
+export default class StudydocsController extends PaginationController {
+  constructor(query = {}, additionalQuery = {}) {
+    super('studydocuments', query, additionalQuery);
   }
-  return this.list;
-}
 
-/**
- * Load studydocuments from the AMIV API
- *
- * @param {*} query filter and sort query for the API request.
- * @return {Promise} exports for additional response handling
- */
-export function load(query = {}) {
-  querySaved = Query.copy(query);
-  const queryEncoded = Query.buildQueryString({ where: query });
+  /**
+   * Set a new query to load the configured resource
+   *
+   * @public
+   */
+  async setQuery(query) {
+    const newQuery = JSON.stringify(query || {});
+    const oldQuery = JSON.stringify(this.query);
 
-  return m
-    .request({
+    // ignore if query has not changed
+    if (newQuery === oldQuery) return false;
+
+    super.setQuery(query);
+    return this.loadPageData(1);
+  }
+
+  /**
+   * Load a specific document from the AMIV API
+   *
+   * @param {String} documentId
+   * @public
+   */
+  async loadDocument(documentId) {
+    this._selectedDocument = await m.request({
+      method: 'GET',
+      url: `${apiUrl}/studydocuments/${documentId}`,
+      headers: {
+        Authorization: getToken(),
+      },
+    });
+    return this._selectedDocument;
+  }
+
+  /**
+   * Get the previously loaded event
+   * @return {object} studydocument from the AMIV API
+   * @public
+   */
+  get selectedDocument() {
+    return this._selectedDocument;
+  }
+
+  /**
+   * Store a new studydocument in the AMIV API.
+   *
+   * @param {Object} doc studydocument object to be stored in the AMIV API.
+   * @return {Promise}
+   * @static
+   */
+  static addNew(doc) {
+    if (typeof doc !== 'object') {
+      return new Promise(() => {}); // empty promise
+    }
+    const form = new FormData();
+    Object.keys(doc).forEach(key => {
+      if (key === 'files') {
+        for (let i = 0; i < doc.files.length; i += 1) {
+          form.append('files', doc.files[i]);
+        }
+      } else {
+        form.append(key, doc[key]);
+      }
+    });
+
+    return m.request({
+      method: 'POST',
+      url: `${apiUrl}/studydocuments`,
+      data: form,
+      headers: {
+        Authorization: getToken(),
+      },
+    });
+  }
+
+  /**
+   * Get Suggestions from already existing entries for a specified field of `studydocument`.
+   *
+   * @param {String} field entity field which should be searched.
+   * @param {String} input search string
+   * @return {String} suggestion
+   * @static
+   */
+  static getInputSuggestions(field, input) {
+    const query = {};
+    query[field] = { $regex: `^(?i).*${input}.*` };
+    // TODO: debug Error 502 Bad Gateway returned by API
+    // const projection = {};
+    // projection[field] = 1;
+    const queryEncoded = m.buildQueryString({
+      where: JSON.stringify(query),
+      // projection: JSON.stringify(projection),
+    });
+    return m.request({
       method: 'GET',
       url: `${apiUrl}/studydocuments?${queryEncoded}`,
       headers: {
         Authorization: getToken(),
       },
-    })
-    .then(result => {
-      this.list = result._items;
     });
-}
-
-/**
- * Load a single document from the AMIV API
- *
- * @param {string} id
- */
-export async function loadDocument(id) {
-  return m.request({
-    method: 'GET',
-    url: `${apiUrl}/studydocuments/${id}`,
-    headers: {
-      Authorization: getToken(),
-    },
-  });
-}
-
-/**
- * Get Suggestions from already existing entries for a specified field of `studydocument`.
- *
- * @param {String} field entity field which should be searched.
- * @param {String} input search string
- */
-export function getInputSuggestions(field, input) {
-  const query = {};
-  query[field] = { $regex: `^(?i).*${input}.*` };
-  // TODO: debug Error 502 Bad Gateway returned by API
-  // const projection = {};
-  // projection[field] = 1;
-  const queryEncoded = Query.buildQueryString({
-    where: query,
-    // projection: JSON.stringify(projection),
-  });
-  return m.request({
-    method: 'GET',
-    url: `${apiUrl}/studydocuments?${queryEncoded}`,
-    headers: {
-      Authorization: getToken(),
-    },
-  });
-}
-
-/**
- * Reload studydocument list with the same query as before.
- *
- * @return {Promise} exports for additional response handling
- */
-export function reload() {
-  return load(querySaved);
-}
-
-/**
- * Store a new studydocument in the AMIV API.
- *
- * @param {Object} doc studydocument object to be stored in the AMIV API.
- * @return {Promise} exports for additional response handling
- */
-export function addNew(doc) {
-  if (typeof doc !== 'object') {
-    return new Promise(() => {}); // empty promise
   }
-  const form = new FormData();
-  Object.keys(doc).forEach(key => {
-    if (key === 'files') {
-      for (let i = 0; i < doc.files.length; i += 1) {
-        form.append('files', doc.files[i]);
-      }
-    } else {
-      form.append(key, doc[key]);
-    }
-  });
-
-  return m.request({
-    method: 'POST',
-    url: `${apiUrl}/studydocuments`,
-    data: form,
-    headers: {
-      Authorization: getToken(),
-    },
-  });
 }

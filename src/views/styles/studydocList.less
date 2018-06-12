@@ -1,8 +1,19 @@
 @import './listview.less';
 
 #studydoc-list {
-    .listview;
-    div {
-      border: none;
+  .listview;
+  div {
+    border: none;
+  }
+
+  div.list-item {
+    display: grid;
+    grid-template-columns: auto 20% 40%;
+    grid-row-gap: 5px;
+
+    &:first-of-type {
+      font-weight: bold;
+      border-bottom: solid 1px black;
     }
+  }
 }

@@ -37,21 +37,13 @@
   }
 
   .content {
-    div.content-grid {
-      display:grid;
-      grid-template-columns: 50% 30% auto;
-      grid-row-gap: 5px;
+    div.list-item {
+      border-bottom: 1px solid black;
+      cursor: pointer;
 
-      div {
-        padding: 10px;
-      }
-
-      div.list-header {
-        border-bottom: solid 1px black;
-      }
-
-      div.list-item {
-        cursor: pointer
+      h2 {
+        margin: 0;
+        padding: 1em 0;
       }
     }
   }
