@@ -23,6 +23,7 @@ import jobOfferList from './views/jobs/jobofferList';
 import jobOfferDetails from './views/jobs/jobofferDetails';
 import companyList from './views/companies/companyList';
 import companyDetail from './views/companies/companyDetail';
+import legalNotice from './views/legalNotice';
 import './views/styles/base.less';
 
 Raven.config(sentryUrl, {
@@ -109,6 +110,10 @@ Raven.context(() => {
     {
       url: '/:language/companies/:companyId',
       view: vnode => m(companyDetail, vnode.attrs),
+    },
+    {
+      url: '/:language/legal-notice',
+      view: vnode => m(legalNotice, vnode.attrs),
     },
   ];
 
