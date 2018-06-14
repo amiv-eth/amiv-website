@@ -1,262 +1,157 @@
 import m from 'mithril';
 import { i18n, currentLanguage } from '../../models/language';
 import { EventController } from '../../models/events';
-import { FilterView } from '../../components';
-import { log } from '../../models/log';
 import EventDetails from './eventDetails';
+import { FilteredListPage, FilteredListDataStore } from '../filteredListPage';
 
 const controller = new EventController({}, true);
-const stickyPositionTop = { filterView: 0, detailsView: 0 };
-let lastScrollPosition = 0;
-let filterValues;
-let listState = 'loading';
-let loadMoreState = 'idle';
-let eventLoaded = false;
-
-function renderEventListItem(event, className = '') {
-  return m(
-    'div',
-    {
-      class: `list-item ${className}`,
-      onclick: () => {
-        m.route.set(`/${currentLanguage()}/events/${event._id}`);
-      },
-    },
-    [m('h2', event.getTitle()), m('span', event.time_start), m('span', event.price)]
-  );
-}
+const dataStore = new FilteredListDataStore();
 
 /**
  * EventList class
  *
  * Used to show the events page including the FilterView and the event details page.
  */
-export default class EventList {
-  constructor(vnode) {
-    document.addEventListener('scroll', EventList.onscroll);
-    window.addEventListener('resize', EventList.onscroll);
-
-    if (vnode.attrs.eventId) {
-      controller
-        .loadEvent(vnode.attrs.eventId)
-        .then(() => {
-          eventLoaded = true;
-        })
-        .catch(err => {
-          eventLoaded = true;
-          log(err);
-        });
-    }
+export default class EventList extends FilteredListPage {
+  constructor() {
+    super('event', dataStore, true);
   }
 
-  static _reload() {
-    listState = 'loading';
-    controller
-      .refresh()
-      .then(() => {
-        listState = 'loaded';
-      })
-      .catch(err => {
-        log(err);
-        listState = 'error';
-      });
+  oninit(vnode) {
+    super.oninit(vnode, vnode.attrs.eventId);
   }
 
-  static onscroll() {
-    const filterView = document.getElementById('eventListFilterView');
-    const detailsView = document.getElementById('eventListDetailsView');
-    EventList.updateViewPosition(filterView, 'filterView');
-    EventList.updateViewPosition(detailsView, 'detailsView');
-    lastScrollPosition = document.documentElement.scrollTop;
+  // eslint-disable-next-line class-methods-use-this
+  _loadItem(eventId) {
+    return controller.loadEvent(eventId);
   }
 
-  static updateViewPosition(element, positionKey) {
-    const windowHeight = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
-    const scrollDelta = document.documentElement.scrollTop - lastScrollPosition;
-    const maxPosition = Math.min(windowHeight - element.scrollHeight, 0);
-
-    stickyPositionTop[positionKey] = Math.min(
-      0,
-      Math.max(stickyPositionTop[positionKey] - scrollDelta, maxPosition)
-    );
-    // eslint-disable-next-line no-param-reassign
-    element.style.top = `${stickyPositionTop[positionKey]}px`;
+  // eslint-disable-next-line class-methods-use-this
+  _reloadData() {
+    return controller.refresh();
   }
 
-  view(vnode) {
-    let detailView;
-    if (vnode.attrs.eventId) {
-      if (eventLoaded) {
-        detailView = m(
-          'div.details',
-          {
-            id: 'eventListDetailsView',
-            style: {
-              top: `${stickyPositionTop.detailsView}px`,
-            },
-          },
-          m(EventDetails, { controller })
-        );
-      } else {
-        // Do not show anything on details panel when event data has not been loaded.
-        detailView = m('');
-      }
-    } else {
-      detailView = m(
-        'div.details',
+  get _filterViewAttributes() {
+    return {
+      fields: [
         {
-          id: 'eventListDetailsView',
-          style: {
-            top: `${stickyPositionTop.detailsView}px`,
-          },
+          type: 'text',
+          key: 'title',
+          label: i18n('events.searchfield'),
+          min_length: 3,
         },
-        m('h1', i18n('events.no_selection'))
-      );
-    }
-
-    return m('div#event-list', [
-      m('div', this.constructor.filterView),
-      m('div.content', this.constructor.listView),
-      m('div', detailView),
-    ]);
-  }
-
-  static get filterView() {
-    return m(
-      'div.filter',
-      {
-        id: 'eventListFilterView',
-        style: {
-          top: `${stickyPositionTop.filterView}px`,
+        {
+          type: 'button',
+          label: i18n('search'),
         },
-      },
-      m(FilterView, {
-        fields: [
-          {
-            type: 'text',
-            key: 'title',
-            label: i18n('events.searchfield'),
-            min_length: 3,
-          },
-          {
-            type: 'button',
-            label: i18n('search'),
-          },
-          {
-            type: 'checkbox',
-            key: 'price',
-            label: i18n('events.price'),
-            default: ['free', 'small_fee'],
-            values: [
-              { value: 'free', label: i18n('events.free') },
-              { value: 'small_fee', label: i18n('events.small_fee') },
-            ],
-          },
-          {
-            type: 'radio',
-            label: i18n('events.restrictions'),
-            key: 'signup_restrictions',
-            default: 'members_only',
-            values: [
-              { label: i18n('events.open_for_all'), value: 'all' },
-              { label: i18n('events.open_for_amiv_members_only'), value: 'members_only' },
-            ],
-          },
-        ],
-        onchange: values => {
-          const query = {};
-          filterValues = values;
-          Object.keys(values).forEach(key => {
-            const value = values[key];
+        {
+          type: 'checkbox',
+          key: 'price',
+          label: i18n('events.price'),
+          default: ['free', 'small_fee'],
+          values: [
+            { value: 'free', label: i18n('events.free') },
+            { value: 'small_fee', label: i18n('events.small_fee') },
+          ],
+        },
+        {
+          type: 'radio',
+          label: i18n('events.restrictions'),
+          key: 'signup_restrictions',
+          default: 'members_only',
+          values: [
+            { label: i18n('events.open_for_all'), value: 'all' },
+            { label: i18n('events.open_for_amiv_members_only'), value: 'members_only' },
+          ],
+        },
+      ],
+      onchange: values => {
+        const query = {};
+        this.dataStore.filterValues = values;
+        Object.keys(values).forEach(key => {
+          const value = values[key];
 
-            if (key === 'price' && value.length === 1) {
-              const conditions = [];
+          if (key === 'price' && value.length === 1) {
+            const conditions = [];
 
-              if (value.includes('free')) {
-                conditions.push({ price: null }, { price: 0 });
-              }
-              if (value.includes('small_fee')) {
-                conditions.push({ price: { $gt: 0 } });
-              }
-              if (conditions.length > 0) {
-                query.$and = [{ $or: conditions }];
-              }
-            } else if (key === 'signup_restrictions') {
-              if (value === 'all') {
-                query.allow_email_signup = true;
-              }
-            } else if (key === 'title' && value.length > 0) {
-              query.title_en = { $regex: `^(?i).*${value}.*` };
-              query.title_de = { $regex: `^(?i).*${value}.*` };
-              query.catchphrase_en = { $regex: `^(?i).*${value}.*` };
-              query.catchphrase_de = { $regex: `^(?i).*${value}.*` };
-              query.description_en = { $regex: `^(?i).*${value}.*` };
-              query.description_de = { $regex: `^(?i).*${value}.*` };
+            if (value.includes('free')) {
+              conditions.push({ price: null }, { price: 0 });
             }
-          });
-          controller.setQuery({ where: query });
-        },
-        values: filterValues,
-      })
-    );
-  }
-
-  static get listView() {
-    let listView;
-    if (listState === 'loading') {
-      listView = m('span', i18n('events.loading'));
-    } else if (listState === 'loaded') {
-      listView = [
-        m(
-          'div.registration',
-          controller.openRegistrationEvents.map(page =>
-            page.map(event => renderEventListItem(event, 'registration'))
-          )
-        ),
-        m(
-          'div.upcoming',
-          controller.upcomingEvents.map(page =>
-            page.map(event => renderEventListItem(event, 'upcoming'))
-          )
-        ),
-        m(
-          'div.past',
-          controller.pastEvents.map(page => page.map(event => renderEventListItem(event, 'past')))
-        ),
-        EventList.loadMoreView,
-      ];
-    } else {
-      listView = m('span', 'Error while loading events.');
-    }
-    return listView;
-  }
-
-  static get loadMoreView() {
-    if (loadMoreState === 'loading') {
-      return m('div.load-more-items', i18n('events.loading'));
-    } else if (
-      loadMoreState === 'noMorePages' ||
-      controller.pastEvents.lastLoadedPage === controller.pastEvents.totalPages
-    ) {
-      return m('');
-    }
-    return m(
-      'div.load-more-items.active',
-      {
-        onclick: () => {
-          const newPage = controller.pastEvents.lastLoadedPage + 1;
-          if (newPage <= controller.pastEvents.totalPages) {
-            loadMoreState = 'loading';
-            controller.pastEvents.loadPageData(newPage).then(() => {
-              loadMoreState = 'idle';
-              m.redraw();
-            });
+            if (value.includes('small_fee')) {
+              conditions.push({ price: { $gt: 0 } });
+            }
+            if (conditions.length > 0) {
+              query.$and = [{ $or: conditions }];
+            }
+          } else if (key === 'signup_restrictions') {
+            if (value === 'all') {
+              query.allow_email_signup = true;
+            }
+          } else if (key === 'title' && value.length > 0) {
+            query.title_en = { $regex: `^(?i).*${value}.*` };
+            query.title_de = { $regex: `^(?i).*${value}.*` };
+            query.catchphrase_en = { $regex: `^(?i).*${value}.*` };
+            query.catchphrase_de = { $regex: `^(?i).*${value}.*` };
+            query.description_en = { $regex: `^(?i).*${value}.*` };
+            query.description_de = { $regex: `^(?i).*${value}.*` };
           }
+        });
+        controller.setQuery({ where: query });
+      },
+    };
+  }
+
+  get _listView() {
+    return [
+      m(
+        'div.registration',
+        controller.openRegistrationEvents.map(page =>
+          page.map(event => this.constructor._renderEventListItem(event, 'registration'))
+        )
+      ),
+      m(
+        'div.upcoming',
+        controller.upcomingEvents.map(page =>
+          page.map(event => this.constructor._renderEventListItem(event, 'upcoming'))
+        )
+      ),
+      m(
+        'div.past',
+        controller.pastEvents.map(page =>
+          page.map(event => this.constructor._renderEventListItem(event, 'past'))
+        )
+      ),
+    ];
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  get _detailsView() {
+    return m(EventDetails, { controller });
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  get _detailsPlaceholderView() {
+    return m('h1', i18n('events.no_selection'));
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  async _loadNextPage() {
+    const newPage = controller.pastEvents.lastLoadedPage + 1;
+    if (newPage <= controller.pastEvents.totalPages) {
+      await controller.pastEvents.loadPageData(newPage);
+    }
+  }
+
+  static _renderEventListItem(event, className = '') {
+    return m(
+      'div',
+      {
+        class: `list-item ${className}`,
+        onclick: () => {
+          m.route.set(`/${currentLanguage()}/events/${event._id}`);
         },
       },
-      i18n('events.load_more')
+      [m('h2', event.getTitle()), m('span', event.time_start), m('span', event.price)]
     );
   }
 }
-
-EventList._reload();
