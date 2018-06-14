@@ -2,7 +2,7 @@ import m from 'mithril';
 import marked from 'marked';
 import * as EmailValidator from 'email-validator';
 import { log } from '../../models/log';
-import { isLoggedIn } from '../../models/auth';
+import { isLoggedIn, login } from '../../models/auth';
 import inputGroup from '../form/inputGroup';
 import { Button } from '../../components';
 import JSONSchemaForm from '../form/jsonSchemaForm';
@@ -77,7 +77,10 @@ class EventSignupForm extends JSONSchemaForm {
       elements.push(this._renderSignupButton());
       return m('form', elements);
     }
-    return m('div', i18n('events.amiv_members_only'));
+    return m('div', [
+      m('span', `${i18n('events.amiv_members_only')} `),
+      m(Button, { label: i18n('Login'), events: { onclick: () => login(m.route.get()) } }),
+    ]);
   }
 
   isValid() {
