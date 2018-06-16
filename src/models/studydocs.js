@@ -10,7 +10,10 @@ import PaginationController from './pagination';
  */
 export default class StudydocsController extends PaginationController {
   constructor(query = {}, additionalQuery = {}) {
-    super('studydocuments', query, additionalQuery);
+    super('studydocuments', query, {
+      ...additionalQuery,
+      ...{ sort: ['lecture', 'type', 'title', 'author'] },
+    });
   }
 
   /**
