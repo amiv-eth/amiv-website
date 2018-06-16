@@ -313,8 +313,12 @@ export class FilteredListPage {
         onclick: () => {
           this.dataStore.loadMoreState = 'loading';
           this._loadNextPage()
-            .then(() => {
-              this.dataStore.loadMoreState = 'idle';
+            .then(noMorePages => {
+              if (noMorePages) {
+                this.dataStore.loadMoreState = 'noMorePages';
+              } else {
+                this.dataStore.loadMoreState = 'idle';
+              }
               m.redraw();
             })
             .catch(() => {

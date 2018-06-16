@@ -139,7 +139,9 @@ export default class EventList extends FilteredListPage {
     const newPage = controller.pastEvents.lastLoadedPage + 1;
     if (newPage <= controller.pastEvents.totalPages) {
       await controller.pastEvents.loadPageData(newPage);
+      return newPage === controller.pastEvents.totalPages;
     }
+    return false;
   }
 
   static _renderEventListItem(event, className = '') {
