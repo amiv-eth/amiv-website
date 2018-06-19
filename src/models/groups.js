@@ -2,6 +2,7 @@ import m from 'mithril';
 import { apiUrl } from 'config';
 import { getToken, getUserId } from './auth';
 import { error } from './log';
+import Query from './query';
 
 let querySaved = '';
 
@@ -96,7 +97,7 @@ export function withdraw(groupMembershipId, etag) {
  * @return {Promise} exports for additional response handling
  */
 export function load(query = {}) {
-  const queryEncoded = m.buildQueryString({ where: JSON.stringify(query) });
+  const queryEncoded = Query.buildQueryString({ where: query });
   querySaved = query;
 
   return m
@@ -123,9 +124,9 @@ export function load(query = {}) {
  * @return {Promise} exports for additional response handling
  */
 export function loadMemberships() {
-  const queryEncoded = m.buildQueryString({
-    where: JSON.stringify({ user: getUserId() }),
-    embedded: JSON.stringify({ group: 1 }),
+  const queryEncoded = Query.buildQueryString({
+    where: { user: getUserId() },
+    embedded: { group: 1 },
   });
   return m
     .request({

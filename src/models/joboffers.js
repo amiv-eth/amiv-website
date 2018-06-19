@@ -2,6 +2,7 @@ import m from 'mithril';
 import { apiUrl } from 'config';
 import { getToken } from './auth';
 import { currentLanguage } from './language';
+import Query from './query';
 
 const date = `${new Date().toISOString().split('.')[0]}Z`;
 
@@ -35,14 +36,9 @@ export function getSelectedOffer() {
  * @return {Promise} exports for additional response handling
  */
 export function load(query = {}) {
-  querySaved = query;
+  querySaved = Query.copy(query);
 
-  // Parse query such that the backend understands it
-  const parsedQuery = {};
-  Object.keys(query).forEach(key => {
-    parsedQuery[key] = key === 'sort' ? query[key] : JSON.stringify(query[key]);
-  });
-  const queryString = m.buildQueryString(parsedQuery);
+  const queryString = Query.buildQueryString(query);
 
   return m
     .request({

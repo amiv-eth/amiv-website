@@ -1,6 +1,7 @@
 import m from 'mithril';
 import { apiUrl } from 'config';
 import { getToken } from './auth';
+import Query from './query';
 
 let querySaved = {};
 
@@ -23,8 +24,8 @@ export function getList() {
  * @return {Promise} exports for additional response handling
  */
 export function load(query = {}) {
-  querySaved = query;
-  const queryEncoded = m.buildQueryString({ where: JSON.stringify(query) });
+  querySaved = Query.copy(query);
+  const queryEncoded = Query.buildQueryString({ where: query });
 
   return m
     .request({
@@ -51,8 +52,8 @@ export function getInputSuggestions(field, input) {
   // TODO: debug Error 502 Bad Gateway returned by API
   // const projection = {};
   // projection[field] = 1;
-  const queryEncoded = m.buildQueryString({
-    where: JSON.stringify(query),
+  const queryEncoded = Query.buildQueryString({
+    where: query,
     // projection: JSON.stringify(projection),
   });
   return m.request({

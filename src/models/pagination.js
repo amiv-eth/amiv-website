@@ -1,6 +1,7 @@
 import m from 'mithril';
 import { apiUrl } from 'config';
 import { getToken } from './auth';
+import Query from './query';
 
 /**
  * PaginationController class
@@ -22,6 +23,7 @@ export default class PaginationController {
     this.additionalQuery = additionalQuery;
     this._lastLoadedPage = 0;
     this._totalPages = 1;
+    this._pages = [];
   }
 
   /**
@@ -50,7 +52,7 @@ export default class PaginationController {
    * @public
    */
   setQuery(query) {
-    this.query = JSON.parse(JSON.stringify(query || {}));
+    this.query = Query.copy(query || {});
     this._pages = [];
     this._lastLoadedPage = 0;
     this._totalPages = 1;
@@ -115,40 +117,11 @@ export default class PaginationController {
       ({ additionalQuery } = this);
     }
     const date = `${new Date().toISOString().split('.')[0]}Z`;
-    const query = JSON.parse(
-      JSON.stringify(
-        Object.assign({}, this.query, additionalQuery, {
-          where: Object.assign({}, this.query.where, additionalQuery.where),
-        })
-      )
-    );
-
-    if (
-      this.query.where &&
-      this.query.where.$or &&
-      additionalQuery.where &&
-      additionalQuery.where.$or
-    ) {
-      query.where.$and = query.where.$and || [];
-      query.where.$and.push(
-        JSON.parse(JSON.stringify({ $or: this.query.where.$or })),
-        JSON.parse(JSON.stringify({ $or: additionalQuery.where.$or }))
-      );
-      delete query.where.$or;
-    }
-    if (this.query.where && this.query.where.$and) {
-      query.where.$and = query.where.$and.concat(JSON.parse(JSON.stringify(this.query.where.$and)));
-    }
-    if (additionalQuery.where && additionalQuery.where.$and) {
-      query.where.$and = query.where.$and.concat(
-        JSON.parse(JSON.stringify(additionalQuery.where.$and))
-      );
-    }
-
-    query.where.show_website = true;
-    query.where.time_advertising_start = { $lt: date };
-    query.max_results = query.max_results || 10;
-    query.page = pageNum;
+    const query = Query.merge(this.query, additionalQuery, {
+      where: { show_website: true, time_advertising_start: { $lt: date } },
+      max_results: this.query.max_results || 10,
+      page: pageNum,
+    });
 
     const data = await this._loadData(query);
     this._pages[pageNum] = { datetime: new Date(), items: data };
@@ -165,12 +138,7 @@ export default class PaginationController {
    * @private
    */
   async _loadData(query) {
-    // Parse query such that the backend understands it
-    const parsedQuery = {};
-    Object.keys(query).forEach(key => {
-      parsedQuery[key] = key === 'sort' ? query[key] : JSON.stringify(query[key]);
-    });
-    const queryString = m.buildQueryString(parsedQuery);
+    const queryString = Query.buildQueryString(query);
 
     const response = await m.request({
       method: 'GET',
