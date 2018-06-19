@@ -86,6 +86,7 @@ export class Event {
       },
     });
     this._signup = undefined;
+    this.signupLoaded = false;
   }
 
   /**
