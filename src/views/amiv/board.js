@@ -1,5 +1,6 @@
 import m from 'mithril';
 import marked from 'marked';
+import escape from 'html-escape';
 import { data, image as boardImage } from './data/board';
 import { i18n, currentLanguage } from '../../models/language';
 import { TranslationUnavailable } from '../errors';
@@ -7,7 +8,7 @@ import { TranslationUnavailable } from '../errors';
 class ImageGroup {
   static _parseMarkdownText(text) {
     // replace leading spaces when using multi-line strings
-    return marked(text.trim().replace(/\n[^\S\n]+/g, '\n'));
+    return marked(escape(text.trim().replace(/\n[^\S\n]+/g, '\n')));
   }
 
   static view(vnode) {

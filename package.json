@@ -24,6 +24,7 @@
     "babel-polyfill": "^6.26.0",
     "email-validator": "^2.0.3",
     "i18n4v": "^0.2.2",
+    "html-escape": "^2.0.0",
     "marked": "^0.3.18",
     "mithril": "^1.1.5",
     "polythene-css": "^1.0.0",

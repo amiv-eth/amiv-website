@@ -1,5 +1,6 @@
 import m from 'mithril';
 import marked from 'marked';
+import escape from 'html-escape';
 import { apiUrl } from 'config';
 import * as jobs from '../../models/joboffers';
 import { log } from '../../models/log';
@@ -20,7 +21,7 @@ export default class JobOfferDetails {
     return m('div', [
       m('h1', jobOffer.title),
       m('img', { src: `${apiUrl}${jobOffer.logo.file}`, alt: jobOffer.company }),
-      m('p', m.trust(marked(jobOffer.description))),
+      m('p', m.trust(marked(escape(jobOffer.description)))),
       m('a', { href: `${apiUrl}${jobOffer.pdf.file}`, target: '_blank' }, 'Download as PDF'),
     ]);
   }

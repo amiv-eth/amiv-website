@@ -1,12 +1,13 @@
 import m from 'mithril';
 import marked from 'marked';
+import escape from 'html-escape';
 import { data } from './data/companies';
 import { i18n, currentLanguage } from '../../models/language';
 
 class CompanyItem {
   static _parseMarkdownText(text) {
     // replace leading spaces when using multi-line strings
-    return marked(text.trim().replace(/\n[^\S\n]+/g, '\n'));
+    return marked(escape(text.trim().replace(/\n[^\S\n]+/g, '\n')));
   }
 
   static view(vnode) {

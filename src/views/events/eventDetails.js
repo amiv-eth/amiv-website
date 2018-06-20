@@ -1,5 +1,6 @@
 import m from 'mithril';
 import marked from 'marked';
+import escape from 'html-escape';
 import * as EmailValidator from 'email-validator';
 import { log } from '../../models/log';
 import { isLoggedIn, login } from '../../models/auth';
@@ -175,7 +176,7 @@ export default class EventDetails {
           ? i18n('events.no_registration')
           : i18n('events.%n_spots_available', event.spots - event.signup_count)
       ),
-      m('p', m.trust(marked(event.getDescription()))),
+      m('p', m.trust(marked(escape(event.getDescription())))),
       eventSignupForm,
     ]);
   }
