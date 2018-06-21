@@ -30,7 +30,12 @@ export default class Query {
    */
   static merge(...queries) {
     const newQuery = {};
+    const queryFunctions = [];
     queries.forEach(query => {
+      if (typeof query === 'function') {
+        queryFunctions.push(query);
+        return;
+      }
       Object.entries(query).forEach(([key, value]) => {
         if (newQuery[key]) {
           if (key === '$or') {
@@ -48,7 +53,9 @@ export default class Query {
         }
       });
     });
-    return newQuery;
+
+    if (queryFunctions.length === 0) return newQuery;
+    return () => Query.merge(...newQuery, ...queryFunctions.map(queryFunction => queryFunction()));
   }
 
   /**

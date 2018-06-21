@@ -1,5 +1,6 @@
 import { currentLanguage } from '../language';
 import PaginationController from '../pagination';
+import Query from '../query';
 import Event from './Event';
 
 /**
@@ -9,7 +10,7 @@ import Event from './Event';
  */
 export default class EventListController extends PaginationController {
   constructor(query = {}, additionalQuery = {}) {
-    super('events', query, additionalQuery);
+    super('events', query, Query.merge(additionalQuery, { where: { show_website: true } }));
   }
 
   async _loadData(query) {
