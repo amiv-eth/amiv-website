@@ -116,9 +116,7 @@ export default class PaginationController {
     } else {
       ({ additionalQuery } = this);
     }
-    const date = `${new Date().toISOString().split('.')[0]}Z`;
     const query = Query.merge(this.query, additionalQuery, {
-      where: { show_website: true, time_advertising_start: { $lt: date } },
       max_results: this.query.max_results || 10,
       page: pageNum,
     });

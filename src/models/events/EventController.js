@@ -26,6 +26,8 @@ export default class EventController {
       const date = `${new Date().toISOString().split('.')[0]}Z`;
       return {
         where: {
+          show_website: true,
+          time_advertising_start: { $lt: date },
           time_advertising_end: { $lt: date },
           $and: [
             { $or: [{ time_start: null }, { time_start: { $lt: date } }] },
@@ -67,6 +69,7 @@ export default class EventController {
       return {
         where: {
           show_website: true,
+          time_advertising_start: { $lt: date },
           time_register_start: { $lt: date },
           time_register_end: { $gt: date },
         },
