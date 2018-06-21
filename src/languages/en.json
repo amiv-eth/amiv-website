@@ -127,6 +127,10 @@
         "companies.website": "Website",
         "companies.employees": "Employees",
         "companies.employees_worldwide": "Worldwide",
-        "companies.employees_Switzerland": "in Switzerland"
+        "companies.employees_Switzerland": "in Switzerland",
+        "joboffers.searchfield": "Enter search text...",
+        "joboffers.not_found": "Job offer not found",
+        "joboffers.no_selection": "No job offer selected"
+
     }
 }

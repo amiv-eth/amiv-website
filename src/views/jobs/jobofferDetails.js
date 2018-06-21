@@ -2,27 +2,24 @@ import m from 'mithril';
 import marked from 'marked';
 import escape from 'html-escape';
 import { apiUrl } from 'config';
-import * as jobs from '../../models/joboffers';
-import { log } from '../../models/log';
+import { i18n } from '../../models/language';
 
-export default class JobOfferDetails {
+export default class JobofferDetails {
   static oninit(vnode) {
-    jobs.selectOffer(vnode.attrs.jobId);
+    this.controller = vnode.attrs.controller;
   }
 
   static view() {
-    const jobOffer = jobs.getSelectedOffer();
-
-    if (!jobOffer) {
-      return m('');
+    const joboffer = this.controller.selectedJoboffer;
+    if (!joboffer) {
+      return m('h1', i18n('joboffers.not_found'));
     }
 
-    log(jobs.getSelectedOffer());
     return m('div', [
-      m('h1', jobOffer.title),
-      m('img', { src: `${apiUrl}${jobOffer.logo.file}`, alt: jobOffer.company }),
-      m('p', m.trust(marked(escape(jobOffer.description)))),
-      m('a', { href: `${apiUrl}${jobOffer.pdf.file}`, target: '_blank' }, 'Download as PDF'),
+      m('h1', joboffer.getTitle()),
+      m('img', { src: `${apiUrl}${joboffer.logo.file}`, alt: joboffer.company }),
+      m('p', m.trust(marked(escape(joboffer.getDescription())))),
+      m('a', { href: `${apiUrl}${joboffer.pdf.file}`, target: '_blank' }, 'Download as PDF'),
     ]);
   }
 }

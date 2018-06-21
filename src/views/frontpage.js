@@ -1,10 +1,8 @@
 import m from 'mithril';
 import { EventController } from '../models/events';
-import * as jobs from '../models/joboffers';
+import { JobofferController } from '../models/joboffers';
 import { i18n } from '../models/language';
 import { Card } from '../components';
-
-const date = `${new Date().toISOString().split('.')[0]}Z`;
 
 // Render the Hot Cards, with link and imageurl
 const renderHotCards = (item, index) => {
@@ -24,19 +22,16 @@ export default class Frontpage {
       },
       false
     );
-    jobs.load({
-      where: {
-        time_end: { $gte: date },
-        show_website: true,
-      },
-      sort: ['time_end'],
-    });
+    this.jobOfferController = new JobofferController({ max_results: 3 });
 
     this.events = [];
     this.eventController.upcomingEvents.getPageData(1).then(events => {
       this.events = events;
     });
-    this.jobs = jobs.getList().slice(0, 3);
+    this.jobs = [];
+    this.jobOfferController.getPageData(1).then(jobs => {
+      this.jobs = jobs;
+    });
 
     // MOCKDATA
     this.hot = [
@@ -69,10 +64,6 @@ export default class Frontpage {
         imageurl: 'https://rngeternal.com/wp-content/uploads/2017/12/twitter-logo.png',
       },
     ];
-  }
-
-  onbeforeupdate() {
-    this.jobs = jobs.getList().slice(0, 3);
   }
 
   view() {

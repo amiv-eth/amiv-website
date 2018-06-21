@@ -1,53 +1,126 @@
 import m from 'mithril';
 import { apiUrl } from 'config';
-import * as jobs from '../../models/joboffers';
-import { currentLanguage } from '../../models/language';
+import { i18n, currentLanguage } from '../../models/language';
+import { JobofferController } from '../../models/joboffers';
+import { FilteredListPage, FilteredListDataStore } from '../filteredListPage';
+import JobofferDetails from './jobofferDetails';
 
-const date = `${new Date().toISOString().split('.')[0]}Z`;
+const controller = new JobofferController();
+const dataStore = new FilteredListDataStore();
 
-export default class JobOfferList {
-  static oninit() {
-    jobs.load({
-      where: {
-        time_end: { $gte: date },
-        show_website: true,
-      },
-      sort: ['time_end'],
-    });
+/**
+ * JobOfferList class
+ *
+ * Used to show the job offers page including the FilterView and the job offer details page.
+ */
+export default class JobofferList extends FilteredListPage {
+  constructor() {
+    super('joboffer', dataStore, true);
   }
 
-  static onbeforeupdate(vnode, old) {
-    // when attrs are different it means we changed route
-    if (vnode.attrs.id !== old.attrs.id) {
-      jobs.reload();
+  oninit(vnode) {
+    super.oninit(vnode, vnode.attrs.offerId);
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  _loadItem(offerId) {
+    return controller.loadJoboffer(offerId);
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  _reloadData() {
+    return controller.loadPageData(1);
+  }
+
+  get _filterViewAttributes() {
+    return {
+      fields: [
+        {
+          type: 'text',
+          key: 'title',
+          label: i18n('joboffers.searchfield'),
+          min_length: 3,
+        },
+        {
+          type: 'button',
+          label: i18n('search'),
+          events: {
+            onclick: 'search',
+          },
+        },
+        {
+          type: 'button',
+          label: i18n('reset'),
+          className: 'flat-button',
+          events: {
+            onclick: 'reset',
+          },
+        },
+      ],
+      onchange: values => {
+        const query = {};
+        this.dataStore.filterValues = values;
+        Object.keys(values).forEach(key => {
+          const value = values[key];
+
+          if (key === 'title' && value.length > 0) {
+            query.$or = [
+              { title_en: { $regex: `^(?i).*${value}.*` } },
+              { title_de: { $regex: `^(?i).*${value}.*` } },
+              { description_en: { $regex: `^(?i).*${value}.*` } },
+              { description_de: { $regex: `^(?i).*${value}.*` } },
+              { company: { $regex: `^(?i).*${value}.*` } },
+              { company: { $regex: `^(?i).*${value}.*` } },
+            ];
+          }
+        });
+        controller.setQuery({ where: query });
+      },
+    };
+  }
+
+  get _listView() {
+    return controller.map(page =>
+      page.map(joboffer => this.constructor._renderJobofferListItem(joboffer))
+    );
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  get _detailsView() {
+    return m(JobofferDetails, { controller });
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  get _detailsPlaceholderView() {
+    return m('h1', i18n('joboffers.no_selection'));
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  async _loadNextPage() {
+    const newPage = controller.lastLoadedPage + 1;
+    if (newPage <= controller.totalPages) {
+      await controller.loadPageData(newPage);
     }
   }
 
-  static view() {
-    return m('table', [
-      m('thead', [m('tr', [m('th', 'Company'), m('th', 'Title'), m('th', 'Details')])]),
-      m(
-        'tbody',
-        jobs
-          .getList()
-          .map(job =>
-            m('tr', [
-              m(
-                'td',
-                m('img', { src: `${apiUrl}${job.logo.file}`, width: '150px', alt: job.company })
-              ),
-              m('td', job.title),
-              m(
-                'td',
-                m(
-                  'a',
-                  { href: `/${currentLanguage()}/jobs/${job._id}`, oncreate: m.route.link },
-                  'Details'
-                )
-              ),
-            ])
-          )
-      ),
-    ]);
+  // eslint-disable-next-line class-methods-use-this
+  _hasMorePagesToLoad() {
+    return controller.lastLoadedPage < controller.totalPages;
+  }
+
+  static _renderJobofferListItem(joboffer) {
+    return m(
+      'div',
+      {
+        class: 'list-item',
+        onclick: () => {
+          m.route.set(`/${currentLanguage()}/jobs/${joboffer._id}`);
+        },
+      },
+      [
+        m('img', { src: `${apiUrl}${joboffer.logo.file}`, width: '150px', alt: joboffer.company }),
+        m('h2', joboffer.getTitle()),
+      ]
+    );
   }
 }
