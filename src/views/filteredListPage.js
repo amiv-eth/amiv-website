@@ -38,7 +38,7 @@ export class FilteredListDataStore {
   }
 
   set loadMoreState(state) {
-    if (!['idle', 'loading', 'noMorePages', 'error'].includes(state)) {
+    if (!['idle', 'loading', 'error'].includes(state)) {
       throw new Error(`Invalid state '${state}' for 'loadMoreState'`);
     }
     this._loadMoreState = state;
@@ -229,6 +229,19 @@ export class FilteredListPage {
     throw new Error('_loadNextPage() not implemented');
   }
 
+  /**
+   * Tells if there are more pages available to load.
+   *
+   * *This is an abstract function!
+   * Implementation in child class is mandatory.*
+   *
+   * @return {boolean}
+   * @protected
+   */
+  _hasMorePagesToLoad() {
+    throw new Error('_hasMorePagesToLoad() not implemented');
+  }
+
   /* eslint-enable */
 
   reload() {
@@ -302,10 +315,11 @@ export class FilteredListPage {
   }
 
   get _loadMoreView() {
+    if (!this._hasMorePagesToLoad()) {
+      return m('');
+    }
     if (this.dataStore.loadMoreState === 'loading') {
       return m('div.load-more-items', i18n('loading'));
-    } else if (this.dataStore.loadMoreState === 'noMorePages') {
-      return m('');
     }
     return m(
       'div.load-more-items.active',
@@ -313,12 +327,8 @@ export class FilteredListPage {
         onclick: () => {
           this.dataStore.loadMoreState = 'loading';
           this._loadNextPage()
-            .then(noMorePages => {
-              if (noMorePages) {
-                this.dataStore.loadMoreState = 'noMorePages';
-              } else {
-                this.dataStore.loadMoreState = 'idle';
-              }
+            .then(() => {
+              this.dataStore.loadMoreState = 'idle';
               m.redraw();
             })
             .catch(() => {
