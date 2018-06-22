@@ -40,7 +40,7 @@ export default class Query {
         if (newQuery[key]) {
           if (key === '$or') {
             if (!newQuery.$and) newQuery.$and = [];
-            newQuery.push({ $or: Query.copy(value) });
+            newQuery.$and.push({ $or: Query.copy(value) });
           } else if (key === '$and') {
             newQuery.$and = newQuery.$and.concat(Query.copy(value));
           } else if (typeof newQuery[key] === 'object') {
