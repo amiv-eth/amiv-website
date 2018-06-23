@@ -1,4 +1,3 @@
-import { currentLanguage } from '../language';
 import PaginationController from '../pagination';
 import Query from '../query';
 import Event from './Event';
@@ -15,14 +14,6 @@ export default class EventListController extends PaginationController {
 
   async _loadData(query) {
     const items = await super._loadData(query);
-    return items.map(event => {
-      const otherLanguage = currentLanguage() === 'en' ? 'de' : 'en';
-      const newEvent = Object.assign({}, event);
-      newEvent.getTitle = () =>
-        newEvent[`title_${currentLanguage()}`] || newEvent[`title_${otherLanguage}`];
-      newEvent.getDescription = () =>
-        newEvent[`description_${currentLanguage()}`] || newEvent[`description_${otherLanguage}`];
-      return new Event(newEvent);
-    });
+    return items.map(event => new Event(event));
   }
 }

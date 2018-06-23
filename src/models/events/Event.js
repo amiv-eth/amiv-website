@@ -1,6 +1,7 @@
 import m from 'mithril';
 import { apiUrl } from 'config';
 import { getToken, getUserId, isLoggedIn } from '../auth';
+import { currentLanguage } from '../language';
 
 /**
  * Event class
@@ -18,6 +19,21 @@ export default class Event {
     Object.keys(event).forEach(key => {
       this[key] = event[key];
     });
+  }
+
+  getTitle() {
+    const otherLanguage = currentLanguage() === 'en' ? 'de' : 'en';
+    return this[`title_${currentLanguage()}`] || this[`title_${otherLanguage}`];
+  }
+
+  getCatchphrase() {
+    const otherLanguage = currentLanguage() === 'en' ? 'de' : 'en';
+    return this[`catchphrase_${currentLanguage()}`] || this[`catchphrase_${otherLanguage}`];
+  }
+
+  getDescription() {
+    const otherLanguage = currentLanguage() === 'en' ? 'de' : 'en';
+    return this[`description_${currentLanguage()}`] || this[`description_${otherLanguage}`];
   }
 
   /**

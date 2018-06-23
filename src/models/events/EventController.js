@@ -1,7 +1,6 @@
 import m from 'mithril';
 import { apiUrl } from 'config';
 import { getToken } from '../auth';
-import { currentLanguage } from '../language';
 import EventListController from './EventListController';
 import Event from './Event';
 
@@ -123,7 +122,6 @@ export default class EventController {
    * @param {String} eventId
    */
   async loadEvent(eventId) {
-    const otherLanguage = currentLanguage() === 'en' ? 'de' : 'en';
     const event = await m.request({
       method: 'GET',
       url: `${apiUrl}/events/${eventId}`,
@@ -134,9 +132,6 @@ export default class EventController {
     if (!event.show_website) {
       throw new Error('Event not found');
     }
-    event.getTitle = () => event[`title_${currentLanguage()}`] || event[`title_${otherLanguage}`];
-    event.getDescription = () =>
-      event[`description_${currentLanguage()}`] || event[`description_${otherLanguage}`];
     this._selectedEvent = new Event(event);
     return this._selectedEvent;
   }
