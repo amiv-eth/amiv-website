@@ -104,7 +104,7 @@ export default class EventList extends FilteredListPage {
             query.description_de = { $regex: `^(?i).*${value}.*` };
           }
         });
-        controller.setQuery({ where: query });
+        controller.setQuery({ where: query }).finally(() => m.redraw());
       },
     };
   }

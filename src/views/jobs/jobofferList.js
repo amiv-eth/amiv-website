@@ -74,7 +74,7 @@ export default class JobofferList extends FilteredListPage {
             ];
           }
         });
-        controller.setQuery({ where: query });
+        controller.setQuery({ where: query }).finally(() => m.redraw());
       },
     };
   }

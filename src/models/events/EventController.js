@@ -3,6 +3,7 @@ import { apiUrl } from 'config';
 import { getToken } from '../auth';
 import EventListController from './EventListController';
 import Event from './Event';
+import Query from '../query';
 
 /**
  * EventController class
@@ -78,12 +79,9 @@ export default class EventController {
 
   /** Set a new query used by all EventListController to load events */
   async setQuery(query) {
-    const newQuery = JSON.stringify(query || {});
-    const oldQuery = JSON.stringify(this.query);
+    if (Query.isEqual(this.query, query)) return false;
 
-    if (newQuery === oldQuery) return false;
-
-    this.query = JSON.parse(newQuery);
+    this.query = Query.copy(query);
     this.openRegistrationEvents.setQuery(this.query);
     this.upcomingEvents.setQuery(this.query);
     this.pastEvents.setQuery(this.query);
@@ -99,7 +97,6 @@ export default class EventController {
       this.pastEvents.loadPageData(1),
     ];
     await Promise.all(jobs);
-    m.redraw();
   }
 
   /** Get EventListController for all events with open registration window */
