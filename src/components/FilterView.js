@@ -1,5 +1,5 @@
 import m from 'mithril';
-import { Button, Checkbox, Dropdown, TextField, RadioGroup } from '../components';
+import { Button, Checkbox, Dropdown, TextField, SearchField, RadioGroup } from '../components';
 
 /**
  * FilterViewComponent
@@ -18,6 +18,7 @@ import { Button, Checkbox, Dropdown, TextField, RadioGroup } from '../components
  *     key: 'key1',
  *     label: 'some label',
  *     default: 'default value',
+ *     onAutocomplete: () => [],
  *     // minimum length required to trigger `onchange`
  *     min_length: 3,
  *   },
@@ -120,9 +121,10 @@ export default class FilterViewComponent {
     const min_length = field.min_length || 0;
     this.values[field.key] = this.values[field.key] || field.default || '';
 
-    return m(TextField, {
+    return m(field.type === 'search' ? SearchField : TextField, {
       label: field.label || '',
       value: this.values[field.key],
+      onAutocomplete: field.onAutocomplete,
       onChange: state => {
         this.values[field.key] = state.value;
         if (state.value.length >= min_length || state.value.length === 0) {
@@ -251,7 +253,7 @@ export default class FilterViewComponent {
     const views = [];
 
     this.fields.forEach(field => {
-      if (field.type === 'text') {
+      if (field.type === 'text' || field.type === 'search') {
         views.push(this._createTextField(field));
       } else if (field.type === 'checkbox') {
         views.push(this._createCheckboxGroup(field));

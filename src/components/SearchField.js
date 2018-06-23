@@ -1,7 +1,7 @@
 import m from 'mithril';
 import { Search, IconButton, Shadow } from 'polythene-mithril';
-import stream from 'mithril/stream';
 import { i18n } from '../models/language';
+import TextFieldComponent from './TextField';
 import './SearchField.less';
 
 const iconSearchSVG =
@@ -33,59 +33,48 @@ const SearchIcon = {
 /**
  * Generic search textfield component
  *
- * TODO: autocomplete (https://jsfiddle.net/ArthurClemens/wf63ftfj/)
- *
  * Examples:
  *
  *    m(SearchField, { textfield: { label: 'Lecture' } })
  */
-export default class SearchField {
-  constructor(vnode) {
-    this.properties = vnode.attrs || {};
-    this.value = stream('');
-  }
-  view() {
-    const state = this;
-    const current_value = this.value();
-    const props = this.properties;
+export default class SearchFieldComponent extends TextFieldComponent {
+  _getInputView(attrs) {
     return m(
       Search,
-      Object.assign(
-        {},
-        {
-          textfield: {
-            label: i18n('search'),
-            onChange: ({ value }) => {
-              this.value(value);
-            },
-            value: current_value,
-          },
-          buttons: {
-            none: {
-              after: m(SearchIcon),
-            },
-            focus: {
-              after: m(SearchIcon),
-            },
-            focus_dirty: {
-              after: m(ClearButton, {
-                clear: () => {
-                  state.value('');
-                },
-              }),
-            },
-            dirty: {
-              after: m(ClearButton, {
-                clear: () => {
-                  state.value('');
-                },
-              }),
-            },
-          },
-          before: m(Shadow),
+      Object.assign({}, attrs, {
+        className: 'searchfield',
+        textfield: {
+          label: i18n('search'),
+          onChange: attrs.onChange,
+          events: attrs.events,
+          value: this.value(),
         },
-        props
-      )
+        buttons: {
+          none: {
+            after: m(SearchIcon),
+          },
+          focus: {
+            after: m(SearchIcon),
+          },
+          focus_dirty: {
+            after: m(ClearButton, {
+              clear: () => this.clear(),
+            }),
+          },
+          dirty: {
+            after: m(ClearButton, {
+              clear: () => this.clear(),
+            }),
+          },
+        },
+        before: m(Shadow),
+      })
     );
+  }
+
+  clear() {
+    this.value('');
+    this._selectedListIndex(-1);
+    this._listItems([]);
   }
 }
