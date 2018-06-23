@@ -1,90 +1,150 @@
 @import './colors.less';
 @import './dimensions.less';
 
+.mainmenu-template {
+  li {
+    &.active {
+      background-color: @color-grey;
+
+      > a {
+        color: @color-dark-blue;
+      }
+    }
+
+    > a {
+      display: block;
+      height: 100%;
+      line-height: @dimension-desktop-header-height;
+      padding: 0 1.3em;
+      color: #fff;
+      text-decoration: none;
+
+      &:hover {
+        color: @color-red;
+      }
+    }
+  }
+}
+
 header {
   grid-area: header;
-  width: 100%;
   display: block;
+  width: 100%;
+  font-size: 1.2em;
 
   section.blue > div {
     display: grid;
-    grid-template-columns: auto 1fr auto auto auto;
+    grid-template-columns: auto 1fr;
+    height: @dimension-desktop-header-height;
     grid-template-areas: 
-        "logo main-navigation profile language-switcher";
+        "logo navigation";
     
     .logo {
       grid-area: logo;
     }
 
     nav {
-      grid-area: main-navigation;
-      align-self: center;
+      display: grid;
+      grid-area: navigation;
+      grid-template-columns: 1fr auto auto auto;
+      grid-template-areas:
+          "main-navigation profile language-switcher";
 
-      a {
+      ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
         height: 100%;
-        padding: 1.3em;
-        font-size: 1.5em;
-        color: #fff;
-        text-decoration: none;
 
-        &:hover {
-          color: @color-red;
-        }
-
-        &.active {
-          background-color: @color-grey;
-          color: @color-dark-blue;
-          cursor: default;
+        li {
+          display: inline-block;
+          height: 100%;
         }
       }
-    }
 
-    .profile {
-      grid-area: profile;
-      align-self: center;
+      ul.mainmenu {
+        .mainmenu-template;
+        grid-area: main-navigation;
 
-      a {
-        height: 100%;
-        padding: 1.3em;
-        font-size: 1.5em;
-        color: #fff;
-        text-decoration: none;
+        li {
+          &.active {
+            ul.submenu {
+              display: block;
+              z-index: 5;
+            }
+          }
 
-        &:hover {
-          color: @color-red;
+          &:hover {
+            ul.submenu {
+              display: block;
+            }
+          }
+
+          > a {
+            display: block;
+            height: 100%;
+            line-height: @dimension-desktop-header-height;
+            padding: 0 1.3em;
+            color: #fff;
+            text-decoration: none;
+
+            &:hover {
+              color: @color-red;
+            }
+          }
         }
       }
-    }
 
-    .language-switcher {
-      grid-area: language-switcher;
-      align-self: center;
+      ul.submenu {
+        display: none;
+        position: absolute;
+        top: @dimension-desktop-header-height;
+        left: 0;
+        width: 100%;
+        height: @dimension-desktop-submenu-height;
+        text-align: center;
+        background-color: @color-grey;
+        z-index: 10;
+
+        li {
+          &.active {
+            background-color: @color-grey;
+
+            > a {
+              color: @color-red;
+            }
+          }
+
+          &:hover {
+            > a {
+              color: @color-red;
+            }
+          }
+
+          > a {
+            display: block;
+            height: 100%;
+            line-height: @dimension-desktop-submenu-height;
+            padding: 0 0.5em;
+            color: #000;
+            text-decoration: none;
+          }
+        }
+      }
+
+      ul.profile {
+        .mainmenu-template;
+        grid-area: profile;
+      }
+
+      .language-switcher {
+        grid-area: language-switcher;
+        align-self: center;
+      }
     }
   }
 
-  section.grey > div {
-    display: grid;
-
-    nav {
-      margin: 0 auto;
-
-      a {
-        display: inline-block;
-        height: 100%;
-        padding: 0.5em;
-        font-size: 1.5em;
-        color: #000;
-        text-decoration: none;
-
-        &:hover {
-          color: @color-red;
-        }
-
-        &.active {
-          color: @color-red;
-          cursor: default;
-        }
-      }
-    }
+  section.grey {
+    height: @dimension-desktop-submenu-height;
   }
 }

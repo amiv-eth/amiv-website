@@ -11,31 +11,6 @@ export default class Header {
   }
 
   static view() {
-    let submenu;
-    if (mainNavigation.selectedItem && mainNavigation.selectedItem.submenu) {
-      const menu = mainNavigation.selectedItem.submenu;
-      submenu = m(
-        'section.grey',
-        m(
-          'div',
-          m(
-            'nav.submenu',
-            menu.map((item, index) =>
-              m(
-                'a',
-                {
-                  class: menu.selectedIndex === index ? 'active' : '',
-                  href: item.getLink(),
-                  onupdate: item.onupdate,
-                },
-                i18n(item.label)
-              )
-            )
-          )
-        )
-      );
-    }
-
     return m('header', [
       m(
         'section.blue',
@@ -45,51 +20,92 @@ export default class Header {
             { href: `/${currentLanguage()}/`, onupdate: m.route.link },
             m('img.logo', { src: AmivLogo })
           ),
-          m(
-            'nav',
-            mainNavigation.map((item, index) =>
-              m(
-                'a',
-                {
-                  class: mainNavigation.selectedIndex === index ? 'active' : '',
-                  href: item.getLink(),
-                  onupdate: item.onupdate,
-                },
-                i18n(item.label)
-              )
-            )
-          ),
-          isLoggedIn()
-            ? m('div.profile', [
+          m('nav', [
+            m(
+              'ul.mainmenu',
+              mainNavigation.map((item, index) =>
                 m(
-                  'a',
-                  { href: `/${currentLanguage()}/profile`, onupdate: m.route.link },
-                  i18n('Profile')
-                ),
-                m(
-                  'a',
-                  { href: `/${currentLanguage()}/logout`, onupdate: m.route.link },
-                  i18n('Logout')
-                ),
-              ])
-            : m(
-                'div.profile',
-                m(
-                  'a',
-                  { href: `/${currentLanguage()}/profile`, onupdate: m.route.link },
-                  i18n('Login')
+                  'li',
+                  {
+                    class: mainNavigation.selectedIndex === index ? 'active' : '',
+                  },
+                  [
+                    m(
+                      'a',
+                      {
+                        href: item.getLink(),
+                        onupdate: item.onupdate,
+                      },
+                      i18n(item.label)
+                    ),
+                    item.submenu
+                      ? m('ul.submenu', [
+                          item.submenu.map((subitem, subindex) =>
+                            m(
+                              'li',
+                              { class: item.submenu.selectedIndex === subindex ? 'active' : '' },
+                              m(
+                                'a',
+                                {
+                                  href: subitem.getLink(),
+                                  onupdate: subitem.onupdate,
+                                },
+                                i18n(subitem.label)
+                              )
+                            )
+                          ),
+                        ])
+                      : m(''),
+                  ]
                 )
-              ),
-          m(
-            'div.language-switcher',
-            m(Button, {
-              label: i18n('language_button'),
-              events: { onclick: () => switchLanguage() },
-            })
-          ),
+              )
+            ),
+            m(
+              'ul.profile',
+              isLoggedIn()
+                ? [
+                    m(
+                      'li',
+                      {
+                        class: m.route.get() === `/${currentLanguage()}/profile` ? 'active' : '',
+                      },
+                      m(
+                        'a',
+                        { href: `/${currentLanguage()}/profile`, onupdate: m.route.link },
+                        i18n('Profile')
+                      )
+                    ),
+                    m(
+                      'li',
+                      m(
+                        'a',
+                        { href: `/${currentLanguage()}/logout`, onupdate: m.route.link },
+                        i18n('Logout')
+                      )
+                    ),
+                  ]
+                : [
+                    m(
+                      'li',
+                      m(
+                        'a',
+                        { href: `/${currentLanguage()}/profile`, onupdate: m.route.link },
+                        i18n('Login')
+                      )
+                    ),
+                  ]
+            ),
+            m(
+              'div.language-switcher',
+              m(Button, {
+                label: i18n('language_button'),
+                events: { onclick: () => switchLanguage() },
+              })
+            ),
+          ]),
         ])
       ),
-      submenu,
+      m('section.grey'),
     ]);
   }
 }
