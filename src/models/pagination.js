@@ -49,13 +49,18 @@ export default class PaginationController {
   /**
    * Set a new query to load the configured resource
    *
+   * @return {boolean} `true` - if query has changed; `false` - otherwise
    * @public
    */
   setQuery(query) {
-    this.query = Query.copy(query || {});
+    // ignore if query has not changed
+    if (Query.isEqual(this.query, query)) return false;
+
+    this.query = Query.copy(query);
     this._pages = [];
     this._lastLoadedPage = 0;
     this._totalPages = 1;
+    return true;
   }
 
   /**

@@ -31,17 +31,13 @@ export default class JobofferController extends PaginationController {
   /**
    * Set a new query to load the configured resource
    *
+   * @return {boolean} `true` - if query has changed; `false` - otherwise
    * @public
    */
   async setQuery(query) {
-    const newQuery = JSON.stringify(query || {});
-    const oldQuery = JSON.stringify(this.query);
-
-    // ignore if query has not changed
-    if (newQuery === oldQuery) return false;
-
-    super.setQuery(query);
-    return this.loadPageData(1);
+    if (!super.setQuery(query)) return false;
+    await this.loadPageData(1);
+    return true;
   }
 
   /**
