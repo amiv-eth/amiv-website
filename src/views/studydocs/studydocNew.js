@@ -1,5 +1,5 @@
 import m from 'mithril';
-import * as studydocs from '../../models/studydocs';
+import StudydocsController from '../../models/studydocs';
 import inputGroup from '../form/inputGroup';
 import selectGroup from '../form/selectGroup';
 import { Button } from '../../components';
@@ -16,7 +16,7 @@ export default class studydocNew {
 
   static _getInputSuggestions(field, input, callback) {
     if (input.length > 2) {
-      studydocs.getInputSuggestions(field, input).then(result => {
+      StudydocsController.getInputSuggestions(field, input).then(result => {
         const suggestions = new Set();
         result._items.forEach(item => {
           suggestions.add(item[field]);
@@ -31,7 +31,7 @@ export default class studydocNew {
   async submit() {
     if (this.isValid && !this.isBusy) {
       this.isBusy = true;
-      await studydocs.addNew(this.doc);
+      await StudydocsController.addNew(this.doc);
       this.isBusy = false;
       m.route.set(`/${currentLanguage()}/studydocuments`);
     }
@@ -118,10 +118,10 @@ export default class studydocNew {
           this.doc.type = e.target.value;
         },
         options: [
-          { value: 'exams', text: i18n('studydocs.old_exams') },
-          { value: 'cheat sheets', text: i18n('studydocs.summaries') },
-          { value: 'lecture documents', text: i18n('studydocs.lecture_documents') },
-          { value: 'exercises', text: i18n('studydocs.exercises') },
+          { value: 'exams', text: i18n('exams') },
+          { value: 'cheat sheets', text: i18n('cheat sheets') },
+          { value: 'lecture documents', text: i18n('lecture documents') },
+          { value: 'exercises', text: i18n('exercises') },
         ],
       }),
       m(inputGroup, {
