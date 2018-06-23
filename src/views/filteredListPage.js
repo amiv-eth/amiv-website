@@ -253,6 +253,9 @@ export class FilteredListPage {
       .catch(err => {
         error(err);
         this.dataStore.listState = 'error';
+      })
+      .finally(() => {
+        m.redraw();
       });
   }
 
@@ -329,10 +332,12 @@ export class FilteredListPage {
           this._loadNextPage()
             .then(() => {
               this.dataStore.loadMoreState = 'idle';
-              m.redraw();
             })
             .catch(() => {
               this.dataStore.loadMoreState = 'error';
+            })
+            .finally(() => {
+              m.redraw();
             });
         },
       },

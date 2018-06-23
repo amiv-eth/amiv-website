@@ -94,9 +94,13 @@ export default class EventController {
 
   /** Refresh all event data */
   async refresh() {
-    await this.openRegistrationEvents.loadAll();
-    await this.upcomingEvents.loadAll();
-    await this.pastEvents.loadPageData(1);
+    const jobs = [
+      this.openRegistrationEvents.loadAll(),
+      this.upcomingEvents.loadAll(),
+      this.pastEvents.loadPageData(1),
+    ];
+    await Promise.all(jobs);
+    m.redraw();
   }
 
   /** Get EventListController for all events with open registration window */
