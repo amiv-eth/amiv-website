@@ -4,9 +4,7 @@ import escape from 'html-escape';
 import * as EmailValidator from 'email-validator';
 import { log } from '../../models/log';
 import { isLoggedIn, login } from '../../models/auth';
-import inputGroup from '../form/inputGroup';
-import { Button } from '../../components';
-import JSONSchemaForm from '../form/jsonSchemaForm';
+import { Button, InputGroupForm, JSONSchemaForm } from '../../components';
 import { i18n } from '../../models/language';
 
 class EventSignupForm extends JSONSchemaForm {
@@ -92,7 +90,7 @@ class EventSignupForm extends JSONSchemaForm {
   }
 
   _renderEmailField() {
-    return m(inputGroup, {
+    return m(InputGroupForm, {
       name: 'email',
       title: i18n('email'),
       args: {

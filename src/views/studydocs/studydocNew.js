@@ -1,8 +1,6 @@
 import m from 'mithril';
 import StudydocsController from '../../models/studydocs';
-import inputGroup from '../form/inputGroup';
-import selectGroup from '../form/selectGroup';
-import { Button } from '../../components';
+import { Button, InputGroupForm, SelectGroupForm } from '../../components';
 import { currentLanguage, i18n } from '../../models/language';
 
 export default class studydocNew {
@@ -39,7 +37,7 @@ export default class studydocNew {
 
   view() {
     return m('form', { onsubmit: () => false }, [
-      m(inputGroup, {
+      m(InputGroupForm, {
         name: 'title',
         title: i18n('studydocs.title'),
         oninput: e => {
@@ -48,7 +46,7 @@ export default class studydocNew {
         getSuggestions: (input, callback) =>
           studydocNew._getInputSuggestions('title', input, callback),
       }),
-      m(inputGroup, {
+      m(InputGroupForm, {
         name: 'professor',
         title: i18n('studydocs.professor'),
         oninput: e => {
@@ -57,7 +55,7 @@ export default class studydocNew {
         getSuggestions: (input, callback) =>
           studydocNew._getInputSuggestions('professor', input, callback),
       }),
-      m(inputGroup, {
+      m(InputGroupForm, {
         name: 'author',
         title: i18n('studydocs.author'),
         oninput: e => {
@@ -66,7 +64,7 @@ export default class studydocNew {
         getSuggestions: (input, callback) =>
           studydocNew._getInputSuggestions('author', input, callback),
       }),
-      m(selectGroup, {
+      m(SelectGroupForm, {
         name: 'semester',
         title: i18n('studydocs.semester'),
         type: 'select',
@@ -81,7 +79,7 @@ export default class studydocNew {
           { value: '5+', text: '5+' },
         ],
       }),
-      m(selectGroup, {
+      m(SelectGroupForm, {
         name: 'department',
         title: i18n('studydocs.department'),
         type: 'select',
@@ -90,7 +88,7 @@ export default class studydocNew {
         },
         options: [{ value: 'itet', text: 'itet' }, { value: 'mavt', text: 'mavt' }],
       }),
-      m(inputGroup, {
+      m(InputGroupForm, {
         name: 'lecture',
         title: i18n('studydocs.lecture'),
         oninput: e => {
@@ -99,7 +97,7 @@ export default class studydocNew {
         getSuggestions: (input, callback) =>
           studydocNew._getInputSuggestions('lecture', input, callback),
       }),
-      m(inputGroup, {
+      m(InputGroupForm, {
         name: 'course_year',
         title: i18n('studydocs.course_year'),
         type: 'number',
@@ -110,7 +108,7 @@ export default class studydocNew {
           this.doc.course_year = e.target.value;
         },
       }),
-      m(selectGroup, {
+      m(SelectGroupForm, {
         name: 'type',
         title: i18n('studydocs.type'),
         type: 'select',
@@ -124,7 +122,7 @@ export default class studydocNew {
           { value: 'exercises', text: i18n('exercises') },
         ],
       }),
-      m(inputGroup, {
+      m(InputGroupForm, {
         name: 'files',
         title: i18n('studydocs.files'),
         args: {

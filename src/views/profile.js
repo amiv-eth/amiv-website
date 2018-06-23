@@ -3,8 +3,7 @@ import { apiUrl } from 'config';
 import { log } from '../models/log';
 import * as user from '../models/user';
 import * as groups from '../models/groups';
-import inputGroup from './form/inputGroup';
-import { Button } from '../components';
+import { Button, InputGroupForm } from '../components';
 import { i18n } from '../models/language';
 
 // shows all relevant user information
@@ -143,7 +142,7 @@ class changePasswordForm {
 
     return m('div', [
       m('div', i18n('profile.password_requirements')),
-      m(inputGroup, {
+      m(InputGroupForm, {
         name: 'password_old',
         title: i18n('profile.old_password'),
         type: 'password',
@@ -153,7 +152,7 @@ class changePasswordForm {
           this.validate();
         },
       }),
-      m(inputGroup, {
+      m(InputGroupForm, {
         name: 'password1',
         title: i18n('profile.new_password'),
         type: 'password',
@@ -163,7 +162,7 @@ class changePasswordForm {
           this.validate();
         },
       }),
-      m(inputGroup, {
+      m(InputGroupForm, {
         name: 'password2',
         title: i18n('profile.repeat_password'),
         type: 'password',
@@ -204,7 +203,7 @@ class rfidForm {
     }
 
     return m('div', [
-      m(inputGroup, {
+      m(InputGroupForm, {
         name: 'rfid',
         title: i18n('profile.rfid'),
         value: this.rfid,
@@ -261,7 +260,7 @@ class groupMemberships {
   view() {
     // Searchbar for groups
     const filterForm = m('div', [
-      m(inputGroup, {
+      m(InputGroupForm, {
         name: 'group_search',
         title: i18n('profile.search_groups'),
         oninput: e => {
