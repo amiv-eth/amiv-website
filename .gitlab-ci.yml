@@ -9,7 +9,15 @@ eslint:
   before_script:
    - npm install
   script:
-    - npm run lint
+    - npm run eslint
+
+stylelint:
+  stage: test
+  image: node:latest
+  before_script:
+   - npm install
+  script:
+    - npm run stylelint
 
 build_master:
   stage: build

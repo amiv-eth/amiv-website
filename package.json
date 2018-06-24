@@ -10,7 +10,9 @@
     "start": "webpack -d --watch",
     "build": "webpack -p --config webpack.config.prod.js",
     "server": "webpack-dev-server --hot --inline",
-    "lint": "eslint src/**",
+    "lint": "npm run eslint && npm run stylelint",
+    "eslint": "eslint src/**",
+    "stylelint": "stylelint 'src/**/*.less' --synthax less",
     "format": "prettier --write '**/*.{js,jsx}'"
   },
   "repository": {
@@ -47,6 +49,7 @@
     "eslint-import-resolver-webpack": "^0.9.0",
     "eslint-plugin-import": "^2.8.0",
     "eslint-plugin-prettier": "^2.6.0",
+    "stylelint": "^9.3.0",
     "file-loader": "^1.1.11",
     "less": "^3.0.4",
     "less-loader": "^4.1.0",

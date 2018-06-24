@@ -1,62 +1,57 @@
 #frontpage-container {
-    // Grid general settings
-    display: grid;
-    grid-template-columns: repeat(12, 1fr);
-    grid-gap: 30px;
-    align-content: center;
+  // Grid general settings
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  grid-gap: 30px;
+  align-content: center;
+  text-align: center;
+  border: none;
+
+  h2 {
     text-align: center;
+    color: #00f;
+    grid-column: ~'1 / 13';
+  }
+
+  // Hot sector on the frontpage
+  .hot-row {
+    // Grid of 12 frame colums
+    grid-column: ~'1 / 13';
+    grid-row-start: 2;
+
+    // Grid declaration for sub items, 2 frame columns
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 30px;
     border: none;
 
-    h2 {
-        text-align: center;
-        color: blue;
-        grid-column-start: 1;
-        grid-column-end: 13;
-    }
-    
-    // Hot sector on the frontpage
-    .hot-row {
-        // Grid of 12 frame colums
-        grid-column-start: 1;
-        grid-column-end: 13;
-        grid-row-start: 2;
-
-        // Grid declaration for sub items, 2 frame columns
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        grid-gap: 30px;
-        border: none;
-
-        .hot-first-card {
-            background-color: red;
-            grid-column-start: 1;
-            grid-column-end: 3;
-            grid-row-start: 1;
-            grid-row-end: 3;
-            padding-top: (9 / 16) * 100%;
-            position: relative; 
-            height: 0;
-        }
-
-        .hot-card {
-            grid-column: 3 / 4;
-            position: relative; 
-        }
+    .hot-first-card {
+      background-color: #f00;
+      grid-column: ~'1 / 3';
+      grid-row: ~'1 / 3';
+      padding-top: (9 / 16) * 100%;
+      position: relative;
+      height: 0;
     }
 
-    .frontpage-row{
-        grid-column-start: 1;
-        grid-column-end: 13;
-
-        // Grid declaration for sub items, 3 frame columns
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        grid-gap: 30px;
-
-        .frontpage-row-card{
-            padding-top: (9 / 16) * 100%;
-            position: relative; 
-            height: 0;
-        }
+    .hot-card {
+      grid-column: ~'3 / 4';
+      position: relative;
     }
+  }
+
+  .frontpage-row {
+    grid-column: ~'1 / 13';
+
+    // Grid declaration for sub items, 3 frame columns
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 30px;
+
+    .frontpage-row-card {
+      padding-top: (9 / 16) * 100%;
+      position: relative;
+      height: 0;
+    }
+  }
 }

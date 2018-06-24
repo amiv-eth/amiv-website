@@ -8,13 +8,13 @@
   }
 
   div.content {
-    border: 1px solid black;
-    border-width: 0 1px 0 1px;
+    border: 1px solid #000;
+    border-width: 0 1px;
   }
 
-  div.filter, div.details {
+  div.filter,div.details {
     position: sticky;
-    top: 0px;
+    top: 0;
     padding: 5px;
   }
 
@@ -23,13 +23,13 @@
     grid-template-rows: auto auto auto auto;
     align-content: start;
     grid-gap: 20px;
-  
+
     form {
       display: grid;
       grid-row: auto auto;
     }
 
-    .check, .drop {
+    .check,.drop {
       display: grid;
       grid-row: auto auto;
       grid-gap: 10px;
@@ -38,7 +38,7 @@
 
   .content {
     div.list-item {
-      border-bottom: 1px solid black;
+      border-bottom: 1px solid #000;
       cursor: pointer;
 
       h2 {
