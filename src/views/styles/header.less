@@ -1,5 +1,6 @@
 @import './colors.less';
 @import './dimensions.less';
+@import './mediaquery.less';
 
 .mainmenu-template {
   li {
@@ -31,72 +32,114 @@ header {
   display: block;
   width: 100%;
   font-size: 1.2em;
+  z-index: 1000;
 
-  section.blue > div {
+  section.blue > nav {
     display: grid;
-    grid-template-columns: auto 1fr;
+    grid-area: navigation;
     height: @dimension-desktop-header-height;
-    grid-template-areas: 
-        "logo navigation";
-    
-    .logo {
-      grid-area: logo;
+
+    @media @wide, @desktop {
+      grid-template-columns: auto 1fr auto auto auto;
+      grid-template-areas:
+          'logo main-navigation profile language-switcher';
     }
 
-    nav {
-      display: grid;
-      grid-area: navigation;
-      grid-template-columns: 1fr auto auto auto;
+    @media @tablet {
+      grid-template-columns: auto 1fr auto auto;
       grid-template-areas:
-          "main-navigation profile language-switcher";
+          'logo main-navigation language-switcher';
+    }
 
-      ul {
-        list-style: none;
-        margin: 0;
-        padding: 0;
+    @media @mobile {
+      grid-template-columns: 1fr auto auto;
+      grid-template-areas:
+          'logo language-switcher mobile-menu'
+          'main-navigation main-navigation main-navigation'
+          'profile profile profile';
+      height: auto;
+      max-height: @dimension-mobile-header-height;
+      overflow: hidden;
+
+      &.expanded {
+        max-height: 1000px;
+      }
+    }
+
+    .logo {
+      grid-area: logo;
+      height: @dimension-desktop-header-height;
+
+      @media @mobile {
+        height: @dimension-mobile-header-height;
+      }
+    }
+
+    ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      height: 100%;
+
+      @media @mobile {
+        width: 100%;
+      }
+
+      li {
+        display: inline-block;
         height: 100%;
 
-        li {
-          display: inline-block;
-          height: 100%;
+        @media @mobile {
+          width: 100%;
+          height: auto;
+          text-align: center;
+          border-bottom: 1px solid @color-grey;
         }
       }
+    }
 
-      ul.mainmenu {
-        .mainmenu-template;
-        grid-area: main-navigation;
+    ul.mainmenu {
+      .mainmenu-template;
+      grid-area: main-navigation;
 
-        li {
-          &.active {
-            ul.submenu {
-              display: block;
-              z-index: 5;
-            }
+      li {
+        &.active {
+          background-color: @color-grey;
+          ul.submenu {
+            display: block;
+            visibility: visible;
+            z-index: 1005;
           }
+        }
 
+        @media @wide, @desktop, @tablet {
           &:hover {
             ul.submenu {
-              display: block;
-            }
-          }
-
-          > a {
-            display: block;
-            height: 100%;
-            line-height: @dimension-desktop-header-height;
-            padding: 0 1.3em;
-            color: #fff;
-            text-decoration: none;
-
-            &:hover {
-              color: @color-red;
+              visibility: visible;
             }
           }
         }
-      }
 
-      ul.submenu {
-        display: none;
+        > a {
+          display: block;
+          height: 100%;
+          line-height: @dimension-desktop-header-height;
+          padding: 0 1.3em;
+          color: #fff;
+          text-decoration: none;
+
+          &:hover {
+            color: @color-red;
+          }
+        }
+      }
+    }
+
+    ul.submenu {
+      display: block;
+      visibility: hidden;
+
+      @media @wide, @desktop, @tablet {
         position: absolute;
         top: @dimension-desktop-header-height;
         left: 0;
@@ -104,47 +147,124 @@ header {
         height: @dimension-desktop-submenu-height;
         text-align: center;
         background-color: @color-grey;
-        z-index: 10;
+        z-index: 1010;
+        transition-delay: 150ms;
+        transition-property: visibility;
+      }
+
+      @media @tablet {
+        // NOTE: Adjust this value when profile menu changes!
+        width: calc(100% - 190px);
+      }
+
+      @media @mobile {
+        display: none;
+        background-color: @color-mobile-submenu;
+      }
+
+      li {
+        &.active {
+          background-color: @color-grey;
+
+          @media @mobile {
+            background-color: @color-mobile-submenu;
+          }
+
+          > a {
+            color: @color-red;
+          }
+        }
+
+        &:hover {
+          > a {
+            color: @color-red;
+          }
+        }
+
+        > a {
+          display: block;
+          height: 100%;
+          line-height: @dimension-desktop-submenu-height;
+          padding: 0 0.5em;
+          color: #000;
+          text-decoration: none;
+        }
+      }
+    }
+
+    ul.profile {
+      .mainmenu-template;
+      grid-area: profile;
+
+      @media @tablet {
+        position: absolute;
+        top: @dimension-desktop-header-height;
+        right: 0;
+        padding: 0 .5em;
+        height: @dimension-desktop-submenu-height;
+        z-index: 1015;
+        background-color: #eee;
+
+        // border left
+        &:before {
+          content : "";
+          position: absolute;
+          left: 0;
+          bottom: 25%;
+          height: 50%;
+          width: 1px;
+          border-left: 1px solid @color-dark-blue;
+        }
 
         li {
-          &.active {
-            background-color: @color-grey;
-
-            > a {
-              color: @color-red;
-            }
-          }
-
-          &:hover {
-            > a {
-              color: @color-red;
-            }
-          }
-
           > a {
             display: block;
             height: 100%;
             line-height: @dimension-desktop-submenu-height;
-            padding: 0 0.5em;
+            padding: 0 .5em;
             color: #000;
-            text-decoration: none;
+          }
+
+          &.active > a {
+            color: @color-red;
           }
         }
       }
 
-      ul.profile {
-        .mainmenu-template;
-        grid-area: profile;
+      // @media @mobile {
+      //   display: grid;
+      //   grid-template-columns: .5fr .5fr;
+      //   text-align: center;
+      // }
+    }
+
+    .language-switcher {
+      grid-area: language-switcher;
+      align-self: center;
+    }
+
+    .mobile-menu {
+      grid-area: mobile-menu;
+      display: none;
+      height: @dimension-desktop-header-height;
+
+      img {
+        margin: .5em;
+        height: calc(100% - 1em);
+        cursor: pointer;
       }
 
-      .language-switcher {
-        grid-area: language-switcher;
-        align-self: center;
+      @media @mobile {
+        display: block;
       }
     }
   }
 
   section.grey {
     height: @dimension-desktop-submenu-height;
+
+    @media @mobile {
+      display: none;
+    }
   }
 }
