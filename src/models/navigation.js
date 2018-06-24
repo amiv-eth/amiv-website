@@ -8,7 +8,15 @@ import { currentLanguage } from './language';
  */
 export default class Navigation {
   constructor(items) {
-    this._items = items;
+    this._items = items.map(item => {
+      const newItem = Object.assign({}, item);
+      if (newItem.addLanguagePrefix) {
+        newItem.getLink = addLanguagePrefix => Navigation._getLink(newItem.path, addLanguagePrefix);
+      } else {
+        newItem.getLink = () => newItem.path;
+      }
+      return newItem;
+    });
   }
 
   get items() {
@@ -36,10 +44,17 @@ export default class Navigation {
     this._selectedIndex = this._checkMenuItemSelection();
   }
 
+  static _getLink(path, addLanguagePrefix = true) {
+    if (addLanguagePrefix) {
+      return `/${currentLanguage()}${path}`;
+    }
+    return path;
+  }
+
   _checkMenuItemSelection() {
     let selectedIndex;
     this._items.forEach((item, index) => {
-      const link = item.getLink();
+      const link = item.getLink(false);
       if (
         (link.length <= 4 && m.route.get() === link) ||
         (link.length > 4 && m.route.get().includes(link)) ||
@@ -56,59 +71,70 @@ export default class Navigation {
 export const mainNavigation = new Navigation([
   {
     label: 'AMIV',
-    getLink: () => `/${currentLanguage()}/about`,
+    path: '/about',
+    addLanguagePrefix: true,
     onupdate: m.route.link,
     submenu: new Navigation([
       {
         label: 'About AMIV',
-        getLink: () => `/${currentLanguage()}/about`,
+        path: '/about',
+        addLanguagePrefix: true,
         onupdate: m.route.link,
       },
       {
         label: 'Board',
-        getLink: () => `/${currentLanguage()}/board`,
+        path: '/board',
+        addLanguagePrefix: true,
         onupdate: m.route.link,
       },
       {
         label: 'Commissions',
-        getLink: () => `/${currentLanguage()}/commissions`,
+        path: '/commissions',
+        addLanguagePrefix: true,
         onupdate: m.route.link,
       },
       {
         label: 'Statutes',
-        getLink: () => `/${currentLanguage()}/statutes`,
+        path: '/statutes',
+        addLanguagePrefix: true,
         onupdate: m.route.link,
       },
       {
         label: 'Minutes',
-        getLink: () => `/${currentLanguage()}/minutes`,
+        path: '/minutes',
+        addLanguagePrefix: true,
         onupdate: m.route.link,
       },
     ]),
   },
   {
     label: 'Events',
-    getLink: () => `/${currentLanguage()}/events`,
+    path: '/events',
+    addLanguagePrefix: true,
     onupdate: m.route.link,
   },
   {
     label: 'Studydocuments',
-    getLink: () => `/${currentLanguage()}/studydocuments`,
+    path: '/studydocuments',
+    addLanguagePrefix: true,
     onupdate: m.route.link,
   },
   {
     label: 'Jobs',
-    getLink: () => `/${currentLanguage()}/jobs`,
+    path: '/jobs',
+    addLanguagePrefix: true,
     onupdate: m.route.link,
     submenu: new Navigation([
       {
         label: 'Jobs',
-        getLink: () => `/${currentLanguage()}/jobs`,
+        path: '/jobs',
+        addLanguagePrefix: true,
         onupdate: m.route.link,
       },
       {
         label: 'Companies',
-        getLink: () => `/${currentLanguage()}/companies`,
+        path: '/companies',
+        addLanguagePrefix: true,
         onupdate: m.route.link,
       },
     ]),
