@@ -14,10 +14,10 @@ export default class LegalNotice {
         m('a.email', { href: 'mailto:info@amiv.ethz.ch' }, 'info@amiv.ethz.ch'),
         m('a.phone', { href: 'tel:+41446324245' }, '+41 (0)44 / 632 42 45'),
       ]),
-      m('h2', i18n('legal-notice.disclaimer')),
-      m('p', i18n('legal-notice.disclaimer-text')),
-      m('h2', i18n('legal-notice.copyrights')),
-      m('p', i18n('legal-notice.copyrights-text')),
+      m('h2.disclaimer', i18n('legal-notice.disclaimer')),
+      m('p.disclaimer', i18n('legal-notice.disclaimer-text')),
+      m('h2.copyrights', i18n('legal-notice.copyrights')),
+      m('p.copyrights', i18n('legal-notice.copyrights-text')),
     ]);
   }
 }
