@@ -8,7 +8,7 @@ export default class Footer {
       m(
         'section.blue',
         m('div', [
-          m('span.copyright', '© 1893 - 2018 AMIV an der ETH'),
+          m('span.copyright', `© 1893 - ${new Date().getFullYear()} AMIV an der ETH`),
           m(
             'a',
             {
