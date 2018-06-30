@@ -46,3 +46,4 @@ Needed extensions:
 
 * [ESlint](https://github.com/eslint/eslint)
 * [Prettier](https://github.com/prettier/prettier)
+* [stylelint](https://stylelint.io)
