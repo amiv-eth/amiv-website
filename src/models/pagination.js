@@ -90,6 +90,19 @@ export default class PaginationController {
   }
 
   /**
+   * Get number of loaded items
+   *
+   * @return {int}
+   */
+  get length() {
+    let length = 0;
+    this._pages.forEach(page => {
+      length += page.items.length;
+    });
+    return length;
+  }
+
+  /**
    * Get data of a specific page
    *
    * @param {int} pageNum page number to load the data from

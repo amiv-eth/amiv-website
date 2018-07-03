@@ -98,6 +98,10 @@
         "studydocs.upload": "Dokument(e) hochladen",
         "studydocs.uploading": "lädt hoch...",
         "studydocs.access_denied": "Studienunterlagen sind nur für ETH Studenten verfügbar.",
+        "events.header_open_registration": "Anmeldung offen",
+        "events.header_upcoming": "Bevorstehende Events",
+        "events.header_past": "Vergangene Events",
+        "events.no_upcoming": "Keine bevorstehenden Events.",
         "events.searchfield": "Suchtext eingeben...",
         "events.price": "Preis",
         "events.free": "Gratis",
@@ -137,6 +141,9 @@
         "errors.access_denied.default_reason": "Diese Seite ist nur für eingeloggte Benutzer verfügbar.",
         "errors.not_found.text": "Die gewünschte Seite konnte nicht gefunden werden.",
         "errors.translation_unavailable": "Übersetzung nicht verfügbar.",
-        "errors.shown_language": "Zeige Text in %{shown_language}"
+        "errors.shown_language": "Zeige Text in %{shown_language}",
+        "filtered_list.show_filter": "Filter anzeigen",
+        "filtered_list.hide_filter": "Filter verstecken",
+        "filtered_list.show_list": "Zurück zur Übersicht"
     }
 }

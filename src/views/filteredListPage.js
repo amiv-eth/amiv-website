@@ -2,6 +2,9 @@ import m from 'mithril';
 import { error } from '../models/log';
 import { i18n } from '../models/language';
 import { FilterView } from '../components';
+import filterIcon from '../images/filterList.svg';
+import closeIcon from '../images/close.svg';
+import backIcon from '../images/back.svg';
 
 /**
  * FilteredListDataStore class
@@ -106,6 +109,7 @@ export class FilteredListPage {
     this.name = name;
     this.dataStore = dataStore;
     this.hasDetailsPage = hasDetailsPage;
+    this.mobileViewShowFilter = false;
   }
 
   /**
@@ -282,30 +286,77 @@ export class FilteredListPage {
   }
 
   view() {
+    const classes = ['filtered-list'];
+    if (!this.hasDetailsPage) {
+      classes.push('no-details');
+    }
+    if (this.mobileViewShowFilter) {
+      classes.push('mobile-show-filter');
+    }
+    if (this.detailsItemId) {
+      classes.push('mobile-show-details');
+    }
+    let mobileButton;
+
+    if (this.detailsItemId) {
+      mobileButton = m(
+        'div.action-button.tablet-show',
+        {
+          onclick: () => {
+            const route = m.route.get();
+            m.route.set(route.substring(0, route.lastIndexOf('/')));
+          },
+        },
+        [m('img', { src: backIcon }), m('span', i18n('filtered_list.show_list'))]
+      );
+    } else if (this.mobileViewShowFilter) {
+      mobileButton = m(
+        'div.action-button',
+        {
+          onclick: () => {
+            this.mobileViewShowFilter = false;
+          },
+        },
+        [m('img', { src: closeIcon }), m('span', i18n('filtered_list.hide_filter'))]
+      );
+    } else {
+      mobileButton = m(
+        'div.action-button',
+        {
+          onclick: () => {
+            this.mobileViewShowFilter = true;
+          },
+        },
+        [m('img', { src: filterIcon }), m('span', i18n('filtered_list.show_filter'))]
+      );
+    }
     return m(
       `div#${this.name}-list`,
       {
-        class: !this.hasDetailsPage ? 'no-details' : '',
+        class: classes.join(' '),
       },
       [
-        m('div', this._filterView),
+        mobileButton,
+        m('div.filter-container', this._filterView),
         m('div.content', this._listContainerView),
-        this.hasDetailsPage ? m('div', this._detailsContainerView) : m(''),
+        this.hasDetailsPage ? m('div.details-container', this._detailsContainerView) : m(''),
       ]
     );
   }
 
   get _filterView() {
-    return m(
-      'div.filter',
-      {
-        id: `${this.name}ListFilterView`,
-        style: {
-          top: `${this.dataStore.getPositionTop('filterView')}px`,
+    return [
+      m(
+        'div.filter',
+        {
+          id: `${this.name}ListFilterView`,
+          style: {
+            top: `${this.dataStore.getPositionTop('filterView')}px`,
+          },
         },
-      },
-      m(FilterView, { ...{ values: this.dataStore }, ...this._filterViewAttributes })
-    );
+        m(FilterView, { ...{ values: this.dataStore }, ...this._filterViewAttributes })
+      ),
+    ];
   }
 
   get _listContainerView() {
@@ -363,9 +414,10 @@ export class FilteredListPage {
       return m('');
     }
     return m(
-      'div.details',
+      'div',
       {
         id: `${this.name}ListDetailsView`,
+        class: 'details mobile-hide',
         style: {
           top: `${this.dataStore.getPositionTop('detailsView')}px`,
         },

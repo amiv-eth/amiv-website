@@ -110,25 +110,42 @@ export default class EventList extends FilteredListPage {
   }
 
   get _listView() {
-    return [
-      m(
-        'div.registration',
-        controller.openRegistrationEvents.map(page =>
+    const openRegistrationList = [];
+    const upcomingList = [];
+
+    console.log(controller.openRegistrationEvents.length);
+    console.log(controller.upcomingEvents.length);
+    console.log(controller.pastEvents.length);
+
+    if (controller.openRegistrationEvents.length > 0) {
+      openRegistrationList.push(
+        m('div.list-header', m('h4', i18n('events.header_open_registration'))),
+        ...controller.openRegistrationEvents.map(page =>
           page.map(event => this.constructor._renderEventListItem(event, 'registration'))
         )
-      ),
-      m(
-        'div.upcoming',
-        controller.upcomingEvents.map(page =>
+      );
+    }
+
+    if (controller.upcomingEvents.length > 0) {
+      upcomingList.push(
+        m('div.list-header', m('h4', i18n('events.header_upcoming'))),
+        ...controller.upcomingEvents.map(page =>
           page.map(event => this.constructor._renderEventListItem(event, 'upcoming'))
         )
-      ),
-      m(
-        'div.past',
-        controller.pastEvents.map(page =>
+      );
+    } else if (controller.openRegistrationEvents.length === 0) {
+      upcomingList.push(m('div.list-placeholder', i18n('events.no_upcoming')));
+    }
+
+    return [
+      m('div.registration', openRegistrationList),
+      m('div.upcoming', upcomingList),
+      m('div.past', [
+        m('div.list-header', m('h4', i18n('events.header_past'))),
+        ...controller.pastEvents.map(page =>
           page.map(event => this.constructor._renderEventListItem(event, 'past'))
-        )
-      ),
+        ),
+      ]),
     ];
   }
 
