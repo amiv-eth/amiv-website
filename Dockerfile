@@ -7,6 +7,7 @@ FROM node as build
 # Copy files and install dependencies
 COPY ./ /
 RUN npm install
+RUN npm audit fix
 
 # Build project
 RUN npm run build
