@@ -4,7 +4,7 @@ import AmivLogo from './images/logo.svg';
 import MobileMenuButton from './images/mobileMenuButton.svg';
 import { i18n, currentLanguage, switchLanguage } from '../models/language';
 import { Button } from '../components';
-import { isLoggedIn } from '../models/auth';
+import { isLoggedIn, login } from '../models/auth';
 
 export default class Header {
   oninit() {
@@ -128,7 +128,13 @@ export default class Header {
               'li',
               m(
                 'a',
-                { href: `/${currentLanguage()}/profile`, onupdate: m.route.link },
+                {
+                  href: `/${currentLanguage()}/profile`,
+                  onclick: e => {
+                    login(`/${currentLanguage()}/profile`);
+                    e.preventDefault();
+                  },
+                },
                 i18n('Login')
               )
             ),

@@ -3,8 +3,8 @@ import m from 'mithril';
 import Raven from 'raven-js';
 import { sentryUrl, sentryEnvironment } from 'config';
 import { loadLanguage, currentLanguage, changeLanguage, isLanguageValid } from './models/language';
-import { Error404 } from './views/errors';
-import { login, isLoggedIn, checkLogin } from './models/auth';
+import { Error404, Error401 } from './views/errors';
+import { isLoggedIn, checkLogin } from './models/auth';
 import studydocList from './views/studydocs/studydocList';
 import studydocNew from './views/studydocs/studydocNew';
 import eventList from './views/events/eventList';
@@ -36,17 +36,22 @@ Raven.context(() => {
   m.route.prefix('');
 
   // routes which require authentication
+  // NOTE: You can specify a reason why this restriction is in place. This can also be a
+  //       translation key! It will be printed on the error page. A default text will be shown otherwise.
   const routesAuth = [
     {
       url: '/:language/studydocuments',
+      reason: 'studydocs.access_denied',
       view: () => m(studydocList),
     },
     {
       url: '/:language/studydocuments/new',
+      reason: 'studydocs.access_denied',
       view: () => m(studydocNew),
     },
     {
       url: '/:language/studydocuments/:documentId',
+      reason: 'studydocs.access_denied',
       view: vnode => m(studydocList, vnode.attrs),
     },
     {
@@ -148,16 +153,11 @@ Raven.context(() => {
 
     routesAuth.forEach(r => {
       result[r.url] = {
-        async onmatch(args, requestedPath) {
+        async onmatch(args) {
           await checkLogin();
 
           if (!isLoggedIn()) {
-            login(requestedPath);
-            return {
-              view() {
-                return m(layout, m(''));
-              },
-            };
+            return onmatch(args, { view: () => m(Error401, { reason: r.reason }) });
           }
 
           return onmatch(args, r);
