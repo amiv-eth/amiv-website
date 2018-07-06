@@ -95,8 +95,9 @@
         "studydocs.semester": "Semester",
         "studydocs.course_year": "Course Year",
         "studydocs.files": "Files",
-        "studydocs.upload": "Upload studydocument(s)",
+        "studydocs.upload": "Upload study document(s)",
         "studydocs.uploading": "Uploading...",
+        "studydocs.access_denied": "Study documents are available only for ETH students.",
         "events.searchfield": "Enter search text...",
         "events.price": "Price",
         "events.free": "Free",
@@ -131,7 +132,9 @@
         "companies.employees_Switzerland": "in Switzerland",
         "joboffers.searchfield": "Enter search text...",
         "joboffers.not_found": "Job offer not found",
-        "joboffers.no_selection": "No job offer selected"
-
+        "joboffers.no_selection": "No job offer selected",
+        "errors.title": "Woops, that's an error!",
+        "errors.access_denied.default_reason": "This page is accessible only for authenticated users.",
+        "errors.not_found.text": "The page you are looking for could not be found."
     }
 }

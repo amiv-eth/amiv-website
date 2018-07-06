@@ -97,6 +97,7 @@
         "studydocs.files": "Dateien",
         "studydocs.upload": "Dokument(e) hochladen",
         "studydocs.uploading": "lädt hoch...",
+        "studydocs.access_denied": "Studienunterlagen sind nur für ETH Studenten verfügbar.",
         "events.searchfield": "Suchtext eingeben...",
         "events.price": "Preis",
         "events.free": "Gratis",
@@ -131,6 +132,9 @@
         "companies.employees_Switzerland": "in der Schweiz",
         "joboffers.searchfield": "Suchtext eingeben...",
         "joboffers.not_found": "Jobangebot nicht gefunden",
-        "joboffers.no_selection": "Kein Jobangebot ausgewählt"
+        "joboffers.no_selection": "Kein Jobangebot ausgewählt",
+        "errors.title": "Ups, das ist ein Fehler!",
+        "errors.access_denied.default_reason": "Diese Seite ist nur für eingeloggte Benutzer verfügbar.",
+        "errors.not_found.text": "Die gewünschte Seite konnte nicht gefunden werden."
     }
 }

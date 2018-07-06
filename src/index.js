@@ -165,6 +165,10 @@ Raven.context(() => {
       };
     });
 
+    result['/:language/:404...'] = {
+      view: () => m(layout, m(Error404)),
+    };
+
     m.route(document.body, '/', result);
   }
 

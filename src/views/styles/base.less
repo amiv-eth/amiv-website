@@ -1,6 +1,7 @@
 @import './colors.less';
 @import './dimensions.less';
 @import './mediaquery.less';
+@import './errors.less';
 @import './frontpage.less';
 @import './studydocList.less';
 @import './legalNotice.less';
@@ -64,9 +65,19 @@ main {
   }
 }
 
-#amiv-container {
-  max-width: @dimension-max-content-width;
-  display: block;
-  margin: 0 auto;
-  font-family: Arial, Helvetica, sans-serif;
+.infobox {
+  width: 100%;
+  padding: .5em;
+  background-color: @color-grey;
+  line-height: 1.5em;
+  height: 1.5em;
+
+  img {
+    height: 100%;
+    margin-right: .5em;
+  }
+
+  span {
+    vertical-align: super;
+  }
 }
