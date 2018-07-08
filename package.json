@@ -11,7 +11,7 @@
     "build": "webpack -p --config webpack.config.prod.js",
     "server": "webpack-dev-server --hot --inline",
     "lint": "npm run eslint && npm run stylelint",
-    "eslint": "eslint src/**",
+    "eslint": "eslint src/*.js src/**/*.js",
     "stylelint": "stylelint 'src/**/*.less' --synthax less",
     "format": "prettier --write '**/*.{js,jsx}'"
   },
@@ -51,6 +51,7 @@
     "eslint-plugin-prettier": "^2.6.0",
     "favicons-webpack-plugin": "0.0.9",
     "file-loader": "^1.1.11",
+    "html-webpack-inline-svg-plugin": "^1.2.4",
     "html-webpack-plugin": "^3.2.0",
     "less": "^3.0.4",
     "less-loader": "^4.1.0",

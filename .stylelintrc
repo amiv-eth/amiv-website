@@ -102,7 +102,7 @@
     "selector-list-comma-newline-before": "never-multi-line",
     "selector-list-comma-space-after": "never",
     "selector-list-comma-space-before": "never",
-    "rule-empty-line-before": ["always", {
+    "rule-empty-line-before": ["always-multi-line", {
       "except": ["after-single-line-comment", "first-nested"]
     }],
     "media-feature-colon-space-after": "always",

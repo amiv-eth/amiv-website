@@ -1,5 +1,6 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
+const HtmlWebpackInlineSVGPlugin = require('html-webpack-inline-svg-plugin');
 
 const config = {
   context: `${__dirname}/src`, // `__dirname` is root of project and `src` is source
@@ -158,8 +159,10 @@ const config = {
     new HtmlWebpackPlugin({
       title: 'AMIV an der ETH',
       filename: 'index.html',
+      template: 'index.html',
       hash: true,
     }),
+    new HtmlWebpackInlineSVGPlugin(),
   ],
 };
 
