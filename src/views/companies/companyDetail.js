@@ -1,6 +1,6 @@
 import m from 'mithril';
 import load from '../../models/companies';
-import { data } from './data/companies';
+import { data } from '../../content/companies/data/companies';
 import { Error404 } from '../errors';
 import { i18n } from '../../models/language';
 

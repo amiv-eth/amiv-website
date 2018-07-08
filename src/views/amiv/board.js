@@ -1,7 +1,7 @@
 import m from 'mithril';
 import marked from 'marked';
 import escape from 'html-escape';
-import { data, image as boardImage } from './data/board';
+import { data, image as boardImage } from '../../content/amiv/data/board';
 import { i18n, currentLanguage } from '../../models/language';
 import { TranslationUnavailable } from '../errors';
 

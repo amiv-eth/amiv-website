@@ -34,7 +34,7 @@ const config = {
         ],
       },
       {
-        test: /src\/views\/companies\/markdown\/[a-zA-Z\d-]{3,}\.[a-z]{2}\.md$/, // Check for all .md files in /companies/markdown
+        test: /src\/content\/companies\/markdown\/[a-zA-Z\d-]{3,}\.[a-z]{2}\.md$/, // Check for all .md files in /companies/markdown
         use: [
           {
             loader: 'file-loader', // Writes the generated HTML to a file
@@ -50,7 +50,20 @@ const config = {
         ],
       },
       {
-        test: /src\/views\/amiv\/markdown\/[a-zA-Z\d-]{3,}\.[a-z]{2}\.md$/, // Check for all .md files in /amiv/markdown
+        test: /src\/content\/companies\/logos\/[-_a-zA-Z\d\/]+\.(png|jp(e*)g|svg)$/,
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              name: '[name].[ext]',
+              outputPath: 'companies/',
+              publicPath: 'dist/companies/',
+            },
+          },
+        ],
+      },
+      {
+        test: /src\/content\/amiv\/markdown\/[a-zA-Z\d-]{3,}\.[a-z]{2}\.md$/, // Check for all .md files in /amiv/markdown
         use: [
           {
             loader: 'file-loader', // Writes the generated HTML to a file
@@ -66,7 +79,7 @@ const config = {
         ],
       },
       {
-        test: /src\/views\/amiv\/html\/[a-zA-Z\d-]{3,}\.html$/, // Check for all .html files in /amiv/html
+        test: /src\/content\/amiv\/html\/[a-zA-Z\d-]{3,}\.html$/, // Check for all .html files in /amiv/html
         use: [
           {
             loader: 'file-loader', // Writes the generated HTML to a file
@@ -79,7 +92,7 @@ const config = {
         ],
       },
       {
-        test: /src\/views\/amiv\/images\/[a-zA-Z\d\/]+\.(png|jp(e*)g|svg)$/,
+        test: /src\/content\/amiv\/images\/[a-zA-Z\d\/]+\.(png|jp(e*)g|svg)$/,
         use: [
           {
             loader: 'url-loader',
@@ -93,20 +106,7 @@ const config = {
         ],
       },
       {
-        test: /src\/views\/companies\/logos\/[-_a-zA-Z\d\/]+\.(png|jp(e*)g|svg)$/,
-        use: [
-          {
-            loader: 'file-loader',
-            options: {
-              name: '[name].[ext]',
-              outputPath: 'companies/',
-              publicPath: 'dist/companies/',
-            },
-          },
-        ],
-      },
-      {
-        test: /src\/views\/images\/[a-zA-Z\d\/]+\.(png|jp(e*)g|svg)$/,
+        test: /src\/images\/[a-zA-Z\d\/]+\.(png|jp(e*)g|svg)$/,
         use: [
           {
             loader: 'url-loader',

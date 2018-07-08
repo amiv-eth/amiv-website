@@ -2,7 +2,7 @@ import m from 'mithril';
 import { i18n } from '../models/language';
 import { login } from '../models/auth';
 import { Button } from '../components';
-import translateIcon from './images/translate.svg';
+import translateIcon from '../images/translate.svg';
 
 /**
  * View to show when a visitor does not have the right permissions to see the content.

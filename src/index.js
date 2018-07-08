@@ -22,7 +22,7 @@ import jobOfferList from './views/jobs/jobofferList';
 import companyList from './views/companies/companyList';
 import companyDetail from './views/companies/companyDetail';
 import legalNotice from './views/legalNotice';
-import './views/styles/base.less';
+import './styles/base.less';
 
 Raven.config(sentryUrl, {
   environment: sentryEnvironment,

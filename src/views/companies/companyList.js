@@ -1,7 +1,7 @@
 import m from 'mithril';
 import marked from 'marked';
 import escape from 'html-escape';
-import { data } from './data/companies';
+import { data } from '../../content/companies/data/companies';
 import { i18n, currentLanguage } from '../../models/language';
 
 class CompanyItem {

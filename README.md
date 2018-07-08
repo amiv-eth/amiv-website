@@ -4,6 +4,10 @@ This is the home of the new AMIV website.
 
 ## How to use
 
+### Update Content
+
+[See this guide for further instructions](src/content/)
+
 ### Development
 
 ```bash

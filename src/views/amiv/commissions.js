@@ -1,7 +1,7 @@
 import m from 'mithril';
 import marked from 'marked';
 import escape from 'html-escape';
-import { data } from './data/commissions';
+import { data } from '../../content/amiv/data/commissions';
 import { i18n, currentLanguage } from '../../models/language';
 import { TranslationUnavailable } from '../errors';
 

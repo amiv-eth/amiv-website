@@ -1,5 +1,5 @@
 import m from 'mithril';
-import statutes from './html/statutes.html';
+import statutes from '../../content/amiv/html/statutes.html';
 import { currentLanguage } from '../../models/language';
 import { TranslationUnavailable } from '../errors';
 

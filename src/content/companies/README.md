@@ -1,4 +1,4 @@
-# Company profiles HowTo
+# AMIV Website: How to Company profile
 
 ## Add/update a company profile
 

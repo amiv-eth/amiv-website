@@ -2,7 +2,7 @@ import m from 'mithril';
 import { currentLanguage } from '../../models/language';
 
 // ensure that all markdown files are compiled
-require.context('./markdown');
+require.context('../../content/amiv/markdown');
 
 export default class AMIV {
   oninit() {

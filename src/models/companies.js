@@ -2,7 +2,7 @@ import m from 'mithril';
 import { currentLanguage } from './language';
 
 // ensure that all markdown files are compiled
-require.context('../views/companies/markdown');
+require.context('../content/companies/markdown');
 
 /**
  * Load company profile asynchronously from the compiled html files.

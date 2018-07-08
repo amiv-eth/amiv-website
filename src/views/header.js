@@ -1,7 +1,7 @@
 import m from 'mithril';
 import { mainNavigation } from '../models/navigation';
-import AmivLogo from './images/logo.svg';
-import MobileMenuButton from './images/mobileMenuButton.svg';
+import AmivLogo from '../images/logo.svg';
+import MobileMenuButton from '../images/mobileMenuButton.svg';
 import { i18n, currentLanguage, switchLanguage } from '../models/language';
 import { Button } from '../components';
 import { isLoggedIn, login } from '../models/auth';
