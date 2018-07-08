@@ -32,7 +32,7 @@ Raven.context(() => {
   checkLogin();
   loadLanguage();
 
-  // set to pathname strategy (Please note that the production server needs to support this)
+  // set to pathname strategy (Please note that the server needs to support this)
   m.route.prefix('');
 
   // routes which require authentication

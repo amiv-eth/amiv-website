@@ -1,3 +1,6 @@
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
+
 const config = {
   context: `${__dirname}/src`, // `__dirname` is root of project and `src` is source
 
@@ -5,13 +8,14 @@ const config = {
 
   output: {
     path: `${__dirname}/dist`, // `dist` is the destination
+    publicPath: '/',
     filename: 'bundle.js',
   },
 
   // To run development server
   devServer: {
-    contentBase: __dirname,
-    publicPath: '/dist/',
+    contentBase: `${__dirname}/dist`,
+    publicPath: '/',
     compress: true,
     port: 9000,
     hot: true,
@@ -41,7 +45,7 @@ const config = {
             options: {
               name: '[name].html',
               outputPath: 'companies/',
-              publicPath: 'dist/companies/',
+              publicPath: 'companies/',
             },
           },
           {
@@ -57,7 +61,7 @@ const config = {
             options: {
               name: '[name].[ext]',
               outputPath: 'companies/',
-              publicPath: 'dist/companies/',
+              publicPath: 'companies/',
             },
           },
         ],
@@ -70,7 +74,7 @@ const config = {
             options: {
               name: '[name].html',
               outputPath: 'amiv/',
-              publicPath: 'dist/amiv/',
+              publicPath: 'amiv/',
             },
           },
           {
@@ -86,7 +90,7 @@ const config = {
             options: {
               name: '[name].html',
               outputPath: 'amiv/',
-              publicPath: 'dist/amiv/',
+              publicPath: 'amiv/',
             },
           },
         ],
@@ -100,21 +104,21 @@ const config = {
               limit: 8000, // Convert images < 8kb to base64 strings
               name: '[name].[ext]',
               outputPath: 'amiv/',
-              publicPath: 'dist/amiv/',
+              publicPath: 'amiv/',
             },
           },
         ],
       },
       {
-        test: /src\/images\/[a-zA-Z\d\/]+\.(png|jp(e*)g|svg)$/,
+        test: /src\/images\/[a-zA-Z\d\/\-_]+\.(png|jp(e*)g|svg)$/,
         use: [
           {
             loader: 'url-loader',
             options: {
               limit: 8000, // Convert images < 8kb to base64 strings
               name: '[name].[ext]',
-              outputPath: '/',
-              publicPath: 'dist/',
+              outputPath: 'images',
+              publicPath: 'images/',
             },
           },
         ],
@@ -144,6 +148,19 @@ const config = {
   },
 
   devtool: 'eval-source-map', // Default development sourcemap
+
+  plugins: [
+    new FaviconsWebpackPlugin({
+      logo: './images/logoNoText.svg',
+      prefix: 'favicon/',
+      title: 'AMIV an der ETH',
+    }),
+    new HtmlWebpackPlugin({
+      title: 'AMIV an der ETH',
+      filename: 'index.html',
+      hash: true,
+    }),
+  ],
 };
 
 module.exports = config;

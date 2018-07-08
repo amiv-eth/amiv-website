@@ -13,7 +13,7 @@ require.context('../content/companies/markdown');
 export default function load(companyId) {
   // dynamically load compiled html files
   return m.request({
-    url: `/dist/companies/${companyId}.${currentLanguage()}.html`,
+    url: `/companies/${companyId}.${currentLanguage()}.html`,
     method: 'GET',
     deserialize: response => response,
   });

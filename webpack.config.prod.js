@@ -9,15 +9,15 @@ config.devServer = undefined;
 config.devtool = '';
 
 // Add optimization plugins
-config.plugins = [
+config.plugins.push(
   new CompressionPlugin({
     asset: '[path].gz[query]',
     algorithm: 'gzip',
     test: /\.js$|\.css$|\.html$/,
     threshold: 10240,
     minRatio: 0.8,
-  }),
-];
+  })
+);
 
 // Replace development with production config
 config.resolve.alias.config = `${__dirname}/config.prod.js`;

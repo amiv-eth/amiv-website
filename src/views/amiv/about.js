@@ -18,7 +18,7 @@ export default class AMIV {
     if (this.content) return;
 
     this.content = await m.request({
-      url: `/dist/amiv/about.${currentLanguage()}.html`,
+      url: `/amiv/about.${currentLanguage()}.html`,
       method: 'GET',
       deserialize: response => response,
     });
