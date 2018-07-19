@@ -51,3 +51,8 @@ Needed extensions:
 * [ESlint](https://github.com/eslint/eslint)
 * [Prettier](https://github.com/prettier/prettier)
 * [stylelint](https://stylelint.io)
+
+Needed build tools:
+
+* [npm](https://www.npmjs.com)
+* [pandoc](https://pandoc.org)

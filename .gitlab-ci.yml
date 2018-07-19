@@ -22,6 +22,8 @@ stylelint:
 build_master:
   stage: build
   image: docker:latest
+  variables:
+    GIT_SUBMODULE_STRATEGY: normal
   services:
     - docker:dind
   before_script:
@@ -36,6 +38,8 @@ build_master:
 build:
   stage: build
   image: docker:latest
+  variables:
+    GIT_SUBMODULE_STRATEGY: normal
   services:
     - docker:dind
   script:

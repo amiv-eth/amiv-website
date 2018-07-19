@@ -1,0 +1,3 @@
+[submodule "amiv-statuten"]
+	path = amiv-statuten
+	url = ../amiv-statuten.git
