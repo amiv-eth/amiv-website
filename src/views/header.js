@@ -6,9 +6,12 @@ import { i18n, currentLanguage, switchLanguage } from '../models/language';
 import { Button } from '../components';
 import { isLoggedIn, login } from '../models/auth';
 
+let mobileMenuShowing = false;
+
 export default class Header {
   oninit() {
-    this._mobileMenuShowing = false;
+    this._mobileMenuShowing = mobileMenuShowing;
+    mobileMenuShowing = false;
   }
 
   // eslint-disable-next-line class-methods-use-this
@@ -70,7 +73,15 @@ export default class Header {
               'a',
               {
                 href: item.getLink(),
-                onupdate: item.onupdate,
+                onclick: e => {
+                  if (item.submenu) {
+                    mobileMenuShowing = true;
+                  }
+                  if (item.getLink().startsWith('/')) {
+                    m.route.set(item.getLink());
+                    e.preventDefault();
+                  }
+                },
               },
               i18n(item.label)
             ),
