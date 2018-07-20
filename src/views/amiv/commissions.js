@@ -19,9 +19,9 @@ class Commission {
     const contactInfo = [];
 
     if (commission.image) {
-      image = m('img', { src: `/${commission.image}` });
+      image = m('div.image.ratio-16to9', m('img', { src: `/${commission.image}` }));
     } else {
-      image = m('div.no-image', i18n('no image'));
+      image = m('div.no-image.ratio-16to9', m('span', i18n('no image')));
     }
 
     // collect all avialable contact information
@@ -60,15 +60,23 @@ class Commission {
       description = m('');
     }
 
-    return m('div', [m('h2', commission.name), image, description, contactInfo]);
+    return m('div.commission', [
+      image,
+      m('h2', commission.name),
+      m('div.description', description),
+      m(
+        'div.contact',
+        contactInfo.length > 0 ? contactInfo : m('span', i18n('commissions.no_contact_info'))
+      ),
+    ]);
   }
 }
 
 export default class Commissions {
   static view() {
     return m('div', [
-      m('h1', i18n('Kommissionen')),
-      data.map(commission => m(Commission, { commission })),
+      m('h1.centered', i18n('Commissions')),
+      m('div.commissions', data.map(commission => m(Commission, { commission }))),
     ]);
   }
 }

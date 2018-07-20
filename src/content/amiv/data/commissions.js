@@ -13,7 +13,9 @@ const data = [
   {
     name: 'Bastli',
     description: {
-      de: 'Keine richtige Beschreibung.',
+      de: `Das Elektroniklabor des AMIV von und für ETH Studenten bietet Euch kostenlose Arbeitsplätze und Werkzeuge um eure eigenen Projekte und Ideen umzusetzen.
+
+          Wir sind für alle da und helfen euch gerne. Vorkentnisse werden keine benötigt, Hauptsache ihr habt Spass daran Dinge zu bauen ;)`,
     },
     website: 'https://bastli.ethz.ch',
     email: 'info@bastli.ethz.ch',

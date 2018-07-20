@@ -44,7 +44,6 @@
         "honorary_member": "honorary member",
         "no image": "No image available.",
         "no description": "No description available.",
-        "translation unavailable": "Translation not available. Showing text in %{shown_language}",
         "email": "Email",
         "email_invalid": "Not a valid email address",
         "search": "Search",
@@ -57,6 +56,7 @@
         "legal-notice.copyrights": "Copyrights",
         "legal-notice.copyrights-text": "The copyright and any other rights relating to texts, illustrations, photos or any other files on the website belong exclusively «AMIV an der ETH» or mentioned owners. Any reproduction requires the written permission of the copyright holder , which must be obtained in advance.",
         "Switzerland": "Switzerland",
+        "commissions.no_contact_info": "No contact information.",
         "profile.free_beer": "You are allowed to get free beer!",
         "profile.set_rfid": "Set your RFID below to get free beer!",
         "profile.membership": "Membership",
@@ -135,6 +135,8 @@
         "joboffers.no_selection": "No job offer selected",
         "errors.title": "Woops, that's an error!",
         "errors.access_denied.default_reason": "This page is accessible only for authenticated users.",
-        "errors.not_found.text": "The page you are looking for could not be found."
+        "errors.not_found.text": "The page you are looking for could not be found.",
+        "errors.translation_unavailable": "Translation not available.",
+        "errors.shown_language": "Showing text in %{shown_language}"
     }
 }

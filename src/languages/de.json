@@ -44,7 +44,6 @@
         "honorary_member": "Ehrenmitglied",
         "no image": "Kein Bild verfügbar.",
         "no description": "Keine Beschreibung verfügbar.",
-        "translation unavailable": "Übersetzung nicht verfügbar. Zeige text in %{shown_language}",
         "email": "Email",
         "email_invalid": "Ungültige Email-Adresse",
         "search": "Suchen",
@@ -57,6 +56,7 @@
         "legal-notice.copyrights": "Urheberrechte",
         "legal-notice.copyrights-text": "Die Urheber- und alle anderen Rechte an Inhalten, Bildern, Fotos oder anderen Dateien auf der Website gehören ausschliesslich dem «AMIV an der ETH» oder den speziell genannten Rechtsinhabern. Für die Reproduktion jeglicher Elemente ist die schriftliche Zustimmung der Urheberrechtsträger im Voraus einzuholen.",
         "Switzerland": "Schweiz",
+        "commissions.no_contact_info": "Keine Kontaktinformationen",
         "profile.free_beer": "Du bist berechtigt, gratis Bier zu beziehen!",
         "profile.set_rfid": "Setze deine RFID unten, um gratis Bier zu erhalten!",
         "profile.membership": "Mitgliedschaft",
@@ -135,6 +135,8 @@
         "joboffers.no_selection": "Kein Jobangebot ausgewählt",
         "errors.title": "Ups, das ist ein Fehler!",
         "errors.access_denied.default_reason": "Diese Seite ist nur für eingeloggte Benutzer verfügbar.",
-        "errors.not_found.text": "Die gewünschte Seite konnte nicht gefunden werden."
+        "errors.not_found.text": "Die gewünschte Seite konnte nicht gefunden werden.",
+        "errors.translation_unavailable": "Übersetzung nicht verfügbar.",
+        "errors.shown_language": "Zeige Text in %{shown_language}"
     }
 }

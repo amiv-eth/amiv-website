@@ -61,9 +61,11 @@ export class TranslationUnavailable {
       },
       [
         m('img', { src: translateIcon }),
+        m('span', i18n('errors.translation_unavailable')),
+        ' ',
         m(
           'span',
-          i18n('translation unavailable', {
+          i18n('errors.shown_language', {
             shown_language: i18n(`language.${vnode.attrs.shown_language}`),
           })
         ),
