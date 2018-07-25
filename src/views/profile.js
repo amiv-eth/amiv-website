@@ -1,9 +1,10 @@
 import m from 'mithril';
 import { apiUrl } from 'config';
-import { log } from '../models/log';
+import { error } from '../models/log';
 import * as user from '../models/user';
 import * as groups from '../models/groups';
-import { Button, InputGroupForm } from '../components';
+// import { Button, InputGroupForm } from '../components';
+import { Button, TextField } from '../components';
 import { i18n } from '../models/language';
 
 // shows all relevant user information
@@ -35,6 +36,9 @@ class changePasswordForm {
     this.password_old = '';
     this.password1 = '';
     this.password2 = '';
+    this.password_old_valid = true;
+    this.password1_valid = false;
+    this.password2_valid = true;
   }
 
   static _createSession(password) {
@@ -73,34 +77,16 @@ class changePasswordForm {
     } catch ({ _error: { code } }) {
       // TODO: show error message
       if (code === 401) {
-        log('Authentication failed.');
+        error('Authentication failed.');
       } else {
-        log(`An error occurred: ${code}`);
+        error(`An error occurred: ${code}`);
       }
+      this.password_old_valid = false;
     }
 
     this.busy = false;
     this.password_old = '';
     this.password2 = '';
-  }
-
-  // Password policy:
-  // * Minimum length: 8
-  // * Maximum length: 100
-  // * Contains capital/lower letters
-  // * Contains numbers
-  // * Does not contain any whitespace characters
-  validate() {
-    this.valid =
-      this.password_old.length > 0 &&
-      this.password1.length >= 8 &&
-      this.password1.length <= 100 &&
-      !this.password1.match(/\s/g) &&
-      this.password1.match(/[A-Z]/g) &&
-      this.password1.match(/[a-z]/g) &&
-      this.password1.match(/\d/g) &&
-      this.password1.match(/\W+/g);
-    this.equal = this.password1 === this.password2;
   }
 
   view() {
@@ -109,7 +95,7 @@ class changePasswordForm {
     const buttonArgs = {};
     let buttons;
 
-    if (!this.valid || !this.equal || this.busy) {
+    if (!this.password_valid || !this.password_old_valid || !this.password_equal || this.busy) {
       buttonArgs.disabled = true;
     }
 
@@ -142,34 +128,52 @@ class changePasswordForm {
 
     return m('div', [
       m('div', i18n('profile.password_requirements')),
-      m(InputGroupForm, {
+      m(TextField, {
         name: 'password_old',
-        title: i18n('profile.old_password'),
+        label: i18n('profile.old_password'),
+        floatingLabel: true,
+        error: i18n('profile.old_password_error'),
         type: 'password',
+        valid: this.password_old_valid,
         value: this.password_old,
-        oninput: e => {
-          this.password_old = e.target.value;
-          this.validate();
+        events: {
+          oninput: e => {
+            this.password_old = e.target.value;
+            this.password_old_valid = this.password_old.length > 0;
+          },
         },
       }),
-      m(InputGroupForm, {
+      m(TextField, {
         name: 'password1',
-        title: i18n('profile.new_password'),
+        label: i18n('profile.new_password'),
+        floatingLabel: true,
+        focusHelp: true,
+        help: i18n('profile.password_requirements'),
         type: 'password',
+        valid: this.password_valid,
         value: this.password1,
-        oninput: e => {
-          this.password1 = e.target.value;
-          this.validate();
+        events: {
+          oninput: e => {
+            this.password1 = e.target.value;
+            this.password_valid = this.password1.length >= 8 && this.password1.length <= 100;
+            this.password_equal = this.password1 === this.password2;
+          },
         },
       }),
-      m(InputGroupForm, {
+      m(TextField, {
         name: 'password2',
-        title: i18n('profile.repeat_password'),
+        label: i18n('profile.repeat_password'),
+        floatingLabel: true,
+        focusHelp: true,
+        error: i18n('profile.passwords_not_equal'),
         type: 'password',
+        valid: this.password_equal,
         value: this.password2,
-        oninput: e => {
-          this.password2 = e.target.value;
-          this.validate();
+        events: {
+          oninput: e => {
+            this.password2 = e.target.value;
+            this.password_equal = this.password1 === this.password2;
+          },
         },
       }),
       buttons,
@@ -198,18 +202,23 @@ class rfidForm {
     const buttonArgs = { events: { onclick: () => this.submit() } };
 
     if (this.rfid === undefined) this.rfid = user.get().rfid;
-    if (!this.valid || this.busy) {
+    if (!this.valid || this.rfid === user.get().rfid || this.busy) {
       buttonArgs.disabled = true;
     }
 
     return m('div', [
-      m(InputGroupForm, {
+      m(TextField, {
         name: 'rfid',
-        title: i18n('profile.rfid'),
+        label: i18n('profile.rfid'),
+        floatingLabel: true,
+        error: i18n('profile.rfid_error'),
+        valid: this.valid,
         value: this.rfid,
-        oninput: e => {
-          this.rfid = e.target.value;
-          this.valid = /^\d{6}$/g.test(this.rfid) && this.rfid !== user.get().rfid;
+        events: {
+          oninput: e => {
+            this.rfid = e.target.value;
+            this.valid = /^\d{6}$/g.test(this.rfid);
+          },
         },
       }),
       m(Button, { ...buttonArgs, label: 'save' }),
@@ -260,14 +269,16 @@ class groupMemberships {
   view() {
     // Searchbar for groups
     const filterForm = m('div', [
-      m(InputGroupForm, {
+      m(TextField, {
         name: 'group_search',
-        title: i18n('profile.search_groups'),
-        oninput: e => {
-          this.query = e.target.value;
-          if (this.query.length > 0) {
-            this.isValid = true;
-          }
+        label: i18n('profile.search_groups'),
+        events: {
+          oninput: e => {
+            this.query = e.target.value;
+            if (this.query.length > 0) {
+              this.isValid = true;
+            }
+          },
         },
       }),
     ]);

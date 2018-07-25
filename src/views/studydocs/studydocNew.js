@@ -1,13 +1,13 @@
 import m from 'mithril';
 import StudydocsController from '../../models/studydocs';
-import { Button, InputGroupForm, SelectGroupForm } from '../../components';
+import { Button, InputGroupForm, Dropdown } from '../../components';
 import { currentLanguage, i18n } from '../../models/language';
 
 export default class studydocNew {
   oninit() {
     // We need to set the default values because they get only added to the request
     // 'onchange' and thus do not appear in a request if the user does not change them
-    this.doc = { semester: 1, type: 'exams', department: 'itet' };
+    this.doc = { semester: null, type: null, department: null };
     this.isValid = false;
     this.isBusy = false;
   }
@@ -24,6 +24,11 @@ export default class studydocNew {
     } else {
       callback([]);
     }
+  }
+
+  validate() {
+    console.log(this.doc.type);
+    this.isValid = this.doc.files && this.doc.files.length > 0 && this.doc.type !== null;
   }
 
   async submit() {
@@ -64,29 +69,42 @@ export default class studydocNew {
         getSuggestions: (input, callback) =>
           studydocNew._getInputSuggestions('author', input, callback),
       }),
-      m(SelectGroupForm, {
+      m(Dropdown, {
         name: 'semester',
-        title: i18n('studydocs.semester'),
-        type: 'select',
         onchange: e => {
-          this.doc.semester = e.target.value;
+          const { value } = e.target;
+          if (value === '') {
+            this.doc.semester = null;
+          } else {
+            this.doc.semester = value;
+          }
         },
-        options: [
-          { value: '1', text: '1' },
-          { value: '2', text: '2' },
-          { value: '3', text: '3' },
-          { value: '4', text: '4' },
-          { value: '5+', text: '5+' },
+        selected: null,
+        data: [
+          { value: '', label: i18n('studydocs.no_semester') },
+          { value: '1', label: '1' },
+          { value: '2', label: '2' },
+          { value: '3', label: '3' },
+          { value: '4', label: '4' },
+          { value: '5+', label: '5+' },
         ],
       }),
-      m(SelectGroupForm, {
+      m(Dropdown, {
         name: 'department',
-        title: i18n('studydocs.department'),
-        type: 'select',
         onchange: e => {
-          this.doc.department = e.target.value;
+          const { value } = e.target;
+          if (value === '') {
+            this.doc.department = null;
+          } else {
+            this.doc.department = value;
+          }
         },
-        options: [{ value: 'itet', text: 'itet' }, { value: 'mavt', text: 'mavt' }],
+        selected: null,
+        data: [
+          { value: '', label: i18n('studydocs.no_department') },
+          { value: 'itet', label: 'ITET' },
+          { value: 'mavt', label: 'MAVT' },
+        ],
       }),
       m(InputGroupForm, {
         name: 'lecture',
@@ -108,18 +126,24 @@ export default class studydocNew {
           this.doc.course_year = e.target.value;
         },
       }),
-      m(SelectGroupForm, {
+      m(Dropdown, {
         name: 'type',
-        title: i18n('studydocs.type'),
-        type: 'select',
         onchange: e => {
-          this.doc.type = e.target.value;
+          const { value } = e.target;
+          if (value === '') {
+            this.doc.type = null;
+          } else {
+            this.doc.type = value;
+          }
+          this.validate();
         },
-        options: [
-          { value: 'exams', text: i18n('exams') },
-          { value: 'cheat sheets', text: i18n('cheat sheets') },
-          { value: 'lecture documents', text: i18n('lecture documents') },
-          { value: 'exercises', text: i18n('exercises') },
+        selected: '',
+        data: [
+          { value: '', label: `${i18n('studydocs.type')}*`, disabled: true },
+          { value: 'exams', label: i18n('exams') },
+          { value: 'cheat sheets', label: i18n('cheat sheets') },
+          { value: 'lecture documents', label: i18n('lecture documents') },
+          { value: 'exercises', label: i18n('exercises') },
         ],
       }),
       m(InputGroupForm, {
@@ -131,11 +155,7 @@ export default class studydocNew {
         },
         onchange: e => {
           this.doc.files = e.target.files;
-          if (this.doc.files && this.doc.files.length > 0) {
-            this.isValid = true;
-          } else {
-            this.isValid = false;
-          }
+          this.validate();
         },
       }),
       m(Button, {
