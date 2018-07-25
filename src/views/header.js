@@ -39,6 +39,7 @@ export default class Header {
             m(
               'div.language-switcher',
               m(Button, {
+                className: 'red-button',
                 label: i18n('language_button'),
                 events: { onclick: () => switchLanguage() },
               })

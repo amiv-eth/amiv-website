@@ -1,4 +1,5 @@
 import m from 'mithril';
+import './Dropdown.less';
 
 /**
  * Generic Dropdown component
@@ -14,7 +15,7 @@ import m from 'mithril';
  *     m(DropdownComponent, {
  *         data: [
  *             { label: 'Label 1', value: 'value1' },
- *             { label: 'Label 2', value: 'value2' },
+ *             { label: 'Label 2', value: 'value2', disabled: true },
  *         ],
  *         selected: this.values[field.key],
  *         onchange: event => {
@@ -31,17 +32,26 @@ export default class DropdownComponent {
 
   view(vnode) {
     return m(
-      'select',
+      'select.dropdown',
       { onchange: m.withAttr('value', this.selectedId), ...this.defaultProps, ...vnode.attrs },
-      [
-        vnode.attrs.data.map(item =>
-          m(
-            'option',
-            { value: item.value, selected: vnode.attrs.selected === item.value },
-            item.label
-          )
-        ),
-      ]
+      // vnode.attrs.placeholder
+      // ? m(
+      //     'option',
+      //     { value: '', selected: !vnode.attrs.selected,  },
+      //     vnode.attrs.placeholder
+      //   )
+      // : null,
+      vnode.attrs.data.map(item =>
+        m(
+          'option',
+          {
+            value: item.value,
+            selected: vnode.attrs.selected === item.value,
+            disabled: item.disabled ? 'disabled' : null,
+          },
+          item.label
+        )
+      )
     );
   }
 }

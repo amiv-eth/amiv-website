@@ -51,7 +51,7 @@ export default class JobofferList extends FilteredListPage {
         {
           type: 'button',
           label: i18n('reset'),
-          className: 'flat-button',
+          className: 'red-button',
           events: {
             onclick: 'reset',
           },

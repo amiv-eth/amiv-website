@@ -145,6 +145,7 @@ const config = {
   resolve: {
     alias: {
       config: `${__dirname}/config.js`,
+      'polythene-theme': `${__dirname}/theme.js`, // when config is in the project root
     },
   },
 
