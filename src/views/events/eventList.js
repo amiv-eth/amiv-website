@@ -35,7 +35,7 @@ export default class EventList extends FilteredListPage {
     return {
       fields: [
         {
-          type: 'text',
+          type: 'search',
           key: 'title',
           label: i18n('events.searchfield'),
           min_length: 3,

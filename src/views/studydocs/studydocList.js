@@ -72,7 +72,7 @@ export default class StudydocList extends FilteredListPage {
     return {
       fields: [
         {
-          type: 'text',
+          type: 'search',
           key: 'title',
           label: i18n('studydocs.searchfield'),
           min_length: 3,

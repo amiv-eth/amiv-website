@@ -36,7 +36,7 @@ export default class JobofferList extends FilteredListPage {
     return {
       fields: [
         {
-          type: 'text',
+          type: 'search',
           key: 'title',
           label: i18n('joboffers.searchfield'),
           min_length: 3,
