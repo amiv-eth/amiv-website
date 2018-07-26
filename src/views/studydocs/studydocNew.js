@@ -1,6 +1,6 @@
 import m from 'mithril';
 import StudydocsController from '../../models/studydocs';
-import { Button, InputGroupForm, SelectGroupForm } from '../../components';
+import { Button, TextField, InputGroupForm, SelectGroupForm } from '../../components';
 import { currentLanguage, i18n } from '../../models/language';
 
 export default class studydocNew {
@@ -12,18 +12,16 @@ export default class studydocNew {
     this.isBusy = false;
   }
 
-  static _getInputSuggestions(field, input, callback) {
+  static async _getInputSuggestions(field, input) {
     if (input.length > 2) {
-      StudydocsController.getInputSuggestions(field, input).then(result => {
-        const suggestions = new Set();
-        result._items.forEach(item => {
-          suggestions.add(item[field]);
-        });
-        callback(Array.from(suggestions));
+      const result = await StudydocsController.getInputSuggestions(field, input);
+      const suggestions = new Set();
+      result._items.forEach(item => {
+        suggestions.add(item[field]);
       });
-    } else {
-      callback([]);
+      return Array.from(suggestions);
     }
+    return [];
   }
 
   async submit() {
@@ -37,32 +35,38 @@ export default class studydocNew {
 
   view() {
     return m('form', { onsubmit: () => false }, [
-      m(InputGroupForm, {
+      m(TextField, {
         name: 'title',
-        title: i18n('studydocs.title'),
-        oninput: e => {
-          this.doc.title = e.target.value;
+        label: i18n('studydocs.title'),
+        floatingLabel: true,
+        events: {
+          oninput: e => {
+            this.doc.title = e.target.value;
+          },
         },
-        getSuggestions: (input, callback) =>
-          studydocNew._getInputSuggestions('title', input, callback),
+        onAutocomplete: value => studydocNew._getInputSuggestions('title', value),
       }),
-      m(InputGroupForm, {
+      m(TextField, {
         name: 'professor',
-        title: i18n('studydocs.professor'),
-        oninput: e => {
-          this.doc.professor = e.target.value;
+        label: i18n('studydocs.professor'),
+        floatingLabel: true,
+        events: {
+          oninput: e => {
+            this.doc.professor = e.target.value;
+          },
         },
-        getSuggestions: (input, callback) =>
-          studydocNew._getInputSuggestions('professor', input, callback),
+        onAutocomplete: value => studydocNew._getInputSuggestions('professor', value),
       }),
-      m(InputGroupForm, {
+      m(TextField, {
         name: 'author',
-        title: i18n('studydocs.author'),
-        oninput: e => {
-          this.doc.author = e.target.value;
+        label: i18n('studydocs.author'),
+        floatingLabel: true,
+        events: {
+          oninput: e => {
+            this.doc.author = e.target.value;
+          },
         },
-        getSuggestions: (input, callback) =>
-          studydocNew._getInputSuggestions('author', input, callback),
+        onAutocomplete: value => studydocNew._getInputSuggestions('author', value),
       }),
       m(SelectGroupForm, {
         name: 'semester',
@@ -88,24 +92,27 @@ export default class studydocNew {
         },
         options: [{ value: 'itet', text: 'itet' }, { value: 'mavt', text: 'mavt' }],
       }),
-      m(InputGroupForm, {
+      m(TextField, {
         name: 'lecture',
-        title: i18n('studydocs.lecture'),
-        oninput: e => {
-          this.doc.lecture = e.target.value;
+        label: i18n('studydocs.lecture'),
+        floatingLabel: true,
+        events: {
+          oninput: e => {
+            this.doc.lecture = e.target.value;
+          },
         },
-        getSuggestions: (input, callback) =>
-          studydocNew._getInputSuggestions('lecture', input, callback),
+        onAutocomplete: value => studydocNew._getInputSuggestions('lecture', value),
       }),
-      m(InputGroupForm, {
+      m(TextField, {
         name: 'course_year',
-        title: i18n('studydocs.course_year'),
+        label: i18n('studydocs.course_year'),
+        floatingLabel: true,
         type: 'number',
-        args: {
-          placeholder: new Date().getFullYear(),
-        },
-        oninput: e => {
-          this.doc.course_year = e.target.value;
+        placeholder: new Date().getFullYear(),
+        events: {
+          oninput: e => {
+            this.doc.course_year = e.target.value;
+          },
         },
       }),
       m(SelectGroupForm, {
