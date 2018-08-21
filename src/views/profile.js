@@ -1,7 +1,7 @@
 import m from 'mithril';
 import { apiUrl } from 'config';
 import { log } from '../models/log';
-import * as user from '../models/user';
+import User from '../models/user';
 import * as groups from '../models/groups';
 import { Button, InputGroupForm } from '../components';
 import { i18n } from '../models/language';
@@ -11,8 +11,8 @@ class showUserInfo {
   static view() {
     let freeBeerNotice;
 
-    if (user.get().membership !== 'none') {
-      if (user.get().rfid !== undefined && user.get().rfid.length === 6) {
+    if (User.get().membership !== 'none') {
+      if (User.get().rfid !== undefined && User.get().rfid.length === 6) {
         freeBeerNotice = m('div', i18n('profile.free_beer'));
       } else {
         freeBeerNotice = m('div', i18n('profile.set_rfid'));
@@ -22,7 +22,7 @@ class showUserInfo {
     return m('div', [
       m('div', [
         m('span', `${i18n('profile.membership')}: `),
-        m('span', i18n(`${user.get().membership}_member`)),
+        m('span', i18n(`${User.get().membership}_member`)),
       ]),
       freeBeerNotice,
     ]);
@@ -38,7 +38,7 @@ class changePasswordForm {
   }
 
   static _createSession(password) {
-    const userData = user.get();
+    const userData = User.get();
     const username = userData.nethz || userData.email;
 
     return m.request({
@@ -66,7 +66,7 @@ class changePasswordForm {
     try {
       const session = await changePasswordForm._createSession(this.password_old);
 
-      await user.update({ password }, session.token);
+      await User.update({ password }, session.token);
       await changePasswordForm._deleteSession(session);
 
       this.password1 = '';
@@ -104,7 +104,7 @@ class changePasswordForm {
   }
 
   view() {
-    if (user.get() === undefined) return m();
+    if (User.get() === undefined) return m();
 
     const buttonArgs = {};
     let buttons;
@@ -113,7 +113,7 @@ class changePasswordForm {
       buttonArgs.disabled = true;
     }
 
-    if (user.get().password_set) {
+    if (User.get().password_set) {
       buttons = [
         m(Button, {
           ...buttonArgs,
@@ -182,8 +182,7 @@ class rfidForm {
   submit() {
     const savedRfid = this.rfid;
     this.busy = true;
-    user
-      .update({ rfid: savedRfid })
+    User.update({ rfid: savedRfid })
       .then(() => {
         this.rfid = savedRfid;
         this.busy = false;
@@ -197,7 +196,7 @@ class rfidForm {
   view() {
     const buttonArgs = { events: { onclick: () => this.submit() } };
 
-    if (this.rfid === undefined) this.rfid = user.get().rfid;
+    if (this.rfid === undefined) this.rfid = User.get().rfid;
     if (!this.valid || this.busy) {
       buttonArgs.disabled = true;
     }
@@ -209,7 +208,7 @@ class rfidForm {
         value: this.rfid,
         oninput: e => {
           this.rfid = e.target.value;
-          this.valid = /^\d{6}$/g.test(this.rfid) && this.rfid !== user.get().rfid;
+          this.valid = /^\d{6}$/g.test(this.rfid) && this.rfid !== User.get().rfid;
         },
       }),
       m(Button, { ...buttonArgs, label: 'save' }),
@@ -221,8 +220,7 @@ class rfidForm {
 class announceSubscriptionForm {
   submit() {
     this.busy = true;
-    user
-      .update({ send_newsletter: !user.get().send_newsletter })
+    User.update({ send_newsletter: !User.get().send_newsletter })
       .then(() => {
         this.busy = false;
       })
@@ -240,7 +238,7 @@ class announceSubscriptionForm {
 
     return m(Button, {
       ...buttonArgs,
-      label: user.get().send_newsletter
+      label: User.get().send_newsletter
         ? i18n('profile.newsletter_unsubscribe')
         : i18n('profile.newsletter_subscribe'),
     });
@@ -386,7 +384,7 @@ class groupMemberships {
 // shows all submodules defined above
 export default class profile {
   static oninit() {
-    user.load();
+    User.load();
   }
 
   static view() {
