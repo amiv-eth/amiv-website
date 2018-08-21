@@ -1,5 +1,4 @@
 import m from 'mithril';
-import User from '../../models/user';
 import { i18n } from '../../models/language';
 
 /**
@@ -8,11 +7,16 @@ import { i18n } from '../../models/language';
  * Shows relevant information about the authenticated user.
  */
 export default class UserInfo {
-  static view() {
+  oninit(vnode) {
+    this.userController = vnode.attrs.userController;
+  }
+
+  view() {
+    const user = this.userController.get();
     let freeBeerNotice;
 
-    if (User.get().membership !== 'none') {
-      if (User.get().rfid !== undefined && User.get().rfid.length === 6) {
+    if (user.membership !== 'none') {
+      if (user.rfid !== undefined && user.rfid.length === 6) {
         freeBeerNotice = m('div', i18n('profile.free_beer'));
       } else {
         freeBeerNotice = m('div', i18n('profile.set_rfid'));
@@ -22,7 +26,7 @@ export default class UserInfo {
     return m('div', [
       m('div', [
         m('span', `${i18n('profile.membership')}: `),
-        m('span', i18n(`${User.get().membership}_member`)),
+        m('span', i18n(`${user.membership}_member`)),
       ]),
       freeBeerNotice,
     ]);

@@ -1,6 +1,5 @@
 import m from 'mithril';
 import { apiUrl } from 'config';
-import User from '../../models/user';
 import { log } from '../../models/log';
 import { i18n } from '../../models/language';
 import { Button, InputGroupForm } from '../../components';
@@ -11,15 +10,15 @@ import { Button, InputGroupForm } from '../../components';
  * provides a form to change the users password (or set one if authenticated by LDAP)
  */
 export default class ChangePasswordForm {
-  oninit() {
+  oninit(vnode) {
+    this.userController = vnode.attrs.userController;
     this.password_old = '';
     this.password1 = '';
     this.password2 = '';
   }
 
-  static _createSession(password) {
-    const userData = User.get();
-    const username = userData.nethz || userData.email;
+  static _createSession(user, password) {
+    const username = user.nethz || user.email;
 
     return m.request({
       method: 'POST',
@@ -44,9 +43,12 @@ export default class ChangePasswordForm {
     this.busy = true;
 
     try {
-      const session = await this.constructor._createSession(this.password_old);
+      const session = await this.constructor._createSession(
+        this.userController.get(),
+        this.password_old
+      );
 
-      await User.update({ password }, session.token);
+      await this.userController.update({ password }, session.token);
       await this.constructor._deleteSession(session);
 
       this.password1 = '';
@@ -74,7 +76,8 @@ export default class ChangePasswordForm {
   }
 
   view() {
-    if (User.get() === undefined) return m();
+    const user = this.userController.get();
+    if (user === undefined) return m();
 
     const buttonArgs = {};
     let buttons;
@@ -83,7 +86,7 @@ export default class ChangePasswordForm {
       buttonArgs.disabled = true;
     }
 
-    if (User.get().password_set) {
+    if (user.password_set) {
       buttons = [
         m(Button, {
           ...buttonArgs,

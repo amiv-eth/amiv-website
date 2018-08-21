@@ -1,14 +1,18 @@
 import m from 'mithril';
-import User from '../../models/user';
 import { i18n } from '../../models/language';
 import { Button, InputGroupForm } from '../../components';
 
 // provides a form to change the users rfid
 export default class RfidForm {
+  oninit(vnode) {
+    this.userController = vnode.attrs.userController;
+  }
+
   submit() {
     const savedRfid = this.rfid;
     this.busy = true;
-    User.update({ rfid: savedRfid })
+    this.userController
+      .update({ rfid: savedRfid })
       .then(() => {
         this.rfid = savedRfid;
         this.busy = false;
@@ -21,8 +25,9 @@ export default class RfidForm {
 
   view() {
     const buttonArgs = { events: { onclick: () => this.submit() } };
+    const user = this.userController.get();
 
-    if (this.rfid === undefined) this.rfid = User.get().rfid;
+    if (this.rfid === undefined) this.rfid = user.rfid;
     if (!this.valid || this.busy) {
       buttonArgs.disabled = true;
     }
@@ -34,7 +39,7 @@ export default class RfidForm {
         value: this.rfid,
         oninput: e => {
           this.rfid = e.target.value;
-          this.valid = /^\d{6}$/g.test(this.rfid) && this.rfid !== User.get().rfid;
+          this.valid = /^\d{6}$/g.test(this.rfid) && this.rfid !== user.rfid;
         },
       }),
       m(Button, { ...buttonArgs, label: 'save' }),

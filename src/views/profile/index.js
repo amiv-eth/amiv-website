@@ -1,10 +1,13 @@
 import m from 'mithril';
-import User from '../../models/user';
 import UserInfo from './userInfo';
 import ChangePasswordForm from './changePasswordForm';
 import RfidForm from './rfidForm';
 import AnnounceSubscriptionForm from './announceSubscriptionForm';
+import SessionInfo from './sessionInfo';
 import GroupMemberships from './groupMemberships';
+import UserController from '../../models/user';
+
+const userController = new UserController();
 
 /**
  * Profile class
@@ -13,15 +16,16 @@ import GroupMemberships from './groupMemberships';
  */
 export default class Profile {
   static oninit() {
-    User.load();
+    userController.load();
   }
 
   static view() {
     return m('div', [
-      m(UserInfo),
-      m(ChangePasswordForm),
-      m(RfidForm),
-      m(AnnounceSubscriptionForm),
+      m(UserInfo, { userController }),
+      m(ChangePasswordForm, { userController }),
+      m(RfidForm, { userController }),
+      m(AnnounceSubscriptionForm, { userController }),
+      m(SessionInfo, { userController }),
       m(GroupMemberships),
     ]);
   }

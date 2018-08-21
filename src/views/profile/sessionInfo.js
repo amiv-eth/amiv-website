@@ -2,21 +2,15 @@ import m from 'mithril';
 import { i18n } from '../../models/language';
 import { Button } from '../../components';
 
-/**
- * AnnounceSubscriptionForm class
- *
- * Provides a button to (un-)subscribe for the announce newsletter.
- */
-export default class AnnounceSubscriptionForm {
+// provides a button to terminate all other sessions.
+export default class SessionInfo {
   oninit(vnode) {
     this.userController = vnode.attrs.userController;
   }
-
   submit() {
-    const user = this.userController.get();
     this.busy = true;
     this.userController
-      .update({ send_newsletter: !user.send_newsletter })
+      .clearOtherSessions()
       .then(() => {
         this.busy = false;
       })
@@ -26,18 +20,23 @@ export default class AnnounceSubscriptionForm {
   }
 
   view() {
+    const sessionCount = this.userController.getSessionCount();
     const buttonArgs = { events: { onclick: () => this.submit() } };
-    const user = this.userController.get();
+
+    if (sessionCount === 0) {
+      return m('div', i18n('profile.loading_sessions'));
+    }
 
     if (this.busy) {
       buttonArgs.disabled = true;
     }
 
+    if (sessionCount <= 1) {
+      return m('div', i18n('profile.no_active_sessions'));
+    }
     return m(Button, {
       ...buttonArgs,
-      label: user.send_newsletter
-        ? i18n('profile.newsletter_unsubscribe')
-        : i18n('profile.newsletter_subscribe'),
+      label: i18n('profile.active_sessions', { count: sessionCount }),
     });
   }
 }
