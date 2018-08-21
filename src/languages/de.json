@@ -70,6 +70,8 @@
         "profile.rfid": "RFID",
         "profile.newsletter_unsubscribe": "Vom Newsletter abmelden",
         "profile.newsletter_subscribe": "Newsletter abonnieren",
+        "profile.no_active_sessions": "Du hast keine anderen aktiven Sitzungen.",
+        "profile.active_sessions": "Beende alle anderen %n aktiven Sitzungen.",
         "profile.search_groups": "Gruppen durchsuchen",
         "profile.expire_on": "läuft am %{date} ab",
         "studydocs.not_found": "Dokument nicht gefunden",
