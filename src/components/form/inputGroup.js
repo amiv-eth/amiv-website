@@ -1,4 +1,5 @@
 import m from 'mithril';
+import { i18n } from '../../models/language';
 
 export default class InputGroup {
   constructor(vnode) {
@@ -33,7 +34,7 @@ export default class InputGroup {
     if (['radio', 'checkbox'].includes(args.type)) {
       return m('div', { class: groupClasses }, [
         m(`input[name=${vnode.attrs.name}][id=${vnode.attrs.name}]`, args),
-        m(`label[for=${vnode.attrs.name}]`, vnode.attrs.title),
+        m(`label[for=${vnode.attrs.name}]`, i18n(vnode.attrs.name)),
         errorField,
       ]);
     }
@@ -51,7 +52,7 @@ export default class InputGroup {
     }
 
     return m('div', { class: groupClasses }, [
-      m(`label[for=${vnode.attrs.name}]`, vnode.attrs.title),
+      m(`label[for=${vnode.attrs.name}]`, i18n(vnode.attrs.name)),
       m(`input[name=${vnode.attrs.name}][id=${vnode.attrs.name}]`, args),
       m('datalist', { id: args.list }, this.suggestions.map(item => m('option', item))),
       errorField,
