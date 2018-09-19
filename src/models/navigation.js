@@ -70,7 +70,7 @@ export default class Navigation {
 
 export const mainNavigation = new Navigation([
   {
-    label: 'AMIV',
+    label: 'Info',
     path: '/about',
     addLanguagePrefix: true,
     onupdate: m.route.link,
