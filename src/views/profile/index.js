@@ -20,7 +20,7 @@ export default class Profile {
   }
 
   static view() {
-    return m('div', [
+    return m('div#profile-container', [
       m(UserInfo, { userController }),
       m(ChangePasswordForm, { userController }),
       m(RfidForm, { userController }),

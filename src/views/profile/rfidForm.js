@@ -1,6 +1,6 @@
 import m from 'mithril';
 import { i18n } from '../../models/language';
-import { Button, InputGroupForm } from '../../components';
+import { Button, TextField } from '../../components';
 
 // provides a form to change the users rfid
 export default class RfidForm {
@@ -32,14 +32,19 @@ export default class RfidForm {
       buttonArgs.disabled = true;
     }
 
-    return m('div', [
-      m(InputGroupForm, {
+    return m('div#rfid', [
+      m(TextField, {
         name: 'rfid',
-        title: i18n('profile.rfid'),
+        label: i18n('profile.rfid'),
+        floatingLabel: true,
+        error: i18n('profile.rfid_error'),
+        valid: this.valid,
         value: this.rfid,
-        oninput: e => {
-          this.rfid = e.target.value;
-          this.valid = /^\d{6}$/g.test(this.rfid) && this.rfid !== user.rfid;
+        events: {
+          oninput: e => {
+            this.rfid = e.target.value;
+            this.valid = /^\d{6}$/g.test(this.rfid) && this.rfid !== user.rfid;
+          },
         },
       }),
       m(Button, { ...buttonArgs, label: 'save' }),

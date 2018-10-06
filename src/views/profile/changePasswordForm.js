@@ -2,7 +2,7 @@ import m from 'mithril';
 import { apiUrl } from 'config';
 import { log } from '../../models/log';
 import { i18n } from '../../models/language';
-import { Button, InputGroupForm } from '../../components';
+import { Button, TextField } from '../../components';
 
 /**
  * ChangePasswordForm class
@@ -113,36 +113,48 @@ export default class ChangePasswordForm {
       });
     }
 
-    return m('div', [
+    return m('div#change-password', [
       m('div', i18n('profile.password_requirements')),
-      m(InputGroupForm, {
+      m(TextField, {
         name: 'password_old',
-        title: i18n('profile.old_password'),
+        label: i18n('profile.old_password'),
+        floatingLabel: true,
+        valid: this.valid,
         type: 'password',
         value: this.password_old,
-        oninput: e => {
-          this.password_old = e.target.value;
-          this.validate();
+        events: {
+          oninput: e => {
+            this.password_old = e.target.value;
+            this.validate();
+          },
         },
       }),
-      m(InputGroupForm, {
+      m(TextField, {
         name: 'password1',
-        title: i18n('profile.new_password'),
+        label: i18n('profile.new_password'),
+        floatingLabel: true,
+        valid: this.valid,
         type: 'password',
         value: this.password1,
-        oninput: e => {
-          this.password1 = e.target.value;
-          this.validate();
+        events: {
+          oninput: e => {
+            this.password1 = e.target.value;
+            this.validate();
+          },
         },
       }),
-      m(InputGroupForm, {
+      m(TextField, {
         name: 'password2',
-        title: i18n('profile.repeat_password'),
+        label: i18n('profile.repeat_password'),
+        floatingLabel: true,
+        valid: this.valid,
         type: 'password',
         value: this.password2,
-        oninput: e => {
-          this.password2 = e.target.value;
-          this.validate();
+        events: {
+          oninput: e => {
+            this.password2 = e.target.value;
+            this.validate();
+          },
         },
       }),
       buttons,

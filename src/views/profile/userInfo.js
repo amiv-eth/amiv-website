@@ -23,7 +23,7 @@ export default class UserInfo {
       }
     }
 
-    return m('div', [
+    return m('div#user-info', [
       m('div', [
         m('span', `${i18n('profile.membership')}: `),
         m('span', i18n(`${user.membership}_member`)),

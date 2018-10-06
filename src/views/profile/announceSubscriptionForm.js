@@ -33,11 +33,14 @@ export default class AnnounceSubscriptionForm {
       buttonArgs.disabled = true;
     }
 
-    return m(Button, {
-      ...buttonArgs,
-      label: user.send_newsletter
-        ? i18n('profile.newsletter_unsubscribe')
-        : i18n('profile.newsletter_subscribe'),
-    });
+    return m(
+      'div#announce-subscription',
+      m(Button, {
+        ...buttonArgs,
+        label: user.send_newsletter
+          ? i18n('profile.newsletter_unsubscribe')
+          : i18n('profile.newsletter_subscribe'),
+      })
+    );
   }
 }
