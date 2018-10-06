@@ -13,7 +13,7 @@
     "server": "npm run build-statutes && webpack-dev-server --hot --inline",
     "lint": "npm run eslint && npm run stylelint",
     "eslint": "eslint src/*.js src/**/*.js",
-    "stylelint": "stylelint 'src/**/*.less' --synthax less",
+    "stylelint": "stylelint 'src/**/*.less' --syntax less",
     "format": "prettier --write '**/*.{js,jsx}'"
   },
   "repository": {
