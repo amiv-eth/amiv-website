@@ -1,6 +1,8 @@
 import m from 'mithril';
 
 import inputGroup from './inputGroup';
+import Dropdown from '../Dropdown';
+import { i18n } from '../../models/language';
 
 export default class SelectGroup {
   oninit() {
@@ -20,20 +22,20 @@ export default class SelectGroup {
       if (typeof option === 'object') {
         return option;
       }
-      return { value: option, text: option };
+      return { value: option, label: option };
     });
 
     switch (vnode.attrs.type) {
       case 'buttons': {
         if (args.multipleSelect) {
           return m('div', { class: vnode.attrs.classes }, [
-            m(`label[for=${vnode.attrs.name}]`, vnode.attrs.title),
+            m(`label[for=${vnode.attrs.name}]`, i18n(vnode.attrs.name)),
             m(
               'div',
               options.map(option =>
                 m(inputGroup, {
                   name: vnode.attrs.name,
-                  title: option.text,
+                  title: i18n(option.label),
                   value: option.value,
                   onchange: e => {
                     if (e.target.checked) {
@@ -63,59 +65,55 @@ export default class SelectGroup {
             options.map(option =>
               m(inputGroup, {
                 name: vnode.attrs.name,
-                title: option.text,
+                title: i18n(option.label),
                 value: option.value,
                 onchange: vnode.attrs.onchange,
                 args: { type: 'radio' },
               })
             )
           ),
-          m(`label[for=${vnode.attrs.name}]`, vnode.attrs.title),
+          m(`label[for=${vnode.attrs.name}]`, vnode.attrs.name),
         ]);
       }
       case 'select':
       default: {
         if (args.multipleSelect) {
           return m('div', { class: vnode.attrs.classes }, [
-            m(`label[for=${vnode.attrs.name}]`, vnode.attrs.title),
-            m(
-              `select[name=${vnode.attrs.name}][id=${vnode.attrs.name}]`,
-              {
-                args,
-                onchange: e => {
-                  const value = [];
-                  let opt;
-                  for (let i = 0; i < e.target.options.length; i += 1) {
-                    opt = e.target.options[i];
-                    if (opt.selected) {
-                      value.push(opt);
-                    }
+            m(`label[for=${vnode.attrs.name}]`, i18n(vnode.attrs.name)),
+            m(Dropdown, {
+              ...args,
+              onchange: e => {
+                const value = [];
+                let opt;
+                for (let i = 0; i < e.target.options.length; i += 1) {
+                  opt = e.target.options[i];
+                  if (opt.selected) {
+                    value.push(opt);
                   }
-                  vnode.attrs.onchange({ target: { name: e.target.name, value } });
-                },
-                oninput: e => {
-                  const value = [];
-                  let opt;
-                  for (let i = 0; i < e.target.options.length; i += 1) {
-                    opt = e.target.options[i];
-                    if (opt.selected) {
-                      value.push(opt);
-                    }
-                  }
-                  vnode.attrs.oninput({ target: { name: e.target.name, value } });
-                },
+                }
+                vnode.attrs.onchange({ target: { name: e.target.name, value } });
               },
-              options.map(option => m('option', { value: option.value }, option.text))
-            ),
+              oninput: e => {
+                const value = [];
+                let opt;
+                for (let i = 0; i < e.target.options.length; i += 1) {
+                  opt = e.target.options[i];
+                  if (opt.selected) {
+                    value.push(opt);
+                  }
+                }
+                vnode.attrs.oninput({ target: { name: e.target.name, value } });
+              },
+              data: options,
+            }),
           ]);
         }
         return m('div', { class: vnode.attrs.classes }, [
-          m(`label[for=${vnode.attrs.name}]`, vnode.attrs.title),
-          m(
-            `select[name=${vnode.attrs.name}][id=${vnode.attrs.name}]`,
-            args,
-            options.map(option => m('option', { value: option.value }, option.text))
-          ),
+          m(`label[for=${vnode.attrs.name}]`, i18n(vnode.attrs.name)),
+          m(Dropdown, {
+            ...args,
+            data: options,
+          }),
         ]);
       }
     }

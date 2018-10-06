@@ -108,26 +108,23 @@ export async function checkLogin() {
       try {
         const response = await m.request({
           method: 'GET',
-          url: `${apiUrl}/sessions?where={"token":"${params.access_token}"}`,
+          url: `${apiUrl}/sessions/${params.access_token}`,
           headers: {
             Authorization: params.access_token,
           },
         });
-        if (response._items.length === 1) {
-          const dt2 = new Date();
-          session = {
-            userId: response._items[0].user,
-            token: params.access_token,
-            etag: response._items[0]._etag,
-            id: response._items[0]._id,
-            state: undefined,
-            lastChecked: dt2.getTime(),
-          };
-          saveSession();
-          log('User logged in!');
-        } else {
-          throw new Error({ _error: { code: 500 } });
-        }
+        const dt2 = new Date();
+        session = {
+          userId: response.user,
+          token: params.access_token,
+          etag: response._etag,
+          id: response._id,
+          state: undefined,
+          lastChecked: dt2.getTime(),
+        };
+        saveSession();
+        window.history.replaceState({}, document.title, window.location.pathname);
+        log('User logged in!');
       } catch ({ _error: { code } }) {
         session = {};
         saveSession();

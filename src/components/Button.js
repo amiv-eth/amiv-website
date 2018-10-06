@@ -3,13 +3,22 @@ import { Button } from 'polythene-mithril';
 import { ButtonCSS } from 'polythene-css';
 
 ButtonCSS.addStyle('.blue-button', {
-  color_light_background: 'blue',
+  color_light_background: '#5378E1',
   color_light_text: 'white',
+  color_dark_background: '#1f2d54',
+  color_dark_text: 'white',
+});
+
+ButtonCSS.addStyle('.red-button', {
+  color_light_background: '#e8462b',
+  color_light_text: 'white',
+  color_dark_background: '#e8462b',
+  color_dark_text: 'white',
 });
 
 ButtonCSS.addStyle('.flat-button', {
   color_light_background: 'white',
-  color_light_text: 'gray',
+  color_light_text: 'black',
 });
 
 /**
@@ -19,6 +28,7 @@ ButtonCSS.addStyle('.flat-button', {
  *
  *   - `className` defaulting to `blue-button`
  *   - `element` HTML tag; defaulting to `button`
+ *   - `tone` either `light` or `dark`; defaulting to `light`
  *   - `active` enables/disables the component; defaulting to `true`
  *   - `label` text shown on the button; defaulting to `Unnamed button`
  *   - `onclick` *optional*
@@ -37,6 +47,7 @@ export default class ButtonComponent {
       element: 'button',
       disabled: vnode.attrs.active === false,
       label: 'Unnamed button',
+      tone: 'light',
     };
   }
 

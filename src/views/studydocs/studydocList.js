@@ -85,14 +85,6 @@ export default class StudydocList extends FilteredListPage {
           },
         },
         {
-          type: 'button',
-          label: i18n('reset'),
-          className: 'flat-button',
-          events: {
-            onclick: 'reset',
-          },
-        },
-        {
           type: 'checkbox',
           key: 'department',
           label: i18n('studydocs.department'),
@@ -130,6 +122,14 @@ export default class StudydocList extends FilteredListPage {
             { value: 'lecture documents', label: i18n('lecture documents') },
             { value: 'exercises', label: i18n('exercises') },
           ],
+        },
+        {
+          type: 'button',
+          label: i18n('reset'),
+          className: 'red-button',
+          events: {
+            onclick: 'reset',
+          },
         },
         {
           type: 'button',

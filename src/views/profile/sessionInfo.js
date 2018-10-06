@@ -31,7 +31,7 @@ export default class SessionInfo {
       buttonArgs.disabled = true;
     }
 
-    if (sessionCount <= 1) {
+    if (sessionCount === 1) {
       return m('div', i18n('profile.no_active_sessions'));
     }
     return m(Button, {

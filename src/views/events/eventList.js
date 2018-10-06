@@ -45,14 +45,6 @@ export default class EventList extends FilteredListPage {
           label: i18n('search'),
         },
         {
-          type: 'button',
-          label: i18n('reset'),
-          className: 'flat-button',
-          events: {
-            onclick: 'reset',
-          },
-        },
-        {
           type: 'checkbox',
           key: 'price',
           label: i18n('events.price'),
@@ -71,6 +63,14 @@ export default class EventList extends FilteredListPage {
             { label: i18n('events.open_for_all'), value: 'all' },
             { label: i18n('events.open_for_amiv_members_only'), value: 'members_only' },
           ],
+        },
+        {
+          type: 'button',
+          label: i18n('reset'),
+          className: 'red-button',
+          events: {
+            onclick: 'reset',
+          },
         },
       ],
       onchange: values => {
