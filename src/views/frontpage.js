@@ -1,17 +1,38 @@
 import m from 'mithril';
 import { EventController } from '../models/events';
 import { JobofferController } from '../models/joboffers';
-import { i18n } from '../models/language';
+import { i18n, currentLanguage } from '../models/language';
 import { Card } from '../components';
 
 // Render the Hot Cards, with link and imageurl
 const renderHotCards = (item, index) => {
-  if (index === 0) return m('div.hot-first-card', m(Card, item));
-  return m('div.hot-card', m(Card, item));
+  const card_item = item;
+  switch (currentLanguage()) {
+    case 'de':
+      card_item.title = item.title_de;
+      break;
+    case 'en':
+    default:
+      card_item.title = item.title_en;
+  }
+  if (index === 0) return m('div.hot-first-card', m(Card, card_item));
+  return m('div.hot-card', m(Card, card_item));
 };
 
 // Render the frontpage cards, with href and imageurl
-const renderRowCards = item => m('div.frontpage-row-card', m(Card, item));
+const renderRowCards = (item, type) => {
+  const card_item = item;
+  card_item.href = `${m.route.get() + type}/${card_item._id}`;
+  switch (currentLanguage()) {
+    case 'de':
+      card_item.title = item.title_de;
+      break;
+    case 'en':
+    default:
+      card_item.title = item.title_en;
+  }
+  return m('div.frontpage-row-card', m(Card, card_item));
+};
 
 export default class Frontpage {
   constructor() {
@@ -71,9 +92,9 @@ export default class Frontpage {
       m('h2', i18n('frontpage.whats_hot')),
       m('div.hot-row', this.hot.map((item, index) => renderHotCards(item, index))),
       m('h2', i18n('Events')),
-      m('div.frontpage-row', this.events.map(item => renderRowCards(item))),
+      m('div.frontpage-row', this.events.map(item => renderRowCards(item, 'events'))),
       m('h2', 'Jobs'),
-      m('div.frontpage-row', this.jobs.map(item => renderRowCards(item))),
+      m('div.frontpage-row', this.jobs.map(item => renderRowCards(item, 'jobs'))),
       m('h2', i18n('frontpage.social_media')),
       m('div.frontpage-row', this.socialmedia.map(item => renderRowCards(item))),
     ]);
