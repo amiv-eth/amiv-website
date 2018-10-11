@@ -34,9 +34,16 @@
     grid-row: ~'3 / 4';
   }
 
-  #groups {
+  #groupmemberships {
     grid-column: ~'7 / 13';
     grid-row: ~'4 / 6';
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  #groups {
+    grid-column: ~'7 / 13';
+    grid-row: ~'6 / 8';
     display: grid;
     grid-template-columns: repeat(3, 1fr);
   }
@@ -47,7 +54,7 @@
   grid-column: ~'1 / 4';
 }
 
-#group-memberships {
+#group-list {
   grid-row: ~'2 / 3';
   grid-column: ~'1 / -1';
 
@@ -68,9 +75,4 @@
       grid-column: ~'3 / 4';
     }
   }
-}
-
-#group-list {
-  grid-row: ~'3 / 4';
-  grid-column: ~'1 / -1';
 }
