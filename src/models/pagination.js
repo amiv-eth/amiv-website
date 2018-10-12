@@ -90,6 +90,20 @@ export default class PaginationController {
   }
 
   /**
+   * Test whether some element passes the test implemented by the provided function.
+   *
+   * @param {function} test function implementing a test
+   * @public
+   */
+  some(test) {
+    let result = false;
+    this._pages.forEach(page => {
+      result = result || page.items.some(test);
+    });
+    return result;
+  }
+
+  /**
    * Get number of loaded items
    *
    * @return {int}
