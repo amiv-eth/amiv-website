@@ -110,6 +110,8 @@
   .content {
     border: 3px solid @color-grey;
     border-width: 0 3px;
+    height: 100vh;
+    overflow-y: scroll;
 
     @media @mobile {
       border: none;
@@ -158,6 +160,9 @@
   }
 
   .details-container {
+    height: 100vh;
+    overflow-y: scroll;
+
     @media @tablet {
       grid-column: ~'1 / 3';
     }
