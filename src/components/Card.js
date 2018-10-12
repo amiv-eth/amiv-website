@@ -13,6 +13,6 @@ export default class CheckboxComponent {
     if (img_poster) imageurl = `${apiUrl}${img_poster.file}`;
     const style = imageurl ? `background-image: url(${imageurl})` : '';
 
-    return m('div.card', { style }, m('a', { href }, title));
+    return m('a', { href }, m('div.card', { style }, m('div.card-title', title)));
   }
 }

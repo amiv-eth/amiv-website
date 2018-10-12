@@ -57,11 +57,18 @@ export default class Frontpage {
     // MOCKDATA
     this.hot = [
       {
-        title: 'super hot',
+        title_en: 'super hot',
+        title_de: 'richtig heiss',
         imageurl: 'http://www.heilpraxisnet.de/wp-content/uploads/2016/04/bier-lagern-1024x724.jpg',
       },
-      { title: 'also pretty hot' },
-      { title: 'kinda hot' },
+      {
+        title_en: 'also pretty hot',
+        title_de: 'auch ziemlich heiss',
+      },
+      {
+        title_en: 'kinda hot',
+        title_de: 'lauwarm',
+      },
     ];
 
     // Social Media Attributes, with their different APIs
