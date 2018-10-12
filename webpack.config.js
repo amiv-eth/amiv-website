@@ -21,9 +21,7 @@ const config = {
     port: 9000,
     hot: true,
     index: 'index.html',
-    historyApiFallback: {
-      index: 'index.html',
-    },
+    historyApiFallback: true,
   },
 
   module: {
