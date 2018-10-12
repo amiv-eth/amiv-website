@@ -174,7 +174,7 @@ export default class StudydocList extends FilteredListPage {
   }
 
   get _listView() {
-    const tableHeadings = ['studydocs.title', 'studydocs.author', 'studydocs.type'];
+    const tableHeadings = ['studydocs.title', 'studydocs.author', 'studydocs.course_year'];
     return [
       m('div.list-item', tableHeadings.map(header => m('span', i18n(header)))),
       ...controller.map(page =>
@@ -217,7 +217,7 @@ export default class StudydocList extends FilteredListPage {
           m.route.set(`/${currentLanguage()}/studydocuments/${document._id}`);
         },
       },
-      [m('span', document.title), m('span', document.author), m('span', i18n(document.type))]
+      [m('span', document.title), m('span', document.author), m('span', i18n(document.course_year))]
     );
   }
 }

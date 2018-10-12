@@ -118,7 +118,8 @@ export default class studydocNew {
       m(InputGroupForm, {
         name: 'course_year',
         title: i18n('studydocs.course_year'),
-        type: 'number',
+        type: 'date',
+        required: 1,
         args: {
           placeholder: new Date().getFullYear(),
         },
