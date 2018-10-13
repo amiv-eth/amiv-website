@@ -1,24 +1,24 @@
 #studydoc-list {
-
   #head-style {
     text-align: right;
   }
 
-  #row-style { 
+  #row-style {
     height: 2em;
-    background-color: #FDFDFD;
+    background-color: #fdfdfd;
     border: 1px solid @color-grey;
   }
 
   h2 {
     display: inline;
-    text-align: center; 
+    text-align: center;
   }
+
   .flex-container {
     display: flex;
     flex-wrap: nowrap;
   }
-  
+
   .flex-container > div {
     //width: 14em;
     padding: 0 5px 5px 0;
@@ -29,36 +29,32 @@
   div.list-item {
     display: grid;
     grid-template-columns: auto 25% 15%;
-    grid-row-gap: 0.5em;
-    padding: 0.5em;
+    grid-row-gap: .5em;
+    padding: .5em;
 
     &:first-of-type {
       font-weight: bold;
       border-bottom: solid 2px #000;
     }
 
-
-    #title-style{
+    #title-style {
       margin-top: auto;
       margin-bottom: auto;
     }
 
-    #author-style{
+    #author-style {
       margin-top: auto;
       margin-bottom: auto;
     }
 
-    #course_year-style{
+    #course_year-style {
       margin-top: auto;
       margin-bottom: auto;
       text-align: right;
     }
-  
-
   }
 
   div.list-style {
-    background-color: grey;
+    background-color: #808080;
   }
-
 }
