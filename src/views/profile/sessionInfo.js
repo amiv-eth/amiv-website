@@ -13,6 +13,7 @@ export default class SessionInfo {
       .clearOtherSessions()
       .then(() => {
         this.busy = false;
+        m.redraw();
       })
       .catch(() => {
         this.busy = false;
@@ -20,7 +21,7 @@ export default class SessionInfo {
   }
 
   view() {
-    const sessionCount = this.userController.getSessionCount();
+    const { sessionCount } = this.userController;
     const buttonArgs = { events: { onclick: () => this.submit() } };
 
     if (sessionCount === 0) {

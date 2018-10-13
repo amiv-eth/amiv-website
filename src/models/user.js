@@ -10,7 +10,7 @@ import { error } from './log';
  */
 export default class UserController {
   constructor() {
-    this.sessionCount = 0;
+    this._sessionCount = 0;
   }
 
   /**
@@ -31,7 +31,7 @@ export default class UserController {
             },
           })
           .then(result => {
-            this.user = result;
+            this._user = result;
           })
       );
       promiseList.push(this._loadSessionPage(1));
@@ -46,11 +46,11 @@ export default class UserController {
    *
    * @return {Object} `user` object returned by the AMIV API.
    */
-  get() {
-    if (typeof this.user === 'undefined') {
+  get user() {
+    if (typeof this._user === 'undefined') {
       return {};
     }
-    return this.user;
+    return this._user;
   }
 
   /**
@@ -58,8 +58,8 @@ export default class UserController {
    *
    * @return {int} number of sessions
    */
-  getSessionCount() {
-    return this.sessionCount;
+  get sessionCount() {
+    return this._sessionCount;
   }
 
   /**
@@ -77,12 +77,12 @@ export default class UserController {
         url: `${apiUrl}/users/${getUserId()}`,
         headers: {
           Authorization: token || getToken(),
-          'If-Match': this.user._etag,
+          'If-Match': this._user._etag,
         },
         data: options,
       })
       .then(result => {
-        this.user = result;
+        this._user = result;
       })
       .catch(e => {
         error(e.message);
@@ -94,7 +94,7 @@ export default class UserController {
    */
   async clearOtherSessions() {
     const sessions = [];
-    const totalPages = Math.ceil(this.sessionCount / 20);
+    const totalPages = Math.ceil(this._sessionCount / 20);
     let promiseList = [];
     let currentPage = 1;
     // Load all sessions
@@ -116,7 +116,7 @@ export default class UserController {
       }
     });
     await Promise.all(promiseList);
-    this.sessionCount = 1;
+    this._sessionCount = 1;
   }
 
   // helper function to load session page
@@ -128,7 +128,7 @@ export default class UserController {
         Authorization: getToken(),
       },
     });
-    this.sessionCount = response._meta.total;
+    this._sessionCount = response._meta.total;
     return response._items;
   }
 

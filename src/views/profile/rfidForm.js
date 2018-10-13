@@ -25,7 +25,7 @@ export default class RfidForm {
 
   view() {
     const buttonArgs = { events: { onclick: () => this.submit() } };
-    const user = this.userController.get();
+    const { user } = this.userController;
 
     if (this.rfid === undefined) this.rfid = user.rfid;
     if (!this.valid || this.busy) {

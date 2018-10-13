@@ -13,8 +13,9 @@ export default class AnnounceSubscriptionForm {
   }
 
   submit() {
-    const user = this.userController.get();
+    const { user } = this.userController;
     this.busy = true;
+    // Toggle newsletter subscription
     this.userController
       .update({ send_newsletter: !user.send_newsletter })
       .then(() => {
@@ -27,7 +28,7 @@ export default class AnnounceSubscriptionForm {
 
   view() {
     const buttonArgs = { events: { onclick: () => this.submit() } };
-    const user = this.userController.get();
+    const { user } = this.userController;
 
     if (this.busy) {
       buttonArgs.disabled = true;

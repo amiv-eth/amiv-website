@@ -12,7 +12,7 @@ export default class UserInfo {
   }
 
   view() {
-    const user = this.userController.get();
+    const { user } = this.userController;
     let freeBeerNotice;
 
     if (user.membership !== 'none') {

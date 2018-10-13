@@ -44,7 +44,7 @@ export default class ChangePasswordForm {
 
     try {
       const session = await this.constructor._createSession(
-        this.userController.get(),
+        this.userController.user,
         this.password_old
       );
 
@@ -76,7 +76,7 @@ export default class ChangePasswordForm {
   }
 
   view() {
-    const user = this.userController.get();
+    const { user } = this.userController;
     if (user === undefined) return m();
 
     const buttonArgs = {};
