@@ -34,6 +34,16 @@ const renderRowCards = (item, type) => {
   return m('div.frontpage-row-card', m(Card, card_item));
 };
 
+async function getData(state) {
+  const events = await state.eventController.upcomingEvents.getPageData(1);
+  if (events.length < 3) {
+    const pastEvents = await state.eventController.pastEvents.getPageData(1);
+    for (let i = events.length; i < 3; i += 1) events.push(pastEvents[0]);
+  }
+  const jobs = await state.jobOfferController.getPageData(1);
+  return { ...{ events }, ...{ jobs } };
+}
+
 export default class Frontpage {
   oninit() {
     this.eventController = new EventController(
@@ -52,19 +62,9 @@ export default class Frontpage {
   }
 
   oncreate() {
-    this.eventController.upcomingEvents.getPageData(1).then(events => {
-      this.events = events;
-      if (this.events.length < 3) {
-        this.eventController.pastEvents.getPageData(1).then(pastEvents => {
-          for (let i = this.events.length; i < 3; i += 1) this.events.push(pastEvents[0]);
-          m.redraw();
-        });
-      }
-      m.redraw();
-    });
-    this.jobs = [];
-    this.jobOfferController.getPageData(1).then(jobs => {
-      this.jobs = jobs;
+    getData(this).then(result => {
+      this.events = result.events;
+      this.jobs = result.jobs;
       m.redraw();
     });
 
