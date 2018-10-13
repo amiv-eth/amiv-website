@@ -41,6 +41,7 @@ header nav {
   display: grid;
   grid-area: navigation;
   min-height: @dimension-desktop-header-height;
+  transition: height 300ms;
 
   @media @wide, @desktop {
     grid-template-columns: auto 1fr auto auto auto;
@@ -49,7 +50,8 @@ header nav {
 
   @media @tablet {
     grid-template-columns: auto 1fr auto auto;
-    grid-template-areas: 'logo main-navigation language-switcher';
+    grid-template-areas: 'logo main-navigation profile language-switcher';
+    font-size: .7em;
   }
 
   @media @mobile {
@@ -64,6 +66,7 @@ header nav {
 
     &.expanded {
       max-height: 1000px;
+      transition: height 300ms;
     }
   }
 }
@@ -82,6 +85,7 @@ header ul {
   margin: 0;
   padding: 0;
   height: 100%;
+  transition: height 300ms;
 
   @media @mobile {
     width: 100%;
@@ -107,31 +111,42 @@ header ul {
 header ul.mainmenu {
   .mainmenu-template;
   grid-area: main-navigation;
+  transition: ease-in-out 300ms;
 
   li.active {
     background-color: @color-grey;
+    transition: ease-in-out 300ms;
 
     .phantomElement {
       height: @dimension-desktop-submenu-height;
       display: block;
       width: 100%;
+      transition: height 300ms;
+
+      @media @mobile {
+        display: none;
+      }
     }
 
     ul.submenu {
       display: block;
       visibility: visible;
       z-index: 1005;
+      transition: height 300ms;
     }
   }
 
   @media @wide, @desktop, @tablet {
     li:hover ul.submenu {
       visibility: visible;
+      transition: visibility 300ms, height 300ms;
+      transition-delay: 150ms;
     }
   }
 
   li > a {
     display: block;
+    transition: height 300ms;
     height: 100%;
     line-height: @dimension-desktop-header-height;
     padding: 0 1.3em;
@@ -147,6 +162,8 @@ header ul.mainmenu {
 header ul.submenu {
   display: block;
   visibility: hidden;
+  height: 0;
+  transition: height 300ms;
 
   @media @wide, @desktop, @tablet {
     position: absolute;
@@ -157,13 +174,8 @@ header ul.submenu {
     text-align: center;
     background-color: @color-grey;
     z-index: 1010;
-    transition-delay: 150ms;
-    transition-property: visibility;
-  }
-
-  @media @tablet {
-    // NOTE: Adjust this value when profile menu changes!
-    width: calc(100% - 190px);
+    transition: height 150ms;
+    transform-style: flat;
   }
 
   @media @mobile {
@@ -173,6 +185,7 @@ header ul.submenu {
 
   li {
     &.active {
+      transition: height 300ms;
       background-color: @color-grey;
 
       @media @mobile {
@@ -190,7 +203,8 @@ header ul.submenu {
 
     > a {
       display: block;
-      height: 100%;
+      height: @dimension-desktop-submenu-height;
+      transition: height 300ms;
       line-height: @dimension-desktop-submenu-height;
       padding: 0 .5em;
       color: #000;
@@ -202,52 +216,48 @@ header ul.submenu {
 header ul.profile {
   .mainmenu-template;
   grid-area: profile;
+  height: @dimension-desktop-header-height;
 
-  @media @tablet {
-    position: absolute;
-    top: @dimension-desktop-header-height;
-    right: 0;
-    padding: 0 .5em;
-    height: @dimension-desktop-submenu-height;
-    z-index: 1015;
-    background-color: #eee;
+  > li a {
+    line-height: @dimension-desktop-header-height;
+    padding: calc(@dimension-desktop-header-height / 4) 1.3em;
+  }
 
-    // border left
-    &:before {
-      content: '';
-      position: absolute;
-      left: 0;
-      bottom: 25%;
-      height: 50%;
-      width: 1px;
-      border-left: 1px solid @color-dark-blue;
-    }
+  .profilePicture {
+    height: calc(@dimension-desktop-header-height / 2);
+    width: calc(@dimension-desktop-header-height / 2);
+    border-radius: @dimension-desktop-header-height;
+    border: 1pt #000 solid;
+    background-color: #fff;
+    display: block;
+  }
 
-    li {
-      > a {
-        display: block;
-        height: 100%;
-        line-height: @dimension-desktop-submenu-height;
-        padding: 0 .5em;
-        color: #000;
-      }
-
-      &.active > a {
-        color: @color-red;
-      }
-    }
+  > span {
+    display: none;
   }
 
   @media @mobile {
     li:last-of-type {
       border-bottom: none;
     }
+
+    .profilePicture {
+      display: none;
+    }
+
+    a {
+      padding: 0 !important;
+      display: inline;
+    }
+
+    span {
+      display: inline-block;
+    }
   }
 }
 
 header .language-switcher {
   grid-area: language-switcher;
-  //align-self: center;
   height: @dimension-desktop-header-height;
 
   > button {
