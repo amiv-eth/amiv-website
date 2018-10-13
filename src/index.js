@@ -17,7 +17,7 @@ import contact from './views/contact';
 import about from './views/amiv/about';
 import board from './views/amiv/board';
 import minutes from './views/amiv/minutes';
-import commissions from './views/amiv/commissions';
+import teams from './views/amiv/teams';
 import jobOfferList from './views/jobs/jobofferList';
 import companyList from './views/companies/companyList';
 import companyDetail from './views/companies/companyDetail';
@@ -75,8 +75,8 @@ Raven.context(() => {
       view: () => m(board),
     },
     {
-      url: '/:language/commissions',
-      view: () => m(commissions),
+      url: '/:language/teams',
+      view: () => m(teams),
     },
     {
       url: '/:language/about',
