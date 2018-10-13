@@ -96,7 +96,6 @@ export default class Frontpage {
 
   view() {
     return m('div#frontpage-container', [
-      m('h2', i18n('frontpage.whats_hot')),
       m('div.hot-row', this.hot.map((item, index) => renderHotCards(item, index))),
       m('h2', i18n('Events')),
       m('div.frontpage-row', this.events.map(item => renderRowCards(item, 'events'))),
