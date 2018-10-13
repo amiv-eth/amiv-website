@@ -47,7 +47,7 @@ export default class RfidForm {
           },
         },
       }),
-      m(Button, { ...buttonArgs, label: 'save' }),
+      m(Button, { ...buttonArgs, label: i18n('confirm') }),
     ]);
   }
 }

@@ -67,11 +67,11 @@ export default class ChangePasswordForm {
   }
 
   // Password policy:
-  // * Minimum length: 8
+  // * Minimum length: 7
   // * Maximum length: 100
   validate() {
     this.valid =
-      this.password_old.length > 0 && this.password1.length >= 8 && this.password1.length <= 100;
+      this.password_old.length > 0 && this.password1.length >= 7 && this.password1.length <= 100;
     this.equal = this.password1 === this.password2;
   }
 
@@ -88,22 +88,30 @@ export default class ChangePasswordForm {
 
     if (user.password_set) {
       buttons = [
-        m(Button, {
-          ...buttonArgs,
-          label: i18n('profile.change_password'),
-          events: { onclick: () => this.submit() },
-        }),
-        m(Button, {
-          disabled: this.password_old.length === 0,
-          label: i18n('profile.revert_to_ldap'),
-          events: {
-            onclick: () => {
-              this.password1 = '';
-              this.password2 = '';
-              this.submit();
+        m(
+          'div',
+          { margin: 5 },
+          m(Button, {
+            ...buttonArgs,
+            label: i18n('profile.change_password'),
+            events: { onclick: () => this.submit() },
+          })
+        ),
+        m(
+          'div',
+          { margin: 5 },
+          m(Button, {
+            disabled: this.password_old.length === 0,
+            label: i18n('profile.revert_to_ldap'),
+            events: {
+              onclick: () => {
+                this.password1 = '';
+                this.password2 = '';
+                this.submit();
+              },
             },
-          },
-        }),
+          })
+        ),
       ];
     } else {
       buttons = m(Button, {
@@ -114,7 +122,6 @@ export default class ChangePasswordForm {
     }
 
     return m('div#change-password', [
-      m('div', i18n('profile.password_requirements')),
       m(TextField, {
         name: 'password_old',
         label: i18n('profile.old_password'),
@@ -133,6 +140,7 @@ export default class ChangePasswordForm {
         name: 'password1',
         label: i18n('profile.new_password'),
         floatingLabel: true,
+        error: i18n('profile.password_requirements'),
         valid: this.valid,
         type: 'password',
         value: this.password1,
