@@ -28,25 +28,19 @@
 }
 
 header {
+  background-color: @color-dark-blue;
+  margin-bottom: 5px;
   grid-area: header;
   display: block;
   width: 100%;
   font-size: 1.2em;
   z-index: 1000;
-
-  section.grey {
-    height: @dimension-desktop-submenu-height;
-
-    @media @mobile {
-      display: none;
-    }
-  }
 }
 
 header nav {
   display: grid;
   grid-area: navigation;
-  height: @dimension-desktop-header-height;
+  min-height: @dimension-desktop-header-height;
 
   @media @wide, @desktop {
     grid-template-columns: auto 1fr auto auto auto;
@@ -106,12 +100,22 @@ header ul {
   }
 }
 
+.phantomElement {
+  height: 1px;
+}
+
 header ul.mainmenu {
   .mainmenu-template;
   grid-area: main-navigation;
 
   li.active {
     background-color: @color-grey;
+
+    .phantomElement {
+      height: @dimension-desktop-submenu-height;
+      display: block;
+      width: 100%;
+    }
 
     ul.submenu {
       display: block;
@@ -243,7 +247,15 @@ header ul.profile {
 
 header .language-switcher {
   grid-area: language-switcher;
-  align-self: center;
+  //align-self: center;
+  height: @dimension-desktop-header-height;
+
+  > button {
+    display: block;
+    height: 100%;
+    line-height: @dimension-desktop-header-height;
+    padding: 0 1.3em;
+  }
 }
 
 header .mobile-menu {
