@@ -170,6 +170,48 @@
 
   div.details {
     z-index: 101;
+    padding: 1em 0.8em;
+
+    a {
+      color: #005DBE;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 1.3em;
+      color: #004398;
+    }
+
+    h2 {
+      font-size: 0.8em;
+      font-weight: 100;
+      color: rgb(107, 108, 119);
+    }
+
+    h3 {
+      color: #004398;
+      text-transform: capitalize;
+    }
+
+    ul {
+      list-style-type: none;
+      margin-left: 0;
+      padding-left: 2em;
+      text-indent: -1em;
+    }
+
+    li {
+      line-height: 1.4em;
+      padding: 0.4em 0;
+      padding-left: 0em;
+      text-indent: -0.4em;
+    }
+
+    li:before {
+      content: '-';
+      position: relative;
+      left: -0.5em;
+    }
 
     @media @mobile, @tablet {
       &.mobile-hide {
