@@ -132,7 +132,8 @@ export class FilteredListPage {
    * @param {String} itemId id of the item to be shown on the details page
    */
   oninit(vnode, itemId) {
-    document.addEventListener('scroll', e => this.onscroll(e), true);
+    // scroll events don't bubble up, so we need set useCapture to true for children scrollable elements
+    document.addEventListener('scroll', () => this.onscroll(), true);
     window.addEventListener('resize', () => this.onscroll());
 
     if (!this.dataStore.isInitialized) {
@@ -153,9 +154,13 @@ export class FilteredListPage {
     }
   }
 
-  // TODO: solve eslint error
-  onupdate(vnode) {
+  // When component updates, we recalculate the size of scrollable containers
+  // and retrieve the last scroll position of 'div.content' element,
+  // thus preventing undesired scroll to the top after each click.
+  onupdate() {
     setContainersHeight();
+    const contentView = document.getElementsByClassName('content')[0];
+    contentView.scrollTop = `${this.dataStore.lastScrollPosition}`;
   }
 
   /* eslint-disable class-methods-use-this, no-unused-vars */
@@ -283,28 +288,25 @@ export class FilteredListPage {
       });
   }
 
-  onscroll(e) {
-    console.log(e);
-    const filterView = document.getElementById(`${this.name}ListFilterView`);
-    const detailsView = document.getElementById(`${this.name}ListDetailsView`);
-    this._updateViewPosition(filterView, 'filterView');
-    this._updateViewPosition(detailsView, 'detailsView');
-    this.dataStore.lastScrollPosition = document.documentElement.scrollTop;
+  onscroll() {
+    const filterView = document.getElementsByClassName(`content`)[0];
+    // const detailsView = document.getElementById(`${this.name}ListDetailsView`);
+    // this._updateViewPosition(filterView, 'filterView');
+    // this._updateViewPosition(detailsView, 'detailsView');
+    this.dataStore.lastScrollPosition = filterView.scrollTop;
   }
 
-  _updateViewPosition(element, positionTopKey) {
-    if (!element) return;
-
-    const windowHeight = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
-    const scrollDelta = document.documentElement.scrollTop - this.dataStore.lastScrollPosition;
-    const maxPosition = Math.min(windowHeight - element.scrollHeight, 0);
-    const currentPosition = this.dataStore.getPositionTop(positionTopKey);
-
-    const positionTop = Math.min(0, Math.max(currentPosition - scrollDelta, maxPosition));
-    this.dataStore.setPositionTop(positionTopKey, positionTop);
-    // eslint-disable-next-line no-param-reassign
-    element.style.top = `${positionTop}px`;
-  }
+  // _updateViewPosition(element, positionTopKey) {
+  // if (!element) return;
+  // const windowHeight = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+  // const scrollDelta = element.scrollTop - this.dataStore.lastScrollPosition;
+  // const maxPosition = Math.min(windowHeight - element.scrollHeight, 0);
+  // const currentPosition = this.dataStore.getPositionTop(positionTopKey);
+  // const positionTop = Math.min(0, Math.max(currentPosition - scrollDelta, maxPosition));
+  // this.dataStore.setPositionTop(positionTopKey, positionTop);
+  // // eslint-disable-next-line no-param-reassign
+  // element.style.top = `${this.dataStore.lastScrollPosition}px`;
+  // }
 
   view() {
     const classes = ['filtered-list'];
