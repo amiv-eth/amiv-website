@@ -1,6 +1,6 @@
 import m from 'mithril';
 import StudydocsController from '../../models/studydocs';
-import { Button, InputGroupForm, Dropdown } from '../../components';
+import { Button, Dropdown, TextField, FileInput } from '../../components';
 import { currentLanguage, i18n } from '../../models/language';
 
 export default class studydocNew {
@@ -41,132 +41,141 @@ export default class studydocNew {
   }
 
   view() {
-    return m('form', { onsubmit: () => false }, [
-      m(InputGroupForm, {
-        name: 'title',
-        title: i18n('studydocs.title'),
-        oninput: e => {
-          this.doc.title = e.target.value;
-        },
-        getSuggestions: (input, callback) =>
-          studydocNew._getInputSuggestions('title', input, callback),
-      }),
-      m(InputGroupForm, {
-        name: 'professor',
-        title: i18n('studydocs.professor'),
-        oninput: e => {
-          this.doc.professor = e.target.value;
-        },
-        getSuggestions: (input, callback) =>
-          studydocNew._getInputSuggestions('professor', input, callback),
-      }),
-      m(InputGroupForm, {
-        name: 'author',
-        title: i18n('studydocs.author'),
-        oninput: e => {
-          this.doc.author = e.target.value;
-        },
-        getSuggestions: (input, callback) =>
-          studydocNew._getInputSuggestions('author', input, callback),
-      }),
-      m(Dropdown, {
-        name: 'semester',
-        onchange: e => {
-          const { value } = e.target;
-          if (value === '') {
-            this.doc.semester = null;
-          } else {
-            this.doc.semester = value;
-          }
-        },
-        selected: null,
-        data: [
-          { value: '', label: i18n('studydocs.no_semester') },
-          { value: '1', label: '1' },
-          { value: '2', label: '2' },
-          { value: '3', label: '3' },
-          { value: '4', label: '4' },
-          { value: '5+', label: '5+' },
-        ],
-      }),
-      m(Dropdown, {
-        name: 'department',
-        onchange: e => {
-          const { value } = e.target;
-          if (value === '') {
-            this.doc.department = null;
-          } else {
-            this.doc.department = value;
-          }
-        },
-        selected: null,
-        data: [
-          { value: '', label: i18n('studydocs.no_department') },
-          { value: 'itet', label: 'ITET' },
-          { value: 'mavt', label: 'MAVT' },
-        ],
-      }),
-      m(InputGroupForm, {
-        name: 'lecture',
-        title: i18n('studydocs.lecture'),
-        oninput: e => {
-          this.doc.lecture = e.target.value;
-        },
-        getSuggestions: (input, callback) =>
-          studydocNew._getInputSuggestions('lecture', input, callback),
-      }),
-      m(InputGroupForm, {
-        name: 'course_year',
-        title: i18n('studydocs.course_year'),
-        type: 'date',
-        required: 1,
-        args: {
-          placeholder: new Date().getFullYear(),
-        },
-        oninput: e => {
-          this.doc.course_year = e.target.value;
-        },
-      }),
-      m(Dropdown, {
-        name: 'type',
-        onchange: e => {
-          const { value } = e.target;
-          if (value === '') {
-            this.doc.type = null;
-          } else {
-            this.doc.type = value;
-          }
-          this.validate();
-        },
-        selected: '',
-        data: [
-          { value: '', label: `${i18n('studydocs.type')}*`, disabled: true },
-          { value: 'exams', label: i18n('exams') },
-          { value: 'cheat sheets', label: i18n('cheat sheets') },
-          { value: 'lecture documents', label: i18n('lecture documents') },
-          { value: 'exercises', label: i18n('exercises') },
-        ],
-      }),
-      m(InputGroupForm, {
-        name: 'files',
-        title: i18n('studydocs.files'),
-        args: {
-          type: 'file',
-          multiple: 1,
-        },
-        onchange: e => {
-          this.doc.files = e.target.files;
-          this.validate();
-        },
-      }),
-      m(Button, {
-        name: 'submit',
-        label: this.isBusy ? i18n('studydocs.uploading') : i18n('studydocs.upload'),
-        active: this.isValid && !this.isBusy,
-        events: {
-          onclick: () => this.submit(),
-        },
-      }),
+    return m('div#fileUpload-container', [
+      m(
+        'div#uploader-info',
+        m('form.new-style', { onsubmit: () => false }, [
+          m(TextField, {
+            name: 'title',
+            label: i18n('studydocs.title'),
+            floatingLabel: true,
+            value: this.doc.title,
+            events: {
+              oninput: e => {
+                this.rfid = e.target.value;
+              },
+            },
+          }),
+          m(TextField, {
+            name: 'author',
+            label: i18n('studydocs.author'),
+            floatingLabel: true,
+            events: {
+              oninput: e => {
+                this.rfid = e.target.value;
+              },
+            },
+          }),
+          m(TextField, {
+            name: 'course_year',
+            label: i18n('studydocs.course_year'),
+            floatingLabel: true,
+            args: {
+              placeholder: new Date().getFullYear(),
+            },
+            oninput: e => {
+              this.doc.course_year = e.target.value;
+            },
+          }),
+          m(Dropdown, {
+            name: i18n('studydocs.type'),
+            onchange: e => {
+              const { value } = e.target;
+              if (value === '') {
+                this.doc.type = null;
+              } else {
+                this.doc.type = value;
+              }
+              this.validate();
+            },
+            selected: '',
+            data: [
+              { value: '', label: `${i18n('studydocs.type')}*`, disabled: true },
+              { value: 'exams', label: i18n('exams') },
+              { value: 'cheat sheets', label: i18n('cheat sheets') },
+              { value: 'lecture documents', label: i18n('lecture documents') },
+              { value: 'exercises', label: i18n('exercises') },
+            ],
+          }),
+          m(FileInput, {
+            multiple: 1,
+            onchange: e => {
+              this.doc.files = e.target.files;
+              this.validate();
+            },
+          }),
+          m(Button, {
+            name: 'submit',
+            label: this.isBusy ? i18n('studydocs.uploading') : i18n('studydocs.upload'),
+            active: this.isValid && !this.isBusy,
+            events: {
+              onclick: () => this.submit(),
+            },
+          }),
+        ])
+      ),
+
+      m('div#document-info', [
+        m(TextField, {
+          name: 'lecture',
+          label: i18n('studydocs.lecture'),
+          floatingLabel: true,
+          events: {
+            oninput: e => {
+              this.rfid = e.target.value;
+            },
+          },
+        }),
+        m(Dropdown, {
+          name: i18n('studydocs.department'),
+          onchange: e => {
+            const { value } = e.target;
+            if (value === '') {
+              this.doc.department = null;
+            } else {
+              this.doc.department = value;
+            }
+          },
+          selected: null,
+          data: [
+            { value: '', label: i18n('studydocs.no_department') },
+            { value: 'itet', label: 'ITET' },
+            { value: 'mavt', label: 'MAVT' },
+          ],
+        }),
+        m(Dropdown, {
+          name: i18n('studydocs.semester'),
+          onchange: e => {
+            const { value } = e.target;
+            if (value === '') {
+              this.doc.semester = null;
+            } else {
+              this.doc.semester = value;
+            }
+          },
+          selected: null,
+          data: [
+            { value: '', label: i18n('studydocs.no_semester') },
+            { value: '1', label: i18n('studydocs.semester1') },
+            { value: '2', label: i18n('studydocs.semester2') },
+            { value: '3', label: i18n('studydocs.semester3') },
+            { value: '4', label: i18n('studydocs.semester4') },
+            { value: '5+', label: i18n('studydocs.semester5+') },
+          ],
+        }),
+
+        m(TextField, {
+          name: 'professor',
+          label: i18n('studydocs.professor'),
+          floatingLabel: true,
+          value: this.doc.professor,
+          events: {
+            oninput: e => {
+              this.rfid = e.target.value;
+            },
+          },
+        }),
+      ]),
     ]);
   }
 }

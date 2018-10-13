@@ -15,26 +15,36 @@ export default class StudydocDetails {
     }
 
     return [
-      m('table', [
-        m('tr', [m('td', m('b', i18n('studydocs.title'))), m('td', document.title)]),
-        m('tr', [m('td', m('b', i18n('studydocs.type'))), m('td', i18n(document.type))]),
-        m('tr', [m('td', m('b', i18n('studydocs.lecture'))), m('td', document.lecture)]),
-        m('tr', [m('td', m('b', i18n('studydocs.professor'))), m('td', document.professor)]),
-        m('tr', [m('td', m('b', i18n('studydocs.semester'))), m('td', document.semester)]),
-        m('tr', [m('td', m('b', i18n('studydocs.author'))), m('td', document.author)]),
-        m('tr', [m('td', m('b', i18n('studydocs.department'))), m('td', document.department)]),
+      m('div.studydoc-details-table', [
+        m('div', [m('b', i18n('studydocs.title')), m('span', document.title)]),
+
+        m('div', [m('b', i18n('studydocs.type')), m('span', document.type)]),
+
+        m('div', [m('b', i18n('studydocs.lecture')), m('span', document.lecture)]),
+
+        m('div', [m('b', i18n('studydocs.professor')), m('span', document.professor)]),
+
+        m('div', [m('b', i18n('studydocs.semester')), m('span', document.semester)]),
+
+        m('div', [m('b', i18n('studydocs.author')), m('span', document.author)]),
+
+        m('div', [m('b', i18n('studydocs.department')), m('span', document.department)]),
       ]),
+
       m(
-        'div',
-        ...document.files.map(item =>
-          m('tr', [
-            m('td', item.file),
-            m(Button, {
-              label: 'Download',
-              events: {
-                onclick: () => window.open(`${apiUrl}${item.file}`, '_blank'),
-              },
-            }),
+        'div.studydoc-details-table',
+        document.files.map(item =>
+          m('div', [
+            m(
+              'span.button-details-style',
+              m(Button, {
+                label: 'Download',
+                events: {
+                  onclick: () => window.open(`${apiUrl}${item.file}`, '_blank'),
+                },
+              })
+            ),
+            m('span.title-wrap-style', item.name),
           ])
         )
       ),
