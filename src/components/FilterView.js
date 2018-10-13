@@ -1,5 +1,6 @@
 import m from 'mithril';
-import { Button, Checkbox, Dropdown, TextField, RadioButton } from '../components';
+import { Button, Checkbox, Dropdown, TextField } from '../components';
+import { RadioGroup } from 'amiv-web-ui-components';
 
 /**
  * FilterViewComponent
@@ -170,21 +171,15 @@ export default class FilterViewComponent {
   }
 
   _createRadioGroup(field) {
-    this.values[field.key] = this.values[field.key] || field.default || [];
-
-    const buttons = field.values.map(value =>
-      m(RadioButton, {
-        ...value,
-        checked: this.values[field.key] === value.value,
-        onChange: state => {
-          if (state.checked) {
-            this.values[field.key] = value.value;
-          }
-          this.notify();
-        },
-      })
-    );
-    return m('div.radio', [field.label ? m('h4', field.label) : m(''), m('div', buttons)]);
+    return m('div.radio', [field.label ? m('h4', field.label) : m(''), m(RadioGroup, {
+      ...field,
+      value: this.values[field.key],
+      onchange: state=>{
+        console.log(state)
+        this.values[field.key] = state;
+        this.notify();
+      }
+    })]);
   }
 
   _createDropdown(field) {

@@ -32,7 +32,8 @@
     "mithril": "^1.1.5",
     "polythene-css": "^1.0.0",
     "polythene-mithril": "^1.0.0",
-    "raven-js": "^3.24.2"
+    "raven-js": "^3.24.2",
+    "amiv-web-ui-components": "git+https://git@gitlab.ethz.ch/amiv/web-ui-components.git"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",

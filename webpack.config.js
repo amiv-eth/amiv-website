@@ -35,6 +35,9 @@ const config = {
             options: { presets: [['env', { targets: 'last 2 years' }]] },
           },
         ],
+        include: [
+          path.resolve(__dirname, 'node_modules/amiv-web-ui-components'),
+        ],
       },
       {
         test: /src\/content\/companies\/markdown\/[a-zA-Z\d-]{3,}\.[a-z]{2}\.md$/, // Check for all .md files in /companies/markdown
