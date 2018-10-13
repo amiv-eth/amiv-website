@@ -31,10 +31,12 @@ export default class Profile {
   static view() {
     return m('div#profile-container', [
       m(UserInfo, { userController }),
-      m(ChangePasswordForm, { userController }),
+      m('div#sessions-subscriptions', [
+        m(AnnounceSubscriptionForm, { userController }),
+        m(SessionInfo, { userController }),
+      ]),
       m(RfidForm, { userController }),
-      m(AnnounceSubscriptionForm, { userController }),
-      m(SessionInfo, { userController }),
+      m(ChangePasswordForm, { userController }),
       m(GroupMemberships, { groupMembershipsController }),
       m(PublicGroups, { publicGroupsController, groupMembershipsController }),
     ]);
