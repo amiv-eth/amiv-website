@@ -1,9 +1,10 @@
 #profile-container {
   display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  grid-gap: 20px;
+  grid-template-columns: repeat(12, auto);
+  grid-gap: 1.5em;
   border: none;
-  margin: 20px;
+  margin-top: 2em;
+  margin-bottom: 2em;
 
   #info {
     grid-column: ~'1 / 13';
@@ -26,7 +27,7 @@
     grid-column: ~'1 / 7';
     grid-row: ~'2 / 3';
     background-color: #fdfdfd;
-    padding: 15px;
+    padding: 1em;
     border: 1px solid @color-grey;
 
     .announce-subscription {
@@ -101,6 +102,7 @@
 
     .group-button {
       grid-column: ~'4 / 5';
+      padding: 0;
     }
   }
 }
