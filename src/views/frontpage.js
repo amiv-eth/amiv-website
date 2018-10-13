@@ -54,6 +54,12 @@ export default class Frontpage {
   oncreate() {
     this.eventController.upcomingEvents.getPageData(1).then(events => {
       this.events = events;
+      if (this.events.length < 3) {
+        this.eventController.pastEvents.getPageData(1).then(pastEvents => {
+          for (let i = this.events.length; i < 3; i += 1) this.events.push(pastEvents[0]);
+          m.redraw();
+        });
+      }
       m.redraw();
     });
     this.jobs = [];
