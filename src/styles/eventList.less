@@ -1,10 +1,12 @@
 #event-list {
   .list-item {
+    overflow: hidden;
     border-bottom: 1px solid #000;
     cursor: pointer;
     display: flex;
     flex-direction: row;
     align-items: center;
+    height: 5em;
 
     .event-title {
       width: 100%;
@@ -33,6 +35,8 @@
 
     img {
       width: 25%;
+      object-fit: cover;
+      object-position: 0 100%;
     }
   }
 
