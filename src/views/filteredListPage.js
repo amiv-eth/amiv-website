@@ -9,15 +9,21 @@ import backIcon from '../images/back.svg';
 function setContainersHeight() {
   const headerHeight = document.querySelector('header').offsetHeight;
   const footerHeight = document.querySelector('footer').offsetHeight;
+  const filter = document.querySelector('.filter');
   const content = document.querySelector('.content');
   const details = document.querySelector('.details');
   if (details) {
-    const compStyles = window.getComputedStyle(details);
-    const paddingTop = compStyles.getPropertyValue('padding-top'); // px
-    const paddingBottom = compStyles.getPropertyValue('padding-bottom'); // px
+    const filterCompStyles = window.getComputedStyle(filter);
+    const filterPaddingTop = filterCompStyles.getPropertyValue('padding-top'); // px
+    const filterPaddingBottom = filterCompStyles.getPropertyValue('padding-bottom'); // px
+    const detailsCompStyles = window.getComputedStyle(details);
+    const detailsPaddingTop = detailsCompStyles.getPropertyValue('padding-top'); // px
+    const detailsPaddingBottom = detailsCompStyles.getPropertyValue('padding-bottom'); // px
+    filter.style.cssText = `height: calc(100vh - ${headerHeight +
+      footerHeight}px - ${filterPaddingTop} - ${filterPaddingBottom})`;
     content.style.cssText = `height: calc(100vh - ${headerHeight + footerHeight}px)`;
     details.style.cssText = `height: calc(100vh - ${headerHeight +
-      footerHeight}px - ${paddingTop} - ${paddingBottom})`;
+      footerHeight}px - ${detailsPaddingTop} - ${detailsPaddingBottom})`;
   }
 }
 
