@@ -101,7 +101,10 @@ export default class Header {
                         },
                         [
                           i18n(subitem.label),
-                          m('img', { src: subitem.external ? ExternalLink : '' }),
+                          m('img', {
+                            src: subitem.url ? ExternalLink : '',
+                            style: 'width:12px;height:12px;padding:0 0 0 5px;',
+                          }),
                         ]
                       )
                     )

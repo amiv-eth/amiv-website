@@ -10,7 +10,7 @@ export default class Navigation {
   constructor(items) {
     this._items = items.map(item => {
       const newItem = Object.assign({}, item);
-      if (newItem.external) {
+      if (newItem.url) {
         newItem.getLink = () => Navigation._getUrlLink(newItem.url);
       } else if (newItem.addLanguagePrefix) {
         newItem.getLink = addLanguagePrefix =>
@@ -117,15 +117,11 @@ export const mainNavigation = new Navigation([
       },
       {
         label: 'Statutes',
-        path: '/statutes',
-        addLanguagePrefix: true,
-        onupdate: m.route.link,
+        url: 'https://cloud.amiv.ethz.ch/index.php/s/statutes',
       },
       {
         label: 'Minutes',
-        path: '/minutes',
-        addLanguagePrefix: true,
-        onupdate: m.route.link,
+        url: 'https://cloud.amiv.ethz.ch/index.php/s/minutes',
       },
     ]),
   },
@@ -155,7 +151,6 @@ export const mainNavigation = new Navigation([
       },
       {
         label: 'Companies',
-        external: true,
         url: {
           de: 'https://kontakt.amiv.ethz.ch/de/students/companyprofiles',
           en: 'https://kontakt.amiv.ethz.ch/en/students/companyprofiles',

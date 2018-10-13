@@ -12,11 +12,9 @@ import profile from './views/profile';
 import layout from './views/layout';
 import frontpage from './views/frontpage';
 import logout from './views/logout';
-import statutes from './views/amiv/statutes';
 import contact from './views/contact';
 import about from './views/amiv/about';
 import board from './views/amiv/board';
-import minutes from './views/amiv/minutes';
 import teams from './views/amiv/teams';
 import jobOfferList from './views/jobs/jobofferList';
 import legalNotice from './views/legalNotice';
@@ -65,10 +63,6 @@ Raven.context(() => {
       view: () => m(frontpage),
     },
     {
-      url: '/:language/statutes',
-      view: () => m(statutes),
-    },
-    {
       url: '/:language/board',
       view: () => m(board),
     },
@@ -79,10 +73,6 @@ Raven.context(() => {
     {
       url: '/:language/about',
       view: () => m(about),
-    },
-    {
-      url: '/:language/minutes',
-      view: () => m(minutes),
     },
     {
       url: '/:language/contact',
