@@ -11,7 +11,7 @@ export default class AMIV {
   }
 
   view() {
-    return m.trust(this.content);
+    return m('div#about', m.trust(this.content));
   }
 
   async _load() {

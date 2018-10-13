@@ -1,7 +1,8 @@
 import m from 'mithril';
 import { mainNavigation } from '../models/navigation';
 import AmivLogo from '../images/logo.svg';
-import MobileMenuButton from '../images/mobileMenuButton.svg';
+import MobileMenuIcon from '../images/mobileMenuButton.svg';
+import ExternalLinkIcon from '../images/external.svg';
 import { i18n, currentLanguage, switchLanguage } from '../models/language';
 import { Button } from '../components';
 import { isLoggedIn, login } from '../models/auth';
@@ -51,7 +52,7 @@ export default class Header {
                   this._mobileMenuShowing = !this._mobileMenuShowing;
                 },
               },
-              m('img', { src: MobileMenuButton, alt: i18n('Menu') })
+              m('img', { src: MobileMenuIcon, alt: i18n('Menu') })
             ),
           ]
         )
@@ -98,7 +99,15 @@ export default class Header {
                           href: subitem.getLink(),
                           onupdate: subitem.onupdate,
                         },
-                        i18n(subitem.label)
+                        [
+                          i18n(subitem.label),
+                          subitem.url
+                            ? m('img', {
+                                src: ExternalLinkIcon,
+                                style: 'width:12px;height:12px;padding:0 0 0 5px;',
+                              })
+                            : m(''),
+                        ]
                       )
                     )
                   ),

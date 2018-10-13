@@ -1,6 +1,7 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 const HtmlWebpackInlineSVGPlugin = require('html-webpack-inline-svg-plugin');
+const path = require('path');
 
 const config = {
   context: `${__dirname}/src`, // `__dirname` is root of project and `src` is source
@@ -21,21 +22,25 @@ const config = {
     port: 9000,
     hot: true,
     index: 'index.html',
-    historyApiFallback: {
-      index: 'index.html',
-    },
+    historyApiFallback: true,
   },
 
   module: {
     rules: [
       {
         test: /\.js$/, // Check for all js files
-        exclude: /node_modules/,
         use: [
           {
             loader: 'babel-loader',
-            options: { presets: [['env', { targets: 'last 2 years' }]] },
+            options: {
+              presets: [['env', { targets: 'last 2 years' }]],
+              plugins: ['transform-object-rest-spread'],
+            },
           },
+        ],
+        include: [
+          path.resolve(__dirname, './src'),
+          path.resolve(__dirname, 'node_modules/amiv-web-ui-components'),
         ],
       },
       {
