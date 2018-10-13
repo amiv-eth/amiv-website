@@ -72,10 +72,13 @@ export default class Frontpage {
       {
         title_en: 'also pretty hot',
         title_de: 'auch ziemlich heiss',
+        imageurl:
+          'https://image.shutterstock.com/z/stock-photo-group-of-happy-people-isolated-over-white-background-102307264.jpg',
       },
       {
         title_en: 'kinda hot',
         title_de: 'lauwarm',
+        imageurl: 'https://bit.ly/2OUjN5w',
       },
     ];
 
