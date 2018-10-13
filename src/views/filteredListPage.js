@@ -6,6 +6,21 @@ import filterIcon from '../images/filterList.svg';
 import closeIcon from '../images/close.svg';
 import backIcon from '../images/back.svg';
 
+function setContainersHeight() {
+  const headerHeight = document.querySelector('header').offsetHeight;
+  const footerHeight = document.querySelector('footer').offsetHeight;
+  const content = document.querySelector('.content');
+  const details = document.querySelector('.details');
+  if (details) {
+    const compStyles = window.getComputedStyle(details);
+    const paddingTop = compStyles.getPropertyValue('padding-top'); // px
+    const paddingBottom = compStyles.getPropertyValue('padding-bottom'); // px
+    content.style.cssText = `height: calc(100vh - ${headerHeight + footerHeight}px)`;
+    details.style.cssText = `height: calc(100vh - ${headerHeight +
+      footerHeight}px - ${paddingTop} - ${paddingBottom})`;
+  }
+}
+
 /**
  * FilteredListDataStore class
  *
@@ -117,7 +132,7 @@ export class FilteredListPage {
    * @param {String} itemId id of the item to be shown on the details page
    */
   oninit(vnode, itemId) {
-    document.addEventListener('scroll', () => this.onscroll());
+    document.addEventListener('scroll', e => this.onscroll(e), true);
     window.addEventListener('resize', () => this.onscroll());
 
     if (!this.dataStore.isInitialized) {
@@ -136,6 +151,11 @@ export class FilteredListPage {
           this.dataStore.detailsLoaded = true;
         });
     }
+  }
+
+  // TODO: solve eslint error
+  onupdate(vnode) {
+    setContainersHeight();
   }
 
   /* eslint-disable class-methods-use-this, no-unused-vars */
@@ -263,7 +283,8 @@ export class FilteredListPage {
       });
   }
 
-  onscroll() {
+  onscroll(e) {
+    console.log(e);
     const filterView = document.getElementById(`${this.name}ListFilterView`);
     const detailsView = document.getElementById(`${this.name}ListDetailsView`);
     this._updateViewPosition(filterView, 'filterView');
