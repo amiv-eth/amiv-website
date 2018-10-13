@@ -88,8 +88,8 @@ export const mainNavigation = new Navigation([
         onupdate: m.route.link,
       },
       {
-        label: 'Commissions',
-        path: '/commissions',
+        label: 'Teams',
+        path: '/teams',
         addLanguagePrefix: true,
         onupdate: m.route.link,
       },
