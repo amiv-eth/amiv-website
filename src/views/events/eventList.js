@@ -176,7 +176,7 @@ export default class EventList extends FilteredListPage {
 
   static _renderEventListItem(event, className = '') {
     const imageurl = event.img_poster ? `${apiUrl}${event.img_poster.file}` : AmivLogo;
-    const price = event.price ? `Fr. ${event.price}` : 'Gratis';
+    const price = event.price ? `Fr. ${event.price}` : i18n('events.free');
     return m(
       'div',
       {
