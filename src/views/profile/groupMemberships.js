@@ -83,7 +83,6 @@ export default class GroupMemberships {
       m(TextField, {
         name: 'group_search',
         label: i18n('profile.search_groups'),
-        floatingLabel: true,
         valid: this.valid,
         events: {
           oninput: e => {
