@@ -19,8 +19,6 @@ import board from './views/amiv/board';
 import minutes from './views/amiv/minutes';
 import teams from './views/amiv/teams';
 import jobOfferList from './views/jobs/jobofferList';
-import companyList from './views/companies/companyList';
-import companyDetail from './views/companies/companyDetail';
 import legalNotice from './views/legalNotice';
 import './styles/base.less';
 
@@ -109,14 +107,6 @@ Raven.context(() => {
     {
       url: '/:language/jobs/:offerId',
       view: vnode => m(jobOfferList, vnode.attrs),
-    },
-    {
-      url: '/:language/companies',
-      view: () => m(companyList),
-    },
-    {
-      url: '/:language/companies/:companyId',
-      view: vnode => m(companyDetail, vnode.attrs),
     },
     {
       url: '/:language/legal-notice',

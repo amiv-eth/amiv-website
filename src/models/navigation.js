@@ -10,8 +10,11 @@ export default class Navigation {
   constructor(items) {
     this._items = items.map(item => {
       const newItem = Object.assign({}, item);
-      if (newItem.addLanguagePrefix) {
-        newItem.getLink = addLanguagePrefix => Navigation._getLink(newItem.path, addLanguagePrefix);
+      if (newItem.external) {
+        newItem.getLink = () => Navigation._getUrlLink(newItem.url);
+      } else if (newItem.addLanguagePrefix) {
+        newItem.getLink = addLanguagePrefix =>
+          Navigation._getPathLink(newItem.path, addLanguagePrefix);
       } else {
         newItem.getLink = () => newItem.path;
       }
@@ -44,11 +47,30 @@ export default class Navigation {
     this._selectedIndex = this._checkMenuItemSelection();
   }
 
-  static _getLink(path, addLanguagePrefix = true) {
+  static _getPathLink(path, addLanguagePrefix = true) {
     if (addLanguagePrefix) {
       return `/${currentLanguage()}${path}`;
     }
     return path;
+  }
+
+  static _getUrlLink(url) {
+    if (url instanceof Object) {
+      if (url[currentLanguage()]) {
+        return url[currentLanguage()];
+      }
+
+      let language;
+
+      if (url.en) {
+        language = 'en';
+      } else {
+        [language] = Object.keys(url);
+      }
+      return url[language];
+    }
+
+    return url;
   }
 
   _checkMenuItemSelection() {
@@ -133,9 +155,11 @@ export const mainNavigation = new Navigation([
       },
       {
         label: 'Companies',
-        path: '/companies',
-        addLanguagePrefix: true,
-        onupdate: m.route.link,
+        external: true,
+        url: {
+          de: 'https://kontakt.amiv.ethz.ch/de/students/companyprofiles',
+          en: 'https://kontakt.amiv.ethz.ch/en/students/companyprofiles',
+        },
       },
     ]),
   },

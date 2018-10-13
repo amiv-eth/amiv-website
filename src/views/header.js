@@ -2,6 +2,7 @@ import m from 'mithril';
 import { mainNavigation } from '../models/navigation';
 import AmivLogo from '../images/logo.svg';
 import MobileMenuButton from '../images/mobileMenuButton.svg';
+import ExternalLink from '../images/external.svg';
 import { i18n, currentLanguage, switchLanguage } from '../models/language';
 import { Button } from '../components';
 import { isLoggedIn, login } from '../models/auth';
@@ -98,7 +99,10 @@ export default class Header {
                           href: subitem.getLink(),
                           onupdate: subitem.onupdate,
                         },
-                        i18n(subitem.label)
+                        [
+                          i18n(subitem.label),
+                          m('img', { src: subitem.external ? ExternalLink : '' }),
+                        ]
                       )
                     )
                   ),
