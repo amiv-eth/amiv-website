@@ -1,20 +1,12 @@
 import m from 'mithril';
 import { EventController } from '../models/events';
 import { JobofferController } from '../models/joboffers';
-import { i18n, currentLanguage } from '../models/language';
+import { i18n } from '../models/language';
 import { Card } from '../components';
 
 // Render the Hot Cards, with link and imageurl
 const renderHotCards = (item, index) => {
   const card_item = item;
-  switch (currentLanguage()) {
-    case 'de':
-      card_item.title = item.title_de;
-      break;
-    case 'en':
-    default:
-      card_item.title = item.title_en;
-  }
   if (index === 0) return m('div.hot-first-card', m(Card, card_item));
   return m('div.hot-card', m(Card, card_item));
 };
@@ -23,14 +15,6 @@ const renderHotCards = (item, index) => {
 const renderRowCards = (item, type) => {
   const card_item = item;
   if (!card_item.href) card_item.href = `${m.route.get() + type}/${card_item._id}`;
-  switch (currentLanguage()) {
-    case 'de':
-      card_item.title = item.title_de;
-      break;
-    case 'en':
-    default:
-      card_item.title = item.title_en;
-  }
   return m('div.frontpage-row-card', m(Card, card_item));
 };
 
