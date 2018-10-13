@@ -290,23 +290,8 @@ export class FilteredListPage {
 
   onscroll() {
     const filterView = document.getElementsByClassName(`content`)[0];
-    // const detailsView = document.getElementById(`${this.name}ListDetailsView`);
-    // this._updateViewPosition(filterView, 'filterView');
-    // this._updateViewPosition(detailsView, 'detailsView');
     this.dataStore.lastScrollPosition = filterView.scrollTop;
   }
-
-  // _updateViewPosition(element, positionTopKey) {
-  // if (!element) return;
-  // const windowHeight = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
-  // const scrollDelta = element.scrollTop - this.dataStore.lastScrollPosition;
-  // const maxPosition = Math.min(windowHeight - element.scrollHeight, 0);
-  // const currentPosition = this.dataStore.getPositionTop(positionTopKey);
-  // const positionTop = Math.min(0, Math.max(currentPosition - scrollDelta, maxPosition));
-  // this.dataStore.setPositionTop(positionTopKey, positionTop);
-  // // eslint-disable-next-line no-param-reassign
-  // element.style.top = `${this.dataStore.lastScrollPosition}px`;
-  // }
 
   view() {
     const classes = ['filtered-list'];
@@ -360,9 +345,9 @@ export class FilteredListPage {
       },
       [
         mobileButton,
-        m('div.filter-container', this._filterView),
+        this._filterView,
         m('div.content', this._listContainerView),
-        this.hasDetailsPage ? m('div.details-container', this._detailsContainerView) : m(''),
+        this.hasDetailsPage ? this._detailsContainerView : m(''),
       ]
     );
   }
