@@ -1,4 +1,6 @@
 import m from 'mithril';
+import { apiUrl } from 'config';
+import AmivLogo from '../../images/logoNoText.svg';
 import { i18n, currentLanguage } from '../../models/language';
 import { EventController } from '../../models/events';
 import EventDetails from './eventDetails';
@@ -173,6 +175,8 @@ export default class EventList extends FilteredListPage {
   }
 
   static _renderEventListItem(event, className = '') {
+    const imageurl = event.img_poster ? `${apiUrl}${event.img_poster.file}` : AmivLogo;
+    const price = event.price ? `Fr. ${event.price}` : 'Gratis';
     return m(
       'div',
       {
@@ -181,7 +185,19 @@ export default class EventList extends FilteredListPage {
           m.route.set(`/${currentLanguage()}/events/${event._id}`);
         },
       },
-      [m('h2', event.getTitle()), m('span', event.time_start), m('span', event.price)]
+      [
+        m('img', { src: imageurl }),
+        m(
+          'div',
+          {
+            class: 'event-title',
+          },
+          [
+            m('h2', event.getTitle()),
+            m('div', [m('span', price), m('span', event.time_start.slice(0, -10))]),
+          ]
+        ),
+      ]
     );
   }
 }
