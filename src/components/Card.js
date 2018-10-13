@@ -9,9 +9,10 @@ export default class CheckboxComponent {
   }
 
   view() {
-    const { title, href, img_poster } = this.item;
+    const { title, href, img_poster, logo } = this.item;
     let { imageurl } = this.item;
     if (img_poster) imageurl = `${apiUrl}${img_poster.file}`;
+    else if (logo) imageurl = `${apiUrl}${logo.file}`;
     const style = imageurl
       ? `background-image: url(${imageurl})`
       : `background-image: url(${AmivLogo})`;

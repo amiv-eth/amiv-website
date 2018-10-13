@@ -22,7 +22,7 @@ const renderHotCards = (item, index) => {
 // Render the frontpage cards, with href and imageurl
 const renderRowCards = (item, type) => {
   const card_item = item;
-  card_item.href = `${m.route.get() + type}/${card_item._id}`;
+  if (!card_item.href) card_item.href = `${m.route.get() + type}/${card_item._id}`;
   switch (currentLanguage()) {
     case 'de':
       card_item.title = item.title_de;
@@ -35,7 +35,7 @@ const renderRowCards = (item, type) => {
 };
 
 export default class Frontpage {
-  constructor() {
+  oninit() {
     this.eventController = new EventController(
       {
         max_results: 3,
