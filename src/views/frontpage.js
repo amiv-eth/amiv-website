@@ -3,6 +3,7 @@ import { EventController } from '../models/events';
 import { JobofferController } from '../models/joboffers';
 import { i18n } from '../models/language';
 import { Card } from '../components';
+import { SocialMediaPlugin } from '../components';
 
 // Render the Hot Cards, with link and imageurl
 const renderHotCards = (item, index) => {
@@ -12,6 +13,9 @@ const renderHotCards = (item, index) => {
 
 // Render the frontpage cards, with href and imageurl
 const renderRowCards = item => m('div.frontpage-row-card', m(Card, item));
+
+//Render socialMedia plugins
+const renderSocialMedia = item => m('div.frontpage-row-card', m(SocialMediaPlugin, item));
 
 export default class Frontpage {
   constructor() {
@@ -48,20 +52,15 @@ export default class Frontpage {
       {
         title: 'Facebook',
         href: 'https://www.facebook.com/AMIV.ETHZ/',
-        imageurl:
-          'http://www.fub.se/sites/www.fub.se/files/styles/artikelbild_full/public/facebook-logotyp.jpg?itok=e244p_Sa',
       },
 
       {
         title: 'Instagram',
         href: 'https://www.instagram.com/amiv_eth/?hl=de',
-        imageurl:
-          'https://i2.wp.com/www.newscouch.de/wp-content/uploads/2017/11/insta-logo.jpg?fit=2569%2C1761&ssl=1',
       },
       {
         title: 'Twitter',
         href: 'https://twitter.com/amiv_ethz',
-        imageurl: 'https://rngeternal.com/wp-content/uploads/2017/12/twitter-logo.png',
       },
     ];
   }
@@ -75,7 +74,7 @@ export default class Frontpage {
       m('h2', 'Jobs'),
       m('div.frontpage-row', this.jobs.map(item => renderRowCards(item))),
       m('h2', i18n('frontpage.social_media')),
-      m('div.frontpage-row', this.socialmedia.map(item => renderRowCards(item))),
+      m('div.frontpage-row', this.socialmedia.map(item => renderSocialMedia(item))),
     ]);
   }
 }
