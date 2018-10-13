@@ -7,9 +7,19 @@
   text-align: center;
   border: none;
 
+  @media @mobile {
+    margin: 0;
+  }
+
   h2 {
+    @media @desktop, @wide {
+      font-size: 2em;
+    }
+
+    @media @tablet, @mobile {
+      font-size: 1.5em;
+    }
     text-align: left;
-    font-size: 2em;
     font-weight: normal;
     color: #333;
     grid-column: ~'1 / 13';
@@ -30,17 +40,32 @@
     border: none;
 
     .hot-first-card {
-      background-color: #f00;
-      grid-column: ~'1 / 3';
-      grid-row: ~'1 / 3';
-      padding-top: (9 / 16) * 100%;
-      position: relative;
-      height: 0;
+      @media @wide, @desktop, @tablet {
+        grid-column: ~'1 / 3';
+        grid-row: ~'1 / 3';
+        padding-top: (9 / 16) * 100%;
+        position: relative;
+        height: 0;
+      }
+
+      @media @mobile {
+        grid-column: ~'1 / -1';
+        position: relative;
+        height: 9/16*100vw;
+      }
     }
 
     .hot-card {
-      grid-column: ~'3 / 4';
-      position: relative;
+      @media @wide, @desktop, @tablet {
+        grid-column: ~'3 / 4';
+        position: relative;
+      }
+
+      @media @mobile {
+        grid-column: ~'1 / -1';
+        position: relative;
+        height: 9/16*100vw;
+      }
     }
   }
 
@@ -53,9 +78,18 @@
     grid-gap: 30px;
 
     .frontpage-row-card {
-      padding-top: (9 / 16) * 100%;
-      position: relative;
-      height: 0;
+      @media @wide, @desktop, @tablet {
+        padding-top: (9 / 16) * 100%;
+        position: relative;
+        height: 0;
+      }
+
+      @media @mobile {
+        grid-column: ~'1 / -1';
+        left: 0;
+        position: relative;
+        height: 9/16*100vw;
+      }
     }
   }
 }
