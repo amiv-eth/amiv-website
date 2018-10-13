@@ -1,12 +1,13 @@
 @import './colors.less';
 
 .filtered-list {
+
   min-height: 100%;
   display: grid;
-  grid-template-columns: 25% 40% auto;
+  grid-template-columns: 20% auto 25%;
 
   @media @tablet {
-    grid-template-columns: 40% auto;
+    grid-template-columns: 20% auto;
   }
 
   @media @mobile {
@@ -151,6 +152,9 @@
     width: 100%;
     padding: 1em 0;
     text-align: center;
+    border: 2px solid @color-grey;
+    background-color: #F2F2F2;
+    font-weight: bold;
 
     &.active {
       cursor: pointer;

@@ -16,19 +16,40 @@ export default class StudydocDetails {
 
     return [
       m('div.studydoc-details-table', [
-        m('div', [m('b', i18n('studydocs.title')), m('span', document.title)]),
+        m('div.flex-container', [
+          m('div', m('b', i18n('studydocs.title'))),
+          m('div', document.title),
+        ]),
 
-        m('div', [m('b', i18n('studydocs.type')), m('span', document.type)]),
+        m('div.flex-container', [
+          m('div', m('b', i18n('studydocs.type'))),
+          m('div', document.type),
+        ]),
 
-        m('div', [m('b', i18n('studydocs.lecture')), m('span', document.lecture)]),
+        m('div.flex-container', [
+          m('div', m('b', i18n('studydocs.lecture'))),
+          m('div', document.lecture),
+        ]),
 
-        m('div', [m('b', i18n('studydocs.professor')), m('span', document.professor)]),
+        m('div.flex-container', [
+          m('div', m('b', i18n('studydocs.professor'))),
+          m('div', document.professor),
+        ]),
 
-        m('div', [m('b', i18n('studydocs.semester')), m('span', document.semester)]),
+        m('div.flex-container', [
+          m('div', m('b', i18n('studydocs.semester'))),
+          m('div', document.semester),
+        ]),
 
-        m('div', [m('b', i18n('studydocs.author')), m('span', document.author)]),
+        m('div.flex-container', [
+          m('div', m('b', i18n('studydocs.author'))),
+          m('div', document.author),
+        ]),
 
-        m('div', [m('b', i18n('studydocs.department')), m('span', document.department)]),
+        m('div.flex-container', [
+          m('div', m('b', i18n('studydocs.department'))),
+          m('div', document.department),
+        ]),
       ]),
 
       m(
@@ -44,7 +65,7 @@ export default class StudydocDetails {
                 },
               })
             ),
-            m('span.title-wrap-style', item.name),
+            m('span#title-wrap-style', item.name),
           ])
         )
       ),

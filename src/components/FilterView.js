@@ -250,19 +250,21 @@ export default class FilterViewComponent {
   view() {
     const views = [];
 
-    this.fields.forEach(field => {
-      if (field.type === 'text') {
-        views.push(this._createTextField(field));
-      } else if (field.type === 'checkbox') {
-        views.push(this._createCheckboxGroup(field));
-      } else if (field.type === 'radio') {
-        views.push(this._createRadioGroup(field));
-      } else if (field.type === 'dropdown') {
-        views.push(this._createDropdown(field));
-      } else if (field.type === 'button') {
-        views.push(this._createButton(field));
-      }
-    });
+    m('div#filter-page-style', [
+      this.fields.forEach(field => {
+        if (field.type === 'text') {
+          views.push(this._createTextField(field));
+        } else if (field.type === 'checkbox') {
+          views.push(this._createCheckboxGroup(field));
+        } else if (field.type === 'radio') {
+          views.push(this._createRadioGroup(field));
+        } else if (field.type === 'dropdown') {
+          views.push(this._createDropdown(field));
+        } else if (field.type === 'button') {
+          views.push(this._createButton(field));
+        }
+      }),
+    ]);
 
     return views;
   }
