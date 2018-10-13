@@ -45,13 +45,21 @@ export default class Frontpage {
     );
     this.jobOfferController = new JobofferController({ max_results: 3 });
 
+    this.hot = [];
     this.events = [];
+    this.jobs = [];
+    this.socialmedia = [];
+  }
+
+  oncreate() {
     this.eventController.upcomingEvents.getPageData(1).then(events => {
       this.events = events;
+      m.redraw();
     });
     this.jobs = [];
     this.jobOfferController.getPageData(1).then(jobs => {
       this.jobs = jobs;
+      m.redraw();
     });
 
     // MOCKDATA
