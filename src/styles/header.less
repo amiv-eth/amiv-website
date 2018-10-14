@@ -38,6 +38,8 @@ header {
 }
 
 header nav {
+  padding: 0 1em;
+  margin: 0 auto;
   display: grid;
   grid-area: navigation;
   min-height: @dimension-desktop-header-height;
@@ -184,6 +186,10 @@ header ul.submenu {
   }
 
   li {
+    @media @mobile {
+      background-color: @color-mobile-submenu;
+    }
+
     &.active {
       transition: height 300ms;
       background-color: @color-grey;
