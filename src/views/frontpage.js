@@ -1,20 +1,12 @@
 import m from 'mithril';
 import { EventController } from '../models/events';
 import { JobofferController } from '../models/joboffers';
-import { i18n, currentLanguage } from '../models/language';
+import { i18n } from '../models/language';
 import { Card } from '../components';
 
 // Render the Hot Cards, with link and imageurl
 const renderHotCards = (item, index) => {
   const card_item = item;
-  switch (currentLanguage()) {
-    case 'de':
-      card_item.title = item.title_de;
-      break;
-    case 'en':
-    default:
-      card_item.title = item.title_en;
-  }
   if (index === 0) return m('div.hot-first-card', m(Card, card_item));
   return m('div.hot-card', m(Card, card_item));
 };
@@ -23,16 +15,18 @@ const renderHotCards = (item, index) => {
 const renderRowCards = (item, type) => {
   const card_item = item;
   if (!card_item.href) card_item.href = `${m.route.get() + type}/${card_item._id}`;
-  switch (currentLanguage()) {
-    case 'de':
-      card_item.title = item.title_de;
-      break;
-    case 'en':
-    default:
-      card_item.title = item.title_en;
-  }
   return m('div.frontpage-row-card', m(Card, card_item));
 };
+
+async function getData(state) {
+  const events = await state.eventController.upcomingEvents.getPageData(1);
+  if (events.length < 3) {
+    const pastEvents = await state.eventController.pastEvents.getPageData(1);
+    for (let i = events.length; i < 3; i += 1) events.push(pastEvents[0]);
+  }
+  const jobs = await state.jobOfferController.getPageData(1);
+  return { ...{ events }, ...{ jobs } };
+}
 
 export default class Frontpage {
   oninit() {
@@ -52,13 +46,9 @@ export default class Frontpage {
   }
 
   oncreate() {
-    this.eventController.upcomingEvents.getPageData(1).then(events => {
-      this.events = events;
-      m.redraw();
-    });
-    this.jobs = [];
-    this.jobOfferController.getPageData(1).then(jobs => {
-      this.jobs = jobs;
+    getData(this).then(result => {
+      this.events = result.events;
+      this.jobs = result.jobs;
       m.redraw();
     });
 
