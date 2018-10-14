@@ -59,7 +59,7 @@ export default class StudydocDetails {
             m(
               'span.button-details-style',
               m(Button, {
-                label: 'Download',
+                label: `Download ${item.name.split('.').pop()}`,
                 events: {
                   onclick: () => window.open(`${apiUrl}${item.file}`, '_blank'),
                 },
