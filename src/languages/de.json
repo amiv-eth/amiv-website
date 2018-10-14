@@ -144,6 +144,8 @@
         "events.delete_signup": "Anmeldung löschen",
         "events.loading": "Laden...",
         "events.load_more": "Mehr Events laden",
+        "events.emailsignup_success": "Anmeldung erfolgreich.",
+        "events.emailsignup_fail": "Anmeldung fehlgeschlagen. Probier es später wieder.",
         "companies.contact_information": "Kontakt-Informationen",
         "companies.email": "Email",
         "companies.phone": "Telefon",

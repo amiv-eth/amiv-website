@@ -159,6 +159,8 @@
         "errors.not_found.text": "The page you are looking for could not be found.",
         "errors.translation_unavailable": "Translation not available.",
         "errors.shown_language": "Showing text in %{shown_language}",
+        "events.emailsignup_success": "Sign up successful.",
+        "events.emailsignup_fail": "Sign up failed. Try again later.",
         "filtered_list.show_filter": "Show filter",
         "filtered_list.hide_filter": "Hide filter",
         "filtered_list.show_list": "Back to the list"
