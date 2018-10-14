@@ -22,7 +22,8 @@ async function getData(state) {
   const events = await state.eventController.upcomingEvents.getPageData(1);
   if (events.length < 3) {
     const pastEvents = await state.eventController.pastEvents.getPageData(1);
-    for (let i = events.length; i < 3; i += 1) events.push(pastEvents[0]);
+    const { length } = events;
+    for (let i = 0; i < 3 - length; i += 1) events.push(pastEvents[i]);
   }
   const jobs = await state.jobOfferController.getPageData(1);
   return { ...{ events }, ...{ jobs } };
