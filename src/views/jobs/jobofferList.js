@@ -122,7 +122,7 @@ export default class JobofferList extends FilteredListPage {
         m(
           'div',
           {
-            class: 'job-title',
+            class: 'list-title',
           },
           [
             m('h2', joboffer.getTitle()),

@@ -190,7 +190,7 @@ export default class EventList extends FilteredListPage {
         m(
           'div',
           {
-            class: 'event-title',
+            class: 'list-title',
           },
           [
             m('h2', event.getTitle()),

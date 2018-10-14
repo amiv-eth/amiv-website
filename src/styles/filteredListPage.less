@@ -69,7 +69,9 @@
   div.filter,div.details {
     position: sticky;
     top: 0;
-    padding: 5px;
+    padding: 1.5em;
+    z-index: 101;
+    overflow-y: scroll;
 
     @media @mobile {
       position: relative;
@@ -79,10 +81,6 @@
   }
 
   .filter {
-    height: 100%;
-    z-index: 101;
-    overflow-y: scroll;
-
     @media @mobile {
       display: none;
       border-bottom: 1em solid @color-grey;
@@ -109,9 +107,6 @@
   }
 
   .content {
-    border: 3px solid @color-grey;
-    border-width: 0 3px;
-    height: 100vh;
     overflow-y: scroll;
 
     @media @mobile {
@@ -137,9 +132,53 @@
     div.list-item {
       border-bottom: 1px solid @color-grey;
       cursor: pointer;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
 
       &:last-of-type {
         border: none;
+      }
+
+      .list-title {
+        width: 100%;
+        padding: 1em .4em;
+      }
+
+      .list-title h2 {
+        display: inline-block;
+        margin: 0;
+        padding: 0;
+        font-size: 1em;
+        color: #004398;
+      }
+
+      .list-title span {
+        margin: .5em 1em 0 0;
+        font-size: .8em;
+        font-weight: 100;
+        color: rgb(107, 108, 119);
+      }
+
+      .list-title div {
+        display: flex;
+        justify-content: space-between;
+      }
+
+      img {
+        width: 25%;
+      }
+
+      .registration {
+        background-color: #fff;
+      }
+
+      .upcoming {
+        background-color: #bbb;
+      }
+
+      .past {
+        background-color: #777;
       }
     }
 
@@ -161,14 +200,9 @@
   }
 
   .details {
-    padding: 0 .8em;
-
     @media @tablet {
       grid-column: ~'1 / 3';
     }
-    height: 100%;
-    z-index: 101;
-    overflow-y: scroll;
 
     a {
       color: #005dbe;
