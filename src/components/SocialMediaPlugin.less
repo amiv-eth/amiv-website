@@ -4,7 +4,6 @@
   position: absolute;
   top: 0;
   left: 0;
-  background-color: #f00;
   padding: 0%;
   margin: 0%;
   overflow: scroll;
@@ -14,4 +13,68 @@
   //overflow: scroll;
 }
 
-.twitter::-webkit-scrollbar { width: 0 !important }
+.facebook{
+  text-align: left;
+  height: 100%;
+  overflow: hidden;
+
+  p.picture{
+    width: 60%;
+    display: inline-block;
+    vertical-align: top;
+    right: 0;
+    font-size: 0.85em;
+  }
+
+  img{
+    max-width: 39%;
+    height: 100%;
+    display: inline-block;
+  }
+
+  .time{
+    text-align: right;
+    margin-right: 5px;
+  }
+
+  .header{
+    font-size: 21px;
+    height: 10%;
+    vertical-align: middle;
+    border-bottom: 1px solid #dfe3ee;
+    margin-bottom: 10px;
+  }
+
+  a:link{
+    text-decoration: none;
+    color: #3b5998;
+  }
+  a:visited {
+      text-decoration: none;
+      color: #3b5998;
+  }
+
+  .element{
+    height: 89%;
+    width: 100%;
+    display: block;
+    overflow: hidden;
+    border-bottom-color: gray;
+    padding-bottom: 5px;
+
+    > div~img{
+      margin-right: 10px;
+    }
+  }
+
+
+}
+
+.facebook:link{
+  text-decoration: none;
+}
+
+::-webkit-scrollbar {
+  width: 0px;  /* remove scrollbar space */
+  background: transparent;  /* optional: just make scrollbar invisible */
+}

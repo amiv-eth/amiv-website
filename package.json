@@ -23,16 +23,17 @@
   "license": "ISC",
   "dependencies": {
     "ajv": "^5.5.0",
+    "amiv-web-ui-components": "git+https://git@gitlab.ethz.ch/amiv/web-ui-components.git",
     "babel-polyfill": "^6.26.0",
     "email-validator": "^2.0.3",
-    "i18n4v": "^0.2.2",
     "html-escape": "^2.0.0",
+    "i18n4v": "^0.2.2",
     "marked": "^0.3.18",
     "mithril": "^1.1.5",
+    "moment": "^2.22.2",
     "polythene-css": "^1.0.0",
     "polythene-mithril": "^1.0.0",
-    "raven-js": "^3.24.2",
-    "amiv-web-ui-components": "git+https://git@gitlab.ethz.ch/amiv/web-ui-components.git"
+    "raven-js": "^3.24.2"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
