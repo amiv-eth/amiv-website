@@ -14,7 +14,7 @@
 
     > a {
       display: block;
-      height: 100%;
+      height: 88px;
       line-height: @dimension-desktop-header-height;
       padding: 0 1.3em;
       color: #fff;
@@ -86,7 +86,7 @@ header ul {
   list-style: none;
   margin: 0;
   padding: 0;
-  height: 100%;
+  height: @dimension-desktop-header-height;
   transition: height 300ms;
 
   @media @mobile {
@@ -224,9 +224,11 @@ header ul.profile {
   grid-area: profile;
   height: @dimension-desktop-header-height;
 
-  > li a {
-    line-height: @dimension-desktop-header-height;
-    padding: calc(@dimension-desktop-header-height / 4) 1.3em;
+  li.not-logged-in {
+    > a {
+      line-height: @dimension-desktop-header-height;
+      padding: calc(@dimension-desktop-header-height / 4) 1.3em;
+    }
   }
 
   .profilePicture {

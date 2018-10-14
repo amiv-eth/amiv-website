@@ -148,6 +148,7 @@ export default class Header {
         : [
             m(
               'li',
+              { class: 'not-logged-in' },
               m(
                 'a',
                 {
