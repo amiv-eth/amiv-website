@@ -1,4 +1,5 @@
 import m from 'mithril';
+import marked from 'marked';
 import StudydocsController from '../../models/studydocs';
 import { Button, Dropdown, TextField, FileInput } from '../../components';
 import { currentLanguage, i18n } from '../../models/language';
@@ -175,6 +176,17 @@ export default class studydocNew {
             },
           },
         }),
+      ]),
+
+      m('div#rule-style', [
+        m('div#rules-title', i18n('studydocs.rule')),
+        m('ol', [
+          m('div#rules-text', m('li', m.trust(marked(i18n('studydocs.rule_1'))))),
+          m('div#rules-text', m('li', m.trust(marked(i18n('studydocs.rule_2'))))),
+          m('div#rules-text', m('li', m.trust(marked(i18n('studydocs.rule_3'))))),
+          m('div#rules-text', m('li', m.trust(marked(i18n('studydocs.rule_4'))))),
+        ]),
+        m('div#rules-text', i18n('studydocs.thx')),
       ]),
     ]);
   }

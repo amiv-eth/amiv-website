@@ -1,4 +1,6 @@
 import m from 'mithril';
+import marked from 'marked';
+import { Dialog, Button } from 'polythene-mithril';
 import StudydocsController from '../../models/studydocs';
 import { lectures } from '../studydocs/lectures';
 import { i18n, currentLanguage } from '../../models/language';
@@ -122,6 +124,27 @@ export default class StudydocList extends FilteredListPage {
             { value: 'lecture documents', label: i18n('lecture documents') },
             { value: 'exercises', label: i18n('exercises') },
           ],
+        },
+        {
+          type: 'button',
+          label: i18n('studydocs.oral_ex'),
+          className: 'flat-button',
+          events: {
+            onclick: () =>
+              Dialog.show({
+                title: i18n('studydocs.oral_ex'),
+                body: m.trust(marked(i18n('studydocs.oral_ex_txt1'))),
+                modal: true,
+                backdrop: true,
+                footerButtons: m(Button, {
+                  label: i18n('close'),
+                  className: 'flat-button',
+                  events: {
+                    onclick: () => Dialog.hide(),
+                  },
+                }),
+              }),
+          },
         },
         {
           type: 'button',
