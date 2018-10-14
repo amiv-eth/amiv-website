@@ -74,7 +74,7 @@ class EventSignupForm extends JSONSchemaForm {
       const elements = this.renderFormElements();
       elements.push(this._renderEmailField());
       elements.push(this._renderSignupButton());
-      return m('form', elements);
+      return m('form', { onsubmit: () => false }, elements);
     }
     return m('div', [
       m('span', `${i18n('events.amiv_members_only')} `),
