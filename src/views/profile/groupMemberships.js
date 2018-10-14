@@ -21,37 +21,40 @@ export default class GroupMemberships {
 
     if (this.confirm[membership.group._id]) {
       buttons = [
-        m(Button, {
-          ...buttonArgs,
-          label: i18n('cancel'),
-          className: 'flat-button',
-          events: {
-            onclick: () => {
-              this.confirm[membership.group._id] = false;
-              this.busy[membership.group._id] = false;
+        m('div.group.button', [
+          m(Button, {
+            ...buttonArgs,
+            label: i18n('confirm'),
+            events: {
+              onclick: () => {
+                this.busy[membership.group._id] = true;
+                this.groupMembershipsController
+                  .withdraw(membership._id, membership._etag)
+                  .then(() => {
+                    this.busy[membership.group._id] = false;
+                    this.confirm[membership.group._id] = false;
+                  })
+                  .catch(() => {
+                    this.busy[membership.group._id] = false;
+                    this.confirm[membership.group._id] = false;
+                  });
+              },
             },
-          },
-        }),
-        m('div', ' '),
-        m(Button, {
-          ...buttonArgs,
-          label: i18n('confirm'),
-          events: {
-            onclick: () => {
-              this.busy[membership.group._id] = true;
-              this.groupMembershipsController
-                .withdraw(membership._id, membership._etag)
-                .then(() => {
-                  this.busy[membership.group._id] = false;
-                  this.confirm[membership.group._id] = false;
-                })
-                .catch(() => {
-                  this.busy[membership.group._id] = false;
-                  this.confirm[membership.group._id] = false;
-                });
+          }),
+        ]),
+        m('div.group-button', [
+          m(Button, {
+            ...buttonArgs,
+            label: i18n('cancel'),
+            className: 'flat-button',
+            events: {
+              onclick: () => {
+                this.confirm[membership.group._id] = false;
+                this.busy[membership.group._id] = false;
+              },
             },
-          },
-        }),
+          }),
+        ]),
       ];
     } else {
       buttons = m(
@@ -83,7 +86,6 @@ export default class GroupMemberships {
       m(TextField, {
         name: 'group_search',
         label: i18n('profile.search_groups'),
-        floatingLabel: true,
         valid: this.valid,
         events: {
           oninput: e => {

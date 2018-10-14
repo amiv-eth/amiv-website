@@ -17,7 +17,7 @@ export default class JobofferDetails {
 
     return m('div', [
       m('h1', joboffer.getTitle()),
-      m('img', { src: `${apiUrl}${joboffer.logo.file}`, alt: joboffer.company }),
+      m('h2', joboffer.getCompany()),
       m('p', m.trust(marked(escape(joboffer.getDescription())))),
       m('a', { href: `${apiUrl}${joboffer.pdf.file}`, target: '_blank' }, 'Download as PDF'),
     ]);
