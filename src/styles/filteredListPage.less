@@ -130,11 +130,13 @@
     }
 
     div.list-item {
+      overflow: hidden;
       border-bottom: 1px solid @color-grey;
       cursor: pointer;
       display: flex;
       flex-direction: row;
       align-items: center;
+      height: 5em;
 
       &:last-of-type {
         border: none;
@@ -167,6 +169,8 @@
 
       img {
         width: 25%;
+        object-fit: cover;
+        object-position: 0 100%;
       }
 
       .registration {
