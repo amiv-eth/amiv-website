@@ -28,7 +28,6 @@ export default class studydocNew {
   }
 
   validate() {
-    console.log(this.doc.type);
     this.isValid = this.doc.files && this.doc.files.length > 0 && this.doc.type !== null;
   }
 

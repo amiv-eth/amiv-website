@@ -115,10 +115,6 @@ export default class EventList extends FilteredListPage {
     const openRegistrationList = [];
     const upcomingList = [];
 
-    console.log(controller.openRegistrationEvents.length);
-    console.log(controller.upcomingEvents.length);
-    console.log(controller.pastEvents.length);
-
     if (controller.openRegistrationEvents.length > 0) {
       openRegistrationList.push(
         m('div.list-header', m('h4', i18n('events.header_open_registration'))),
