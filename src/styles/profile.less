@@ -1,6 +1,6 @@
 #profile-container {
   display: grid;
-  grid-template-columns: repeat(12, auto);
+  grid-template-columns: repeat(12, 1fr);
   grid-gap: 1.5em;
   border: none;
   margin-top: 2em;
@@ -9,18 +9,26 @@
   #info {
     grid-column: ~'1 / 13';
     grid-row: ~'1 / 2';
-    background-color: #ddd;
-    border: 1px solid @color-grey;
+    background-image: linear-gradient(@color-grey, #fff);
+    //border: 1px solid @color-grey;
+    display: flex;
+    justify-content: space-between;
   }
 
-  #user-info {
+  #info-user {
+    grid-column: ~'1 / 7';
     text-align: left;
     padding: .5em;
+    margin: .5em;
+    font-size: x-large;
   }
 
-  #amiv-info {
-    text-align: end;
+  #info-amiv {
+    grid-column: ~'8 / 13';
+    text-align: right;
+    align-content: center;
     padding: .5em;
+    font-size: large;
   }
 
   #sessions-subscriptions {

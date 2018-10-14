@@ -60,7 +60,6 @@
         "commissions.no_contact_info": "Keine Kontaktinformationen",
         "profile.free_beer": "Du bist berechtigt, gratis Bier zu beziehen!",
         "profile.set_rfid": "Setze deine RFID unten, um gratis Bier zu erhalten!",
-        "profile.membership": "Art der Mitgliedschaft",
         "profile.change_password": "Passwort ändern",
         "profile.revert_to_ldap": "Zu LDAP zurückkehren",
         "profile.set_password": "Passwort setzen",
