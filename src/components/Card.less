@@ -16,6 +16,7 @@
   background-color: #fafafa;
   background-size: cover;
   background-position: center;
+  overflow: hidden;
 
   .card-title {
     @media @desktop, @wide {
@@ -36,4 +37,25 @@
     bottom: 0;
     width: 100%;
   }
+}
+
+.card .card-overlay {
+  background: rgba(255, 255, 255, .8);
+  bottom: -100%;
+  height: 100%;
+  left: 0%;
+  text-align: center;
+  position: absolute;
+  transition: bottom .5s ease;
+  width: 100%;
+
+  div {
+    padding: 1.5em;
+    color: #000;
+    font-size: 1.5em;
+  }
+}
+
+.card:hover .card-overlay {
+  bottom: 0%;
 }
