@@ -6,6 +6,10 @@
   margin-top: 2em;
   margin-bottom: 2em;
 
+  @media @mobile {
+    grid-template-columns: repeat(6, 1fr);
+  }
+
   #info {
     grid-column: ~'1 / 13';
     grid-row: ~'1 / 2';
@@ -13,6 +17,10 @@
     //border: 1px solid @color-grey;
     display: flex;
     justify-content: space-between;
+
+    @media @mobile {
+      grid-column: ~'1 / 7';
+    }
   }
 
   #info-user {
@@ -26,9 +34,12 @@
   #info-amiv {
     grid-column: ~'8 / 13';
     text-align: right;
-    align-content: center;
-    padding: .5em;
     font-size: large;
+    padding: 1em;
+
+    @media @mobile {
+      grid-column: ~'1 / 7';
+    }
   }
 
   #sessions-subscriptions {
@@ -39,11 +50,11 @@
     border: 1px solid @color-grey;
 
     .announce-subscription {
-      padding: 5px;
+      padding: .1em;
     }
 
     .sessions {
-      padding: 5px;
+      padding: .1em;
     }
   }
 
@@ -67,20 +78,35 @@
     grid-column: ~'7 / 13';
     grid-row: ~'2 / 4';
     background-color: #fdfdfd;
-    display: grid;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
     grid-template-columns: repeat(3, 1fr);
     padding: 15px;
     border: 1px solid @color-grey;
+    max-height: min-content;
+
+    @media @mobile {
+      grid-column: ~'1 / 7';
+      grid-row: ~'6 / 8';
+    }
   }
 
   #groups {
     grid-column: ~'7 / 13';
     grid-row: ~'4 / 6';
     background-color: #fdfdfd;
-    display: grid;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
     grid-template-columns: repeat(3, 1fr);
     padding: 15px;
     border: 1px solid @color-grey;
+
+    @media @mobile {
+      grid-column: ~'1 / 7';
+      grid-row: ~'8 / 10';
+    }
   }
 }
 
@@ -93,6 +119,8 @@
 #group-list {
   grid-row: ~'2 / 3';
   grid-column: ~'1 / -1';
+  max-height: 13em;
+  overflow: scroll;
 
   .group-entry {
     grid-column: ~'1 / -1';
