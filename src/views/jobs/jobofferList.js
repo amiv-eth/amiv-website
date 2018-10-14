@@ -118,8 +118,17 @@ export default class JobofferList extends FilteredListPage {
         },
       },
       [
-        m('img', { src: `${apiUrl}${joboffer.logo.file}`, width: '150px', alt: joboffer.company }),
-        m('h2', joboffer.getTitle()),
+        m('img', { src: `${apiUrl}${joboffer.logo.file}`, alt: joboffer.company }),
+        m(
+          'div',
+          {
+            class: 'job-title',
+          },
+          [
+            m('h2', joboffer.getTitle()),
+            m('div', [m('span', joboffer.getCompany()), m('span', joboffer.getDate())]),
+          ]
+        ),
       ]
     );
   }

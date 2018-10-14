@@ -23,12 +23,12 @@ export default class UserInfo {
       }
     }
 
-    return m('div#user-info', [
-      m('div', [
-        m('span', `${i18n('profile.membership')}: `),
-        m('span', i18n(`${user.membership}_member`)),
+    return m('div#info', [
+      m('div#user-info', [m('b', [user.firstname, ' ', user.lastname]), m('div', user.legi)]),
+      m('div#amiv-info', [
+        m('div', [i18n('profile.membership'), ': ', m('b', i18n(`${user.membership}_member`))]),
+        freeBeerNotice,
       ]),
-      freeBeerNotice,
     ]);
   }
 }

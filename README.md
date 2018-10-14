@@ -55,4 +55,3 @@ Needed extensions:
 Needed build tools:
 
 * [npm](https://www.npmjs.com)
-* [pandoc](https://pandoc.org)
