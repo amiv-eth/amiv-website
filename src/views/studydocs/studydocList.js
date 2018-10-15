@@ -1,4 +1,6 @@
 import m from 'mithril';
+import marked from 'marked';
+import { Dialog, Button } from 'polythene-mithril';
 import StudydocsController from '../../models/studydocs';
 import { lectures } from '../studydocs/lectures';
 import { i18n, currentLanguage } from '../../models/language';
@@ -125,6 +127,27 @@ export default class StudydocList extends FilteredListPage {
         },
         {
           type: 'button',
+          label: i18n('studydocs.oral_ex'),
+          className: 'flat-button',
+          events: {
+            onclick: () =>
+              Dialog.show({
+                title: i18n('studydocs.oral_ex'),
+                body: m.trust(marked(i18n('studydocs.oral_ex_txt1'))),
+                modal: true,
+                backdrop: true,
+                footerButtons: m(Button, {
+                  label: i18n('close'),
+                  className: 'flat-button',
+                  events: {
+                    onclick: () => Dialog.hide(),
+                  },
+                }),
+              }),
+          },
+        },
+        {
+          type: 'button',
           label: i18n('reset'),
           className: 'red-button',
           events: {
@@ -174,7 +197,11 @@ export default class StudydocList extends FilteredListPage {
   }
 
   get _listView() {
-    const tableHeadings = ['studydocs.title', 'studydocs.author', 'studydocs.type'];
+    const tableHeadings = [
+      'studydocs.title',
+      'studydocs.author',
+      m('div#head-style', 'studydocs.course_year'),
+    ];
     return [
       m('div.list-item', tableHeadings.map(header => m('span', i18n(header)))),
       ...controller.map(page =>
@@ -190,7 +217,7 @@ export default class StudydocList extends FilteredListPage {
 
   // eslint-disable-next-line class-methods-use-this
   get _detailsPlaceholderView() {
-    return m('h1', i18n('studydocs.no_selection'));
+    return m('div.flex-container', m('div', m('h2', i18n('studydocs.no_selection'))));
   }
 
   // eslint-disable-next-line class-methods-use-this
@@ -210,14 +237,18 @@ export default class StudydocList extends FilteredListPage {
 
   static _renderStudydocListItem(document) {
     return m(
-      'div',
+      'div#row-style',
       {
         class: 'list-item',
         onclick: () => {
           m.route.set(`/${currentLanguage()}/studydocuments/${document._id}`);
         },
       },
-      [m('span', document.title), m('span', document.author), m('span', i18n(document.type))]
+      [
+        m('span#title-style', document.title),
+        m('span#author-style', document.author),
+        m('span#course_year-style', i18n(document.course_year)),
+      ]
     );
   }
 }
