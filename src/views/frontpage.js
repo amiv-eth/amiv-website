@@ -12,9 +12,9 @@ const renderHotCards = (item, index) => {
 };
 
 // Render the frontpage cards, with href and imageurl
-const renderRowCards = (item, type) => {
+const renderRowCards = (item, type = null) => {
   const card_item = item;
-  if (!card_item.href) card_item.href = `${m.route.get() + type}/${card_item._id}`;
+  if (!card_item.href && type) card_item.href = `${m.route.get() + type}/${card_item._id}`;
   return m('div.frontpage-row-card', m(Card, card_item));
 };
 
@@ -23,7 +23,7 @@ async function getData(state) {
   if (events.length < 3) {
     const pastEvents = await state.eventController.pastEvents.getPageData(1);
     const { length } = events;
-    for (let i = 0; i < 3 - length; i += 1) events.push(pastEvents[i]);
+    for (let i = 0; i < Math.min(3 - length, pastEvents.length); i += 1) events.push(pastEvents[i]);
   }
   const jobs = await state.jobOfferController.getPageData(1);
   return { ...{ events }, ...{ jobs } };
