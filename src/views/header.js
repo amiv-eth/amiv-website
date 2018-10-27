@@ -31,9 +31,9 @@ export default class Header {
         },
         [
           m(
-            'a',
+            'a.logo',
             { href: `/${currentLanguage()}/`, onupdate: m.route.link },
-            m('img.logo', { src: AmivLogo })
+            m('img', { src: AmivLogo })
           ),
           this.constructor._mainMenu,
           this.constructor._profileMenu,
@@ -158,7 +158,7 @@ export default class Header {
                     e.preventDefault();
                   },
                 },
-                [m('img.profilePicture', { src: ProfilePicture }), m('span', i18n('Login'))]
+                m('span', i18n('Login'))
               )
             ),
           ]
