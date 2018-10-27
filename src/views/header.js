@@ -21,44 +21,41 @@ export default class Header {
   }
 
   view() {
-    return m('header', [
+    return m(
+      'header',
       m(
-        'section.blue',
-        m(
-          'nav',
-          {
-            class: this._mobileMenuShowing ? 'expanded' : '',
-          },
-          [
-            m(
-              'a',
-              { href: `/${currentLanguage()}/`, onupdate: m.route.link },
-              m('img.logo', { src: AmivLogo })
-            ),
-            this.constructor._mainMenu,
-            this.constructor._profileMenu,
-            m(
-              'div.language-switcher',
-              m(Button, {
-                className: 'red-button',
-                label: i18n('language_button'),
-                events: { onclick: () => switchLanguage() },
-              })
-            ),
-            m(
-              'div.mobile-menu',
-              {
-                onclick: () => {
-                  this._mobileMenuShowing = !this._mobileMenuShowing;
-                },
+        'nav',
+        {
+          class: this._mobileMenuShowing ? 'expanded' : '',
+        },
+        [
+          m(
+            'a.logo',
+            { href: `/${currentLanguage()}/`, onupdate: m.route.link },
+            m('img', { src: AmivLogo })
+          ),
+          this.constructor._mainMenu,
+          this.constructor._profileMenu,
+          m(
+            'div.language-switcher',
+            m(Button, {
+              className: 'red-button',
+              label: i18n('language_button'),
+              events: { onclick: () => switchLanguage() },
+            })
+          ),
+          m(
+            'div.mobile-menu',
+            {
+              onclick: () => {
+                this._mobileMenuShowing = !this._mobileMenuShowing;
               },
-              m('img', { src: MobileMenuIcon, alt: i18n('Menu') })
-            ),
-          ]
-        )
-      ),
-      m('section.grey'),
-    ]);
+            },
+            m('img', { src: MobileMenuIcon, alt: i18n('Menu') })
+          ),
+        ]
+      )
+    );
   }
 
   static get _mainMenu() {
@@ -88,30 +85,33 @@ export default class Header {
               i18n(item.label)
             ),
             item.submenu
-              ? m('ul.submenu', [
-                  item.submenu.map((subitem, subindex) =>
-                    m(
-                      'li',
-                      { class: item.submenu.selectedIndex === subindex ? 'active' : '' },
+              ? [
+                  m('div.phantomElement'),
+                  m('ul.submenu', [
+                    item.submenu.map((subitem, subindex) =>
                       m(
-                        'a',
-                        {
-                          href: subitem.getLink(),
-                          onupdate: subitem.onupdate,
-                        },
-                        [
-                          i18n(subitem.label),
-                          subitem.url
-                            ? m('img', {
-                                src: ExternalLinkIcon,
-                                style: 'width:12px;height:12px;padding:0 0 0 5px;',
-                              })
-                            : m(''),
-                        ]
+                        'li',
+                        { class: item.submenu.selectedIndex === subindex ? 'active' : '' },
+                        m(
+                          'a',
+                          {
+                            href: subitem.getLink(),
+                            onupdate: subitem.onupdate,
+                          },
+                          [
+                            i18n(subitem.label),
+                            subitem.url
+                              ? m('img', {
+                                  src: ExternalLinkIcon,
+                                  style: 'width:12px;height:12px;padding:0 0 0 5px;',
+                                })
+                              : m(''),
+                          ]
+                        )
                       )
-                    )
-                  ),
-                ])
+                    ),
+                  ]),
+                ]
               : m(''),
           ]
         )
@@ -147,6 +147,7 @@ export default class Header {
         : [
             m(
               'li',
+              { class: 'not-logged-in' },
               m(
                 'a',
                 {
@@ -156,7 +157,7 @@ export default class Header {
                     e.preventDefault();
                   },
                 },
-                i18n('Login')
+                m('span', i18n('Login'))
               )
             ),
           ]
