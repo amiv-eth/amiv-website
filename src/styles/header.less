@@ -3,6 +3,8 @@
 @import './mediaquery.less';
 
 .mainmenu-template {
+  transition: background-color ease-in-out 300ms;
+
   li {
     &.active {
       background-color: @color-grey;
@@ -14,7 +16,7 @@
 
     > a {
       display: block;
-      height: 100%;
+      height: calc(@dimension-desktop-header-height - 1px);
       line-height: @dimension-desktop-header-height;
       padding: 0 1.3em;
       color: #fff;
@@ -28,34 +30,32 @@
 }
 
 header {
+  background-color: @color-dark-blue;
+  margin-bottom: 5px;
   grid-area: header;
   display: block;
   width: 100%;
   font-size: 1.2em;
   z-index: 1000;
-
-  section.grey {
-    height: @dimension-desktop-submenu-height;
-
-    @media @mobile {
-      display: none;
-    }
-  }
 }
 
 header nav {
+  padding: 0 1em;
+  margin: 0 auto;
   display: grid;
   grid-area: navigation;
-  height: @dimension-desktop-header-height;
+  min-height: @dimension-desktop-header-height;
 
   @media @wide, @desktop {
     grid-template-columns: auto 1fr auto auto auto;
     grid-template-areas: 'logo main-navigation profile language-switcher';
+    max-width: @dimension-max-content-width;
   }
 
   @media @tablet {
     grid-template-columns: auto 1fr auto auto;
-    grid-template-areas: 'logo main-navigation language-switcher';
+    grid-template-areas: 'logo main-navigation profile language-switcher';
+    font-size: .7em;
   }
 
   @media @mobile {
@@ -66,6 +66,7 @@ header nav {
       'profile profile profile';
     height: auto;
     max-height: @dimension-mobile-header-height;
+    transition: max-height ease-in-out 500ms;
     overflow: hidden;
 
     &.expanded {
@@ -81,13 +82,16 @@ header .logo {
   @media @mobile {
     height: @dimension-mobile-header-height;
   }
+
+  img {
+    height: 100%;
+  }
 }
 
 header ul {
   list-style: none;
   margin: 0;
   padding: 0;
-  height: 100%;
 
   @media @mobile {
     width: 100%;
@@ -95,7 +99,6 @@ header ul {
 
   li {
     display: inline-block;
-    height: 100%;
 
     @media @mobile {
       width: 100%;
@@ -106,30 +109,53 @@ header ul {
   }
 }
 
+.phantomElement {
+  height: 1px;
+}
+
 header ul.mainmenu {
   .mainmenu-template;
   grid-area: main-navigation;
 
-  li.active {
-    background-color: @color-grey;
+  @media @mobile {
+    transition: none;
+  }
 
-    ul.submenu {
+  > li.active {
+    height: auto;
+    background-color: @color-grey;
+    transition: none;
+
+    .phantomElement {
+      height: @dimension-desktop-submenu-height;
+      display: block;
+      width: 100%;
+
+      @media @mobile {
+        display: none;
+      }
+    }
+
+    > ul.submenu {
       display: block;
       visibility: visible;
+      height: @dimension-desktop-submenu-height;
+      transition: none !important;
+      transition-duration: 0ms !important;
+      transition-delay: 0ms !important;
       z-index: 1005;
     }
   }
 
   @media @wide, @desktop, @tablet {
-    li:hover ul.submenu {
+    > li:hover ul.submenu {
       visibility: visible;
+      height: @dimension-desktop-submenu-height;
     }
   }
 
   li > a {
     display: block;
-    height: 100%;
-    line-height: @dimension-desktop-header-height;
     padding: 0 1.3em;
     color: #fff;
     text-decoration: none;
@@ -143,23 +169,21 @@ header ul.mainmenu {
 header ul.submenu {
   display: block;
   visibility: hidden;
+  height: 0;
 
   @media @wide, @desktop, @tablet {
     position: absolute;
     top: @dimension-desktop-header-height;
     left: 0;
     width: 100%;
-    height: @dimension-desktop-submenu-height;
     text-align: center;
     background-color: @color-grey;
     z-index: 1010;
+    overflow-y: hidden;
     transition-delay: 150ms;
-    transition-property: visibility;
-  }
-
-  @media @tablet {
-    // NOTE: Adjust this value when profile menu changes!
-    width: calc(100% - 190px);
+    transition-property: height;
+    transition-duration: 150ms;
+    transform-style: flat;
   }
 
   @media @mobile {
@@ -168,8 +192,12 @@ header ul.submenu {
   }
 
   li {
+    @media @mobile {
+      background-color: @color-mobile-submenu;
+    }
+
     &.active {
-      background-color: @color-grey;
+      background-color: transparent;
 
       @media @mobile {
         background-color: @color-mobile-submenu;
@@ -186,7 +214,7 @@ header ul.submenu {
 
     > a {
       display: block;
-      height: 100%;
+      height: @dimension-desktop-submenu-height;
       line-height: @dimension-desktop-submenu-height;
       padding: 0 .5em;
       color: #000;
@@ -199,51 +227,40 @@ header ul.profile {
   .mainmenu-template;
   grid-area: profile;
 
-  @media @tablet {
-    position: absolute;
-    top: @dimension-desktop-header-height;
-    right: 0;
-    padding: 0 .5em;
-    height: @dimension-desktop-submenu-height;
-    z-index: 1015;
-    background-color: #eee;
-
-    // border left
-    &:before {
-      content: '';
-      position: absolute;
-      left: 0;
-      bottom: 25%;
-      height: 50%;
-      width: 1px;
-      border-left: 1px solid @color-dark-blue;
-    }
-
-    li {
-      > a {
-        display: block;
-        height: 100%;
-        line-height: @dimension-desktop-submenu-height;
-        padding: 0 .5em;
-        color: #000;
-      }
-
-      &.active > a {
-        color: @color-red;
-      }
-    }
+  > span {
+    display: none;
   }
 
   @media @mobile {
     li:last-of-type {
       border-bottom: none;
     }
+
+    .profilePicture {
+      display: none;
+    }
+
+    a {
+      padding: 0 !important;
+      display: inline;
+    }
+
+    span {
+      display: inline-block;
+    }
   }
 }
 
 header .language-switcher {
   grid-area: language-switcher;
-  align-self: center;
+  height: @dimension-desktop-header-height;
+
+  > button {
+    display: block;
+    height: 100%;
+    line-height: @dimension-desktop-header-height;
+    padding: 0 1.3em;
+  }
 }
 
 header .mobile-menu {

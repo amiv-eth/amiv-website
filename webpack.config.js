@@ -40,6 +40,7 @@ const config = {
         ],
         include: [
           path.resolve(__dirname, './src'),
+          path.resolve(__dirname, 'node_modules/@material'),
           path.resolve(__dirname, 'node_modules/amiv-web-ui-components'),
         ],
       },
@@ -142,6 +143,10 @@ const config = {
             loader: 'less-loader', // compiles Less to CSS
           },
         ],
+      },
+      {
+        test: /\.css$/,
+        use: ['style-loader', 'css-loader'],
       },
     ],
   },

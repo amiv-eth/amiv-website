@@ -23,6 +23,7 @@ class EventSignupForm extends JSONSchemaForm {
     this.email = '';
     this.emailErrors = [];
     this.emailValid = false;
+    this.emailSignup = null;
     if (isLoggedIn()) {
       this.event.loadSignup().then(() => {
         if (this.event.signupData) {
@@ -35,8 +36,10 @@ class EventSignupForm extends JSONSchemaForm {
   async signup() {
     try {
       await this.event.signup(super.getValue(), this.email);
+      this.emailSignup = 'success';
     } catch (err) {
       log(err);
+      this.emailSignup = 'fail';
     }
   }
 
@@ -71,10 +74,15 @@ class EventSignupForm extends JSONSchemaForm {
       }
       return m('form', { onsubmit: () => false }, elements);
     } else if (this.event.allow_email_signup) {
-      const elements = this.renderFormElements();
-      elements.push(this._renderEmailField());
-      elements.push(this._renderSignupButton());
-      return m('form', elements);
+      if (!this.emailSignup) {
+        const elements = this.renderFormElements();
+        elements.push(this._renderEmailField());
+        elements.push(this._renderSignupButton());
+        return m('form', { onsubmit: () => false }, elements);
+      } else if (this.emailSignup) {
+        if (this.emailSignup === 'success') return m('span', i18n('events.emailsignup_success'));
+        if (this.emailSignup === 'fail') return m('span', i18n('events.emailsignup_fail'));
+      }
     }
     return m('div', [
       m('span', `${i18n('events.amiv_members_only')} `),
