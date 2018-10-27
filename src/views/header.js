@@ -1,7 +1,6 @@
 import m from 'mithril';
 import { mainNavigation } from '../models/navigation';
 import AmivLogo from '../images/logo.svg';
-import ProfilePicture from '../images/people.svg';
 import MobileMenuIcon from '../images/mobileMenuButton.svg';
 import ExternalLinkIcon from '../images/external.svg';
 import { i18n, currentLanguage, switchLanguage } from '../models/language';
