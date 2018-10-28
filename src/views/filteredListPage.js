@@ -7,23 +7,35 @@ import closeIcon from '../images/close.svg';
 import backIcon from '../images/back.svg';
 
 function setContainersHeight() {
-  const headerHeight = document.querySelector('header').offsetHeight;
-  const footerHeight = document.querySelector('footer').offsetHeight;
+  const header = document.querySelector('header');
+  const footer = document.querySelector('footer');
   const filter = document.querySelector('.filter');
   const content = document.querySelector('.content');
   const details = document.querySelector('.details');
+
+  const headerCompStyles = window.getComputedStyle(header);
+  const headerHeight = header.offsetHeight;
+  const headerMarginBottom = headerCompStyles.getPropertyValue('margin-bottom'); // px
+
+  const footerCompStyles = window.getComputedStyle(header);
+  const footerHeight = footer.offsetHeight;
+  const footerMarginBottom = footerCompStyles.getPropertyValue('margin-top'); // px
+
+  const filterCompStyles = window.getComputedStyle(filter);
+  const filterPaddingTop = filterCompStyles.getPropertyValue('padding-top'); // px
+  const filterPaddingBottom = filterCompStyles.getPropertyValue('padding-bottom'); // px
+
+  filter.style.cssText = `height: calc(100vh - ${headerHeight +
+    footerHeight}px - ${headerMarginBottom} - ${footerMarginBottom} - ${filterPaddingTop} - ${filterPaddingBottom})`;
+  content.style.cssText = `height: calc(100vh - ${headerMarginBottom} - ${footerMarginBottom} - ${headerHeight +
+    footerHeight}px)`;
+
   if (details) {
-    const filterCompStyles = window.getComputedStyle(filter);
-    const filterPaddingTop = filterCompStyles.getPropertyValue('padding-top'); // px
-    const filterPaddingBottom = filterCompStyles.getPropertyValue('padding-bottom'); // px
     const detailsCompStyles = window.getComputedStyle(details);
     const detailsPaddingTop = detailsCompStyles.getPropertyValue('padding-top'); // px
     const detailsPaddingBottom = detailsCompStyles.getPropertyValue('padding-bottom'); // px
-    filter.style.cssText = `height: calc(100vh - ${headerHeight +
-      footerHeight}px - ${filterPaddingTop} - ${filterPaddingBottom})`;
-    content.style.cssText = `height: calc(100vh - ${headerHeight + footerHeight}px)`;
     details.style.cssText = `height: calc(100vh - ${headerHeight +
-      footerHeight}px - ${detailsPaddingTop} - ${detailsPaddingBottom})`;
+      footerHeight}px - ${headerMarginBottom} - ${footerMarginBottom} - ${detailsPaddingTop} - ${detailsPaddingBottom})`;
   }
 }
 
@@ -36,12 +48,11 @@ function setContainersHeight() {
 export class FilteredListDataStore {
   constructor() {
     this._positionTop = {};
-    this.filterViewPositionTop = 0;
-    this.detailsViewPositionTop = 0;
-    this.lastScrollPosition = 0;
     this.listState = 'loading';
     this.loadMoreState = 'idle';
     this.detailsLoaded = false;
+    this.detailsShown = false;
+    this.detailsAnimated = true;
     this.filterValues = {};
     this.initialized = false;
   }
@@ -84,32 +95,12 @@ export class FilteredListDataStore {
     this._filterValues = values;
   }
 
-  get lastScrollPosition() {
-    return this._lastScrollPosition;
-  }
-
-  set lastScrollPosition(position) {
-    this._lastScrollPosition = position;
-  }
-
   get isInitialized() {
     return this._isInitialized;
   }
 
   setIsInitialized() {
     this._isInitialized = true;
-  }
-
-  getPositionTop(key) {
-    return this._positionTop[key] || 0;
-  }
-
-  setPositionTop(key, position) {
-    if (position < 0) {
-      this._positionTop[key] = position;
-    } else {
-      this._positionTop[key] = 0;
-    }
   }
 }
 
@@ -150,6 +141,8 @@ export class FilteredListPage {
 
     if (this.hasDetailsPage && itemId) {
       this.detailsItemId = itemId;
+      this.dataStore.detailsAnimated = !this.dataStore.detailsShown;
+      this.dataStore.detailsShown = true;
       this._loadItem(itemId)
         .then(() => {
           this.dataStore.detailsLoaded = true;
@@ -157,16 +150,35 @@ export class FilteredListPage {
         .catch(() => {
           this.dataStore.detailsLoaded = true;
         });
+    } else {
+      this.dataStore.detailsShown = false;
     }
+  }
+
+  oncreate() {
+    this._updateContainerHeight();
+    this.constructor._updateDetailsContainerWidth();
   }
 
   // When component updates, we recalculate the size of scrollable containers
   // and retrieve the last scroll position of 'div.content' element,
   // thus preventing undesired scroll to the top after each click.
   onupdate() {
+    this._updateContainerHeight();
+    this.constructor._updateDetailsContainerWidth();
+  }
+
+  _updateContainerHeight() {
     setContainersHeight();
     const contentView = document.getElementsByClassName('content')[0];
     contentView.scrollTop = `${this.dataStore.lastScrollPosition}`;
+  }
+
+  static _updateDetailsContainerWidth() {
+    const details = document.querySelector('.details');
+    if (details) {
+      details.style.cssText += 'max-width: 70em';
+    }
   }
 
   /* eslint-disable class-methods-use-this, no-unused-vars */
@@ -295,8 +307,8 @@ export class FilteredListPage {
   }
 
   onscroll() {
-    const filterView = document.getElementsByClassName(`content`)[0];
-    this.dataStore.lastScrollPosition = filterView.scrollTop;
+    const contentView = document.getElementsByClassName('content')[0];
+    this.dataStore.lastScrollPosition = contentView.scrollTop;
   }
 
   view() {
@@ -317,8 +329,7 @@ export class FilteredListPage {
         'div.action-button.tablet-show',
         {
           onclick: () => {
-            const route = m.route.get();
-            m.route.set(route.substring(0, route.lastIndexOf('/')));
+            this.constructor._goBackToList();
           },
         },
         [m('img', { src: backIcon }), m('span', i18n('filtered_list.show_list'))]
@@ -358,15 +369,17 @@ export class FilteredListPage {
     );
   }
 
+  static _goBackToList() {
+    const route = m.route.get();
+    m.route.set(route.substring(0, route.lastIndexOf('/')));
+  }
+
   get _filterView() {
     return [
       m(
         'div.filter',
         {
           id: `${this.name}ListFilterView`,
-          style: {
-            top: `${this.dataStore.getPositionTop('filterView')}px`,
-          },
         },
         m(FilterView, { ...{ values: this.dataStore }, ...this._filterViewAttributes })
       ),
@@ -414,29 +427,15 @@ export class FilteredListPage {
     if (this.detailsItemId) {
       if (this.dataStore.detailsLoaded) {
         return m(
-          'div.details',
+          'div',
           {
             id: `${this.name}ListDetailsView`,
-            style: {
-              top: `${this.dataStore.getPositionTop('detailsView')}px`,
-            },
+            class: this.dataStore.detailsAnimated ? 'details details-animation' : 'details',
           },
           this._detailsView
         );
       }
-      // Do not show anything on details panel when data has not been loaded.
-      return m('');
     }
-    return m(
-      'div',
-      {
-        id: `${this.name}ListDetailsView`,
-        class: 'details mobile-hide',
-        style: {
-          top: `${this.dataStore.getPositionTop('detailsView')}px`,
-        },
-      },
-      this._detailsPlaceholderView
-    );
+    return m('');
   }
 }

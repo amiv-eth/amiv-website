@@ -3,10 +3,10 @@
 .filtered-list {
   min-height: 100%;
   display: grid;
-  grid-template-columns: 20% auto 25%;
+  grid-template-columns: 17em 1fr auto;
 
   @media @tablet {
-    grid-template-columns: 20% auto;
+    grid-template-columns: 17em 1fr;
   }
 
   @media @mobile {
@@ -33,7 +33,7 @@
   &.mobile-show-filter {
     @media @mobile {
       div.filter {
-        display: block;
+        display: grid;
       }
     }
   }
@@ -66,29 +66,18 @@
     }
   }
 
-  div.filter,div.details {
-    position: sticky;
-    top: 0;
+  .filter {
+    display: grid;
+    align-content: start;
+    grid-gap: 20px;
     padding: 1.5em;
-    z-index: 101;
     overflow-y: scroll;
 
-    @media @mobile {
-      position: relative;
-      top: 0 !important;
-      padding: 0;
-    }
-  }
-
-  .filter {
     @media @mobile {
       display: none;
       border-bottom: 1em solid @color-grey;
       padding: 1em;
     }
-    display: grid;
-    align-content: start;
-    grid-gap: 20px;
 
     h4 {
       margin: 0;
@@ -185,12 +174,19 @@
     width: 100%;
     padding: 1em 0;
     text-align: center;
-    border: 2px solid @color-grey;
     background-color: #f2f2f2;
     font-weight: bold;
 
     &.active {
       cursor: pointer;
+    }
+  }
+
+  .details-animation {
+    @media @desktop, @wide {
+      max-width: 0;
+      transition: max-width 350ms ease-in-out;
+      overflow-x: hidden;
     }
   }
 
