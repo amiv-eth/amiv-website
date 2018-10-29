@@ -110,7 +110,6 @@ class EventSignupForm {
       onChange: (name, value) => {
         this.email = value;
       },
-      // getErrors: () => this.emailErrors,
       value: this.email,
     });
   }
