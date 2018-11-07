@@ -4,6 +4,7 @@
 import bastliImage from '../images/commissions/bastli.png';
 import blitzImage from '../images/commissions/blitz.jpg';
 import emc2Image from '../images/commissions/emc2.jpg';
+import irrationalImage from '../images/commissions/irrational.jpg';
 
 const data = [
   {
@@ -33,9 +34,16 @@ const data = [
   },
   {
     name: 'Irrational Co.',
+    image: irrationalImage,
+    email: 'irrational@amiv.ethz.ch',
+    phone: '+41 77 212 02 09',
     description: {
-      en: 'Not a real description.',
-      de: 'Keine echte Beschreibung',
+      en: `Irrational Coffee is an AMIV commission dedicated to spreading alternative coffee culture.
+        If you are interested in learning more about different coffee beans, processing techniques, brewing methods, or anything coffee-related, then this is the place for you!
+
+        **Every Wednesday 16:00-18:00**, come out to the CAB courtyard where you can taste different coffees and cascara tea at our coffee stand.
+
+        Irrational Coffee also organizes coffee workshops and other coffee-related events, such as trips and coffee «pub crawls». `,
     },
   },
   {
