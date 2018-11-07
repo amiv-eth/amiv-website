@@ -98,9 +98,11 @@ const data = [
   },
   {
     name: 'BEEZ',
+    email: 'beez@amiv.ethz.ch',
     description: {
-      en: 'Not a real description.',
-      de: 'Keine echte Beschreibung',
+      en: `The Biomedical Engineering Student Association at ETH Zurich is a social group with members mostly studying in or graduated from Biomedical Engineering MSc. program. Our aim is to bring together young engineers in their studies and help maintain the crucial balance between work life and leisure.
+
+        However, just as our academic program, we are open to students from various backgrounds. If you are interested in biomedical research AND having fun, follow us!`,
     },
   },
 ];
