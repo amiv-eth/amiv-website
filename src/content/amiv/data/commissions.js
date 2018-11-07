@@ -5,6 +5,7 @@ import bastliImage from '../images/commissions/bastli.png';
 import blitzImage from '../images/commissions/blitz.jpg';
 import emc2Image from '../images/commissions/emc2.jpg';
 import irrationalImage from '../images/commissions/irrational.jpg';
+import kontaktImage from '../images/commissions/kontakt.jpg';
 
 const data = [
   {
@@ -81,9 +82,18 @@ const data = [
   },
   {
     name: 'Kontakt',
+    image: kontaktImage,
+    email: 'kontakt@amiv.ethz.ch',
+    website: 'https://kontakt.amiv.ethz.ch',
     description: {
-      en: 'Not a real description.',
-      de: 'Keine echte Beschreibung',
+      en: `The Kontakt comission is responsible for organising all aspects of the annual AMIV Kontakt job fair.
+
+        Contact with companies, catering, PR, controlling, the responsibilities are varied, and everybody can
+      find his/her place.`,
+      de: `Die Kommission Kontakt ist für die Organisation der jährlichen Firmenmesse verantwortlich.
+
+        Catering, Public Relations, Finanzen, Kontakt zu Firmenvertretern – hier ist für jeden etwas
+      dabei.`,
     },
   },
   {
