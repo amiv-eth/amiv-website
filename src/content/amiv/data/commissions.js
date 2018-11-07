@@ -9,15 +9,18 @@ import irrationalImage from '../images/commissions/irrational.jpg';
 const data = [
   {
     name: 'Bastli',
-    description: {
-      de: `Das Elektroniklabor des AMIV von und für ETH Studenten bietet Euch kostenlose Arbeitsplätze und Werkzeuge um eure eigenen Projekte und Ideen umzusetzen.
-
-          Wir sind für alle da und helfen euch gerne. Vorkentnisse werden keine benötigt, Hauptsache ihr habt Spass daran Dinge zu bauen ;)`,
-    },
     image: bastliImage,
     website: 'https://bastli.ethz.ch',
     email: 'info@bastli.ethz.ch',
     phone: '+41 44 632 49 41',
+    description: {
+      en: `The eletronics laboratory is open for UZH and ETH students offering material and workspaces to make your projects and build your ideas.
+
+        We are happy to help you. No prior knowledge is needed. The main thing is that you enjoy building things.`,
+      de: `Das Elektroniklabor des AMIV von und für ETH / UZH Studierende bietet Euch kostenlose Arbeitsplätze und Werkzeuge um eure eigenen Projekte und Ideen umzusetzen.
+
+          Wir sind für alle da und helfen euch gerne. Vorkentnisse werden keine benötigt, Hauptsache ihr habt Spass daran Dinge zu bauen.`,
+    },
   },
   {
     name: 'Blitz',
@@ -36,7 +39,7 @@ const data = [
     name: 'Irrational Co.',
     image: irrationalImage,
     email: 'irrational@amiv.ethz.ch',
-    phone: '+41 77 212 02 09',
+    phone: '+41 76 437 68 37',
     description: {
       en: `Irrational Coffee is an AMIV commission dedicated to spreading alternative coffee culture.
         If you are interested in learning more about different coffee beans, processing techniques, brewing methods, or anything coffee-related, then this is the place for you!

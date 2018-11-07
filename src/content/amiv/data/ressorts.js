@@ -2,6 +2,7 @@
 // Markdown can be used to style the text.
 
 import kulturImage from '../images/ressorts/kultur.png';
+import itImage from '../images/ressorts/it.jpg';
 
 const data = [
   {
@@ -24,11 +25,24 @@ const data = [
   },
   {
     name: 'IT Team',
+    image: itImage,
     email: 'it@amiv.ethz.ch',
     phone: '+41 44 632 42 45',
     description: {
-      en: 'Not a real description.',
-      de: 'Keine echte Beschreibung',
+      en: `Webapps, Websites and beer dispenser are just a few things the AMIV IT provides.
+
+        Programming applications and managing linux servers are the major tasks the IT team does.
+        We are always looking for motivated people. No advanced skills are needed.
+
+        Do you want to learn more?
+
+        Send us an email or drop by the AMIV office.`,
+      de: `Webapps, Webseiten und Bierautomat sind nur wenige Dinge, die von der AMIV IT bereitstellt werden.
+
+        Programmieren von Anwendungen und managen von Linux Servern sind die Hauptaufgaben des IT Teams.
+        Wir sind stetig auf der Suche nach motivierten Leuten. Es sind keine Vorkenntnisse erforderlich.
+
+        Melde dich doch per Mail oder schau einfach mal im AMIV Büro vorbei!`,
     },
   },
   {
