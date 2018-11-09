@@ -7,6 +7,7 @@ import emc2Image from '../images/commissions/emc2.jpg';
 import irrationalImage from '../images/commissions/irrational.jpg';
 import kontaktImage from '../images/commissions/kontakt.jpg';
 import randomDudesImage from '../images/commissions/randomdudes.jpg';
+import limesImage from '../images/commissions/limes.jpg';
 
 const data = [
   {
@@ -66,13 +67,22 @@ const data = [
     },
   },
   {
-    name: 'LIMES - Ladies in Mechanical and Electrical Studies',
-    description: {
-      en: 'Not a real description.',
-      de: 'Keine echte Beschreibung',
-    },
-    website: 'https://limes.ethz.ch',
+    name: 'LIMES',
+    image: limesImage,
     email: 'limes@amiv.ethz.ch',
+    website: 'https://limes.ethz.ch',
+    description: {
+      en: `We **L**adies **i**n **M**echanical and **E**lectrical **S**tudies are the women’s committee of the AMIV. We organize different events to connect female students of ITET and MAVT and to network with industry partners.
+
+        Our events are mainly addressed to female AMIV fellows. New Ladies in our main board are besides always welcome. But at our talk events, we are also always happy about male AMIV participants.
+
+        _...because engineering knows no limits!_`,
+      de: `Wir **L**adies **i**n **M**echanical and **E**lectrical **S**tudies sind die Frauenkommission des AMIV. Wir organisieren verschiedene Events um Studentinnen untereinander, aber auch mit Industriepartnern zu verknüpfen.
+
+        Unsere Events sind hauptsächlich an AMIVlerinnen gerichtet. Neue Ladies im Vorstand sind ausserdem immer herzlich willkommen. Bei unseren Talks Events freuen wir uns aber auch immer über männliche Kommilitonen.
+
+        _...because engineering knows no limits!_`,
+    },
   },
   {
     name: 'RandomDudes',
