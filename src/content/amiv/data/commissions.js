@@ -22,7 +22,7 @@ const data = [
         We are happy to help you. No prior knowledge is needed. The main thing is that you enjoy building things.`,
       de: `Das Elektroniklabor des AMIV von und für ETH / UZH Studierende bietet Euch kostenlose Arbeitsplätze und Werkzeuge um eure eigenen Projekte und Ideen umzusetzen.
 
-          Wir sind für alle da und helfen euch gerne. Vorkentnisse werden keine benötigt, Hauptsache ihr habt Spass daran Dinge zu bauen.`,
+          Wir sind für alle da und helfen euch gerne. Vorkenntnisse werden keine benötigt, Hauptsache ihr habt Spass daran Dinge zu bauen.`,
     },
   },
   {
