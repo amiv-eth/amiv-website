@@ -6,6 +6,7 @@ import blitzImage from '../images/commissions/blitz.jpg';
 import emc2Image from '../images/commissions/emc2.jpg';
 import irrationalImage from '../images/commissions/irrational.jpg';
 import kontaktImage from '../images/commissions/kontakt.jpg';
+import randomDudesImage from '../images/commissions/randomdudes.jpg';
 
 const data = [
   {
@@ -75,9 +76,15 @@ const data = [
   },
   {
     name: 'RandomDudes',
+    image: randomDudesImage,
+    email: 'randomdudes@amiv.ethz.ch',
     description: {
-      en: 'Not a real description.',
-      de: 'Keine echte Beschreibung',
+      en: `The Randomdudes form one of the more special commissions the amiv incorporates. Its main duties are sustaining knowledge within the amiv and to ensure the ridiculously generous opening hours of the amiv office. Most of our members are former board members and other friends of the gondola, which we care for and continuously improve.
+
+      We also organize many events that make studying a little easier and especially more fun.`,
+      de: `Die Randomdudes sind die wohl speziellste Kommission des AMIV. Vorrangig für den Wissenserhalt und generelle Anwesenheit im Büro zuständig, bestehen wir zum größten Teil aus ehemaligen Vorständen und freunden der Gondel, für dessen Pflege wir auch zuständig sind.
+
+        Außerdem organisieren wir regelmäßig Events zur Bespaßung der Studentenschaft, um Euch den Studienalltag ein bisschen erträglicher zu machen.`,
     },
   },
   {
