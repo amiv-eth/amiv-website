@@ -4,11 +4,6 @@
 # First stage: Build project
 FROM node as build
 
-# Install pandoc
-RUN wget -O pandoc-amd64.deb https://github.com/jgm/pandoc/releases/download/2.2.2.1/pandoc-2.2.2.1-1-amd64.deb
-RUN dpkg -i pandoc-amd64.deb
-RUN rm pandoc-amd64.deb
-
 # Copy files and install dependencies
 COPY ./ /
 RUN npm install
