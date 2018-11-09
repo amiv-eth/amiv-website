@@ -3,15 +3,25 @@
 
 import kulturImage from '../images/ressorts/kultur.png';
 import itImage from '../images/ressorts/it.jpg';
+import designImage from '../images/ressorts/design.jpg';
 
 const data = [
   {
     name: 'Designteam',
+    image: designImage,
     email: 'design@amiv.ethz.ch',
     phone: '+41 44 632 42 45',
     description: {
-      en: 'Not a real description.',
-      de: 'Keine echte Beschreibung',
+      en: `Making the world a prettier place since 2016 - the AMIV's very own in-house design team is tasked with creating better looking posters, flyers & infoscreens, lit merchandise and stickers you will keep forever. If you enjoy the creative side of life, and are looking to learn or apply some editing skills then hit us up with an e-mail.
+
+      Once a semester we host a Photoshop-battle, inviting everyone who wants to put their Photoshop/GIMP/Affinity/Paint skills to the test in a laidback atmosphere.
+
+      Most of our work can be found by scrolling through the AMIV event page.`,
+      de: `Der Verschönerungsverein des AMIVs, gegründet 2016 - auch als Designteam bekannt - übernimmt die Verantwortung für bessere und schönere Plakate, Flyers & Infoscreens, opulentes Merchandise und Kleber, welche lebenslang am Computer kleben bleiben. Falls Du zu viel von Vorlesungen oder Übungsserien hast und die kreativere Seite vom Leben kosten möchtest, dann ist das Designteam ideal für dich! 
+
+      Einmal pro Semester organisieren wir ein Photoshop-battle, bei dem alle herzlich eingeladen sind, die ihre Photoshop/GIMP/Affinity/Paint Fähigkeiten in einer gechillten Atmosphäre unter Beweis stellen möchten.
+
+      Die meisten Poster können auf der AMIV Event-Page gefunden werden.`,
     },
   },
   {
