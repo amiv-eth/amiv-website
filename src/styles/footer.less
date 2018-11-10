@@ -1,13 +1,17 @@
 @import './colors.less';
 
 footer {
-  color: #fff;
   background-color: @color-dark-blue;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  color: @color-grey;
 
-  div {
-    padding: 1.5em 0;
+  div.copyright {
     width: 100%;
-    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    grid-column: ~'1 / 3';
 
     .copyright {
       padding-right: 1em;
@@ -15,16 +19,33 @@ footer {
 
       @media @mobile {
         display: block;
+        grid-column: ~'1 / 7';
         border-right: none;
-        padding-right: 0;
+        padding: 2em 0 0;
         margin-bottom: 1em;
       }
     }
 
     a {
       margin-left: 1em;
-      color: #fff;
+      color: @color-red;
       text-decoration: none;
+    }
+  }
+
+  div.footer-logo {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    grid-column: span 2;
+
+    @media @mobile {
+      grid-column: span 3;
+    }
+
+    a > img {
+      height: 8em;
+      max-width: 100%;
     }
   }
 }
