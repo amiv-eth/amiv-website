@@ -1,6 +1,7 @@
 import m from 'mithril';
 import marked from 'marked';
 import escape from 'html-escape';
+import ExternalLinkIcon from '../../images/external.svg';
 import { data as data_ressorts } from '../../content/amiv/data/ressorts';
 import { data as data_commissions } from '../../content/amiv/data/commissions';
 import { i18n, currentLanguage } from '../../models/language';
@@ -26,8 +27,17 @@ class Team {
     }
 
     // collect all avialable contact information
-    if (team.website) {
-      contactInfo.push(m('a', { href: team.website }, team.website));
+    if (team.website && team.website.length) {
+      contactInfo.push(
+        ...team.website.map(item =>
+          m('a', { href: item.url }, [
+            i18n(item.label) || item.url,
+            m('img.external-link', {
+              src: ExternalLinkIcon,
+            }),
+          ])
+        )
+      );
     }
     if (team.email) {
       contactInfo.push(m('a', { href: `mailto:${team.email}` }, team.email));

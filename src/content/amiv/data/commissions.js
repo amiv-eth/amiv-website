@@ -14,7 +14,7 @@ const data = [
   {
     name: 'Bastli',
     image: bastliImage,
-    website: 'https://bastli.ethz.ch',
+    website: [{ url: 'https://bastli.ethz.ch' }],
     email: 'info@bastli.ethz.ch',
     phone: '+41 44 632 49 41',
     description: {
@@ -29,7 +29,7 @@ const data = [
   {
     name: 'Blitz',
     image: blitzImage,
-    website: 'https://blitz.ethz.ch',
+    website: [{ url: 'https://blitz.ethz.ch' }],
     email: 'info@blitz.ethz.ch',
     description: {
       en: `The amiv commission named blitz publishes the magazine of the student’s association of the same name every second week. Therein you find interesting articles about current events, information around mechanical engineering and electrical engineering, riddles and much more.
@@ -44,7 +44,16 @@ const data = [
     name: 'Braukommission',
     image: braukoImage,
     email: 'amivbraeu@amiv.ethz.ch',
-    // website: 'https://cloud.amiv.ethz.ch/index.php/apps/calendar/p/qJerTAw9TKLe6xtY/Braukommission',
+    website: [
+      {
+        label: 'calendar',
+        url: 'https://cloud.amiv.ethz.ch/index.php/apps/calendar/p/qJerTAw9TKLe6xtY/Braukommission',
+      },
+      {
+        label: 'Instagram',
+        url: 'https://www.instagram.com/amivbrau/',
+      },
+    ],
     description: {
       en: `The brewing commission supplies the AMIV with handcrafted beers. From 
       grains to bottling we perform all process steps right here in the CAB 
@@ -85,6 +94,7 @@ const data = [
   },
   {
     name: 'EESTEC',
+    website: [{ url: 'https://eestec.ch' }],
     description: {
       en: 'Not a real description.',
       de: 'Keine echte Beschreibung',
@@ -92,6 +102,7 @@ const data = [
   },
   {
     name: 'Funkbude',
+    website: [{ url: 'https://hb9zz.ethz.ch' }],
     description: {
       en: 'Not a real description.',
       de: 'Keine echte Beschreibung',
@@ -101,7 +112,7 @@ const data = [
     name: 'LIMES',
     image: limesImage,
     email: 'limes@amiv.ethz.ch',
-    website: 'https://limes.ethz.ch',
+    website: [{ url: 'https://limes.ethz.ch' }],
     description: {
       en: `We **L**adies **i**n **M**echanical and **E**lectrical **S**tudies are the women’s committee of the AMIV. We organize different events to connect female students of ITET and MAVT and to network with industry partners.
 
@@ -132,7 +143,7 @@ const data = [
     name: 'Kontakt',
     image: kontaktImage,
     email: 'kontakt@amiv.ethz.ch',
-    website: 'https://kontakt.amiv.ethz.ch',
+    website: [{ url: 'https://kontakt.amiv.ethz.ch' }],
     description: {
       en: `The Kontakt comission is responsible for organising all aspects of the annual AMIV Kontakt job fair.
 
@@ -148,7 +159,7 @@ const data = [
     name: 'E=MC^2',
     image: emc2Image,
     email: 'emc2@amiv.ethz.ch',
-    website: 'https://fb.me/emc2eth',
+    website: [{ url: 'https://fb.me/emc2eth' }],
     description: {
       en: `The Energy Master Chill Club is a student-run AMIV commission bringing together energy students across different years through all types of events (Fondue Night, BBQ, Ski Weekend, etc.).
 
