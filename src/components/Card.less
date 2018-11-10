@@ -35,27 +35,34 @@
     padding: 20px 0 10px;
     position: absolute;
     bottom: 0;
+    transition: opacity .2s;
     width: 100%;
   }
-}
 
-.card .card-overlay {
-  background: rgba(255, 255, 255, .8);
-  bottom: -100%;
-  height: 100%;
-  left: 0%;
-  text-align: center;
-  position: absolute;
-  transition: bottom .5s ease;
-  width: 100%;
+  .card-overlay {
+    background: rgba(255, 255, 255, .8);
+    bottom: -100%;
+    height: 100%;
+    left: 0%;
+    text-align: center;
+    position: absolute;
+    transition: bottom .5s ease;
+    width: 100%;
 
-  div {
-    padding: 1.5em;
-    color: #000;
-    font-size: 1.5em;
+    div {
+      padding: 1.5em;
+      color: #000;
+      font-size: 1.5em;
+    }
   }
-}
 
-.card:hover .card-overlay {
-  bottom: 0%;
+  &:hover {
+    .card-overlay {
+      bottom: 0%;
+    }
+
+    .card-title {
+      opacity: 0;
+    }
+  }
 }
