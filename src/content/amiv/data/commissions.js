@@ -8,6 +8,7 @@ import irrationalImage from '../images/commissions/irrational.jpg';
 import kontaktImage from '../images/commissions/kontakt.jpg';
 import randomDudesImage from '../images/commissions/randomdudes.jpg';
 import limesImage from '../images/commissions/limes.jpg';
+import braukoImage from '../images/commissions/brauko.jpg';
 
 const data = [
   {
@@ -30,12 +31,42 @@ const data = [
     image: blitzImage,
     website: 'https://blitz.ethz.ch',
     email: 'info@blitz.ethz.ch',
+    description: {
+      en: `The amiv commission named blitz publishes the magazine of the student’s association of the same name every second week. Therein you find interesting articles about current events, information around mechanical engineering and electrical engineering, riddles and much more.
+
+        We are always looking for students who write articles, create riddles, help distribute the blitz or help otherwise. You can contribute one-time, in irregular time intervals or join our team. Do you feel appealed to? Write us an email to praesident@blitz.ethz.ch. Weare  looking forward to getting to know you!`,
+      de: `Die amiv Kommission blitz gibt alle zwei Wochen die gleichnamige Fachvereinszeitschrift heraus. In dieser findet ihr interessante Artikel zu aktuellen Ereignissen, Informationen rund um Maschinenbau und Elektrotechnik, Rätsel und vieles mehr.
+
+        Wir suchen immer Studenten, die Artikel schreiben, Rätsel entwerfen, helfen den blitz zu verteilen oder sonst wie mithelfen. Du kannst einmalig oder unregelmässig etwas beitragen oder gerne auch bei uns im Team mitmachen. Du fühlst dich angesprochen? Dann schreib uns eine E-Mail an praesident@blitz.ethz.ch. Wir freuen uns darauf, dich kennenzulernen!`,
+    },
   },
   {
     name: 'Braukommission',
+    image: braukoImage,
+    email: 'amivbraeu@amiv.ethz.ch',
+    // website: 'https://cloud.amiv.ethz.ch/index.php/apps/calendar/p/qJerTAw9TKLe6xtY/Braukommission',
     description: {
-      en: 'Not a real description.',
-      de: 'Keine echte Beschreibung',
+      en: `The brewing commission supplies the AMIV with handcrafted beers. From 
+      grains to bottling we perform all process steps right here in the CAB 
+      building.
+
+        Over the years we evolved from kitchen equipment on gas flames into a 
+      proper microbrewery with an half automated set up. We brew on a Speidel 
+      Braumeister 200 approximately twice a month.
+
+        If you want to know more about us or feel thirsty for some really good 
+      beer drop in on the next brewing event or write us a mail!`,
+      de: `Die Braukommission versorgt den AMIV mit hauseigenem Bier. Wir nehmen 
+      dabei jeden Schritt der zum Bierbrauen gehört selber in die Hand.
+
+        Von den ehemaligen Töpfen auf Gasbrennern hat die Braukommission sich 
+      schon lange weiter entwickelt zu einer Art Microbrauerei mit 
+      halbautomatisierter Brauanlage. Wir brauen in einem Speidel Braumeister 
+      200 und das etwa alle zwei Wochen.
+
+        Falls du mehr über uns und wie man Bier herstellt wissen willst oder 
+      einfach nur Lust auf ein richtig gutes Bier hast, dann komm doch beim 
+      nächsten Braugang einfach vorbei oder schreib uns eine Mail!`,
     },
   },
   {
