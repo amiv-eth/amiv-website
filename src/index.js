@@ -149,6 +149,18 @@ Raven.context(() => {
       view: () => m(layout, m(Error404)),
     };
 
+    m.route.setOrig = m.route.set;
+    m.route.set = (path, data, options) => {
+      m.route.setOrig(path, data, options);
+      window.scrollTo(0, 0);
+    };
+
+    m.route.linkOrig = m.route.link;
+    m.route.link = vnode => {
+      m.route.linkOrig(vnode);
+      window.scrollTo(0, 0);
+    };
+
     m.route(document.body, '/', result);
   }
 
