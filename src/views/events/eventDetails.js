@@ -1,33 +1,32 @@
 import m from 'mithril';
 import marked from 'marked';
 import escape from 'html-escape';
-import * as EmailValidator from 'email-validator';
+import { TextField } from 'polythene-mithril';
+import { Form } from 'amiv-web-ui-components';
 import { log } from '../../models/log';
 import { isLoggedIn, login } from '../../models/auth';
-import { Button, InputGroupForm, JSONSchemaForm } from '../../components';
+import { Button } from '../../components';
 import { i18n } from '../../models/language';
 
-class EventSignupForm extends JSONSchemaForm {
+class EventSignupForm {
   oninit(vnode) {
     this.event = vnode.attrs.event;
-    super.oninit(
-      Object.assign({}, vnode, {
-        attrs: {
-          schema:
-            this.event.additional_fields === undefined
-              ? undefined
-              : JSON.parse(this.event.additional_fields),
-        },
-      })
-    );
+    this.schema =
+      this.event.additional_fields === undefined
+        ? undefined
+        : JSON.parse(this.event.additional_fields);
+    this.form = new Form();
+    if (this.schema && this.schema.$schema) {
+      // ajv fails to verify the v4 schema of some resources
+      this.schema.$schema = 'http://json-schema.org/draft-06/schema#';
+      this.form.setSchema(this.schema);
+    }
     this.email = '';
-    this.emailErrors = [];
-    this.emailValid = false;
     this.emailSignup = null;
     if (isLoggedIn()) {
       this.event.loadSignup().then(() => {
         if (this.event.signupData) {
-          this.data = JSON.parse(this.event.signupData.additional_fields || '{}');
+          this.form.data = JSON.parse(this.event.signupData.additional_fields || '{}');
         }
       });
     }
@@ -49,7 +48,7 @@ class EventSignupForm extends JSONSchemaForm {
     } catch (err) {
       log(err);
     }
-    this.validate();
+    this.form.validate();
   }
 
   view() {
@@ -57,7 +56,7 @@ class EventSignupForm extends JSONSchemaForm {
       // do not render form if there is no signup data of the current user
       if (!this.event.hasSignupDataLoaded) return m('span', i18n('loading'));
 
-      const elements = this.renderFormElements();
+      const elements = this.schema ? this.form.renderSchema() : [];
       if (!this.event.signupData || (this.event.signupData && this.event.additional_fields)) {
         elements.push(this._renderSignupButton());
       }
@@ -75,7 +74,7 @@ class EventSignupForm extends JSONSchemaForm {
       return m('form', { onsubmit: () => false }, elements);
     } else if (this.event.allow_email_signup) {
       if (!this.emailSignup) {
-        const elements = this.renderFormElements();
+        const elements = this.schema ? this.form.renderSchema() : [];
         elements.push(this._renderEmailField());
         elements.push(this._renderSignupButton());
         return m('form', { onsubmit: () => false }, elements);
@@ -90,46 +89,28 @@ class EventSignupForm extends JSONSchemaForm {
     ]);
   }
 
-  isValid() {
-    if (!isLoggedIn()) {
-      return super.isValid() && this.emailValid;
-    }
-    return super.isValid();
-  }
-
-  _renderEmailField() {
-    return m(InputGroupForm, {
-      name: 'email',
-      title: i18n('email'),
-      args: {
-        type: 'text',
-      },
-      oninput: e => {
-        // bind changed data
-        this.email = e.target.value;
-
-        // validate if email address has the right structure
-        if (EmailValidator.validate(this.email)) {
-          this.emailValid = true;
-          this.emailErrors = [];
-        } else {
-          this.emailValid = false;
-          this.emailErrors = [i18n('email_invalid')];
-        }
-      },
-      getErrors: () => this.emailErrors,
-      value: this.email,
-    });
-  }
-
   _renderSignupButton() {
     return m(Button, {
       name: 'signup',
       label: i18n('events.signup'),
-      active: super.isValid(),
+      active: this.form.valid,
       events: {
         onclick: () => this.signup(),
       },
+    });
+  }
+
+  _renderEmailField() {
+    return m(TextField, {
+      name: 'email',
+      label: i18n('email'),
+      validateOnInput: true,
+      floatingLabel: true,
+      type: 'email',
+      onChange: (name, value) => {
+        this.email = value;
+      },
+      value: this.email,
     });
   }
 

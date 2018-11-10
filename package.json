@@ -22,7 +22,6 @@
   "author": "AMIV IT team",
   "license": "ISC",
   "dependencies": {
-    "ajv": "^5.5.0",
     "amiv-web-ui-components": "git+https://git@gitlab.ethz.ch/amiv/web-ui-components.git#1a1f5064d46c5de4b43fcbd1cd4c8245041b8c8a",
     "babel-polyfill": "^6.26.0",
     "email-validator": "^2.0.4",
