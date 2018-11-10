@@ -20,10 +20,18 @@ const data = [
     description: {
       en: `The eletronics laboratory is open for UZH and ETH students offering material and workspaces to make your projects and build your ideas.
 
-        We are happy to help you. No prior knowledge is needed. The main thing is that you enjoy building things.`,
+        We are happy to help you. No prior knowledge is needed. The main thing is that you enjoy building things.
+
+        The opening hours for our electronic components shop can be found on our website.
+
+        We are always looking for people. If you want to learn more, just drop by the workshop or write us an email.`,
       de: `Das Elektroniklabor des AMIV von und für ETH / UZH Studierende bietet Euch kostenlose Arbeitsplätze und Werkzeuge um eure eigenen Projekte und Ideen umzusetzen.
 
-          Wir sind für alle da und helfen euch gerne. Vorkenntnisse werden keine benötigt, Hauptsache ihr habt Spass daran Dinge zu bauen.`,
+          Wir sind für alle da und helfen euch gerne. Vorkenntnisse werden keine benötigt, Hauptsache ihr habt Spass daran Dinge zu bauen.
+
+          Die Öffnungszeiten von unserem Bauteile-Shop findest du auf unserer Webseite.
+
+          Wir sind stetig auf der Suche nach neuen Mitgliedern. Wenn du mehr erfahren möchtest, komm einfach mal im Bastli vorbei oder schreib uns eine E-Mail.`,
     },
   },
   {
