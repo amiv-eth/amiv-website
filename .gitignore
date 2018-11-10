@@ -1,9 +1,6 @@
 node_modules
-package-lock.json
 dist
 .vscode
 npm-debug.log
 DOCUMENTATION.html
 DOCUMENTATION.md
-src/models/config.js
-src/content/amiv/html/statutes.html
