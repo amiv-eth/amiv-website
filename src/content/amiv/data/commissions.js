@@ -9,6 +9,7 @@ import kontaktImage from '../images/commissions/kontakt.jpg';
 import randomDudesImage from '../images/commissions/randomdudes.jpg';
 import limesImage from '../images/commissions/limes.jpg';
 import braukoImage from '../images/commissions/brauko.jpg';
+import eestecImage from '../images/commissions/eestec.png';
 
 const data = [
   {
@@ -102,10 +103,14 @@ const data = [
   },
   {
     name: 'EESTEC',
+    image: eestecImage,
     website: [{ url: 'https://eestec.ch' }],
+    email: 'contact@eestec.ethz.ch',
     description: {
-      en: 'Not a real description.',
-      de: 'Keine echte Beschreibung',
+      en:
+        'EESTEC is an international association of Electrical/Mechanical Engineers and Computer Scientists. We are present in over 50 cities all over Europe and offer a variety of events. For example workshops, where you travel to a different country and engage in interesting topics like 3D printing, AI, VR and many others. And apart from the travel costs, everything is included for free! You can find further information about us on our website.',
+      de:
+        'EESTEC ist ein internationaler Verein von Elektrotechnik, Maschinenbau und Informatik Studenten. Wir sind in über 50 Städten in ganz Europa vertreten und bieten verschiedenste Arten von Events an. Zum Beispiel Workshops, bei denen ihr eine Ganze Woche in ein anderes Land reisen könnt und euch dort mit interessanten Themen wie 3D Printing, AI, VR und vielem weiterem beschäftigt. Und das Ganze ist bis auf die Anreise vollkommen kostenlos! Auf unserer Website findet ihr noch mehr infos über uns.',
     },
   },
   {
