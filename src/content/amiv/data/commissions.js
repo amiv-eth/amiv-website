@@ -10,6 +10,7 @@ import randomDudesImage from '../images/commissions/randomdudes.jpg';
 import limesImage from '../images/commissions/limes.jpg';
 import braukoImage from '../images/commissions/brauko.jpg';
 import eestecImage from '../images/commissions/eestec.png';
+import funkbudeImage from '../images/commissions/funkbude.jpg';
 
 const data = [
   {
@@ -115,10 +116,14 @@ const data = [
   },
   {
     name: 'Funkbude',
+    image: funkbudeImage,
     website: [{ url: 'https://hb9zz.ethz.ch' }],
+    email: 'funkbude@amiv.ethz.ch',
     description: {
-      en: 'Not a real description.',
-      de: 'Keine echte Beschreibung',
+      en:
+        'The Funkbude is operating the radio shack on the roof of the ETZ building, which is well equipped.  This allows us to support almost all modulation schemes, from CW through SSB and the digital formats. We also work on interesting projects in the domain of wireless communication. To prepare you for the HB9 amateur radio exam, the Funkbude is providing an interesting course every autumn semester. We are open to all members and alumni of ETH.',
+      de:
+        'Die Funkbude betreibt die Amateurfunkstation auf dem ETZ-Dach. Der Shack - die Funkstation - ist bestens ausgerüstet. Vom klassischen Morsen bis hin zu den neuen digitalen Betriebsarten ist funktechnisch fast alles möglich. Daneben realisieren wir spannende Projekte aus dem Bereich der Funktechnik. Zur Vorbereitung auf die HB9 Amateurfunkprüfung bietet die Funkbude jedes Herbstsemester einen spannenden Vorbereitungskurs an. Wir sind offen für alle Angehörige und ehemalige der ETH.',
     },
   },
   {
@@ -185,8 +190,8 @@ const data = [
   {
     name: 'MNS',
     description: {
-      en: 'Not a real description.',
-      de: 'Keine echte Beschreibung',
+      en: '_No description available._',
+      de: '_Keine Beschreibung verfügbar._',
     },
   },
   {
