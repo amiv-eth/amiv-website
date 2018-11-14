@@ -12,6 +12,13 @@ footer {
     .copyright {
       padding-right: 1em;
       border-right: 1px solid #fff;
+
+      @media @mobile {
+        display: block;
+        border-right: none;
+        padding-right: 0;
+        margin-bottom: 1em;
+      }
     }
 
     a {

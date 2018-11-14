@@ -48,22 +48,23 @@ header nav {
 
   @media @wide, @desktop {
     grid-template-columns: auto 1fr auto auto auto;
-    grid-template-areas: 'logo main-navigation profile language-switcher';
+    grid-template-areas: 'logo main-navigation profile language-selector';
     max-width: @dimension-max-content-width;
   }
 
   @media @tablet {
     grid-template-columns: auto 1fr auto auto;
-    grid-template-areas: 'logo main-navigation profile language-switcher';
+    grid-template-areas: 'logo main-navigation profile language-selector';
     font-size: .7em;
   }
 
   @media @mobile {
-    grid-template-columns: 1fr auto auto;
+    grid-template-columns: 1fr auto;
     grid-template-areas:
-      'logo language-switcher mobile-menu'
-      'main-navigation main-navigation main-navigation'
-      'profile profile profile';
+      'logo mobile-menu'
+      'main-navigation main-navigation'
+      'profile profile'
+      'language-selector language-selector';
     height: auto;
     max-height: @dimension-mobile-header-height;
     transition: max-height ease-in-out 500ms;
@@ -251,15 +252,14 @@ header ul.profile {
   }
 }
 
-header .language-switcher {
-  grid-area: language-switcher;
+header .language-selector {
+  grid-area: language-selector;
   height: @dimension-desktop-header-height;
+  line-height: @dimension-desktop-header-height;
+  text-align: center;
 
-  > button {
-    display: block;
-    height: 100%;
-    line-height: @dimension-desktop-header-height;
-    padding: 0 1.3em;
+  @media @mobile {
+    border-top: 1px solid #eee;
   }
 }
 

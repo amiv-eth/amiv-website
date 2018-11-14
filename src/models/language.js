@@ -6,14 +6,25 @@ import english from '../languages/en.json';
 let _currentLanguage;
 
 /**
- * Change the current language.
- *
- * Sets the current lanugage to the given code if it is
- * a valid code or to the default language `en` otherwise.
+ * Check if a given language code is valid.
  *
  * @param {string} language two-letter language code
+ * @return `true` - if valid; `false` - otherwise
+ */
+function isLanguageValid(language) {
+  return ['en', 'de'].indexOf(language) > -1;
+}
+
+/**
+ * Change the language of the current page.
+ *
+ * @param {string} language two-letter code for the desired language.
  */
 function changeLanguage(language) {
+  if (!isLanguageValid(language)) return;
+
+  _currentLanguage = language;
+
   i18n.translator.reset();
   if (language === 'de') {
     _currentLanguage = 'de';
@@ -23,16 +34,17 @@ function changeLanguage(language) {
     i18n.translator.add(english);
   }
   localStorage.setItem('language', _currentLanguage);
+
+  m.route.set(`/${_currentLanguage}${m.route.get().substring(3)}`);
 }
 
 /**
- * Check if a given language code is valid.
+ * Set language
  *
- * @param {string} language two-letter language code
- * @return `true` - if valid; `false` - otherwise
+ * @param {string} language two-letter code for the desired language.
  */
-function isLanguageValid(language) {
-  return ['en', 'de'].indexOf(language) > -1;
+function setLanguage(language) {
+  _currentLanguage = language;
 }
 
 /**
@@ -51,26 +63,10 @@ function loadLanguage() {
     }
   }
   if (lang.indexOf('de') !== -1) {
-    changeLanguage('de');
+    setLanguage('de');
   } else {
-    changeLanguage('en');
+    setLanguage('en');
   }
-}
-
-/**
- * Switch the language of the current page.
- *
- * Behavior:
- *   - `en` => `de`
- *   - `de` => `en`
- */
-function switchLanguage() {
-  if (_currentLanguage === 'en') {
-    _currentLanguage = 'de';
-  } else {
-    _currentLanguage = 'en';
-  }
-  m.route.set(`/${_currentLanguage}${m.route.get().substring(3)}`);
 }
 
 /**
@@ -85,4 +81,4 @@ function currentLanguage() {
   return _currentLanguage;
 }
 
-export { i18n, changeLanguage, switchLanguage, currentLanguage, loadLanguage, isLanguageValid };
+export { i18n, changeLanguage, setLanguage, currentLanguage, loadLanguage, isLanguageValid };

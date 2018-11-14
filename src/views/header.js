@@ -3,7 +3,7 @@ import { mainNavigation } from '../models/navigation';
 import AmivLogo from '../images/logo.svg';
 import MobileMenuIcon from '../images/mobileMenuButton.svg';
 import ExternalLinkIcon from '../images/external.svg';
-import { i18n, currentLanguage, switchLanguage } from '../models/language';
+import { i18n, currentLanguage, changeLanguage } from '../models/language';
 import { Button } from '../components';
 import { isLoggedIn, login } from '../models/auth';
 
@@ -36,14 +36,24 @@ export default class Header {
           ),
           this.constructor._mainMenu,
           this.constructor._profileMenu,
-          m(
-            'div.language-switcher',
+          m('div.language-selector', [
             m(Button, {
-              className: 'red-button',
-              label: i18n('language_button'),
-              events: { onclick: () => switchLanguage() },
-            })
-          ),
+              label: 'en',
+              className: 'bordered-button',
+              border: currentLanguage() === 'en',
+              inactive: currentLanguage() === 'en',
+              tone: 'dark',
+              events: { onclick: () => changeLanguage('en') },
+            }),
+            m(Button, {
+              label: 'de',
+              className: 'bordered-button',
+              border: currentLanguage() === 'de',
+              inactive: currentLanguage() === 'de',
+              tone: 'dark',
+              events: { onclick: () => changeLanguage('de') },
+            }),
+          ]),
           m(
             'div.mobile-menu',
             {

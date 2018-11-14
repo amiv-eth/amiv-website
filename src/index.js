@@ -2,7 +2,7 @@
 import m from 'mithril';
 import Raven from 'raven-js';
 import { sentryUrl, sentryEnvironment } from 'config';
-import { loadLanguage, currentLanguage, changeLanguage, isLanguageValid } from './models/language';
+import { loadLanguage, currentLanguage, setLanguage, isLanguageValid } from './models/language';
 import { Error404, Error401 } from './views/errors';
 import { isLoggedIn, checkLogin } from './models/auth';
 import studydocList from './views/studydocs/studydocList';
@@ -106,7 +106,7 @@ Raven.context(() => {
 
   function onmatch(args, route) {
     if (isLanguageValid(args.language)) {
-      changeLanguage(args.language);
+      setLanguage(args.language);
       return { view: vnode => m(layout, route.view(vnode)) };
     }
     return {
