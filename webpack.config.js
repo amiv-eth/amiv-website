@@ -24,6 +24,7 @@ const config = {
     index: 'index.html',
     historyApiFallback: true,
   },
+  mode: 'development',
 
   module: {
     rules: [

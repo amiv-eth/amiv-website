@@ -1,4 +1,3 @@
-const webpack = require('webpack');
 const CompressionPlugin = require('compression-webpack-plugin');
 
 // Start with dev config
@@ -7,6 +6,7 @@ const config = require('./webpack.config.js');
 // Remove development server and code map
 config.devServer = undefined;
 config.devtool = '';
+config.mode = 'production';
 
 // Add optimization plugins
 config.plugins.push(
