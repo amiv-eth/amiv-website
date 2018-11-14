@@ -116,6 +116,7 @@
         "studydocs.oral_ex": "Mündliche Prüfungen",
         "studydocs.oral_ex_txt1": "Die Prüfungsprotokolle sind hier bestellbar und können gegen ein Depot von 20.- im AMIV Büro im CAB E37 abgeholt werden. Das Depot erhält man jeweils zurück, wenn man selbst ein Protokoll abgibt. Dies soll gewährleisten, dass es stets aktuelle mündliche Prüfungen im System hat. Wenn du ein Prüfungsprotokoll brauchst oder abgeben willst, schicke eine Mail an pruefungen@amiv.ethz.ch. Ein Prüfungsprotokoll beinhaltet mindestens folgende Infos: Fach, Prof./Prüfer, Stichworte, Was wurde gefragt etc.",
         "studydocs.oral_ex_txt2": "Für die Sommersession 2018 können Protokolle (nach erfolgter Anmeldung) zu den folgenden Zeitpunkten abgeholt werden:",
+        "events.agenda": "Event Kalender",
         "events.header_open_registration": "Anmeldung offen",
         "events.header_upcoming": "Bevorstehende Events",
         "events.header_past": "Vergangene Events",

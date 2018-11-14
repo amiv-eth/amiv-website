@@ -68,6 +68,18 @@ export default class EventList extends FilteredListPage {
         },
         {
           type: 'button',
+          label: i18n('events.agenda'),
+          className: 'flat-button',
+          events: {
+            onclick: () => 
+              window.open(
+                'https://calendar.google.com/calendar/embed?src=mdk91hfvr18q8rrlh3sedlhgvo%40group.calendar.google.com',
+                '_blank'
+              )
+          },
+        },
+        {
+          type: 'button',
           label: i18n('reset'),
           className: 'red-button',
           events: {

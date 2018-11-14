@@ -116,6 +116,7 @@
         "studydocs.oral_ex": "Oral Exams",
         "studydocs.oral_ex_txt1": "You can order your exam protocols here and get them for a deposit of CHF 20.- at the AMIV Office in CAB E37.  You will get your deposit back for providing a protocol yourself. This shall make sure that our system is always up to date. If you need or want to provide an exam protocol, please send an e-mail to pruefungen@amiv.ethz.ch. A protocol includes at least the following content: course, professor/examinator, key words, what was asked and so on…",
         "studydocs.oral_ex_txt2": "Protocols for the summer session 2018 can be picked up (upon request) on the following dates:",
+        "events.agenda": "Event Calendar",
         "events.header_open_registration": "Open Registration",
         "events.header_upcoming": "Upcoming Events",
         "events.header_past": "Past Events",
