@@ -86,8 +86,12 @@ const data = [
     email: 'hopo-itet@amiv.ethz.ch',
     phone: '+41 44 632 42 45',
     description: {
-      en: 'Not a real description.',
-      de: 'Keine echte Beschreibung',
+      en: `The task of the student representation team at D-ITET is to represent its students with respects to Professors and the Department. This means, among others, contributing in teaching commission and department conference but also organizing information events for students.
+
+        Are you interested in how teaching is organized at D-ITET? Do you want to bring in your ideas and opinions on current questions? Then do not hesitate to contact us!`,
+      de: `Das HoPo ITET Team vertritt die Studenten gegenüber den Professoren und dem D-ITET. Das beinhaltet unter anderem die Teilnahme an Gremien wie der Departements- und Unterrichtskommission, oder die Organisation von Informationsevents und Prüfungsvorbereitungskursen für Studenten.
+
+        Interessierst du dich für Hochschulpolitische Themen? Oder hast du ein Anliegen, welches du angehen möchtest? Dann melde dich unverbindlich bei uns, wir freuen uns auf dich!`,
     },
   },
 ];
