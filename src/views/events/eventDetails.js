@@ -34,7 +34,7 @@ class EventSignupForm {
 
   async signup() {
     try {
-      await this.event.signup(super.getValue(), this.email);
+      await this.event.signup(this.form.data, this.email);
       this.emailSignup = 'success';
     } catch (err) {
       log(err);
@@ -128,25 +128,24 @@ class EventSignupForm {
 
 export default class EventDetails {
   oninit(vnode) {
-    this.controller = vnode.attrs.controller;
+    this.event = vnode.attrs.event;
   }
 
   view() {
-    const event = this.controller.selectedEvent;
-    if (!event) {
+    if (!this.event) {
       return m('h1', i18n('events.not_found'));
     }
 
     let eventSignupForm;
     const now = new Date();
-    const registerStart = new Date(event.time_register_start);
-    const registerEnd = new Date(event.time_register_end);
+    const registerStart = new Date(this.event.time_register_start);
+    const registerEnd = new Date(this.event.time_register_end);
     if (registerStart <= now) {
       if (registerEnd >= now) {
-        eventSignupForm = m(EventSignupForm, { event });
+        eventSignupForm = m(EventSignupForm, { event: this.event });
       } else {
         let participantNotice = '';
-        if (event.hasSignupDataLoaded && event.signupData) {
+        if (this.event.hasSignupDataLoaded && this.event.signupData) {
           participantNotice = m('span', i18n('events.signed_up'));
         }
         eventSignupForm = m('div', [i18n('events.registration_over'), participantNotice]);
@@ -155,15 +154,15 @@ export default class EventDetails {
       eventSignupForm = m('div', i18n('events.registration_starts_at', { time: registerStart }));
     }
     return m('div.event-details', [
-      m('h1', event.getTitle()),
-      m('div', event.time_start),
+      m('h1', this.event.getTitle()),
+      m('div', this.event.time_start),
       m(
         'div',
-        event.spots === undefined
+        this.event.spots === undefined
           ? i18n('events.no_registration')
-          : i18n('events.%n_spots_available', event.spots - event.signup_count)
+          : i18n('events.%n_spots_available', this.event.spots - this.event.signup_count)
       ),
-      m('p', m.trust(marked(escape(event.getDescription())))),
+      m('p', m.trust(marked(escape(this.event.getDescription())))),
       eventSignupForm,
     ]);
   }

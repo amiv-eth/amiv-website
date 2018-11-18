@@ -142,6 +142,7 @@ export class FilteredListPage {
     if (this.hasDetailsPage && itemId) {
       this.detailsItemId = itemId;
       this.dataStore.detailsAnimated = !this.dataStore.detailsShown;
+      this.dataStore.detailsLoaded = false;
       this.dataStore.detailsShown = true;
       this._loadItem(itemId)
         .then(() => {

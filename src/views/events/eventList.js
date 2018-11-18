@@ -149,7 +149,7 @@ export default class EventList extends FilteredListPage {
 
   // eslint-disable-next-line class-methods-use-this
   get _detailsView() {
-    return m(EventDetails, { controller });
+    return m(EventDetails, { event: controller.selectedEvent });
   }
 
   // eslint-disable-next-line class-methods-use-this
