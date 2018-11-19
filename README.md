@@ -1,46 +1,29 @@
-# AMIV website
+# amiv-website-vue
 
-**AMIV website but it doesn't suck, because we use VUE.js**
-
-## How to use
-
-### Update Content
-
-[See this guide for further instructions](src/content/)
-
-### Development
-
-```bash
+## Project setup
+```
 npm install
-npm run server  #start developer server
 ```
 
-### Production
+### Compiles and hot-reloads for development
+```
+npm run serve
+```
 
-```bash
-npm install
+### Compiles and minifies for production
+```
 npm run build
 ```
 
-Then copy `index.html` and the dist folder to your webhost.
+### Run your tests
+```
+npm run test
+```
 
-### Lint
-
-```bash
+### Lints and fixes files
+```
 npm run lint
 ```
 
-### Documentation
-
-```bash
-npm run docs    # output format: HTML
-npm run docs-md # output format: markdown
-```
-
-## Developer
-
-Backend: [AMIV API](https://github.com/amiv-eth/amivapi)
-
-Needed build tools:
-
-* [npm](https://www.npmjs.com)
+### Customize configuration
+See [Configuration Reference](https://cli.vuejs.org/config/).
