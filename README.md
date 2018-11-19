@@ -41,17 +41,6 @@ npm run docs-md # output format: markdown
 
 Backend: [AMIV API](https://github.com/amiv-eth/amivapi)
 
-Technologies:
-
-* [Mithril](https://mithril.js.org/)
-* [i18n for Virtual DOM](https://i18n4v.js.org)
-
-Needed extensions:
-
-* [ESlint](https://github.com/eslint/eslint)
-* [Prettier](https://github.com/prettier/prettier)
-* [stylelint](https://stylelint.io)
-
 Needed build tools:
 
 * [npm](https://www.npmjs.com)
