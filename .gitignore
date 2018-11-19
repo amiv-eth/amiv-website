@@ -4,3 +4,5 @@ dist
 npm-debug.log
 DOCUMENTATION.html
 DOCUMENTATION.md
+.idea
+.DS_Store
