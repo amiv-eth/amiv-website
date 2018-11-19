@@ -5,7 +5,8 @@
 ## How to use
 ### Project setup
 ```
-npm install
+npm install -g pnpm strapi@alpha
+pnpm install
 ```
 
 ### Compiles and hot-reloads for development
