@@ -1,0 +1,68 @@
+@import '../styles/mediaquery.less';
+
+.card {
+  @media @desktop, @wide, @tablet {
+    height: 100%;
+    width: 100%;
+  }
+
+  @media @mobile {
+    height: 9/16*100vw;
+    width: 100%;
+  }
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: #fafafa;
+  background-size: cover;
+  background-position: center;
+  overflow: hidden;
+
+  .card-title {
+    @media @desktop, @wide {
+      font-size: 2em;
+    }
+
+    @media @tablet {
+      font-size: 1.5em;
+    }
+
+    @media @mobile {
+      font-size: 1em;
+    }
+    color: rgb(255, 255, 255);
+    background-image: linear-gradient(to top, rgba(0, 0, 0, .4), rgba(0, 0, 0, 0));
+    padding: 20px 0 10px;
+    position: absolute;
+    bottom: 0;
+    transition: opacity .2s;
+    width: 100%;
+  }
+
+  .card-overlay {
+    background: rgba(255, 255, 255, .8);
+    bottom: -100%;
+    height: 100%;
+    left: 0%;
+    text-align: center;
+    position: absolute;
+    transition: bottom .5s ease;
+    width: 100%;
+
+    div {
+      padding: 1.5em;
+      color: #000;
+      font-size: 1.5em;
+    }
+  }
+
+  &:hover {
+    .card-overlay {
+      bottom: 0%;
+    }
+
+    .card-title {
+      opacity: 0;
+    }
+  }
+}
