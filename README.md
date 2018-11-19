@@ -1,6 +1,6 @@
 # AMIV website
 
-*AMIV website but it doesn't suck, because we use VUE.js*
+**AMIV website but it doesn't suck, because we use VUE.js**
 
 ## How to use
 
