@@ -16,15 +16,11 @@ function isLanguageValid(language) {
 }
 
 /**
- * Change the language of the current page.
+ * Set language
  *
  * @param {string} language two-letter code for the desired language.
  */
-function changeLanguage(language) {
-  if (!isLanguageValid(language)) return;
-
-  _currentLanguage = language;
-
+function setLanguage(language) {
   i18n.translator.reset();
   if (language === 'de') {
     _currentLanguage = 'de';
@@ -34,17 +30,19 @@ function changeLanguage(language) {
     i18n.translator.add(english);
   }
   localStorage.setItem('language', _currentLanguage);
-
-  m.route.set(`/${_currentLanguage}${m.route.get().substring(3)}`);
 }
 
 /**
- * Set language
+ * Change the language of the current page.
  *
  * @param {string} language two-letter code for the desired language.
  */
-function setLanguage(language) {
-  _currentLanguage = language;
+function changeLanguage(language) {
+  if (!isLanguageValid(language)) return;
+
+  setLanguage(language);
+
+  m.route.set(`/${_currentLanguage}${m.route.get().substring(3)}`);
 }
 
 /**
