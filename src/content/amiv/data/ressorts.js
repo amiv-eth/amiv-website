@@ -81,8 +81,8 @@ const data = [
     email: 'hopo-mavt@amiv.ethz.ch',
     phone: '+41 44 632 42 45',
     description: {
-      en: 'Not a real description.',
-      de: 'Keine echte Beschreibung',
+      en: '_No description available._',
+      de: '_Keine Beschreibung verfügbar._',
     },
   },
   {
