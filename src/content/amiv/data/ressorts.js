@@ -29,8 +29,12 @@ const data = [
     email: 'er@amiv.ethz.ch',
     phone: '+41 44 632 42 45',
     description: {
-      en: 'Not a real description.',
-      de: 'Keine echte Beschreibung',
+      en: `The External Relation team is doing the link between the AMIV and the industry world. Our main activities are to organise excursion to the companies, industry talks, etc. One of the major aspects of the ER is to find sponsors to lower the price of the events.
+
+        If you are interested in being in touch with companies and do some networking or if you have a brilliant idea to get more sponsors for the event, do not hesitate to write us.`,
+      de: `Das Resort External Relations ist das Bindeglied zwischen dem AMIV und der Arbeitswelt. Unsere Aufgaben sind Exkursionen und Vorträge mit Firmen zu organisieren. Unsere Hauptaufgabe ist Sponsoren für die Kulturevents zu finden, damit sie durchgeführt werden können.
+
+        Falls du Interesse hast mit Firmen in Kontakt zu kommen und dir ein Netzwerk aufbauen willst oder wenn du eine Idee hast, wie man weitere Sponsoren für Events gewinnen kann, zögere nicht dich bei uns zu melden.`,
     },
   },
   {
