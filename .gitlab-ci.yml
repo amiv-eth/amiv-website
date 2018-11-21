@@ -9,18 +9,19 @@ cache:
   paths:
   - node_modules/
 
-before_script:
-  - npm install
-
 eslint:
   stage: test
   image: node:latest
+  before_script:
+  - npm install
   script:
     - npm run eslint
 
 stylelint:
   stage: test
   image: node:latest
+  before_script:
+  - npm install
   script:
     - npm run stylelint
 
