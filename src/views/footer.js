@@ -30,9 +30,9 @@ export default class Footer {
     const x = -Math.random() * 400;
     const y = -Math.random() * 400;
     this.coord = [x, y];
-    setTimeout(() => {
-      window.scrollTo(0, document.body.scrollHeight || document.documentElement.scrollHeight);
-    }, 0); // Without this timeout the page scrolls to the top
+    // setTimeout(() => {
+    //   window.scrollTo(0, document.body.scrollHeight || document.documentElement.scrollHeight);
+    // }, 0); // Without this timeout the page scrolls to the top
     return false;
   }
 
