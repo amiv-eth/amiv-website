@@ -1,7 +1,8 @@
 import m from 'mithril';
 import marked from 'marked';
 import escape from 'html-escape';
-import ExternalLinkIcon from '../../images/external.svg';
+import { Card, IconButton } from 'polythene-mithril';
+import AmivLogo from '../../images/logoNoText.svg';
 import { data as data_ressorts } from '../../content/amiv/data/ressorts';
 import { data as data_commissions } from '../../content/amiv/data/commissions';
 import { i18n, currentLanguage } from '../../models/language';
@@ -13,37 +14,45 @@ class Team {
     return marked(escape(text.trim().replace(/\n[^\S\n]+/g, '\n')));
   }
 
+  static _getActionLabel(action) {
+    const { label } = action;
+
+    if (typeof label === 'string' || label instanceof String) {
+      return label;
+    }
+
+    if (label && Object.keys(label).length > 0) {
+      // select translation in the following order:
+      // current language > english > first available language
+      if (label[currentLanguage()]) {
+        return label[currentLanguage()];
+      }
+
+      let language;
+
+      if (label.en) {
+        language = 'en';
+      } else {
+        [language] = Object.keys(label);
+      }
+
+      return label[language];
+    }
+
+    return '';
+  }
+
   static view(vnode) {
     const { team } = vnode.attrs;
 
     let image;
     let description;
-    const contactInfo = [];
+    const additionalContent = [];
 
     if (team.image) {
-      image = m('div.image.ratio-16to9', m('img', { src: `/${team.image}` }));
+      image = m('img', { src: `/${team.image}` });
     } else {
-      image = m('div.no-image.ratio-16to9', m('span', i18n('no image')));
-    }
-
-    // collect all avialable contact information
-    if (team.website && team.website.length) {
-      contactInfo.push(
-        ...team.website.map(item =>
-          m('a', { href: item.url }, [
-            i18n(item.label) || item.url,
-            m('img.external-link', {
-              src: ExternalLinkIcon,
-            }),
-          ])
-        )
-      );
-    }
-    if (team.email) {
-      contactInfo.push(m('a', { href: `mailto:${team.email}` }, team.email));
-    }
-    if (team.phone) {
-      contactInfo.push(m('a', { href: `tel:${team.phone}` }, team.phone));
+      image = m('img', { src: AmivLogo }); // m('span', i18n('no image'));
     }
 
     if (team.description && Object.keys(team.description).length > 0) {
@@ -69,15 +78,57 @@ class Team {
       description = m('');
     }
 
-    return m('div.team', [
-      image,
-      m('h2', team.name),
-      m('div.description', description),
-      m(
-        'div.contact',
-        contactInfo.length > 0 ? contactInfo : m('span', i18n('commissions.no_contact_info'))
-      ),
-    ]);
+    if (team.contact) {
+      additionalContent.push({
+        actions: {
+          border: true,
+          className: 'actions',
+          layout: 'vertical',
+          content: team.contact.map(item =>
+            m(IconButton, {
+              href: item.url,
+              label: Team._getActionLabel(item),
+              icon: m('img', { src: item.icon }),
+            })
+          ),
+        },
+      });
+    }
+
+    return m(Card, {
+      className: 'team',
+      content: [
+        {
+          media: {
+            origin: 'center',
+            ratio: 'landscape',
+            content: image,
+          },
+        },
+        {
+          primary: {
+            title: team.name,
+          },
+        },
+        {
+          text: {
+            content: [description, m('.flex')],
+            className: 'description',
+          },
+        },
+        ...additionalContent,
+      ],
+    });
+
+    // return m('div.team', [
+    //   image,
+    //   m('h2', team.name),
+    //   m('div.description', description),
+    //   m(
+    //     'div.contact',
+    //     contactInfo.length > 0 ? contactInfo : m('span', i18n('commissions.no_contact_info'))
+    //   ),
+    // ]);
   }
 }
 

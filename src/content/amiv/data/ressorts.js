@@ -5,12 +5,95 @@ import kulturImage from '../images/ressorts/kultur.png';
 import itImage from '../images/ressorts/it.jpg';
 import designImage from '../images/ressorts/design.jpg';
 
+import websiteIcon from '../../../images/earth.svg';
+import phoneIcon from '../../../images/phone.svg';
+import emailIcon from '../../../images/email.svg';
+
 const data = [
+    {
+    name: 'Kulturteam',
+    image: kulturImage,
+    contact: [
+      {
+        icon: emailIcon,
+        label: 'kultur@amiv.ethz.ch',
+        url: 'mailto:kultur@amiv.ethz.ch',
+      },
+      {
+        icon: phoneIcon,
+        label: '+41 44 632 42 45',
+        url: 'tel:+41446324245',
+      },
+    ],
+    description: {
+      en: `The AMIV culture branch brings you more than 30 events every semester:
+        from legendary happenings such as our Sushi-Night, AMIVondue to Lasertag, theatre visits and speed dating, there is something for everyone!
+
+        Do you have a brilliant idea for a new event that we missed and should be holding? Or would you like to help us organise an event?
+        Send us an email or drop by the AMIV offices and join the AMIV culture branch!`,
+      de: `Wir vom Kulturteam organisieren für euch über 30 Events pro Semester.
+        Von Sushi-Night und AMIVondue über Lasertag bis zu Theater und Speeddating hat es bestimmt für jeden etwas dabei!
+      
+        Hast du eine geniale Idee für ein Event, das dir noch fehlt? Oder möchtest du gerne selbst einmal Event-Luft schnuppern und mithelfen ein Event zu planen? Dann melde dich doch per Mail bei uns oder schau einfach mal im AMIV-Büro vorbei!`,
+    },
+  },
+  {
+    name: 'HoPo MAVT',
+    contact: [
+      {
+        icon: emailIcon,
+        label: 'hopo-mavt@amiv.ethz.ch',
+        url: 'mailto:hopo-mavt@amiv.ethz.ch',
+      },
+      {
+        icon: phoneIcon,
+        label: '+41 44 632 42 45',
+        url: 'tel:+41446324245',
+      },
+    ],
+    description: {
+      en: '_No description available._',
+      de: '_Keine Beschreibung verfügbar._',
+    },
+  },
+  {
+    name: 'HoPo ITET',
+    contact: [
+      {
+        icon: emailIcon,
+        label: 'hopo-itet@amiv.ethz.ch',
+        url: 'mailto:hopo-itet@amiv.ethz.ch',
+      },
+      {
+        icon: phoneIcon,
+        label: '+41 44 632 42 45',
+        url: 'tel:+41446324245',
+      },
+    ],
+    description: {
+      en: `The task of the student representation team at D-ITET is to represent its students with respects to Professors and the Department. This means, among others, contributing in teaching commission and department conference but also organizing information events for students.
+
+        Are you interested in how teaching is organized at D-ITET? Do you want to bring in your ideas and opinions on current questions? Then do not hesitate to contact us!`,
+      de: `Das HoPo ITET Team vertritt die Studenten gegenüber den Professoren und dem D-ITET. Das beinhaltet unter anderem die Teilnahme an Gremien wie der Departements- und Unterrichtskommission, oder die Organisation von Informationsevents und Prüfungsvorbereitungskursen für Studenten.
+
+        Interessierst du dich für Hochschulpolitische Themen? Oder hast du ein Anliegen, welches du angehen möchtest? Dann melde dich unverbindlich bei uns, wir freuen uns auf dich!`,
+    },
+  },
   {
     name: 'Designteam',
     image: designImage,
-    email: 'design@amiv.ethz.ch',
-    phone: '+41 44 632 42 45',
+    contact: [
+      {
+        icon: emailIcon,
+        label: 'design@amiv.ethz.ch',
+        url: 'mailto:design@amiv.ethz.ch',
+      },
+      {
+        icon: phoneIcon,
+        label: '+41 44 632 42 45',
+        url: 'tel:+41446324245',
+      },
+    ],
     description: {
       en: `Making the world a prettier place since 2016 - the AMIV's very own in-house design team is tasked with creating better looking posters, flyers & infoscreens, lit merchandise and stickers you will keep forever. If you enjoy the creative side of life, and are looking to learn or apply some editing skills then hit us up with an e-mail.
 
@@ -25,23 +108,25 @@ const data = [
     },
   },
   {
-    name: 'ER Team',
-    email: 'er@amiv.ethz.ch',
-    phone: '+41 44 632 42 45',
-    description: {
-      en: `The External Relation team is doing the link between the AMIV and the industry world. Our main activities are to organise excursion to the companies, industry talks, etc. One of the major aspects of the ER is to find sponsors to lower the price of the events.
-
-        If you are interested in being in touch with companies and do some networking or if you have a brilliant idea to get more sponsors for the event, do not hesitate to write us.`,
-      de: `Das Resort External Relations ist das Bindeglied zwischen dem AMIV und der Arbeitswelt. Unsere Aufgaben sind Exkursionen und Vorträge mit Firmen zu organisieren. Unsere Hauptaufgabe ist Sponsoren für die Kulturevents zu finden, damit sie durchgeführt werden können.
-
-        Falls du Interesse hast mit Firmen in Kontakt zu kommen und dir ein Netzwerk aufbauen willst oder wenn du eine Idee hast, wie man weitere Sponsoren für Events gewinnen kann, zögere nicht dich bei uns zu melden.`,
-    },
-  },
-  {
     name: 'IT Team',
     image: itImage,
-    email: 'it@amiv.ethz.ch',
-    phone: '+41 44 632 42 45',
+    contact: [
+      {
+        icon: websiteIcon,
+        label: 'gitlab.ethz.ch/amiv',
+        url: 'https://gitlab.ethz.ch/amiv',
+      },
+      {
+        icon: emailIcon,
+        label: 'it@amiv.ethz.ch',
+        url: 'mailto:it@amiv.ethz.ch',
+      },
+      {
+        icon: phoneIcon,
+        label: '+41 44 632 42 45',
+        url: 'tel:+41446324245',
+      },
+    ],
     description: {
       en: `Webapps, Websites and beer dispenser are just a few things the AMIV IT provides.
 
@@ -60,42 +145,26 @@ const data = [
     },
   },
   {
-    name: 'Kulturteam',
-    image: kulturImage,
-    email: 'kultur@amiv.ethz.ch',
-    phone: '+41 44 632 42 45',
+    name: 'ER Team',
+    contact: [
+      {
+        icon: emailIcon,
+        label: 'er@amiv.ethz.ch',
+        url: 'mailto:er@amiv.ethz.ch',
+      },
+      {
+        icon: phoneIcon,
+        label: '+41 44 632 42 45',
+        url: 'tel:+41446324245',
+      },
+    ],
     description: {
-      en: `The AMIV culture branch brings you more than 30 events every semester:
-        from legendary happenings such as our Sushi-Night, AMIVondue to Lasertag, theatre visits and speed dating, there is something for everyone!
+      en: `The External Relation team is doing the link between the AMIV and the industry world. Our main activities are to organise excursion to the companies, industry talks, etc. One of the major aspects of the ER is to find sponsors to lower the price of the events.
 
-        Do you have a brilliant idea for a new event that we missed and should be holding? Or would you like to help us organise an event?
-        Send us an email or drop by the AMIV offices and join the AMIV culture branch!`,
-      de: `Wir vom Kulturteam organisieren für euch über 30 Events pro Semester.
-        Von Sushi-Night und AMIVondue über Lasertag bis zu Theater und Speeddating hat es bestimmt für jeden etwas dabei!
-      
-        Hast du eine geniale Idee für ein Event, das dir noch fehlt? Oder möchtest du gerne selbst einmal Event-Luft schnuppern und mithelfen ein Event zu planen? Dann melde dich doch per Mail bei uns oder schau einfach mal im AMIV-Büro vorbei!`,
-    },
-  },
-  {
-    name: 'HoPo MAVT',
-    email: 'hopo-mavt@amiv.ethz.ch',
-    phone: '+41 44 632 42 45',
-    description: {
-      en: '_No description available._',
-      de: '_Keine Beschreibung verfügbar._',
-    },
-  },
-  {
-    name: 'HoPo ITET',
-    email: 'hopo-itet@amiv.ethz.ch',
-    phone: '+41 44 632 42 45',
-    description: {
-      en: `The task of the student representation team at D-ITET is to represent its students with respects to Professors and the Department. This means, among others, contributing in teaching commission and department conference but also organizing information events for students.
+        If you are interested in being in touch with companies and do some networking or if you have a brilliant idea to get more sponsors for the event, do not hesitate to write us.`,
+      de: `Das Resort External Relations ist das Bindeglied zwischen dem AMIV und der Arbeitswelt. Unsere Aufgaben sind Exkursionen und Vorträge mit Firmen zu organisieren. Unsere Hauptaufgabe ist Sponsoren für die Kulturevents zu finden, damit sie durchgeführt werden können.
 
-        Are you interested in how teaching is organized at D-ITET? Do you want to bring in your ideas and opinions on current questions? Then do not hesitate to contact us!`,
-      de: `Das HoPo ITET Team vertritt die Studenten gegenüber den Professoren und dem D-ITET. Das beinhaltet unter anderem die Teilnahme an Gremien wie der Departements- und Unterrichtskommission, oder die Organisation von Informationsevents und Prüfungsvorbereitungskursen für Studenten.
-
-        Interessierst du dich für Hochschulpolitische Themen? Oder hast du ein Anliegen, welches du angehen möchtest? Dann melde dich unverbindlich bei uns, wir freuen uns auf dich!`,
+        Falls du Interesse hast mit Firmen in Kontakt zu kommen und dir ein Netzwerk aufbauen willst oder wenn du eine Idee hast, wie man weitere Sponsoren für Events gewinnen kann, zögere nicht dich bei uns zu melden.`,
     },
   },
 ];

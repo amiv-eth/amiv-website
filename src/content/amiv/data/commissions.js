@@ -12,13 +12,34 @@ import braukoImage from '../images/commissions/brauko.jpg';
 import eestecImage from '../images/commissions/eestec.png';
 import funkbudeImage from '../images/commissions/funkbude.jpg';
 
+import websiteIcon from '../../../images/earth.svg';
+import phoneIcon from '../../../images/phone.svg';
+import emailIcon from '../../../images/email.svg';
+import calendarIcon from '../../../images/calendar.svg';
+import instagramIcon from '../../../images/instagram.svg';
+import facebookIcon from '../../../images/facebook.svg';
+
 const data = [
   {
     name: 'Bastli',
     image: bastliImage,
-    website: [{ url: 'https://bastli.ethz.ch' }],
-    email: 'info@bastli.ethz.ch',
-    phone: '+41 44 632 49 41',
+    contact: [
+      {
+        icon: websiteIcon,
+        label: 'bastli.ethz.ch',
+        url: 'https://bastli.ethz.ch',
+      },
+      {
+        icon: emailIcon,
+        label: 'info@bastli.ethz.ch',
+        url: 'mailto:info@bastli.ethz.ch',
+      },
+      {
+        icon: phoneIcon,
+        label: '+41 44 632 49 41',
+        url: 'tel:+41 44 632 49 41',
+      },
+    ],
     description: {
       en: `The eletronics laboratory is open for UZH and ETH students offering material and workspaces to make your projects and build your ideas.
 
@@ -29,18 +50,28 @@ const data = [
         We are always looking for people. If you want to learn more, just drop by the workshop or write us an email.`,
       de: `Das Elektroniklabor des AMIV von und für ETH / UZH Studierende bietet Euch kostenlose Arbeitsplätze und Werkzeuge um eure eigenen Projekte und Ideen umzusetzen.
 
-          Wir sind für alle da und helfen euch gerne. Vorkenntnisse werden keine benötigt, Hauptsache ihr habt Spass daran Dinge zu bauen.
+        Wir sind für alle da und helfen euch gerne. Vorkenntnisse werden keine benötigt, Hauptsache ihr habt Spass daran Dinge zu bauen.
 
-          Die Öffnungszeiten von unserem Bauteile-Shop findest du auf unserer Webseite.
+        Die Öffnungszeiten von unserem Bauteile-Shop findest du auf unserer Webseite.
 
-          Wir sind stetig auf der Suche nach neuen Mitgliedern. Wenn du mehr erfahren möchtest, komm einfach mal im Bastli vorbei oder schreib uns eine E-Mail.`,
+        Wir sind stetig auf der Suche nach neuen Mitgliedern. Wenn du mehr erfahren möchtest, komm einfach mal im Bastli vorbei oder schreib uns eine E-Mail.`,
     },
   },
   {
     name: 'Blitz',
     image: blitzImage,
-    website: [{ url: 'https://blitz.ethz.ch' }],
-    email: 'info@blitz.ethz.ch',
+    contact: [
+      {
+        icon: websiteIcon,
+        label: 'blitz.ethz.ch',
+        url: 'https://blitz.ethz.ch',
+      },
+      {
+        icon: emailIcon,
+        label: 'info@blitz.ethz.ch',
+        url: 'mailto:info@blitz.ethz.ch',
+      },
+    ],
     description: {
       en: `The amiv commission named blitz publishes the magazine of the student’s association of the same name every second week. Therein you find interesting articles about current events, information around mechanical engineering and electrical engineering, riddles and much more.
 
@@ -54,13 +85,18 @@ const data = [
     name: 'Braukommission',
     image: braukoImage,
     email: 'amivbraeu@amiv.ethz.ch',
-    website: [
+    contact: [
       {
-        label: 'calendar',
+        icon: calendarIcon,
+        label: {
+          en: 'Brewing Calendar',
+          de: 'Braukalender',
+        },
         url: 'https://cloud.amiv.ethz.ch/index.php/apps/calendar/p/qJerTAw9TKLe6xtY/Braukommission',
       },
       {
-        label: 'Instagram',
+        icon: instagramIcon,
+        label: 'Instagram: amivbrau',
         url: 'https://www.instagram.com/amivbrau/',
       },
     ],
@@ -91,8 +127,18 @@ const data = [
   {
     name: 'Irrational Co.',
     image: irrationalImage,
-    email: 'irrational@amiv.ethz.ch',
-    phone: '+41 76 437 68 37',
+    contact: [
+      {
+        icon: emailIcon,
+        label: 'irrational@amiv.ethz.ch',
+        url: 'mailto:irrational@amiv.ethz.ch',
+      },
+      {
+        icon: phoneIcon,
+        label: '+41 76 437 68 37',
+        url: 'tel:+41 76 437 68 37',
+      },
+    ],
     description: {
       en: `Irrational Coffee is an AMIV commission dedicated to spreading alternative coffee culture.
         If you are interested in learning more about different coffee beans, processing techniques, brewing methods, or anything coffee-related, then this is the place for you!
@@ -105,8 +151,18 @@ const data = [
   {
     name: 'EESTEC',
     image: eestecImage,
-    website: [{ url: 'https://eestec.ch' }],
-    email: 'contact@eestec.ethz.ch',
+    contact: [
+      {
+        icon: websiteIcon,
+        label: 'eestec.ch',
+        url: 'https://eestec.ch',
+      },
+      {
+        icon: emailIcon,
+        label: 'contact@eestec.ethz.ch',
+        url: 'mailto:contact@eestec.ethz.ch',
+      },
+    ],
     description: {
       en:
         'EESTEC is an international association of Electrical/Mechanical Engineers and Computer Scientists. We are present in over 50 cities all over Europe and offer a variety of events. For example workshops, where you travel to a different country and engage in interesting topics like 3D printing, AI, VR and many others. And apart from the travel costs, everything is included for free! You can find further information about us on our website.',
@@ -117,8 +173,18 @@ const data = [
   {
     name: 'Funkbude',
     image: funkbudeImage,
-    website: [{ url: 'https://hb9zz.ethz.ch' }],
-    email: 'funkbude@amiv.ethz.ch',
+    contact: [
+      {
+        icon: websiteIcon,
+        label: 'hb9zz.ethz.ch',
+        url: 'https://hb9zz.ethz.ch',
+      },
+      {
+        icon: emailIcon,
+        label: 'funkbude@amiv.ethz.ch',
+        url: 'mailto:funkbude@amiv.ethz.ch',
+      },
+    ],
     description: {
       en:
         'The Funkbude is operating the radio shack on the roof of the ETZ building, which is well equipped.  This allows us to support almost all modulation schemes, from CW through SSB and the digital formats. We also work on interesting projects in the domain of wireless communication. To prepare you for the HB9 amateur radio exam, the Funkbude is providing an interesting course every autumn semester. We are open to all members and alumni of ETH.',
@@ -129,8 +195,18 @@ const data = [
   {
     name: 'LIMES',
     image: limesImage,
-    email: 'limes@amiv.ethz.ch',
-    website: [{ url: 'https://limes.ethz.ch' }],
+    contact: [
+      {
+        icon: websiteIcon,
+        label: 'limes.ethz.ch',
+        url: 'https://limes.ethz.ch',
+      },
+      {
+        icon: emailIcon,
+        label: 'limes@amiv.ethz.ch',
+        url: 'mailto:limes@amiv.ethz.ch',
+      },
+    ],
     description: {
       en: `We **L**adies **i**n **M**echanical and **E**lectrical **S**tudies are the women’s committee of the AMIV. We organize different events to connect female students of ITET and MAVT and to network with industry partners.
 
@@ -145,23 +221,20 @@ const data = [
     },
   },
   {
-    name: 'RandomDudes',
-    image: randomDudesImage,
-    email: 'randomdudes@amiv.ethz.ch',
-    description: {
-      en: `The Randomdudes form one of the more special commissions the amiv incorporates. Its main duties are sustaining knowledge within the amiv and to ensure the ridiculously generous opening hours of the amiv office. Most of our members are former board members and other friends of the gondola, which we care for and continuously improve.
-
-      We also organize many events that make studying a little easier and especially more fun.`,
-      de: `Die Randomdudes sind die wohl speziellste Kommission des AMIV. Vorrangig für den Wissenserhalt und generelle Anwesenheit im Büro zuständig, bestehen wir zum größten Teil aus ehemaligen Vorständen und freunden der Gondel, für dessen Pflege wir auch zuständig sind.
-
-        Außerdem organisieren wir regelmäßig Events zur Bespaßung der Studentenschaft, um Euch den Studienalltag ein bisschen erträglicher zu machen.`,
-    },
-  },
-  {
     name: 'Kontakt',
     image: kontaktImage,
-    email: 'kontakt@amiv.ethz.ch',
-    website: [{ url: 'https://kontakt.amiv.ethz.ch' }],
+    contact: [
+      {
+        icon: websiteIcon,
+        label: 'kontakt.amiv.ethz.ch',
+        url: 'https://kontakt.amiv.ethz.ch',
+      },
+      {
+        icon: emailIcon,
+        label: 'kontakt@amiv.ethz.ch',
+        url: 'mailto:kontakt@amiv.ethz.ch',
+      },
+    ],
     description: {
       en: `The Kontakt comission is responsible for organising all aspects of the annual AMIV Kontakt job fair.
 
@@ -174,10 +247,39 @@ const data = [
     },
   },
   {
+    name: 'RandomDudes',
+    image: randomDudesImage,
+    contact: [
+      {
+        icon: emailIcon,
+        label: 'randomdudes@amiv.ethz.ch',
+        url: 'mailto:randomdudes@amiv.ethz.ch',
+      },
+    ],
+    description: {
+      en: `The Randomdudes form one of the more special commissions the amiv incorporates. Its main duties are sustaining knowledge within the amiv and to ensure the ridiculously generous opening hours of the amiv office. Most of our members are former board members and other friends of the gondola, which we care for and continuously improve.
+
+      We also organize many events that make studying a little easier and especially more fun.`,
+      de: `Die Randomdudes sind die wohl speziellste Kommission des AMIV. Vorrangig für den Wissenserhalt und generelle Anwesenheit im Büro zuständig, bestehen wir zum größten Teil aus ehemaligen Vorständen und freunden der Gondel, für dessen Pflege wir auch zuständig sind.
+
+        Außerdem organisieren wir regelmäßig Events zur Bespaßung der Studentenschaft, um Euch den Studienalltag ein bisschen erträglicher zu machen.`,
+    },
+  },
+  {
     name: 'E=MC^2',
     image: emc2Image,
-    email: 'emc2@amiv.ethz.ch',
-    website: [{ url: 'https://fb.me/emc2eth' }],
+    contact: [
+      {
+        icon: facebookIcon,
+        label: 'Facebook: emc2eth',
+        url: 'https://fb.me/emc2eth',
+      },
+      {
+        icon: emailIcon,
+        label: 'emc2@amiv.ethz.ch',
+        url: 'mailto:emc2@amiv.ethz.ch',
+      },
+    ],
     description: {
       en: `The Energy Master Chill Club is a student-run AMIV commission bringing together energy students across different years through all types of events (Fondue Night, BBQ, Ski Weekend, etc.).
 
@@ -188,19 +290,25 @@ const data = [
     },
   },
   {
-    name: 'MNS',
-    description: {
-      en: '_No description available._',
-      de: '_Keine Beschreibung verfügbar._',
-    },
-  },
-  {
     name: 'BEEZ',
-    email: 'beez@amiv.ethz.ch',
+    contact: [
+      {
+        icon: emailIcon,
+        label: 'beez@amiv.ethz.ch',
+        url: 'mailto:beez@amiv.ethz.ch',
+      },
+    ],
     description: {
       en: `The Biomedical Engineering Student Association at ETH Zurich is a social group with members mostly studying in or graduated from Biomedical Engineering MSc. program. Our aim is to bring together young engineers in their studies and help maintain the crucial balance between work life and leisure.
 
         However, just as our academic program, we are open to students from various backgrounds. If you are interested in biomedical research AND having fun, follow us!`,
+    },
+  },
+  {
+    name: 'MNS',
+    description: {
+      en: '_No description available._',
+      de: '_Keine Beschreibung verfügbar._',
     },
   },
 ];
