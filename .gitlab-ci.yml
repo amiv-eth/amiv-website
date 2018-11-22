@@ -1,4 +1,5 @@
 stages:
+  - prepare
   - test
   - build
   - deploy
@@ -9,19 +10,20 @@ cache:
   paths:
   - node_modules/
 
+npm:
+  stage: prepare
+  image: node:latest
+  script: npm install
+
 eslint:
   stage: test
   image: node:latest
-  before_script:
-  - npm install
   script:
     - npm run eslint
 
 stylelint:
   stage: test
   image: node:latest
-  before_script:
-  - npm install
   script:
     - npm run stylelint
 
