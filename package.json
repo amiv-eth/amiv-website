@@ -22,7 +22,7 @@
   "author": "AMIV IT team",
   "license": "ISC",
   "dependencies": {
-    "amiv-web-ui-components": "git+https://git@gitlab.ethz.ch/amiv/web-ui-components.git#d9109e235029dab9c3328a286f2370dd2b2af081",
+    "amiv-web-ui-components": "git+https://git@gitlab.ethz.ch/amiv/web-ui-components.git#98ce6951067c93cae5ffc811a580369592f5b9eb",
     "babel-polyfill": "^6.26.0",
     "email-validator": "^2.0.4",
     "html-escape": "^2.0.0",
@@ -31,7 +31,8 @@
     "mithril": "^1.1.5",
     "polythene-css": "^1.3.2",
     "polythene-mithril": "^1.3.2",
-    "raven-js": "^3.27.0"
+    "raven-js": "^3.27.0",
+    "animated-scroll-to": "^1.2.2"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",

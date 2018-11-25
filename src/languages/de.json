@@ -6,7 +6,7 @@
         "loading": "Laden...",
         "loading_error": "Ein Fehler ist während dem Laden der Daten aufgetreten.",
         "load_more": "Mehr laden",
-        "load_more_error": "Es ist ein Fehler aufgetreten beim Laden der Daten. Nochmal versuchen?",
+        "load_more_error": "Laden fehlgeschlagen. Nochmal versuchen?",
         "Menu": "Menu",
         "AMIV": "AMIV",
         "About AMIV": "Über den AMIV",

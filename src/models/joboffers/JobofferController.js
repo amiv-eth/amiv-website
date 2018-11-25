@@ -40,6 +40,13 @@ export default class JobofferController extends PaginationController {
     return true;
   }
 
+  /** Check if Joboffer is already loaded */
+  isJobofferLoaded(eventId) {
+    const test = item => item._id === eventId;
+
+    return this.some(test);
+  }
+
   /**
    * Load a specific job offer from the AMIV API
    *
@@ -56,16 +63,6 @@ export default class JobofferController extends PaginationController {
         },
       })
     );
-    return this._selectedJoboffer;
-  }
-
-  /**
-   * Get the previously loaded job offer
-   *
-   * @return {object} job offer from the AMIV API
-   * @public
-   */
-  get selectedJoboffer() {
     return this._selectedJoboffer;
   }
 

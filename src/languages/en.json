@@ -6,7 +6,7 @@
         "close": "close",
         "loading_error": "Error while loading data.",
         "load_more": "Load more",
-        "load_more_error": "There was an error while loading the data. Try again?",
+        "load_more_error": "Loading failed. Try again?",
         "Menu": "Menu",
         "AMIV": "AMIV",
         "About AMIV": "About AMIV",

@@ -1,14 +1,16 @@
 import m from 'mithril';
 import { RadioGroup } from 'amiv-web-ui-components';
+import debounce from 'amiv-web-ui-components/src/debounce';
 import { Button, Checkbox, Dropdown, TextField } from '../components';
 
 /**
  * FilterViewComponent
  *
- * Attributes:
- *
- *   - `onchange` used to apply the new filter.
- *   - `fields` specifies filter configuration
+ * @param {function} onchange Callback function to apply the new filter
+ *   Example: function callback(values) { ... }
+ * @param {object}   values   Values to be applied to the filter fields
+ * @param {object}   fields   Specifies the filter configuration
+ * @param {integer}  delay    Time in milliseconds used to debounce the call to onchange
  *
  * `fields` example:
  *
@@ -19,8 +21,6 @@ import { Button, Checkbox, Dropdown, TextField } from '../components';
  *     key: 'key1',
  *     label: 'some label',
  *     default: 'default value',
- *     // minimum length required to trigger `onchange`
- *     min_length: 3,
  *   },
  *   {
  *     type: 'checkbox',
@@ -89,17 +89,18 @@ import { Button, Checkbox, Dropdown, TextField } from '../components';
  */
 
 export default class FilterViewComponent {
-  oninit(vnode) {
-    this.onchange = vnode.attrs.onchange;
-    if (vnode.attrs.values) {
-      this.values = vnode.attrs.values;
+  oninit({ attrs: { values, fields, delay = 500, onchange } }) {
+    this.onchange = debounce(onchange, delay, false);
+
+    if (values) {
+      this.values = values;
     } else {
       this.values = {};
-      vnode.attrs.fields.forEach(field => {
+      fields.forEach(field => {
         this.values[field.key] = field.default || '';
       });
     }
-    this.fields = vnode.attrs.fields;
+    this.fields = fields;
   }
 
   notify() {
@@ -118,7 +119,6 @@ export default class FilterViewComponent {
   }
 
   _createTextField(field) {
-    const min_length = field.min_length || 0;
     this.values[field.key] = this.values[field.key] || field.default || '';
 
     return m(TextField, {
@@ -126,9 +126,7 @@ export default class FilterViewComponent {
       value: this.values[field.key],
       onChange: state => {
         this.values[field.key] = state.value;
-        if (state.value.length >= min_length || state.value.length === 0) {
-          this.notify();
-        }
+        this.notify();
       },
     });
   }
@@ -176,7 +174,7 @@ export default class FilterViewComponent {
       m(RadioGroup, {
         ...field,
         value: this.values[field.key],
-        onchange: state => {
+        onChange: state => {
           this.values[field.key] = state;
           this.notify();
         },
@@ -222,8 +220,8 @@ export default class FilterViewComponent {
   }
 
   _createButton(field) {
-    const options = { label: field.label };
-    options.events = field.events || {};
+    const options = { label: field.label, events: field.events || {} };
+
     if (!options.events.onclick || options.events.onclick === 'search') {
       // default onclick behavior / search behavior
       options.events.onclick = () => this.notify();
@@ -231,6 +229,7 @@ export default class FilterViewComponent {
       // reset behavior
       options.events.onclick = () => this.reset();
     }
+
     if (field.className) {
       options.className = field.className;
     }

@@ -1,24 +1,30 @@
 import m from 'mithril';
 import marked from 'marked';
+import { apiUrl } from 'config';
+import { ExpansionPanel } from 'amiv-web-ui-components';
 import { Dialog, Button } from 'polythene-mithril';
 import StudydocsController from '../../models/studydocs';
 import { lectures } from '../studydocs/lectures';
 import { i18n, currentLanguage } from '../../models/language';
 import { FilteredListDataStore, FilteredListPage } from '../filteredListPage';
-import StudydocDetails from './studydocDetails';
 
 const controller = new StudydocsController();
 const dataStore = new FilteredListDataStore();
 
 export default class StudydocList extends FilteredListPage {
   constructor() {
-    super('studydoc', dataStore, true);
+    super('studydocuments', dataStore);
 
     this.lectureDropdownDisabled = true;
   }
 
   oninit(vnode) {
     super.oninit(vnode, vnode.attrs.documentId);
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  _isItemLoaded(itemId) {
+    return controller.isDocumentLoaded(itemId);
   }
 
   // eslint-disable-next-line class-methods-use-this
@@ -164,6 +170,7 @@ export default class StudydocList extends FilteredListPage {
       ],
       onchange: values => {
         const query = {};
+        this.dataStore.filterValues = values;
 
         Object.keys(values).forEach(key => {
           let value = values[key];
@@ -196,28 +203,61 @@ export default class StudydocList extends FilteredListPage {
     };
   }
 
-  get _listView() {
-    const tableHeadings = [
-      'studydocs.title',
-      'studydocs.author',
-      m('div#head-style', 'studydocs.course_year'),
-    ];
+  // eslint-disable-next-line class-methods-use-this
+  get _lists() {
     return [
-      m('div.list-item', tableHeadings.map(header => m('span', i18n(header)))),
-      ...controller.map(page =>
-        page.map(document => this.constructor._renderStudydocListItem(document))
-      ),
+      {
+        name: 'studydocs',
+        pages: controller,
+        loadMore: this._hasMorePagesToLoad() ? this._loadNextPage : undefined,
+      },
     ];
   }
 
   // eslint-disable-next-line class-methods-use-this
-  get _detailsView() {
-    return m(StudydocDetails, { controller });
-  }
+  _renderItem(studydocument, list, selectedId) {
+    const animationDuration = 300; // in ms
 
-  // eslint-disable-next-line class-methods-use-this
-  get _detailsPlaceholderView() {
-    return m('div.flex-container', m('div', m('h2', i18n('studydocs.no_selection'))));
+    return m(ExpansionPanel, {
+      id: this.getItemElementId(studydocument._id),
+      expanded: studydocument._id === selectedId,
+      separated: true,
+      duration: animationDuration,
+      onChange: expanded => {
+        this.onChange(studydocument._id, expanded, animationDuration);
+      },
+      header: () =>
+        m('div.studydoc', [
+          m(
+            'div',
+            {
+              class: 'list-title',
+            },
+            [
+              m('h2', studydocument.title),
+              m('div', [m('span', document.author), m('span', i18n(document.course_year))]),
+            ]
+          ),
+        ]),
+      content: () =>
+        m(
+          'div',
+          studydocument.files.map(item =>
+            m('div', [
+              m(
+                'span',
+                m(Button, {
+                  label: `Download ${item.name.split('.').pop()}`,
+                  events: {
+                    onclick: () => window.open(`${apiUrl}${item.file}`, '_blank'),
+                  },
+                })
+              ),
+              m('span', item.name),
+            ])
+          )
+        ),
+    });
   }
 
   // eslint-disable-next-line class-methods-use-this
@@ -233,22 +273,5 @@ export default class StudydocList extends FilteredListPage {
   // eslint-disable-next-line class-methods-use-this
   _hasMorePagesToLoad() {
     return controller.lastLoadedPage < controller.totalPages;
-  }
-
-  static _renderStudydocListItem(document) {
-    return m(
-      'div#row-style',
-      {
-        class: 'list-item',
-        onclick: () => {
-          m.route.set(`/${currentLanguage()}/studydocuments/${document._id}`);
-        },
-      },
-      [
-        m('span#title-style', document.title),
-        m('span#author-style', document.author),
-        m('span#course_year-style', i18n(document.course_year)),
-      ]
-    );
   }
 }

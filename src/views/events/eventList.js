@@ -1,9 +1,9 @@
 import m from 'mithril';
 import { apiUrl } from 'config';
+import { ExpansionPanel } from 'amiv-web-ui-components';
 import AmivLogo from '../../images/logoNoText.svg';
-import { i18n, currentLanguage } from '../../models/language';
+import { i18n } from '../../models/language';
 import { EventController } from '../../models/events';
-import EventDetails from './eventDetails';
 import { FilteredListPage, FilteredListDataStore } from '../filteredListPage';
 
 const controller = new EventController({}, true);
@@ -16,11 +16,16 @@ const dataStore = new FilteredListDataStore();
  */
 export default class EventList extends FilteredListPage {
   constructor() {
-    super('event', dataStore, true);
+    super('events', dataStore);
   }
 
   oninit(vnode) {
     super.oninit(vnode, vnode.attrs.eventId);
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  _isItemLoaded(itemId) {
+    return controller.isEventLoaded(itemId);
   }
 
   // eslint-disable-next-line class-methods-use-this
@@ -40,7 +45,6 @@ export default class EventList extends FilteredListPage {
           type: 'text',
           key: 'title',
           label: i18n('events.searchfield'),
-          min_length: 3,
         },
         {
           type: 'button',
@@ -123,50 +127,66 @@ export default class EventList extends FilteredListPage {
     };
   }
 
-  get _listView() {
-    const openRegistrationList = [];
-    const upcomingList = [];
+  // eslint-disable-next-line class-methods-use-this
+  get _lists() {
+    const lists = [];
 
     if (controller.openRegistrationEvents.length > 0) {
-      openRegistrationList.push(
-        m('div.list-header', m('h4', i18n('events.header_open_registration'))),
-        ...controller.openRegistrationEvents.map(page =>
-          page.map(event => this.constructor._renderEventListItem(event, 'registration'))
-        )
-      );
+      lists.push({
+        name: 'openRegistration',
+        title: i18n('events.header_open_registration'),
+        pages: controller.openRegistrationEvents,
+      });
     }
 
     if (controller.upcomingEvents.length > 0) {
-      upcomingList.push(
-        m('div.list-header', m('h4', i18n('events.header_upcoming'))),
-        ...controller.upcomingEvents.map(page =>
-          page.map(event => this.constructor._renderEventListItem(event, 'upcoming'))
-        )
-      );
-    } else if (controller.openRegistrationEvents.length === 0) {
-      upcomingList.push(m('div.list-placeholder', i18n('events.no_upcoming')));
+      lists.push({
+        name: 'upcoming',
+        title: i18n('events.header_upcoming'),
+        pages: controller.upcomingEvents,
+      });
     }
 
-    return [
-      m('div.registration', openRegistrationList),
-      m('div.upcoming', upcomingList),
-      m('div.past', [
-        m('div.list-header', m('h4', i18n('events.header_past'))),
-        ...controller.pastEvents.map(page =>
-          page.map(event => this.constructor._renderEventListItem(event, 'past'))
-        ),
-      ]),
-    ];
+    lists.push({
+      name: 'past',
+      title: i18n('events.header_past'),
+      pages: controller.pastEvents,
+      loadMore: this._hasMorePagesToLoad() ? this._loadNextPage : undefined,
+    });
+
+    return lists;
   }
 
   // eslint-disable-next-line class-methods-use-this
-  get _detailsView() {
-    return m(EventDetails, { controller });
-  }
+  _renderItem(event, list, selectedId) {
+    const animationDuration = 300; // in ms
+    const imageurl = event.img_thumbnail ? `${apiUrl}${event.img_thumbnail.file}` : AmivLogo;
+    const price = event.price ? `Fr. ${event.price}` : i18n('events.free');
 
-  // eslint-disable-next-line class-methods-use-this
-  get _detailsPlaceholderView() {
-    return m('h1', i18n('events.no_selection'));
+    return m(ExpansionPanel, {
+      id: this.getItemElementId(event._id),
+      expanded: event._id === selectedId,
+      separated: true,
+      duration: animationDuration,
+      onChange: expanded => {
+        this.onChange(event._id, expanded, animationDuration);
+      },
+      header: () =>
+        m('div.event', [
+          // m('div.image.ratio-1to1', m('img', { src: imageurl })),
+          m(
+            'div',
+            {
+              class: 'list-title',
+            },
+            [
+              m('h2', event.getTitle()),
+              m('div', [m('span', price), m('span', event.time_start.slice(0, -10))]),
+            ]
+          ),
+        ]),
+      content: () => m('div', event.getDescription()),
+    });
   }
 
   // eslint-disable-next-line class-methods-use-this
@@ -180,32 +200,5 @@ export default class EventList extends FilteredListPage {
   // eslint-disable-next-line class-methods-use-this
   _hasMorePagesToLoad() {
     return controller.pastEvents.lastLoadedPage < controller.pastEvents.totalPages;
-  }
-
-  static _renderEventListItem(event, className = '') {
-    const imageurl = event.img_poster ? `${apiUrl}${event.img_poster.file}` : AmivLogo;
-    const price = event.price ? `Fr. ${event.price}` : i18n('events.free');
-    return m(
-      'div',
-      {
-        class: `list-item ${className}`,
-        onclick: () => {
-          m.route.set(`/${currentLanguage()}/events/${event._id}`);
-        },
-      },
-      [
-        m('img', { src: imageurl }),
-        m(
-          'div',
-          {
-            class: 'list-title',
-          },
-          [
-            m('h2', event.getTitle()),
-            m('div', [m('span', price), m('span', event.time_start.slice(0, -10))]),
-          ]
-        ),
-      ]
-    );
   }
 }
