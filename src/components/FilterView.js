@@ -102,7 +102,6 @@ import './FilterView.less';
 export default class FilterViewComponent {
   oninit({ attrs: { values, fields, delay = 500, onchange } }) {
     this.onchange = debounce(onchange, delay, false);
-    // this.onchange = onchange;
 
     if (values && Object.keys(values).length >= 0) {
       this.values = values;
