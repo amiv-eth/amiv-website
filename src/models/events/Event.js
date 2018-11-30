@@ -41,7 +41,7 @@ export default class Event {
    *
    * @return {Promise}
    */
-  async loadSignup() {
+  async loadSignupData() {
     if (!isLoggedIn()) return undefined;
 
     const queryString = m.buildQueryString({
@@ -102,7 +102,7 @@ export default class Event {
       },
     });
     this._signup = undefined;
-    this.signupLoaded = false;
+    this.signupLoaded = true;
   }
 
   /**

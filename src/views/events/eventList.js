@@ -2,9 +2,10 @@ import m from 'mithril';
 import { apiUrl } from 'config';
 import { ExpansionPanel } from 'amiv-web-ui-components';
 import AmivLogo from '../../images/logoNoText.svg';
-import { i18n } from '../../models/language';
+import { i18n, currentLocale } from '../../models/language';
 import { EventController } from '../../models/events';
 import { FilteredListPage, FilteredListDataStore } from '../filteredListPage';
+import EventDetails from './eventDetails';
 
 const controller = new EventController({}, true);
 const dataStore = new FilteredListDataStore();
@@ -161,7 +162,20 @@ export default class EventList extends FilteredListPage {
   _renderItem(event, list, selectedId) {
     const animationDuration = 300; // in ms
     const imageurl = event.img_thumbnail ? `${apiUrl}${event.img_thumbnail.file}` : AmivLogo;
-    const price = event.price ? `Fr. ${event.price}` : i18n('events.free');
+    const properties = [
+      {
+        value: this.constructor._renderPrice(event.price),
+        visible: true,
+      },
+      {
+        value: this.constructor._renderFreeSpots(event.spots, event.signup_count),
+        visible: event.spots,
+      },
+      {
+        value: event.location,
+        visible: event.location,
+      },
+    ];
 
     return m(ExpansionPanel, {
       id: this.getItemElementId(event._id),
@@ -172,21 +186,110 @@ export default class EventList extends FilteredListPage {
         this.onChange(event._id, expanded, animationDuration);
       },
       header: () =>
-        m('div.event', [
-          // m('div.image.ratio-1to1', m('img', { src: imageurl })),
-          m(
-            'div',
-            {
-              class: 'list-title',
-            },
-            [
-              m('h2', event.getTitle()),
-              m('div', [m('span', price), m('span', event.time_start.slice(0, -10))]),
-            ]
-          ),
+        m('div.event-header', [
+          m('div.image.ratio-1to1', m('img', { src: imageurl })),
+          m('div.content', [
+            m('h2.title', event.getTitle()),
+            m('div.catchphrase', event.getCatchphrase()),
+            m('div.date', this.constructor._renderEventTime(event.time_start, event.time_end)),
+            m('div.properties', properties.map(item => this.constructor._renderProperty(item))),
+          ]),
         ]),
-      content: () => m('div', event.getDescription()),
+      content: ({ expanded }) => {
+        if (expanded) {
+          return m(EventDetails, { event });
+        }
+        return m('');
+      },
     });
+  }
+
+  static _renderProperty({ name = null, value, visible = false }) {
+    if (!visible) return null;
+
+    return m('div.property', [name ? m('span.name', name) : undefined, m('span', value)]);
+  }
+
+  static _renderPrice(price) {
+    if (price) {
+      const cents = price % 100;
+      return `CHF ${`${Math.floor(price / 100)}.${
+        cents === 0 ? '–' : (cents < 10 ? '0' : '') + cents
+      }`}`;
+    }
+    return i18n('events.free');
+  }
+
+  static _renderFreeSpots(spots, signup_count) {
+    if (spots > 0) {
+      let available = spots - signup_count;
+      if (available < 0) available = 0;
+      return i18n('events.%n_spots_available', available);
+    }
+    return '';
+  }
+
+  static _renderEventTime(time_start, time_end) {
+    const date_start = new Date(time_start);
+    const date_end = new Date(time_end);
+
+    if (
+      date_start.getUTCDate() === date_end.getUTCDate() ||
+      (date_start.getUTCDate() === date_end.getUTCDate() - 1 &&
+        date_start.getUTCHours() > date_end.getUTCHours())
+    ) {
+      return [
+        m(
+          'span',
+          date_start.toLocaleString(currentLocale(), {
+            timeZone: 'UTC',
+            weekday: 'long',
+            day: '2-digit',
+            month: '2-digit',
+            year: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit',
+          })
+        ),
+        ' – ',
+        m(
+          'span',
+          date_end.toLocaleString(currentLocale(), {
+            timeZone: 'UTC',
+            hour: '2-digit',
+            minute: '2-digit',
+          })
+        ),
+      ];
+    }
+
+    return [
+      m(
+        'span',
+        date_start.toLocaleString(currentLocale(), {
+          timeZone: 'UTC',
+          weekday: 'long',
+          day: '2-digit',
+          month: '2-digit',
+          year: '2-digit',
+          hour: '2-digit',
+          minute: '2-digit',
+        })
+      ),
+      ' – ',
+      m(
+        'span',
+        date_end.toLocaleString(currentLocale(), {
+          timeZone: 'UTC',
+          weekday: 'long',
+          day: '2-digit',
+          month: '2-digit',
+          year: '2-digit',
+          hour: '2-digit',
+          minute: '2-digit',
+        })
+      ),
+    ];
   }
 
   // eslint-disable-next-line class-methods-use-this
