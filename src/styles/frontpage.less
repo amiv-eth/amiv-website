@@ -1,3 +1,5 @@
+@import './colors.less';
+
 #frontpage-container {
   // Grid general settings
   display: grid;
@@ -78,6 +80,10 @@
 
     @media @mobile {
       grid-template-columns: 1fr;
+    }
+
+    h3,span {
+      color: #000;
     }
   }
 }

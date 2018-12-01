@@ -1,6 +1,6 @@
 import m from 'mithril';
 import { apiUrl } from 'config';
-import { Card } from 'polythene-mithril';
+import { Card, MaterialDesignSpinner as Spinner } from 'polythene-mithril';
 import { EventController } from '../models/events';
 import { JobofferController } from '../models/joboffers';
 import { i18n, currentLanguage } from '../models/language';
@@ -99,9 +99,19 @@ export default class Frontpage {
     return m('div#frontpage-container', [
       m('div.hot-row', this.hot.map((item, index) => this.constructor._renderHotCard(item, index))),
       m('h2', i18n('Events')),
-      m('div.frontpage-row', this.events.map(item => this.constructor._renderEventCard(item))),
+      m(
+        'div.frontpage-row',
+        this.events.length > 0
+          ? this.events.map(item => this.constructor._renderEventCard(item))
+          : Array.from(Array(3)).map(() => this.constructor._renderEventCard(null, true))
+      ),
       m('h2', i18n('Jobs')),
-      m('div.frontpage-row', this.jobs.map(item => this.constructor._renderJobCard(item))),
+      m(
+        'div.frontpage-row',
+        this.jobs.length > 0
+          ? this.jobs.map(item => this.constructor._renderJobCard(item))
+          : Array.from(Array(3)).map(() => this.constructor._renderJobCard(null, true))
+      ),
       m(
         'div.frontpage-row',
         this.socialmedia.map(item => this.constructor._renderSocialMediaCard(item))
@@ -136,54 +146,73 @@ export default class Frontpage {
     });
   }
 
-  static _renderEventCard(item) {
-    return m(Card, {
-      url: {
+  static _renderEventCard(item, loading = false) {
+    let url;
+    let cardContent;
+
+    if (item && !loading) {
+      url = {
         href: `${m.route.get()}events/${item._id}`,
         oncreate: m.route.link,
-      },
-      content: [
-        {
-          media: {
-            origin: 'center',
-            ratio: 'landscape',
-            content: m('img', {
-              src: item.img_infoscreen ? `${apiUrl}${item.img_infoscreen.file}` : AmivLogo,
-            }),
-          },
-        },
-        {
-          primary: {
-            title: item.getTitle(),
-          },
-        },
-      ],
+      };
+
+      if (item.img_poster) {
+        cardContent = m('img', {
+          src: `${apiUrl}${item.img_poster.file}`,
+        });
+      } else {
+        cardContent = m('div', [m('h2', item.getTitle()), m('span', item.getCatchphrase())]);
+      }
+    } else {
+      cardContent = m(Spinner, { show: true });
+    }
+
+    return m(Card, {
+      url,
+      content: m('div.image.ratio-paper-a-vertical', cardContent),
     });
   }
 
-  static _renderJobCard(item) {
-    return m(Card, {
-      url: {
+  static _renderJobCard(item, loading = false) {
+    let url;
+    let cardContent;
+
+    if (item && !loading) {
+      url = {
         href: `${m.route.get()}jobs/${item._id}`,
         oncreate: m.route.link,
-      },
-      content: [
-        {
-          primary: {
-            title: item.getTitle(),
-          },
-        },
-        {
-          media: {
-            origin: 'center',
-            ratio: 'landscape',
-            size: 'small',
-            content: m('img', {
-              src: item.logo ? `${apiUrl}${item.logo.file}` : AmivLogo,
-            }),
-          },
-        },
-      ],
+      };
+
+      let logo;
+      if (item.logo) {
+        logo = m('img', { src: `${apiUrl}${item.logo.file}` });
+      }
+
+      cardContent = m('div', [m('h3', item.getTitle()), m('div.image.ratio-4to1', logo)]);
+    } else {
+      cardContent = m('div.image.ratio-2to1', m(Spinner, { show: true }));
+    }
+
+    return m(Card, {
+      url,
+      content: cardContent,
+      // content: [
+      //   {
+      //     primary: {
+      //       title: item.getTitle(),
+      //     },
+      //   },
+      //   {
+      //     media: {
+      //       origin: 'center',
+      //       ratio: 'landscape',
+      //       size: 'small',
+      //       content: m('img', {
+      //         src: item.logo ? `${apiUrl}${item.logo.file}` : AmivLogo,
+      //       }),
+      //     },
+      //   },
+      // ],
     });
   }
 
