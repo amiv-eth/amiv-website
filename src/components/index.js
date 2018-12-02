@@ -7,3 +7,4 @@ export { default as FilterView } from './FilterView';
 export { default as InputGroupForm } from './form/inputGroup';
 export { default as SelectGroupForm } from './form/selectGroup';
 export { default as FileInput } from './FileInput';
+export { default as Spinner } from './EventCard';

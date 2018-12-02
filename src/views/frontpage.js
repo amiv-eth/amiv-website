@@ -1,11 +1,12 @@
 import m from 'mithril';
 import { apiUrl } from 'config';
-import { Card, MaterialDesignSpinner as Spinner } from 'polythene-mithril';
+import { Card } from 'polythene-mithril';
+import { Spinner } from '../components';
 import { EventController } from '../models/events';
 import { JobofferController } from '../models/joboffers';
 import { i18n, currentLanguage } from '../models/language';
-// import { Card } from '../components';
-import AmivLogo from '../images/logoNoText.svg';
+import icons from '../images/icons';
+import EventCard from '../components/EventCard';
 
 async function getData(state) {
   const events = await state.eventController.upcomingEvents.getPageData(1);
@@ -102,8 +103,8 @@ export default class Frontpage {
       m(
         'div.frontpage-row',
         this.events.length > 0
-          ? this.events.map(item => this.constructor._renderEventCard(item))
-          : Array.from(Array(3)).map(() => this.constructor._renderEventCard(null, true))
+          ? this.events.map(item => m(EventCard, { item }))
+          : Array.from(Array(3)).map(() => m(EventCard))
       ),
       m('h2', i18n('Jobs')),
       m(
@@ -128,7 +129,7 @@ export default class Frontpage {
             origin: 'center',
             ratio: 'landscape',
             content: m('img', {
-              src: item.imageurl ? item.imageurl : AmivLogo,
+              src: item.imageurl ? item.imageurl : icons.logoWheel,
             }),
             overlay: {
               sheet: true,
@@ -196,23 +197,6 @@ export default class Frontpage {
     return m(Card, {
       url,
       content: cardContent,
-      // content: [
-      //   {
-      //     primary: {
-      //       title: item.getTitle(),
-      //     },
-      //   },
-      //   {
-      //     media: {
-      //       origin: 'center',
-      //       ratio: 'landscape',
-      //       size: 'small',
-      //       content: m('img', {
-      //         src: item.logo ? `${apiUrl}${item.logo.file}` : AmivLogo,
-      //       }),
-      //     },
-      //   },
-      // ],
     });
   }
 
@@ -227,7 +211,7 @@ export default class Frontpage {
             origin: 'center',
             ratio: 'landscape',
             content: m('img', {
-              src: item.imageurl ? item.imageurl : AmivLogo,
+              src: item.imageurl ? item.imageurl : icons.logoWheel,
             }),
           },
         },
