@@ -12,7 +12,6 @@ import profile from './views/profile';
 import layout from './views/layout';
 import frontpage from './views/frontpage';
 import logout from './views/logout';
-import contact from './views/contact';
 import about from './views/amiv/about';
 import board from './views/amiv/board';
 import teams from './views/amiv/teams';
@@ -73,10 +72,6 @@ Raven.context(() => {
     {
       url: '/:language/about',
       view: () => m(about),
-    },
-    {
-      url: '/:language/contact',
-      view: () => m(contact),
     },
     {
       url: '/:language/logout',

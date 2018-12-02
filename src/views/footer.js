@@ -45,7 +45,7 @@ export default class Footer {
               href: `/${currentLanguage()}/legal-notice`,
               onupdate: m.route.link,
             },
-            i18n('legal-notice')
+            `${i18n('contact')} / ${i18n('legal-notice')}`
           ),
         ]),
         m('div.footer-logo', m('a', { href: `https://www.ethz.ch/` }, m('img', { src: EthLogo }))),
