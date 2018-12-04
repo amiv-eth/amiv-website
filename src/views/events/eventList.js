@@ -43,22 +43,18 @@ export default class EventList extends FilteredListPage {
     return {
       fields: [
         {
-          type: 'text',
+          type: 'search',
           key: 'title',
-          label: i18n('events.searchfield'),
-        },
-        {
-          type: 'button',
           label: i18n('search'),
         },
         {
-          type: 'checkbox',
+          type: 'radio',
           key: 'price',
           label: i18n('events.price'),
-          default: ['free', 'small_fee'],
+          default: 'all',
           values: [
             { value: 'free', label: i18n('events.free') },
-            { value: 'small_fee', label: i18n('events.small_fee') },
+            { value: 'all', label: i18n('events.all_events') },
           ],
         },
         {
@@ -71,6 +67,7 @@ export default class EventList extends FilteredListPage {
             { label: i18n('events.open_for_amiv_members_only'), value: 'members_only' },
           ],
         },
+        { type: 'hr' },
         {
           type: 'button',
           label: i18n('events.agenda'),
@@ -86,43 +83,43 @@ export default class EventList extends FilteredListPage {
         {
           type: 'button',
           label: i18n('reset'),
-          className: 'red-button',
+          className: 'flat-button',
           events: {
             onclick: 'reset',
           },
         },
       ],
       onchange: async values => {
-        const query = {};
+        const query = { $and: [] };
         this.dataStore.filterValues = values;
         Object.keys(values).forEach(key => {
           const value = values[key];
 
-          if (key === 'price' && value.length === 1) {
-            const conditions = [];
-
-            if (value.includes('free')) {
-              conditions.push({ price: null }, { price: 0 });
-            }
-            if (value.includes('small_fee')) {
-              conditions.push({ price: { $gt: 0 } });
-            }
-            if (conditions.length > 0) {
-              query.$and = [{ $or: conditions }];
+          if (key === 'price') {
+            if (value === 'free') {
+              query.$and.push({ $or: [{ price: null }, { price: 0 }] });
             }
           } else if (key === 'signup_restrictions') {
             if (value === 'all') {
               query.allow_email_signup = true;
             }
           } else if (key === 'title' && value.length > 0) {
-            query.title_en = { $regex: `^(?i).*${value}.*` };
-            query.title_de = { $regex: `^(?i).*${value}.*` };
-            query.catchphrase_en = { $regex: `^(?i).*${value}.*` };
-            query.catchphrase_de = { $regex: `^(?i).*${value}.*` };
-            query.description_en = { $regex: `^(?i).*${value}.*` };
-            query.description_de = { $regex: `^(?i).*${value}.*` };
+            const regex = { $regex: `^(?i).*${value}.*` };
+            query.$and.push({
+              $or: [
+                { title_en: regex },
+                { title_de: regex },
+                { catchphrase_en: regex },
+                { catchphrase_de: regex },
+                { description_en: regex },
+                { description_de: regex },
+              ],
+            });
           }
         });
+        if (query.$and.length === 0) {
+          delete query.$and;
+        }
         return controller.setQuery({ where: query });
       },
     };
