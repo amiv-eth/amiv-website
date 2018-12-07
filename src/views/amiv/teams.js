@@ -52,7 +52,7 @@ class Team {
     if (team.image) {
       image = m('img', { src: `/${team.image}` });
     } else {
-      image = m('img', { src: AmivLogo }); // m('span', i18n('no image'));
+      image = m('img', { src: AmivLogo });
     }
 
     if (team.description && Object.keys(team.description).length > 0) {
@@ -119,16 +119,6 @@ class Team {
         ...additionalContent,
       ],
     });
-
-    // return m('div.team', [
-    //   image,
-    //   m('h2', team.name),
-    //   m('div.description', description),
-    //   m(
-    //     'div.contact',
-    //     contactInfo.length > 0 ? contactInfo : m('span', i18n('commissions.no_contact_info'))
-    //   ),
-    // ]);
   }
 }
 
