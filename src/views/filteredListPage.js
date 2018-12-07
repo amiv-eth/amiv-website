@@ -1,4 +1,5 @@
 import m from 'mithril';
+// import animateScrollTo from 'animated-scroll-to';
 import animateScrollTo from 'animated-scroll-to';
 import { List, Shadow, ListTile, Button } from 'polythene-mithril';
 import { Spinner } from 'amiv-web-ui-components';
@@ -7,6 +8,14 @@ import { i18n, currentLanguage } from '../models/language';
 import { FilterView } from '../components';
 import filterIcon from '../images/filterList.svg';
 import closeIcon from '../images/close.svg';
+
+const LIST_LOADING = 'loading';
+const LIST_LOADED = 'loaded';
+const LIST_ERROR = 'error';
+
+const LOAD_MORE_IDLE = 'idle';
+const LOAD_MORE_LOADING = 'loading';
+const LOAD_MORE_ERROR = 'error';
 
 /**
  * FilteredListDataStore class
@@ -19,7 +28,7 @@ export class FilteredListDataStore {
     this.shouldScroll = true;
     this.lastScrollPosition = 0;
     this.filterViewPositionTop = 0;
-    this.listState = 'loading';
+    this.listState = LIST_LOADING;
     this._loadMoreStates = [];
     this.filterValues = {};
     this.initialized = false;
@@ -54,7 +63,7 @@ export class FilteredListDataStore {
   }
 
   set listState(state) {
-    if (!['loading', 'loaded', 'error'].includes(state)) {
+    if (![LIST_LOADING, LIST_LOADED, LIST_ERROR].includes(state)) {
       throw new Error(`Invalid state '${state}' for 'listState'`);
     }
     this._listState = state;
@@ -73,11 +82,11 @@ export class FilteredListDataStore {
     if (state) {
       return state;
     }
-    return 'idle';
+    return LOAD_MORE_IDLE;
   }
 
   setLoadMoreState(listName, state) {
-    if (!['idle', 'loading', 'error'].includes(state)) {
+    if (![LOAD_MORE_IDLE, LOAD_MORE_LOADING, LOAD_MORE_ERROR].includes(state)) {
       throw new Error(`Invalid state '${state}' for 'loadMoreState'`);
     }
     this._loadMoreStates[listName] = state;
@@ -126,12 +135,9 @@ export class FilteredListPage {
     // scroll events don't bubble up, so we need set useCapture to true for children scrollable elements
     document.addEventListener('scroll', () => this.onscroll(), true);
 
-    if (!this.dataStore.isInitialized) {
-      this.reload().then(() => {
-        this.dataStore.setIsInitialized();
-        this._handleItemDirectLink(itemId);
-      });
-    } else {
+    this.itemId = itemId;
+
+    if (this.dataStore.isInitialized) {
       this._handleItemDirectLink(itemId);
     }
   }
@@ -161,7 +167,7 @@ export class FilteredListPage {
   onupdate({ dom }) {
     this.filterView = dom.querySelector(`#${this.name}ListFilterView`);
 
-    if (this.itemId && this.dataStore.shouldScroll) {
+    if (this.itemId && this.dataStore.isInitialized && this.dataStore.shouldScroll) {
       const element = dom.querySelector(`#${this.getItemElementId(this.itemId)}`);
       if (element) {
         this.dataStore.shouldScroll = false;
@@ -223,7 +229,7 @@ export class FilteredListPage {
    * @protected
    */
   get _filterViewAttributes() {
-    return { fields: [], onchange: () => {} };
+    return { fields: [], onchange: async () => {} };
   }
 
   /**
@@ -281,14 +287,14 @@ export class FilteredListPage {
   /* eslint-enable */
 
   reload() {
-    this.dataStore.listState = 'loading';
+    this.dataStore.listState = LIST_LOADING;
     return this._reloadData()
       .then(() => {
-        this.dataStore.listState = 'loaded';
+        this.dataStore.listState = LIST_LOADED;
       })
       .catch(err => {
         error(err);
-        this.dataStore.listState = 'error';
+        this.dataStore.listState = LIST_ERROR;
       })
       .finally(() => {
         m.redraw();
@@ -397,15 +403,36 @@ export class FilteredListPage {
             top: `${this.dataStore.filterViewPositionTop}px`,
           },
         },
-        m(FilterView, { values: this.dataStore.filterValues, ...this._filterViewAttributes })
+        m(FilterView, {
+          values: this.dataStore.filterValues,
+          ...this._filterViewAttributes,
+          onchange: async values => {
+            this.dataStore.listState = LIST_LOADING;
+            m.redraw();
+            try {
+              await this._filterViewAttributes.onchange(values);
+
+              if (!this.dataStore.isInitialized) {
+                this.dataStore.setIsInitialized();
+                if (this.itemId) {
+                  this._handleItemDirectLink(this.itemId);
+                }
+              }
+              this.dataStore.listState = LIST_LOADED;
+            } catch ({ _error: { code } }) {
+              this.dataStore.listState = LIST_ERROR;
+            }
+            m.redraw();
+          },
+        })
       ),
     ];
   }
 
   get _listContainerView() {
-    if (this.dataStore.listState === 'loading') {
+    if (this.dataStore.listState === LIST_LOADING) {
       return m('div.loading', m(Spinner, { show: true, size: '96px' }));
-    } else if (this.dataStore.listState === 'loaded') {
+    } else if (this.dataStore.listState === LIST_LOADED) {
       let pinnedList;
 
       if (this.dataStore.pinnedItem && !this.dataStore.pinnedItem.loading) {
@@ -462,7 +489,7 @@ export class FilteredListPage {
   _renderLoadMoreItem(list) {
     const state = this.dataStore.getLoadMoreState(list.name);
 
-    if (state === 'loading') {
+    if (state === LOAD_MORE_LOADING) {
       return m(
         'div.load-more-items',
         m(Spinner, {
@@ -477,17 +504,17 @@ export class FilteredListPage {
       m(Button, {
         border: true,
         extraWide: true,
-        label: state === 'error' ? i18n('load_more_error') : i18n('load_more'),
+        label: state === LOAD_MORE_ERROR ? i18n('load_more_error') : i18n('load_more'),
         events: {
           onclick: () => {
-            this.dataStore.setLoadMoreState(list.name, 'loading');
+            this.dataStore.setLoadMoreState(list.name, LOAD_MORE_LOADING);
             list
               .loadMore()
               .then(() => {
-                this.dataStore.setLoadMoreState(list.name, 'idle');
+                this.dataStore.setLoadMoreState(list.name, LOAD_MORE_IDLE);
               })
               .catch(() => {
-                this.dataStore.setLoadMoreState(list.name, 'error');
+                this.dataStore.setLoadMoreState(list.name, LOAD_MORE_ERROR);
               })
               .finally(() => {
                 m.redraw();

@@ -91,7 +91,7 @@ export default class EventList extends FilteredListPage {
           },
         },
       ],
-      onchange: values => {
+      onchange: async values => {
         const query = {};
         this.dataStore.filterValues = values;
         Object.keys(values).forEach(key => {
@@ -122,7 +122,7 @@ export default class EventList extends FilteredListPage {
             query.description_de = { $regex: `^(?i).*${value}.*` };
           }
         });
-        controller.setQuery({ where: query }).finally(() => m.redraw());
+        return controller.setQuery({ where: query });
       },
     };
   }

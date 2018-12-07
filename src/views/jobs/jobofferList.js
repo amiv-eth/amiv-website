@@ -80,7 +80,7 @@ export default class JobofferList extends FilteredListPage {
             ];
           }
         });
-        controller.setQuery({ where: query }).finally(() => m.redraw());
+        return controller.setQuery({ where: query });
       },
     };
   }

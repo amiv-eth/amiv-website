@@ -91,20 +91,26 @@ import { Button, Checkbox, Dropdown, TextField } from '../components';
 export default class FilterViewComponent {
   oninit({ attrs: { values, fields, delay = 500, onchange } }) {
     this.onchange = debounce(onchange, delay, false);
+    // this.onchange = onchange;
 
-    if (values) {
+    if (values && Object.keys(values).length >= 0) {
       this.values = values;
+      this.previousValues = JSON.stringify(this.values);
     } else {
       this.values = {};
       fields.forEach(field => {
         this.values[field.key] = field.default || '';
       });
+      this.previousValues = JSON.stringify(this.values);
     }
     this.fields = fields;
+    this.notify();
   }
 
   notify() {
-    this.onchange(this.values);
+    if (JSON.stringify(this.values) !== this.previousValues) {
+      this.onchange(this.values);
+    }
   }
 
   reset() {

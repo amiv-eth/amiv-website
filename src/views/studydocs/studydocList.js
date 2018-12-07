@@ -198,7 +198,7 @@ export default class StudydocList extends FilteredListPage {
             delete query.type;
           }
         });
-        controller.setQuery({ where: query }).finally(() => m.redraw());
+        return controller.setQuery({ where: query });
       },
     };
   }
