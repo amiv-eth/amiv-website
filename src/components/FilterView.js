@@ -1,7 +1,10 @@
 import m from 'mithril';
+import { Search, Shadow, IconButton } from 'polythene-mithril';
 import { RadioGroup } from 'amiv-web-ui-components';
 import debounce from 'amiv-web-ui-components/src/debounce';
+import icons from 'amiv-web-ui-components/src/icons';
 import { Button, Checkbox, Dropdown, TextField } from '../components';
+import './FilterView.less';
 
 /**
  * FilterViewComponent
@@ -58,6 +61,14 @@ import { Button, Checkbox, Dropdown, TextField } from '../components';
  *     key: 'key4',
  *     default: 'value2',
  *     values: values => [],
+ *   },
+ *   {
+ *     type: 'hr',
+ *     width: '1px',
+ *   },
+ *   {
+ *     type: 'custom',
+ *     content: m('div', 'This is a custom view!'),
  *   },
  *   {
  *     type: 'button',
@@ -122,6 +133,41 @@ export default class FilterViewComponent {
       }
     });
     this.notify();
+  }
+
+  _createSearchField(field) {
+    this.values[field.key] = this.values[field.key] || field.default || '';
+
+    const clearButton = m(IconButton, {
+      icon: { svg: { content: m.trust(icons.clear) } },
+      ink: false,
+      events: {
+        onclick: () => {
+          this.values[field.key] = '';
+          this.notify();
+        },
+      },
+    });
+
+    return m(Search, {
+      textfield: {
+        label: field.label || '',
+        value: this.values[field.key],
+        onChange: state => {
+          this.values[field.key] = state.value;
+          this.notify();
+        },
+      },
+      before: m(Shadow),
+      buttons: {
+        dirty: {
+          after: clearButton,
+        },
+        focus_dirty: {
+          after: clearButton,
+        },
+      },
+    });
   }
 
   _createTextField(field) {
@@ -243,12 +289,24 @@ export default class FilterViewComponent {
     return m(Button, options);
   }
 
+  // eslint-disable-next-line class-methods-use-this
+  _createHorizontalRule(field) {
+    return m('hr.filter_view__hr', { style: { borderWidth: field.width } });
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  _createCustomView(field) {
+    return field.content;
+  }
+
   view() {
     const views = [];
 
     m('div#filter-page-style', [
       this.fields.forEach(field => {
-        if (field.type === 'text') {
+        if (field.type === 'search') {
+          views.push(this._createSearchField(field));
+        } else if (field.type === 'text') {
           views.push(this._createTextField(field));
         } else if (field.type === 'checkbox') {
           views.push(this._createCheckboxGroup(field));
@@ -258,6 +316,10 @@ export default class FilterViewComponent {
           views.push(this._createDropdown(field));
         } else if (field.type === 'button') {
           views.push(this._createButton(field));
+        } else if (field.type === 'hr') {
+          views.push(this._createHorizontalRule(field));
+        } else if (field.type === 'custom') {
+          views.push(this._createCustomView(field));
         }
       }),
     ]);
