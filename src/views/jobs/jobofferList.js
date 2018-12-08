@@ -1,7 +1,7 @@
 import m from 'mithril';
 import { apiUrl } from 'config';
 import { ExpansionPanel } from 'amiv-web-ui-components';
-import { i18n, currentLanguage } from '../../models/language';
+import { i18n } from '../../models/language';
 import { JobofferController } from '../../models/joboffers';
 import { FilteredListPage, FilteredListDataStore } from '../filteredListPage';
 import JobofferDetails from './jobofferDetails';
@@ -42,22 +42,18 @@ export default class JobofferList extends FilteredListPage {
     return {
       fields: [
         {
-          type: 'text',
+          type: 'search',
           key: 'title',
-          label: i18n('joboffers.searchfield'),
+          label: i18n('search'),
           min_length: 3,
         },
         {
-          type: 'button',
-          label: i18n('search'),
-          events: {
-            onclick: 'search',
-          },
+          type: 'hr',
         },
         {
           type: 'button',
           label: i18n('reset'),
-          className: 'red-button',
+          className: 'flat-button',
           events: {
             onclick: 'reset',
           },
@@ -70,13 +66,14 @@ export default class JobofferList extends FilteredListPage {
           const value = values[key];
 
           if (key === 'title' && value.length > 0) {
+            const regex = { $regex: `^(?i).*${value}.*` };
             query.$or = [
-              { title_en: { $regex: `^(?i).*${value}.*` } },
-              { title_de: { $regex: `^(?i).*${value}.*` } },
-              { description_en: { $regex: `^(?i).*${value}.*` } },
-              { description_de: { $regex: `^(?i).*${value}.*` } },
-              { company: { $regex: `^(?i).*${value}.*` } },
-              { company: { $regex: `^(?i).*${value}.*` } },
+              { title_en: regex },
+              { title_de: regex },
+              { description_en: regex },
+              { description_de: regex },
+              { company: regex },
+              { company: regex },
             ];
           }
         });
@@ -99,6 +96,8 @@ export default class JobofferList extends FilteredListPage {
   // eslint-disable-next-line class-methods-use-this
   _renderItem(joboffer, list, selectedId) {
     const animationDuration = 300; // in ms
+    const imageurl = apiUrl + joboffer.logo.file;
+    const days = Math.ceil((Date.now() - Date.parse(joboffer._created)) / (1000 * 3600 * 24));
 
     return m(ExpansionPanel, {
       id: this.getItemElementId(joboffer._id),
@@ -109,20 +108,19 @@ export default class JobofferList extends FilteredListPage {
         this.onChange(joboffer._id, expanded, animationDuration);
       },
       header: () =>
-        m('div.job', [
-          m('img', { src: `${apiUrl}${joboffer.logo.file}`, alt: joboffer.company }),
-          m(
-            'div',
-            {
-              class: 'list-title',
-            },
-            [
-              m('h2', joboffer.getTitle()),
-              m('div', [m('span', joboffer.getCompany()), m('span', joboffer.getDate())]),
-            ]
-          ),
+        m('div.joboffer-header', [
+          m('div.image.ratio-3to2', m('img', { src: imageurl, alt: joboffer.company })),
+          m('div.content', [
+            m('h2.title', joboffer.getTitle()),
+            m('div.date', i18n('joboffers.published_%n_days_ago', days)),
+          ]),
         ]),
-      content: () => m('div', joboffer.getDescription()),
+      content: ({ expanded }) => {
+        if (expanded) {
+          return m(JobofferDetails, { joboffer });
+        }
+        return m('');
+      },
     });
   }
 

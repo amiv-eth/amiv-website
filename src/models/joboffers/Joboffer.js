@@ -35,13 +35,4 @@ export default class Joboffer {
     const regex = /(#+\s+)(\w+)/g;
     return description.replace(regex, (match, p1, p2) => `### ${p2.toLowerCase()}`);
   }
-
-  getDate() {
-    const postedOn = Date.parse(this._created);
-    const today = Date.now();
-    const timeDiff = today - postedOn;
-    const diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
-    const message = currentLanguage() === 'en' ? `${diffDays} days ago` : `vor ${diffDays} Tagen`;
-    return message;
-  }
 }

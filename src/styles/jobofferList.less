@@ -1,0 +1,31 @@
+.joboffer-header {
+  display: grid;
+  grid-template-areas: 'logo content';
+  grid-template-columns: 150px 1fr;
+
+  @media @mobile {
+    grid-template-areas: 'content';
+    grid-template-columns: 1fr;
+  }
+
+  .image {
+    grid-area: logo;
+    display: block;
+    background-color: transparent;
+
+    @media @mobile {
+      display: none;
+    }
+  }
+
+  .content {
+    grid-area: content;
+    padding: 1em;
+
+    .title {
+      padding: 0;
+      padding-bottom: .25em;
+      margin: 0;
+    }
+  }
+}
