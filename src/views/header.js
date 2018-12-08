@@ -111,9 +111,8 @@ export default class Header {
                           [
                             i18n(subitem.label),
                             subitem.url
-                              ? m('img', {
+                              ? m('img.external-link', {
                                   src: ExternalLinkIcon,
-                                  style: 'width:12px;height:12px;padding:0 0 0 5px;',
                                 })
                               : m(''),
                           ]

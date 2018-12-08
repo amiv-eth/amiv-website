@@ -1,14 +1,9 @@
-@import './colors.less';
-@import './images.less';
-
 .teams {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
-  grid-gap: 30px;
-  align-content: center;
+  grid-gap: 32px;
   text-align: center;
-  border: none;
-  margin-bottom: 3em;
+  padding-bottom: 3em;
 
   @media @tablet {
     grid-template-columns: 1fr 1fr;
@@ -19,30 +14,20 @@
   }
 }
 
+.description {
+  text-align: justify;
+
+  p { margin: 16px; }
+}
+
 .team {
-  display: grid;
-  grid-template-rows: auto auto 1fr auto;
-  border: 1px solid @color-grey;
-
-  .description {
-    text-align: justify;
-
-    p { margin: .5em; }
+  .pe-card__media {
+    height: 0 !important;
   }
 
-  .contact {
-    background-color: @color-grey;
-    padding: .5em;
-    height: 5em;
-
-    > * {
-      display: block;
-      padding: .25em 0;
-    }
-
-    a {
-      text-decoration: none;
-      color: @color-dark-blue;
-    }
+  .pe-card__content {
+    height: 100%;
+    display: grid;
+    grid-template-rows: auto auto 1fr auto;
   }
 }
