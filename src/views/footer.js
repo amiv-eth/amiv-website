@@ -34,26 +34,29 @@ export default class Footer {
   }
 
   view() {
-    return m('footer', [
-      m('div.copyright', [
-        m('span', `© 1893 - ${new Date().getFullYear()} AMIV an der ETH`),
+    return m(
+      'footer',
+      m('div', [
+        m('div.copyright', [
+          m('span', `© 1893 - ${new Date().getFullYear()} AMIV an der ETH`),
+          m(
+            'a',
+            {
+              href: `/${currentLanguage()}/legal-notice`,
+              onupdate: m.route.link,
+            },
+            i18n('legal-notice')
+          ),
+        ]),
+        m('div.footer-logo', m('a', { href: `https://www.ethz.ch/` }, m('img', { src: EthLogo }))),
         m(
-          'a',
+          'div.footer-logo',
           {
-            href: `/${currentLanguage()}/legal-notice`,
-            onupdate: m.route.link,
+            onclick: () => this.handleClick(),
           },
-          i18n('legal-notice')
+          renderVseth(this.coord)
         ),
-      ]),
-      m('div.footer-logo', m('a', { href: `https://www.ethz.ch/` }, m('img', { src: EthLogo }))),
-      m(
-        'div.footer-logo',
-        {
-          onclick: () => this.handleClick(),
-        },
-        renderVseth(this.coord)
-      ),
-    ]);
+      ])
+    );
   }
 }

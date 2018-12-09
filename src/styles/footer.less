@@ -2,55 +2,74 @@
 
 footer {
   background-color: @color-dark-blue;
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
   color: @color-grey;
 
-  div.copyright {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    grid-column: ~'1 / 3';
+  > div {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    padding: 0 1em;
+    margin: 0 auto;
 
-    .copyright {
-      padding-right: 1em;
-      border-right: 1px solid #fff;
-
-      @media @mobile {
-        display: block;
-        grid-column: ~'1 / 7';
-        border-right: none;
-        padding: 2em 0 0;
-        margin-bottom: 1em;
-      }
+    @media @wide, @desktop {
+      grid-template-columns: 1fr auto auto;
+      grid-template-areas: 'copyright eth-logo vseth-logo';
+      max-width: @dimension-max-content-width;
     }
 
-    a {
-      margin-left: 1em;
-      color: @color-red;
-      text-decoration: none;
+    @media @tablet {
+      grid-template-columns: 1fr auto auto;
+      grid-template-areas: 'copyright eth-logo vseth-logo';
+      font-size: .7em;
     }
-  }
-
-  div.footer-logo {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    grid-column: span 2;
 
     @media @mobile {
-      grid-column: span 3;
+      grid-template-columns: 1fr 1fr;
+      grid-template-areas:
+        'copyright copyright'
+        'eth-logo vseth-logo';
     }
+  }
+}
 
-    a {
-      position: relative;
+footer div.copyright {
+  display: flex;
+  align-items: center;
+  justify-content: left;
+  grid-area: copyright;
+  padding: 2.5em 0;
 
-      img {
-        height: 4em;
-        max-width: 100%;
-        background-color: @color-dark-blue;
-      }
+  @media @mobile {
+    justify-content: center;
+  }
+
+  a {
+    margin-left: 1em;
+    color: @color-red;
+    text-decoration: none;
+  }
+}
+
+footer .vseth {
+  grid-area: vseth-logo;
+}
+
+footer .eth {
+  grid-area: eth-logo;
+}
+
+footer div.footer-logo {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  a {
+    position: relative;
+
+    img {
+      height: 4em;
+      max-width: 100%;
+      background-color: @color-dark-blue;
     }
   }
 }
