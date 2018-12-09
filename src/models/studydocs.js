@@ -28,6 +28,13 @@ export default class StudydocsController extends PaginationController {
     return true;
   }
 
+  /** Check if the study document is already loaded */
+  isDocumentLoaded(documentId) {
+    const test = item => item._id === documentId;
+
+    return this.some(test);
+  }
+
   /**
    * Load a specific document from the AMIV API
    *
@@ -42,15 +49,6 @@ export default class StudydocsController extends PaginationController {
         Authorization: getToken(),
       },
     });
-    return this._selectedDocument;
-  }
-
-  /**
-   * Get the previously loaded event
-   * @return {object} studydocument from the AMIV API
-   * @public
-   */
-  get selectedDocument() {
     return this._selectedDocument;
   }
 

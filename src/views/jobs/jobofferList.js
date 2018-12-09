@@ -1,5 +1,6 @@
 import m from 'mithril';
 import { apiUrl } from 'config';
+import { ExpansionPanel } from 'amiv-web-ui-components';
 import { i18n, currentLanguage } from '../../models/language';
 import { JobofferController } from '../../models/joboffers';
 import { FilteredListPage, FilteredListDataStore } from '../filteredListPage';
@@ -15,11 +16,16 @@ const dataStore = new FilteredListDataStore();
  */
 export default class JobofferList extends FilteredListPage {
   constructor() {
-    super('joboffer', dataStore, true);
+    super('jobs', dataStore);
   }
 
   oninit(vnode) {
     super.oninit(vnode, vnode.attrs.offerId);
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  _isItemLoaded(itemId) {
+    return controller.isJobofferLoaded(itemId);
   }
 
   // eslint-disable-next-line class-methods-use-this
@@ -74,25 +80,50 @@ export default class JobofferList extends FilteredListPage {
             ];
           }
         });
-        controller.setQuery({ where: query }).finally(() => m.redraw());
+        return controller.setQuery({ where: query });
       },
     };
   }
 
-  get _listView() {
-    return controller.map(page =>
-      page.map(joboffer => this.constructor._renderJobofferListItem(joboffer))
-    );
+  // eslint-disable-next-line class-methods-use-this
+  get _lists() {
+    return [
+      {
+        name: 'joboffers',
+        pages: controller,
+        loadMore: this._hasMorePagesToLoad() ? this._loadNextPage : undefined,
+      },
+    ];
   }
 
   // eslint-disable-next-line class-methods-use-this
-  get _detailsView() {
-    return m(JobofferDetails, { controller });
-  }
+  _renderItem(joboffer, list, selectedId) {
+    const animationDuration = 300; // in ms
 
-  // eslint-disable-next-line class-methods-use-this
-  get _detailsPlaceholderView() {
-    return m('h1', i18n('joboffers.no_selection'));
+    return m(ExpansionPanel, {
+      id: this.getItemElementId(joboffer._id),
+      expanded: joboffer._id === selectedId,
+      separated: true,
+      duration: animationDuration,
+      onChange: expanded => {
+        this.onChange(joboffer._id, expanded, animationDuration);
+      },
+      header: () =>
+        m('div.job', [
+          m('img', { src: `${apiUrl}${joboffer.logo.file}`, alt: joboffer.company }),
+          m(
+            'div',
+            {
+              class: 'list-title',
+            },
+            [
+              m('h2', joboffer.getTitle()),
+              m('div', [m('span', joboffer.getCompany()), m('span', joboffer.getDate())]),
+            ]
+          ),
+        ]),
+      content: () => m('div', joboffer.getDescription()),
+    });
   }
 
   // eslint-disable-next-line class-methods-use-this
@@ -106,30 +137,5 @@ export default class JobofferList extends FilteredListPage {
   // eslint-disable-next-line class-methods-use-this
   _hasMorePagesToLoad() {
     return controller.lastLoadedPage < controller.totalPages;
-  }
-
-  static _renderJobofferListItem(joboffer) {
-    return m(
-      'div',
-      {
-        class: 'list-item',
-        onclick: () => {
-          m.route.set(`/${currentLanguage()}/jobs/${joboffer._id}`);
-        },
-      },
-      [
-        m('img', { src: `${apiUrl}${joboffer.logo.file}`, alt: joboffer.company }),
-        m(
-          'div',
-          {
-            class: 'list-title',
-          },
-          [
-            m('h2', joboffer.getTitle()),
-            m('div', [m('span', joboffer.getCompany()), m('span', joboffer.getDate())]),
-          ]
-        ),
-      ]
-    );
   }
 }

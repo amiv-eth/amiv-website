@@ -114,10 +114,22 @@ export default class EventController {
     return this._pastEvents;
   }
 
+  /** Check if the event is already loaded */
+  isEventLoaded(eventId) {
+    const test = item => item._id === eventId;
+
+    return (
+      this.openRegistrationEvents.some(test) ||
+      this.upcomingEvents.some(test) ||
+      this.pastEvents.some(test)
+    );
+  }
+
   /**
    * Load a specific event
    * @param {String} eventId
    */
+  // eslint-disable-next-line class-methods-use-this
   async loadEvent(eventId) {
     const event = await m.request({
       method: 'GET',
@@ -129,14 +141,6 @@ export default class EventController {
     if (!event.show_website) {
       throw new Error('Event not found');
     }
-    this._selectedEvent = new Event(event);
-    return this._selectedEvent;
-  }
-
-  /**
-   * Get the previously loaded event
-   */
-  get selectedEvent() {
-    return this._selectedEvent;
+    return new Event(event);
   }
 }
