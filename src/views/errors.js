@@ -73,3 +73,17 @@ export class TranslationUnavailable {
     );
   }
 }
+
+/**
+ * View to show some generic infobox.
+ *
+ * @param {string} icon  SVG icon
+ * @param {string} label Text label
+ *
+ * @return {Infobox}
+ */
+export class Infobox {
+  static view({ attrs: { icon, label } }) {
+    return m('div', { class: 'infobox' }, [m('img', { src: icon }), m('span', label)]);
+  }
+}

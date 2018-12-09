@@ -1,4 +1,65 @@
+@import './colors.less';
+
 .event-details {
+  display: grid;
+  grid-template-areas: 'description separator signup';
+  grid-template-columns: 1fr 4px 350px;
+  border-top: 1px solid @color-grey;
+  align-items: center;
+  min-height: 10em;
+
+  @media @tablet, @mobile {
+    grid-template: auto 4px auto / 1fr;
+    grid-template-areas:
+      'description'
+      'separator'
+      'signup';
+    min-height: unset;
+  }
+
+  > p {
+    grid-area: description;
+    margin: 1em;
+  }
+
+  .separator {
+    grid-area: separator;
+    background: @color-grey;
+    width: 100%;
+    height: calc(100% - 2em);
+    margin: 1em 0;
+
+    @media @tablet, @mobile {
+      width: calc(100% - 2em);
+      height: 100%;
+      margin: 0 1em;
+    }
+  }
+
+  .form {
+    grid-area: signup;
+    position: relative;
+    margin: 2em 1em;
+    text-align: center;
+
+    > p {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      margin: 0;
+    }
+
+    .colored {
+      color: @color-red;
+      font-size: 1.5em;
+    }
+
+    form div:not(.pe-button__content) {
+      width: 100%;
+    }
+  }
+
   button {
     margin-right: 1em;
   }

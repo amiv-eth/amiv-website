@@ -79,4 +79,23 @@ function currentLanguage() {
   return _currentLanguage;
 }
 
-export { i18n, changeLanguage, setLanguage, currentLanguage, loadLanguage, isLanguageValid };
+/**
+ * Get the current locale based on the configured language.
+ *
+ * @return locale string
+ */
+function currentLocale() {
+  if (_currentLanguage === 'en') return 'en-GB';
+
+  return 'de-DE';
+}
+
+export {
+  i18n,
+  changeLanguage,
+  setLanguage,
+  currentLanguage,
+  currentLocale,
+  loadLanguage,
+  isLanguageValid,
+};

@@ -1,5 +1,4 @@
 import m from 'mithril';
-// import animateScrollTo from 'animated-scroll-to';
 import animateScrollTo from 'animated-scroll-to';
 import { List, Shadow, ListTile, Button } from 'polythene-mithril';
 import { Spinner } from 'amiv-web-ui-components';
