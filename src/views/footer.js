@@ -2,6 +2,9 @@ import m from 'mithril';
 import { currentLanguage, i18n } from '../models/language';
 import EthLogo from '../images/eth.svg';
 import VsethLogo from '../images/vseth.svg';
+import FacebookLogo from '../images/facebook_white.svg';
+import InstagramLogo from '../images/instagram_white.svg';
+import TwitterLogo from '../images/twitter_white.svg';
 
 const renderVseth = coord => {
   const style = `
@@ -37,6 +40,12 @@ export default class Footer {
     return m(
       'footer',
       m('div', [
+        m(
+          'div.social-media-logos',
+          m('a', { href: `https://www.facebook.com/AMIV.ETHZ/` }, m('img', { src: FacebookLogo })),
+          m('a', { href: `https://www.instagram.com/amiv_eth/` }, m('img', { src: InstagramLogo })),
+          m('a', { href: `https://twitter.com/amiv_ethz` }, m('img', { src: TwitterLogo }))
+        ),
         m('div.copyright', [
           m('span', `© 1893 - ${new Date().getFullYear()} AMIV an der ETH`),
           m(
@@ -48,14 +57,16 @@ export default class Footer {
             `${i18n('contact')} / ${i18n('legal-notice')}`
           ),
         ]),
-        m('div.footer-logo', m('a', { href: `https://www.ethz.ch/` }, m('img', { src: EthLogo }))),
-        m(
-          'div.footer-logo',
-          {
-            onclick: () => this.handleClick(),
-          },
-          renderVseth(this.coord)
-        ),
+        m('div.institution-logos', [
+          m('a', { href: `https://www.ethz.ch/` }, m('img', { src: EthLogo })),
+          m(
+            'div',
+            {
+              onclick: () => this.handleClick(),
+            },
+            renderVseth(this.coord)
+          ),
+        ]),
       ])
     );
   }

@@ -72,28 +72,6 @@ export default class Frontpage {
         imageurl: 'https://bit.ly/2OUjN5w',
       },
     ];
-
-    // Social Media Attributes, with their different APIs
-    this.socialmedia = [
-      {
-        title: 'Facebook',
-        href: 'https://www.facebook.com/AMIV.ETHZ/',
-        imageurl:
-          'http://www.fub.se/sites/www.fub.se/files/styles/artikelbild_full/public/facebook-logotyp.jpg?itok=e244p_Sa',
-      },
-
-      {
-        title: 'Instagram',
-        href: 'https://www.instagram.com/amiv_eth/?hl=de',
-        imageurl:
-          'https://i2.wp.com/www.newscouch.de/wp-content/uploads/2017/11/insta-logo.jpg?fit=2569%2C1761&ssl=1',
-      },
-      {
-        title: 'Twitter',
-        href: 'https://twitter.com/amiv_ethz',
-        imageurl: 'https://rngeternal.com/wp-content/uploads/2017/12/twitter-logo.png',
-      },
-    ];
   }
 
   view() {
@@ -197,25 +175,6 @@ export default class Frontpage {
     return m(Card, {
       url,
       content: cardContent,
-    });
-  }
-
-  static _renderSocialMediaCard(item) {
-    return m(Card, {
-      url: {
-        href: item.href,
-      },
-      content: [
-        {
-          media: {
-            origin: 'center',
-            ratio: 'landscape',
-            content: m('img', {
-              src: item.imageurl ? item.imageurl : icons.logoWheel,
-            }),
-          },
-        },
-      ],
     });
   }
 }
