@@ -11,14 +11,14 @@ footer {
     margin: 0 auto;
 
     @media @wide, @desktop {
-      grid-template-columns: 1fr auto 1fr;
-      grid-template-areas: 'social-media-logos copyright institution-logos';
+      grid-template-columns: 50% 25% 25%;
+      grid-template-areas: 'copyright social-media-logos institution-logos';
       max-width: @dimension-max-content-width;
     }
 
     @media @tablet {
-      grid-template-columns: 1fr auto 1fr;
-      grid-template-areas: 'social-media-logos copyright institution-logos';
+      grid-template-columns: 50% 25% 25%;
+      grid-template-areas: 'copyright social-media-logos institution-logos';
       font-size: .7em;
     }
 
@@ -35,9 +35,9 @@ footer {
 footer div.copyright {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: left;
   grid-area: copyright;
-  padding: 2.5em 0;
+  padding: 2.5em .7em;
 
   @media @mobile {
     justify-content: center;
@@ -51,9 +51,8 @@ footer div.copyright {
 }
 
 footer div.social-media-logos {
-  width: 100%;
   display: flex;
-  justify-content: left;
+  justify-content: center;
   align-items: center;
   grid-area: social-media-logos;
 
@@ -66,13 +65,12 @@ footer div.social-media-logos {
 
     img {
       height: 2em;
-      padding: 0 .8em;
+      padding: 0 .7em;
     }
   }
 }
 
 footer div.institution-logos {
-  width: 100%;
   display: flex;
   justify-content: right;
   align-items: center;
