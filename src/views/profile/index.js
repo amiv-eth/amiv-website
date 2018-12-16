@@ -1,15 +1,17 @@
 import m from 'mithril';
+import { Card } from 'polythene-mithril';
+import { DropdownCard } from 'amiv-web-ui-components';
 import UserInfo from './userInfo';
 import ChangePasswordForm from './changePasswordForm';
 import RfidForm from './rfidForm';
-import AnnounceSubscriptionForm from './announceSubscriptionForm';
+import NewsletterSubscriptionForm from './newsletterSubscriptionForm';
 import SessionInfo from './sessionInfo';
-import GroupMemberships from './groupMemberships';
-import PublicGroups from './publicGroups';
+import { GroupMemberships, PublicGroups } from './groups';
 import UserController from '../../models/user';
 import GroupMembershipsController from '../../models/groupmemberships';
 import GroupsController from '../../models/groups';
 import { getUserId } from '../../models/auth';
+import { i18n } from '../../models/language';
 
 const userController = new UserController();
 const groupMembershipsController = new GroupMembershipsController();
@@ -29,16 +31,59 @@ export default class Profile {
   }
 
   static view() {
-    return m('div#profile-container', [
-      m(UserInfo, { userController }),
-      m('div#sessions-subscriptions', [
-        m(AnnounceSubscriptionForm, { userController }),
-        m(SessionInfo, { userController }),
+    return m('div.profile-container', [
+      m(Card, {
+        className: 'info-container',
+        content: m(UserInfo, { userController }),
+      }),
+      m('div.settings', [
+        m(Card, {
+          title: 'Subscriptions',
+          style: {
+            margin: '0 0 16px 0',
+            borderRadius: '4px',
+          },
+          content: m(NewsletterSubscriptionForm, { userController }),
+        }),
+        m(Card, {
+          style: {
+            margin: '16px 0',
+            borderRadius: '4px',
+          },
+          content: m(SessionInfo, { userController }),
+        }),
+        m(DropdownCard, {
+          title: `RFID: ${userController.user.rfid}`,
+          style: {
+            margin: '16px 0',
+            borderRadius: '4px',
+          },
+          content: m(RfidForm, { userController }),
+        }),
+        m(DropdownCard, {
+          title: userController.user.password_set
+            ? i18n('profile.password.change')
+            : i18n('profile.password.set'),
+          style: {
+            margin: '16px 0',
+            borderRadius: '4px',
+          },
+          content: m(ChangePasswordForm, { userController }),
+        }),
       ]),
-      m(RfidForm, { userController }),
-      m(ChangePasswordForm, { userController }),
-      m(GroupMemberships, { groupMembershipsController }),
-      m(PublicGroups, { publicGroupsController, groupMembershipsController }),
+      m(
+        'div.groups',
+        m('div', [
+          m(Card, {
+            className: 'groupmemberships',
+            content: m(GroupMemberships, { groupMembershipsController }),
+          }),
+          m(Card, {
+            className: 'public-groups',
+            content: m(PublicGroups, { publicGroupsController, groupMembershipsController }),
+          }),
+        ])
+      ),
     ]);
   }
 }

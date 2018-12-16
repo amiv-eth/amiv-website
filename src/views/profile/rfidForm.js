@@ -4,8 +4,9 @@ import { Button, TextField } from '../../components';
 
 // provides a form to change the users rfid
 export default class RfidForm {
-  oninit(vnode) {
+  constructor(vnode) {
     this.userController = vnode.attrs.userController;
+    this.valid = true;
   }
 
   submit() {
@@ -32,9 +33,8 @@ export default class RfidForm {
       buttonArgs.disabled = true;
     }
 
-    return m('div#rfid', [
+    return m('div.rfid', [
       m(TextField, {
-        name: 'rfid',
         label: i18n('profile.rfid'),
         floatingLabel: true,
         error: i18n('profile.rfidError'),
@@ -43,7 +43,7 @@ export default class RfidForm {
         events: {
           oninput: e => {
             this.rfid = e.target.value;
-            this.valid = /^\d{6}$/g.test(this.rfid) && this.rfid !== user.rfid;
+            this.valid = /^\d{6}$/g.test(this.rfid);
           },
         },
       }),

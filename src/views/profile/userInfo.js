@@ -23,9 +23,9 @@ export default class UserInfo {
       }
     }
 
-    return m('div#info', [
-      m('div#info-user', [m('b', [user.firstname, ' ', user.lastname]), m('div', user.legi)]),
-      m('div#info-amiv', [m('div', m('b', i18n(`membership.${user.membership}`))), freeBeerNotice]),
-    ]);
+    return [
+      m('div.user', [m('b', [user.firstname, ' ', user.lastname]), m('div.email', user.email)]),
+      m('div.amiv', [m('div', m('b', i18n(`membership.${user.membership}`))), freeBeerNotice]),
+    ];
   }
 }

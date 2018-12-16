@@ -11,6 +11,7 @@ export default {
   loadMore: 'Load more',
   loadMoreError: 'Loading failed. Try again?',
   retry: 'Retry',
+  warning: 'Warning',
   switzerland: 'Switzerland',
   menu: 'menu',
   amiv: 'AMIV',
@@ -28,6 +29,7 @@ export default {
     confirm: 'confirm',
     enroll: 'enroll',
     withdraw: 'withdraw',
+    proceed: 'proceed',
   },
   membership: {
     regular: 'REGULAR MEMBER',
@@ -102,7 +104,10 @@ export default {
     rfidError: '6 digits required. See back of your legi.',
     password: {
       change: 'Change password',
+      changed: 'Password updated.',
       revertToLdap: 'Revert to LDAP',
+      revertToLdapWarning:
+        'If you cannot authenticate against the ETH LDAP service, you can no longer log in!\nOnly ETH affiliated people should use this function.\n\n**This cannot be undone!**',
       set: 'Set password',
       requirements: 'Password has to be between 7 and 100 characters long.',
       current: 'Current password',
@@ -111,6 +116,7 @@ export default {
       errors: {
         current: 'Password is incorrect.',
         notEqual: 'Passwords do not match.',
+        unknown: 'There was an error. Please try again.',
       },
     },
     newsletter: {
@@ -123,7 +129,9 @@ export default {
       terminateOthers: 'Terminate all other {{count}} active sessions',
     },
     groups: {
-      search: 'Search groups',
+      searchEnrolled: 'Search enrolled groups',
+      searchPublic: 'Search public groups (with self enrollment)',
+      noneFound: 'No groups found.',
       expires: 'expires on {{date}}',
     },
   },

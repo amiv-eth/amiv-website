@@ -3,11 +3,11 @@ import { i18n } from '../../models/language';
 import { Button } from '../../components';
 
 /**
- * AnnounceSubscriptionForm class
+ * NewsletterSubscriptionForm class
  *
  * Provides a button to (un-)subscribe for the announce newsletter.
  */
-export default class AnnounceSubscriptionForm {
+export default class NewsletterSubscriptionForm {
   oninit(vnode) {
     this.userController = vnode.attrs.userController;
   }
@@ -35,7 +35,7 @@ export default class AnnounceSubscriptionForm {
     }
 
     return m(
-      'div#announce-subscription',
+      'div.newsletter',
       m(Button, {
         ...buttonArgs,
         label: user.send_newsletter
