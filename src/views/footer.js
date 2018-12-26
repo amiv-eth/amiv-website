@@ -1,10 +1,8 @@
 import m from 'mithril';
+import { Icon } from 'polythene-mithril';
 import { currentLanguage, i18n } from '../models/language';
-import EthLogo from '../images/eth.svg';
-import VsethLogo from '../images/vseth.svg';
-import FacebookLogo from '../images/facebook_white.svg';
-import InstagramLogo from '../images/instagram_white.svg';
-import TwitterLogo from '../images/twitter_white.svg';
+import logos from '../images/logos';
+import icons from '../images/icons';
 
 const renderVseth = coord => {
   const style = `
@@ -20,7 +18,7 @@ const renderVseth = coord => {
       href: `https://vseth.ethz.ch/`,
       style,
     },
-    m('img', { src: VsethLogo })
+    m('img', { src: logos.vseth })
   );
 };
 
@@ -53,12 +51,24 @@ export default class Footer {
         ]),
         m(
           'div.social-media-logos',
-          m('a', { href: `https://www.facebook.com/AMIV.ETHZ/` }, m('img', { src: FacebookLogo })),
-          m('a', { href: `https://www.instagram.com/amiv_eth/` }, m('img', { src: InstagramLogo })),
-          m('a', { href: `https://twitter.com/amiv_ethz` }, m('img', { src: TwitterLogo }))
+          m(
+            'a',
+            { href: `https://www.facebook.com/AMIV.ETHZ/` },
+            m(Icon, { size: 'medium', svg: { content: m.trust(icons.facebook) } })
+          ),
+          m(
+            'a',
+            { href: `https://www.instagram.com/amiv_eth/` },
+            m(Icon, { size: 'medium', svg: { content: m.trust(icons.instagram) } })
+          ),
+          m(
+            'a',
+            { href: `https://twitter.com/amiv_ethz` },
+            m(Icon, { size: 'medium', svg: { content: m.trust(icons.twitter) } })
+          )
         ),
         m('div.institution-logos', [
-          m('a', { href: `https://www.ethz.ch/` }, m('img', { src: EthLogo })),
+          m('a', { href: `https://www.ethz.ch/` }, m('img', { src: logos.eth })),
           m(
             'div',
             {

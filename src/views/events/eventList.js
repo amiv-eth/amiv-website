@@ -1,7 +1,8 @@
 import m from 'mithril';
+import { Icon } from 'polythene-mithril';
 import { apiUrl } from 'config';
 import { ExpansionPanel } from 'amiv-web-ui-components';
-import AmivLogo from '../../images/logoNoText.svg';
+import logos from '../../images/logos';
 import { i18n, currentLocale } from '../../models/language';
 import { EventController } from '../../models/events';
 import { FilteredListPage, FilteredListDataStore } from '../filteredListPage';
@@ -73,11 +74,11 @@ export default class EventList extends FilteredListPage {
           label: i18n('events.agenda'),
           className: 'flat-button',
           events: {
-            onclick: () => 
+            onclick: () =>
               window.open(
                 'https://calendar.google.com/calendar/embed?src=mdk91hfvr18q8rrlh3sedlhgvo%40group.calendar.google.com',
                 '_blank'
-              )
+              ),
           },
         },
         {
@@ -158,7 +159,7 @@ export default class EventList extends FilteredListPage {
   // eslint-disable-next-line class-methods-use-this
   _renderItem(event, list, selectedId) {
     const animationDuration = 300; // in ms
-    const imageurl = event.img_thumbnail ? `${apiUrl}${event.img_thumbnail.file}` : AmivLogo;
+    const imageurl = event.img_thumbnail ? `${apiUrl}${event.img_thumbnail.file}` : logos.amivWheel;
     const properties = [
       {
         value: this.constructor._renderPrice(event.price),

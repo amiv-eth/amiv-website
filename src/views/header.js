@@ -1,8 +1,8 @@
 import m from 'mithril';
+import { Icon } from 'polythene-mithril';
 import { mainNavigation } from '../models/navigation';
-import AmivLogo from '../images/logo.svg';
-import MobileMenuIcon from '../images/mobileMenuButton.svg';
-import ExternalLinkIcon from '../images/external.svg';
+import logos from '../images/logos';
+import icons from '../images/icons';
 import { i18n, currentLanguage, changeLanguage } from '../models/language';
 import { Button } from '../components';
 import { isLoggedIn, login } from '../models/auth';
@@ -32,7 +32,7 @@ export default class Header {
           m(
             'a.logo',
             { href: `/${currentLanguage()}/`, onupdate: m.route.link },
-            m('img', { src: AmivLogo })
+            m('img', { src: logos.amiv })
           ),
           this.constructor._mainMenu,
           this.constructor._profileMenu,
@@ -61,7 +61,11 @@ export default class Header {
                 this._mobileMenuShowing = !this._mobileMenuShowing;
               },
             },
-            m('img', { src: MobileMenuIcon, alt: i18n('Menu') })
+            m(Icon, {
+              svg: { content: m.trust(icons.mobileMenu) },
+              size: 'large',
+              alt: i18n('Menu'),
+            })
           ),
         ]
       )
@@ -111,8 +115,10 @@ export default class Header {
                           [
                             i18n(subitem.label),
                             subitem.url
-                              ? m('img.external-link', {
-                                  src: ExternalLinkIcon,
+                              ? m(Icon, {
+                                  class: 'external-link',
+                                  svg: { content: m.trust(icons.link) },
+                                  size: 'small',
                                 })
                               : m(''),
                           ]

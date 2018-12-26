@@ -1,4 +1,5 @@
 import m from 'mithril';
+import { Icon } from 'polythene-mithril';
 import marked from 'marked';
 import escape from 'html-escape';
 import { Form, TextInput, Spinner } from 'amiv-web-ui-components';
@@ -7,9 +8,7 @@ import { log } from '../../models/log';
 import { isLoggedIn, login } from '../../models/auth';
 import { Button } from '../../components';
 import { i18n, currentLocale } from '../../models/language';
-import infoIcon from '../../images/info.svg';
-import errorIcon from '../../images/error.svg';
-import successIcon from '../../images/checkbox-marked.svg';
+import icons from '../../images/icons';
 
 export default class EventDetails {
   oninit(vnode) {
@@ -163,15 +162,18 @@ export default class EventDetails {
     let notification;
 
     if (this.notification) {
-      let icon;
+      let iconSource;
       if (this.notification.type === 'success') {
-        icon = successIcon;
+        iconSource = icons.checkboxMarked;
       } else if (this.notification.type === 'fail') {
-        icon = errorIcon;
+        iconSource = icons.error;
       } else {
-        icon = infoIcon;
+        iconSource = icons.info;
       }
-      notification = m(Infobox, { icon, label: this.notification.label });
+      notification = m(Infobox, {
+        icon: m(Icon, { svg: { content: m.trust(iconSource) } }),
+        label: this.notification.label,
+      });
     }
 
     return m('div.event-details', [

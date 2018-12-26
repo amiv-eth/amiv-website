@@ -1,12 +1,11 @@
 import m from 'mithril';
 import animateScrollTo from 'animated-scroll-to';
-import { List, Shadow, ListTile, Button } from 'polythene-mithril';
+import { List, Shadow, ListTile, Button, Icon } from 'polythene-mithril';
 import { Spinner } from 'amiv-web-ui-components';
 import { error } from '../models/log';
 import { i18n, currentLanguage } from '../models/language';
 import { FilterView } from '../components';
-import filterIcon from '../images/filterList.svg';
-import closeIcon from '../images/close.svg';
+import icons from '../images/icons';
 
 const LIST_LOADING = 'loading';
 const LIST_LOADED = 'loaded';
@@ -366,7 +365,11 @@ export class FilteredListPage {
             this.mobileViewShowFilter = false;
           },
         },
-        [m('img', { src: closeIcon }), m('span', i18n('filtered_list.hide_filter'))]
+        [
+          m(Icon, { svg: { content: m.trust(icons.close) } }),
+          ' ',
+          m('span', i18n('filtered_list.hide_filter')),
+        ]
       );
     } else {
       mobileButton = m(
@@ -376,7 +379,11 @@ export class FilteredListPage {
             this.mobileViewShowFilter = true;
           },
         },
-        [m('img', { src: filterIcon }), m('span', i18n('filtered_list.show_filter'))]
+        [
+          m(Icon, { svg: { content: m.trust(icons.filterList) } }),
+          ' ',
+          m('span', i18n('filtered_list.show_filter')),
+        ]
       );
     }
     return m(

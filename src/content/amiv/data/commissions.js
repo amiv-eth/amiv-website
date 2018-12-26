@@ -12,12 +12,7 @@ import braukoImage from '../images/commissions/brauko.jpg';
 import eestecImage from '../images/commissions/eestec.png';
 import funkbudeImage from '../images/commissions/funkbude.jpg';
 
-import websiteIcon from '../../../images/earth.svg';
-import phoneIcon from '../../../images/phone.svg';
-import emailIcon from '../../../images/email.svg';
-import calendarIcon from '../../../images/calendar.svg';
-import instagramIcon from '../../../images/instagram.svg';
-import facebookIcon from '../../../images/facebook.svg';
+import icons from '../../../images/icons';
 
 const data = [
   {
@@ -25,17 +20,17 @@ const data = [
     image: bastliImage,
     contact: [
       {
-        icon: websiteIcon,
+        icon: icons.earth,
         label: 'bastli.ethz.ch',
         url: 'https://bastli.ethz.ch',
       },
       {
-        icon: emailIcon,
+        icon: icons.email,
         label: 'info@bastli.ethz.ch',
         url: 'mailto:info@bastli.ethz.ch',
       },
       {
-        icon: phoneIcon,
+        icon: icons.phone,
         label: '+41 44 632 49 41',
         url: 'tel:+41 44 632 49 41',
       },
@@ -62,12 +57,12 @@ const data = [
     image: blitzImage,
     contact: [
       {
-        icon: websiteIcon,
+        icon: icons.earth,
         label: 'blitz.ethz.ch',
         url: 'https://blitz.ethz.ch',
       },
       {
-        icon: emailIcon,
+        icon: icons.email,
         label: 'info@blitz.ethz.ch',
         url: 'mailto:info@blitz.ethz.ch',
       },
@@ -87,7 +82,7 @@ const data = [
     email: 'amivbraeu@amiv.ethz.ch',
     contact: [
       {
-        icon: calendarIcon,
+        icon: icons.calendar,
         label: {
           en: 'Brewing Calendar',
           de: 'Braukalender',
@@ -95,7 +90,7 @@ const data = [
         url: 'https://cloud.amiv.ethz.ch/index.php/apps/calendar/p/qJerTAw9TKLe6xtY/Braukommission',
       },
       {
-        icon: instagramIcon,
+        icon: icons.instagram,
         label: 'Instagram: amivbrau',
         url: 'https://www.instagram.com/amivbrau/',
       },
@@ -129,12 +124,12 @@ const data = [
     image: irrationalImage,
     contact: [
       {
-        icon: emailIcon,
+        icon: icons.email,
         label: 'irrational@amiv.ethz.ch',
         url: 'mailto:irrational@amiv.ethz.ch',
       },
       {
-        icon: phoneIcon,
+        icon: icons.phone,
         label: '+41 76 437 68 37',
         url: 'tel:+41 76 437 68 37',
       },
@@ -153,12 +148,12 @@ const data = [
     image: eestecImage,
     contact: [
       {
-        icon: websiteIcon,
+        icon: icons.earth,
         label: 'eestec.ch',
         url: 'https://eestec.ch',
       },
       {
-        icon: emailIcon,
+        icon: icons.email,
         label: 'contact@eestec.ethz.ch',
         url: 'mailto:contact@eestec.ethz.ch',
       },
@@ -175,12 +170,12 @@ const data = [
     image: funkbudeImage,
     contact: [
       {
-        icon: websiteIcon,
+        icon: icons.earth,
         label: 'hb9zz.ethz.ch',
         url: 'https://hb9zz.ethz.ch',
       },
       {
-        icon: emailIcon,
+        icon: icons.email,
         label: 'funkbude@amiv.ethz.ch',
         url: 'mailto:funkbude@amiv.ethz.ch',
       },
@@ -197,12 +192,12 @@ const data = [
     image: limesImage,
     contact: [
       {
-        icon: websiteIcon,
+        icon: icons.earth,
         label: 'limes.ethz.ch',
         url: 'https://limes.ethz.ch',
       },
       {
-        icon: emailIcon,
+        icon: icons.email,
         label: 'limes@amiv.ethz.ch',
         url: 'mailto:limes@amiv.ethz.ch',
       },
@@ -225,12 +220,12 @@ const data = [
     image: kontaktImage,
     contact: [
       {
-        icon: websiteIcon,
+        icon: icons.earth,
         label: 'kontakt.amiv.ethz.ch',
         url: 'https://kontakt.amiv.ethz.ch',
       },
       {
-        icon: emailIcon,
+        icon: icons.email,
         label: 'kontakt@amiv.ethz.ch',
         url: 'mailto:kontakt@amiv.ethz.ch',
       },
@@ -251,7 +246,7 @@ const data = [
     image: randomDudesImage,
     contact: [
       {
-        icon: emailIcon,
+        icon: icons.email,
         label: 'randomdudes@amiv.ethz.ch',
         url: 'mailto:randomdudes@amiv.ethz.ch',
       },
@@ -270,12 +265,12 @@ const data = [
     image: emc2Image,
     contact: [
       {
-        icon: facebookIcon,
+        icon: icons.facebook,
         label: 'Facebook: emc2eth',
         url: 'https://fb.me/emc2eth',
       },
       {
-        icon: emailIcon,
+        icon: icons.email,
         label: 'emc2@amiv.ethz.ch',
         url: 'mailto:emc2@amiv.ethz.ch',
       },
@@ -293,7 +288,7 @@ const data = [
     name: 'BEEZ',
     contact: [
       {
-        icon: emailIcon,
+        icon: icons.email,
         label: 'beez@amiv.ethz.ch',
         url: 'mailto:beez@amiv.ethz.ch',
       },

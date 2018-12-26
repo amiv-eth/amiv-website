@@ -164,7 +164,7 @@ const config = {
 
   plugins: [
     new FaviconsWebpackPlugin({
-      logo: './images/logoNoText.svg',
+      logo: './images/amivWheel.svg',
       prefix: 'favicon/',
       title: 'AMIV an der ETH',
     }),
