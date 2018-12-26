@@ -1,16 +1,15 @@
 import m from 'mithril';
 import { apiUrl } from 'config';
 import { Card } from 'polythene-mithril';
-import { Spinner } from '../components';
+import { Spinner } from 'amiv-web-ui-components';
+import { EventCard } from '../components';
 import { EventController } from '../models/events';
 import { JobofferController } from '../models/joboffers';
 import { i18n, currentLanguage } from '../models/language';
 import icons from '../images/icons';
-import EventCard from '../components/EventCard';
 
 async function getData(state) {
   const events = await state.eventController.upcomingEvents.getPageData(1);
-  console.log(events);
   if (events.length < 3) {
     const pastEvents = await state.eventController.pastEvents.getPageData(1);
     const { length } = events;
@@ -91,10 +90,6 @@ export default class Frontpage {
           ? this.jobs.map(item => this.constructor._renderJobCard(item))
           : Array.from(Array(3)).map(() => this.constructor._renderJobCard(null, true))
       ),
-      m(
-        'div.frontpage-row',
-        this.socialmedia.map(item => this.constructor._renderSocialMediaCard(item))
-      ),
     ]);
   }
 
@@ -122,33 +117,6 @@ export default class Frontpage {
           },
         },
       ],
-    });
-  }
-
-  static _renderEventCard(item, loading = false) {
-    let url;
-    let cardContent;
-
-    if (item && !loading) {
-      url = {
-        href: `${m.route.get()}events/${item._id}`,
-        oncreate: m.route.link,
-      };
-
-      if (item.img_poster) {
-        cardContent = m('img', {
-          src: `${apiUrl}${item.img_poster.file}`,
-        });
-      } else {
-        cardContent = m('div', [m('h2', item.getTitle()), m('span', item.getCatchphrase())]);
-      }
-    } else {
-      cardContent = m(Spinner, { show: true });
-    }
-
-    return m(Card, {
-      url,
-      content: m('div.image.ratio-paper-a-vertical', cardContent),
     });
   }
 
