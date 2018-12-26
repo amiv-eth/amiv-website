@@ -69,6 +69,8 @@ export default class Query {
     Object.keys(query).forEach(key => {
       if (Array.isArray(query[key])) {
         parsedQuery[key] = query[key];
+      } else if (key === 'sort') {
+        parsedQuery[key] = query[key];
       } else {
         parsedQuery[key] = JSON.stringify(query[key]);
       }
