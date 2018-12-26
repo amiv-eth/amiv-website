@@ -5,6 +5,7 @@
         "loading": "Loading...",
         "close": "close",
         "loading_error": "Error while loading data.",
+        "empty_list": "There are no items to show.",
         "load_more": "Load more",
         "load_more_error": "Loading failed. Try again?",
         "Menu": "Menu",

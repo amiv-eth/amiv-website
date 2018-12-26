@@ -26,6 +26,15 @@ export default class EventList extends FilteredListPage {
   }
 
   // eslint-disable-next-line class-methods-use-this
+  _hasItems() {
+    return (
+      controller.pastEvents.length > 0 ||
+      controller.openRegistrationEvents.length > 0 ||
+      controller.upcomingEvents.length > 0
+    );
+  }
+
+  // eslint-disable-next-line class-methods-use-this
   _isItemLoaded(itemId) {
     return controller.isEventLoaded(itemId);
   }

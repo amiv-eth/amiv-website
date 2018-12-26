@@ -5,6 +5,7 @@
         "close": "Schliessen",
         "loading": "Laden...",
         "loading_error": "Ein Fehler ist während dem Laden der Daten aufgetreten.",
+        "empty_list": "Es sind keine Einträge zum Anzeigen vorhanden.",
         "load_more": "Mehr laden",
         "load_more_error": "Laden fehlgeschlagen. Nochmal versuchen?",
         "Menu": "Menu",

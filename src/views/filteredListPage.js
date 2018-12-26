@@ -177,6 +177,18 @@ export class FilteredListPage {
   /* eslint-disable class-methods-use-this, no-unused-vars */
 
   /**
+   * Checks if the page has any items to show.
+   *
+   * You should replace this function if you need additional behavior!
+   *
+   * @return {boolean}
+   * @protected
+   */
+  _hasItems() {
+    return true;
+  }
+
+  /**
    * Checks if the item with the given id is loaded
    *
    * *This is an abstract function!
@@ -439,18 +451,25 @@ export class FilteredListPage {
     if (this.dataStore.listState === LIST_LOADING) {
       return m('div.loading', m(Spinner, { show: true, size: '96px' }));
     } else if (this.dataStore.listState === LIST_LOADED) {
-      let pinnedList;
+      if (this._hasItems()) {
+        let pinnedList;
 
-      if (this.dataStore.pinnedItem && !this.dataStore.pinnedItem.loading) {
-        pinnedList = this._renderList({
-          name: 'pinned',
-          items: [this.dataStore.pinnedItem.item],
-        });
+        if (this.dataStore.pinnedItem && !this.dataStore.pinnedItem.loading) {
+          pinnedList = this._renderList({
+            name: 'pinned',
+            items: [this.dataStore.pinnedItem.item],
+          });
+        }
+
+        return [pinnedList, ...this._lists.map(list => this._renderList(list))];
       }
-
-      return [pinnedList, ...this._lists.map(list => this._renderList(list))];
+      return this.constructor._renderFullPageMessage(i18n('empty_list'));
     }
-    return m('span', i18n('loading_error'));
+    return this.constructor._renderFullPageMessage(i18n('loading_error'));
+  }
+
+  static _renderFullPageMessage(message) {
+    return m('span.empty-list', message);
   }
 
   _renderList(list) {
