@@ -7,7 +7,7 @@ import debounce from 'amiv-web-ui-components/src/debounce';
 import icons from 'amiv-web-ui-components/src/icons';
 import Button from './Button';
 import Checkbox from './Checkbox';
-import Dropdown from './Dropdown';
+import Select from './Select';
 import TextField from './TextField';
 import './FilterView.less';
 
@@ -22,7 +22,7 @@ import './FilterView.less';
  *
  * `fields` example:
  *
- * ```json
+ * ```javascript
  * [
  *   {
  *     type: 'text',
@@ -52,8 +52,14 @@ import './FilterView.less';
  *     ],
  *   },
  *   {
- *     type: 'dropdown',
+ *     type: 'select',
  *     key: 'key3',
+ *     multiple: true,
+ *     hint: 'hint message',
+ *     // Called whenever the selection has changed.
+ *     // This allows to add some additional logic to the
+ *     // allowed selection when multiple is set to true.
+ *     adjustSelection: (newValue, currentValue) => newValue,
  *     default: 'value2',
  *     values: [
  *       { label: 'Label 1', value: 'value1' },
@@ -238,41 +244,43 @@ export default class FilterViewComponent {
     ]);
   }
 
-  _createDropdown(field) {
+  _createSelect(field) {
     const options = {};
-    this.values[field.key] = this.values[field.key] || field.default || '';
+    if (!this.values[field.key]) {
+      this.values[field.key] = field.default || '';
+    }
 
+    let values;
     if (typeof field.values === 'function') {
-      options.data = field.values(this.values);
+      values = field.values(this.values);
     } else {
-      options.data = field.values;
+      // eslint-disable-next-line prefer-destructuring
+      values = field.values;
     }
 
     if (field.disabled) {
       if (typeof field.disabled === 'function') {
-        options.disabled = field.disabled();
+        if (field.disabled()) {
+          options.disabled = true;
+        }
       } else {
         options.disabled = field.disabled;
       }
     }
 
-    let invalidSelection = true;
-    options.data.forEach(item => {
-      if (item.value === this.values[field.key]) {
-        invalidSelection = false;
-      }
-    });
-    if (invalidSelection) {
-      this.values[field.key] = field.default || '';
-    }
-
-    options.selected = this.values[field.key];
-    options.onchange = event => {
-      this.values[field.key] = event.target.value;
+    options.name = field.key;
+    options.label = field.label;
+    options.value = this.values[field.key];
+    options.multiple = field.multiple || false;
+    options.hint = field.hint;
+    options.adjustSelection = field.adjustSelection ? field.adjustSelection : value => value;
+    options.options = values;
+    options.onChange = ({ value }) => {
+      this.values[field.key] = options.adjustSelection(value, this.values[field.key]);
       this.notify();
     };
 
-    return m(Dropdown, options);
+    return m(Select, options);
   }
 
   _createButton(field) {
@@ -316,8 +324,8 @@ export default class FilterViewComponent {
           views.push(this._createCheckboxGroup(field));
         } else if (field.type === 'radio') {
           views.push(this._createRadioGroup(field));
-        } else if (field.type === 'dropdown') {
-          views.push(this._createDropdown(field));
+        } else if (field.type === 'select') {
+          views.push(this._createSelect(field));
         } else if (field.type === 'button') {
           views.push(this._createButton(field));
         } else if (field.type === 'hr') {

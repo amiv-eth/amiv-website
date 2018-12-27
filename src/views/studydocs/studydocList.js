@@ -5,7 +5,6 @@ import ExpansionPanel from 'amiv-web-ui-components/src/expansionPanel';
 import { Dialog } from 'polythene-mithril-dialog';
 import { Button } from 'polythene-mithril-button';
 import StudydocsController from '../../models/studydocs';
-import { lectures } from './lectures';
 import { i18n, currentLanguage } from '../../models/language';
 import { FilteredListDataStore, FilteredListPage } from '../filteredListPage';
 
@@ -16,7 +15,7 @@ export default class StudydocList extends FilteredListPage {
   constructor() {
     super('studydocuments', dataStore);
 
-    this.lectureDropdownDisabled = true;
+    this.dropdownDisabled = {};
   }
 
   oninit(vnode) {
@@ -43,87 +42,117 @@ export default class StudydocList extends FilteredListPage {
     return controller.loadPageData(1);
   }
 
-  _isLectureDropdownDisabled() {
-    return this.lectureDropdownDisabled;
+  _isDropdownDisabled(field) {
+    if (field in this.dropdownDisabled) {
+      return this.dropdownDisabled[field];
+    }
+    return true;
   }
 
-  // dynamic lectures data based on selected semester and department
-  _loadLectures(values) {
-    if (!values.department) {
-      return [];
-    }
-
+  _loadFilterOptions(field, values, defaultLabel, itemTransformer = item => item) {
     const data = [];
+
     data.push({
       value: 'all',
-      label: i18n('studydocs.allLectures'),
+      label: defaultLabel,
     });
 
-    if (values.semester !== 'all') {
-      if (values.department.includes('itet')) {
-        for (let i = 0; i < lectures.itet[values.semester].length; i += 1) {
-          data.push({
-            value: lectures.itet[values.semester][i],
-            label: lectures.itet[values.semester][i],
-          });
-        }
-      }
-      if (values.department.includes('mavt')) {
-        for (let i = 0; i < lectures.mavt[values.semester].length; i += 1) {
-          data.push({
-            value: lectures.mavt[values.semester][i],
-            label: lectures.mavt[values.semester][i],
-          });
-        }
+    if (
+      (values[field] || values[field].length === 0 || values[field].includes('all')) &&
+      field in dataStore.availableFilterValues
+    ) {
+      data.push(...dataStore.availableFilterValues[field]);
+    } else {
+      const fieldSummary = controller.availableFilterValues[field];
+
+      if (fieldSummary) {
+        const filterValues = Object.keys(fieldSummary)
+          .sort()
+          .map(itemTransformer);
+        dataStore.availableFilterValues[field] = filterValues;
+        data.push(...filterValues);
       }
     }
-    this.lectureDropdownDisabled = data.length <= 1;
 
+    this.dropdownDisabled[field] = data.length <= 1;
     return data;
+  }
+
+  static _adjustSelectValuesContainingAll(newValues, currentValues) {
+    const currentIndexAll = currentValues.indexOf('all');
+    const currentContainsAll = currentIndexAll !== -1;
+    const newIndexAll = newValues.indexOf('all');
+    const newContainsAll = newIndexAll !== -1;
+
+    if ((newContainsAll && !currentContainsAll) || newValues.length === 0) {
+      return ['all'];
+    }
+    if (newContainsAll && currentContainsAll && newValues.length > 1) {
+      newValues.splice(newIndexAll, 1);
+      return newValues;
+    }
+    return newValues;
   }
 
   get _filterViewAttributes() {
     return {
       fields: [
         {
-          type: 'text',
+          type: 'search',
           key: 'title',
           label: i18n('search'),
-          min_length: 3,
         },
         {
-          type: 'button',
-          label: i18n('search'),
-          events: {
-            onclick: 'search',
-          },
-        },
-        {
-          type: 'checkbox',
+          type: 'select',
           key: 'department',
           label: i18n('studydocs.department'),
-          default: ['itet', 'mavt'],
-          values: [{ value: 'itet', label: 'D-ITET' }, { value: 'mavt', label: 'D-MAVT' }],
+          multiple: true,
+          adjustSelection: this.constructor._adjustSelectValuesContainingAll,
+          default: ['all'],
+          disabled: () => this._isDropdownDisabled('department'),
+          values: values =>
+            this._loadFilterOptions(
+              'department',
+              values,
+              i18n('studydocs.allDepartments'),
+              item => ({ value: item, label: `D-${item.toUpperCase()}` })
+            ),
         },
         {
-          type: 'dropdown',
+          type: 'select',
           key: 'semester',
-          default: 'all',
-          values: [
-            { value: 'all', label: i18n('studydocs.allSemesters') },
-            { value: '1', label: i18n('studydocs.semester1') },
-            { value: '2', label: i18n('studydocs.semester2') },
-            { value: '3', label: i18n('studydocs.semester3') },
-            { value: '4', label: i18n('studydocs.semester4') },
-            { value: '5+', label: i18n('studydocs.semester5') },
-          ],
+          label: i18n('studydocs.semester'),
+          multiple: true,
+          adjustSelection: this.constructor._adjustSelectValuesContainingAll,
+          default: ['all'],
+          disabled: () => this._isDropdownDisabled('semester'),
+          values: values =>
+            this._loadFilterOptions('semester', values, i18n('studydocs.allSemesters'), item => ({
+              value: item,
+              label: i18n(`studydocs.semester${item}`),
+            })),
         },
         {
-          type: 'dropdown',
+          type: 'select',
           key: 'lecture',
-          default: 'all',
-          disabled: this._isLectureDropdownDisabled,
-          values: this._loadLectures,
+          label: i18n('studydocs.lecture'),
+          multiple: true,
+          default: ['all'],
+          adjustSelection: this.constructor._adjustSelectValuesContainingAll,
+          disabled: () => this._isDropdownDisabled('lecture'),
+          values: values =>
+            this._loadFilterOptions('lecture', values, i18n('studydocs.allLectures')),
+        },
+        {
+          type: 'select',
+          key: 'professor',
+          label: i18n('studydocs.professor'),
+          multiple: true,
+          default: ['all'],
+          adjustSelection: this.constructor._adjustSelectValuesContainingAll,
+          disabled: () => this._isDropdownDisabled('professor'),
+          values: values =>
+            this._loadFilterOptions('professor', values, i18n('studydocs.allProfessors')),
         },
         {
           type: 'checkbox',
@@ -158,10 +187,11 @@ export default class StudydocList extends FilteredListPage {
               }),
           },
         },
+        { type: 'hr' },
         {
           type: 'button',
           label: i18n('reset'),
-          className: 'red-button',
+          className: 'flat-button',
           events: {
             onclick: 'reset',
           },
@@ -181,12 +211,8 @@ export default class StudydocList extends FilteredListPage {
         Object.keys(values).forEach(key => {
           let value = values[key];
 
-          if (Array.isArray(value)) {
+          if (Array.isArray(value) && value.indexOf('all') === -1) {
             query[key] = { $in: value };
-          } else if (key === 'semester' && value !== 'all') {
-            query[key] = value;
-          } else if (key === 'lecture' && value !== 'all') {
-            query[key] = value;
           } else if (key === 'title' && value.length > 0) {
             value = value.substring(0, value.length);
             query.$or = [

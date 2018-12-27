@@ -8,3 +8,4 @@ export { default as InputGroupForm } from './form/inputGroup';
 export { default as SelectGroupForm } from './form/selectGroup';
 export { default as FileInput } from './FileInput';
 export { default as EventCard } from './EventCard';
+export { default as Select } from './Select';

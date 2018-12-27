@@ -12,8 +12,9 @@ export default class StudydocsController extends PaginationController {
   constructor(query = {}, additionalQuery = {}) {
     super('studydocuments', query, {
       ...additionalQuery,
-      ...{ sort: ['lecture', 'type', 'title', 'author'] },
+      ...{ sort: ['lecture', 'type', 'course_year', 'title', 'author'] },
     });
+    this._availableFilterValues = {};
   }
 
   /**
@@ -25,6 +26,9 @@ export default class StudydocsController extends PaginationController {
   async setQuery(query) {
     if (!super.setQuery(query)) return false;
     await this.loadPageData(1);
+    // const data = await this.loadPageData(1);
+    // TODO: extract available filter values from response.
+    // this._availableFilterValues = data.<some-filter-field-values>
     return true;
   }
 
@@ -50,6 +54,16 @@ export default class StudydocsController extends PaginationController {
       },
     });
     return this._selectedDocument;
+  }
+
+  /**
+   * Get the available filter values based on the current query.
+   *
+   * These values are extracted from the API response (`_summary` field).
+   * @return {object} collection of available filter values
+   */
+  get availableFilterValues() {
+    return this._availableFilterValues;
   }
 
   /**
@@ -85,29 +99,14 @@ export default class StudydocsController extends PaginationController {
   }
 
   /**
-   * Get Suggestions from already existing entries for a specified field of `studydocument`.
+   * Additional processing of the API responses to get the
+   * `_summary` values for the studydocuments resource.
    *
-   * @param {String} field entity field which should be searched.
-   * @param {String} input search string
-   * @return {String} suggestion
-   * @static
+   * @param {object} response JSON response data
+   * @private
    */
-  static getInputSuggestions(field, input) {
-    const query = {};
-    query[field] = { $regex: `^(?i).*${input}.*` };
-    // TODO: debug Error 502 Bad Gateway returned by API
-    // const projection = {};
-    // projection[field] = 1;
-    const queryEncoded = m.buildQueryString({
-      where: JSON.stringify(query),
-      // projection: JSON.stringify(projection),
-    });
-    return m.request({
-      method: 'GET',
-      url: `${apiUrl}/studydocuments?${queryEncoded}`,
-      headers: {
-        Authorization: getToken(),
-      },
-    });
+  _processResponse(response) {
+    this._availableFilterValues = response._summary;
+    return super._processResponse(response);
   }
 }

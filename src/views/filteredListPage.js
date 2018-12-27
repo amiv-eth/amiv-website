@@ -33,6 +33,7 @@ export class FilteredListDataStore {
     this.listState = LIST_LOADING;
     this._loadMoreStates = [];
     this.filterValues = {};
+    this._availableFilterValues = {};
     this.initialized = false;
   }
 
@@ -100,6 +101,10 @@ export class FilteredListDataStore {
 
   set filterValues(values) {
     this._filterValues = values;
+  }
+
+  get availableFilterValues() {
+    return this._availableFilterValues;
   }
 
   get isInitialized() {
@@ -437,9 +442,9 @@ export class FilteredListPage {
                 }
               }
               this.dataStore.listState = LIST_LOADED;
-            } catch (e) {
+            } catch (_error) {
               this.dataStore.listState = LIST_ERROR;
-              error(e);
+              if (_error) error(_error);
             }
             m.redraw();
           },

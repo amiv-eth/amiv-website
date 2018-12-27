@@ -107,6 +107,7 @@ export default class PaginationController {
    * Get number of loaded items
    *
    * @return {int}
+   * @public
    */
   get length() {
     let length = 0;
@@ -137,18 +138,21 @@ export default class PaginationController {
   /**
    * Load data of a specific page (This function does not return any data!)
    *
-   * @param {int} pageNum page number to load the data from
+   * @param {int}    pageNum         page number to load the data from
+   * @param {object} additionalQuery additional query for the API request.
+   *   This additional query parameters should be used to request additional
+   *   fields (e.g. available filter values).
    * @return {Promise}
    * @public
    */
-  async loadPageData(pageNum) {
-    let additionalQuery;
+  async loadPageData(pageNum, additionalQuery = {}) {
+    let modelAdditionalQuery;
     if (typeof this.additionalQuery === 'function') {
-      additionalQuery = this.additionalQuery();
+      modelAdditionalQuery = this.additionalQuery();
     } else {
-      ({ additionalQuery } = this);
+      modelAdditionalQuery = this.additionalQuery;
     }
-    const query = Query.merge(this.query, additionalQuery, {
+    const query = Query.merge(this.query, modelAdditionalQuery, additionalQuery, {
       max_results: this.query.max_results || 10,
       page: pageNum,
     });
@@ -159,6 +163,22 @@ export default class PaginationController {
     if (this._lastLoadedPage < pageNum) {
       this._lastLoadedPage = pageNum;
     }
+
+    return data;
+  }
+
+  /**
+   * Process a response from the API.
+   *
+   * You can override this function to further process the API data.
+   *
+   * @param {object} response JSON response data
+   * @returns {array} items loaded from the API
+   * @protected
+   */
+  _processResponse(response) {
+    this._totalPages = Math.ceil(response._meta.total / response._meta.max_results);
+    return response._items;
   }
 
   /**
@@ -177,7 +197,6 @@ export default class PaginationController {
         Authorization: getToken(),
       },
     });
-    this._totalPages = Math.ceil(response._meta.total / response._meta.max_results);
-    return response._items;
+    return this._processResponse(response);
   }
 }
