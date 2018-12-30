@@ -1,4 +1,4 @@
-import icons from 'amiv-web-ui-components';
+import icons from 'amiv-web-ui-components/src/icons';
 
 /**
  * This is the collection of SVG icons used on the website

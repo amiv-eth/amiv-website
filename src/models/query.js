@@ -55,7 +55,7 @@ export default class Query {
     });
 
     if (queryFunctions.length === 0) return newQuery;
-    return () => Query.merge(...newQuery, ...queryFunctions.map(queryFunction => queryFunction()));
+    return () => Query.merge(newQuery, ...queryFunctions.map(queryFunction => queryFunction()));
   }
 
   /**

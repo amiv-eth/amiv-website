@@ -6,7 +6,7 @@ const path = require('path');
 const config = {
   context: `${__dirname}/src`, // `__dirname` is root of project and `src` is source
 
-  entry: ['babel-polyfill', './index.js'],
+  entry: ['@babel/polyfill', './index.js'],
 
   output: {
     path: `${__dirname}/dist`, // `dist` is the destination
@@ -34,8 +34,8 @@ const config = {
           {
             loader: 'babel-loader',
             options: {
-              presets: [['env', { targets: 'last 2 years' }]],
-              plugins: ['transform-object-rest-spread'],
+              presets: [['@babel/preset-env', { targets: 'last 2 years' }]],
+              plugins: ['@babel/plugin-proposal-object-rest-spread'],
             },
           },
         ],
