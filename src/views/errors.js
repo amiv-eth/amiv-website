@@ -16,13 +16,13 @@ export class Error401 {
     if (vnode.attrs.reason) {
       reason = i18n(vnode.attrs.reason);
     } else {
-      reason = i18n('errors.access_denied.default_reason');
+      reason = i18n('error.accessDenied');
     }
     return m('div.error-page', [
-      m('h1', i18n('errors.title')),
+      m('h1', i18n('error.title')),
       m('p', reason),
       m(Button, {
-        label: i18n('Login'),
+        label: i18n('login'),
         events: { onclick: () => login() },
       }),
     ]);
@@ -37,10 +37,7 @@ export class Error401 {
  */
 export class Error404 {
   static view() {
-    return m('div.error-page', [
-      m('h1', i18n('errors.title')),
-      m('p', i18n('errors.not_found.text')),
-    ]);
+    return m('div.error-page', [m('h1', i18n('error.title')), m('p', i18n('error.notFound'))]);
   }
 }
 
@@ -61,11 +58,11 @@ export class TranslationUnavailable {
       },
       [
         m('img', { src: translateIcon }),
-        m('span', i18n('errors.translation_unavailable')),
+        m('span', i18n('error.translationUnavailable')),
         ' ',
         m(
           'span',
-          i18n('errors.shown_language', {
+          i18n('error.shownLanguage', {
             shown_language: i18n(`language.${vnode.attrs.shown_language}`),
           })
         ),

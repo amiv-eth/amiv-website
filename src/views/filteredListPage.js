@@ -366,7 +366,7 @@ export class FilteredListPage {
             this.mobileViewShowFilter = false;
           },
         },
-        [m('img', { src: closeIcon }), m('span', i18n('filtered_list.hide_filter'))]
+        [m('img', { src: closeIcon }), m('span', i18n('filter.hide'))]
       );
     } else {
       mobileButton = m(
@@ -376,7 +376,7 @@ export class FilteredListPage {
             this.mobileViewShowFilter = true;
           },
         },
-        [m('img', { src: filterIcon }), m('span', i18n('filtered_list.show_filter'))]
+        [m('img', { src: filterIcon }), m('span', i18n('filter.show'))]
       );
     }
     return m(
@@ -443,7 +443,7 @@ export class FilteredListPage {
 
       return [pinnedList, ...this._lists.map(list => this._renderList(list))];
     }
-    return m('span', i18n('loading_error'));
+    return m('span', i18n('loadingError'));
   }
 
   _renderList(list) {
@@ -503,7 +503,7 @@ export class FilteredListPage {
       m(Button, {
         border: true,
         extraWide: true,
-        label: state === LOAD_MORE_ERROR ? i18n('load_more_error') : i18n('load_more'),
+        label: state === LOAD_MORE_ERROR ? i18n('loadMoreError') : i18n('loadMore'),
         events: {
           onclick: () => {
             this.dataStore.setLoadMoreState(list.name, LOAD_MORE_LOADING);

@@ -93,7 +93,7 @@ export default class ChangePasswordForm {
           { margin: 5 },
           m(Button, {
             ...buttonArgs,
-            label: i18n('profile.change_password'),
+            label: i18n('profile.password.change'),
             events: { onclick: () => this.submit() },
           })
         ),
@@ -102,7 +102,7 @@ export default class ChangePasswordForm {
           { margin: 5 },
           m(Button, {
             disabled: this.password_old.length === 0,
-            label: i18n('profile.revert_to_ldap'),
+            label: i18n('profile.password.revertToLdap'),
             events: {
               onclick: () => {
                 this.password1 = '';
@@ -116,7 +116,7 @@ export default class ChangePasswordForm {
     } else {
       buttons = m(Button, {
         ...buttonArgs,
-        label: i18n('profile.set_password'),
+        label: i18n('profile.password.set'),
         events: { onclick: () => this.submit() },
       });
     }
@@ -124,7 +124,7 @@ export default class ChangePasswordForm {
     return m('div#change-password', [
       m(TextField, {
         name: 'password_old',
-        label: i18n('profile.old_password'),
+        label: i18n('profile.password.current'),
         floatingLabel: true,
         valid: this.valid,
         type: 'password',
@@ -138,9 +138,9 @@ export default class ChangePasswordForm {
       }),
       m(TextField, {
         name: 'password1',
-        label: i18n('profile.new_password'),
+        label: i18n('profile.password.new'),
         floatingLabel: true,
-        error: i18n('profile.password_requirements'),
+        error: i18n('profile.password.requirements'),
         valid: this.valid,
         type: 'password',
         value: this.password1,
@@ -153,7 +153,7 @@ export default class ChangePasswordForm {
       }),
       m(TextField, {
         name: 'password2',
-        label: i18n('profile.repeat_password'),
+        label: i18n('profile.password.repeatNew'),
         floatingLabel: true,
         valid: this.valid,
         type: 'password',

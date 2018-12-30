@@ -118,7 +118,7 @@ export default class Board {
     }
 
     return m('div', [
-      m('h1.centered', i18n('Board')),
+      m('h1.centered', i18n('board.title')),
       image,
       m('div.board', boardPortraits.map(group => m(ImageGroup, { group }))),
     ]);

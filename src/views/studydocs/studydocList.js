@@ -50,7 +50,7 @@ export default class StudydocList extends FilteredListPage {
     const data = [];
     data.push({
       value: 'all',
-      label: i18n('studydocs.lectures_all'),
+      label: i18n('studydocs.allLectures'),
     });
 
     if (values.semester !== 'all') {
@@ -82,7 +82,7 @@ export default class StudydocList extends FilteredListPage {
         {
           type: 'text',
           key: 'title',
-          label: i18n('studydocs.searchfield'),
+          label: i18n('search'),
           min_length: 3,
         },
         {
@@ -104,12 +104,12 @@ export default class StudydocList extends FilteredListPage {
           key: 'semester',
           default: 'all',
           values: [
-            { value: 'all', label: i18n('studydocs.semester_all') },
+            { value: 'all', label: i18n('studydocs.allSemesters') },
             { value: '1', label: i18n('studydocs.semester1') },
             { value: '2', label: i18n('studydocs.semester2') },
             { value: '3', label: i18n('studydocs.semester3') },
             { value: '4', label: i18n('studydocs.semester4') },
-            { value: '5+', label: i18n('studydocs.semester5+') },
+            { value: '5+', label: i18n('studydocs.semester5') },
           ],
         },
         {
@@ -125,21 +125,21 @@ export default class StudydocList extends FilteredListPage {
           label: i18n('studydocs.type'),
           default: ['cheat sheets', 'exams', 'lecture documents', 'exercises'],
           values: [
-            { value: 'cheat sheets', label: i18n('cheat sheets') },
-            { value: 'exams', label: i18n('exams') },
-            { value: 'lecture documents', label: i18n('lecture documents') },
-            { value: 'exercises', label: i18n('exercises') },
+            { value: 'cheat sheets', label: i18n('studydocs.types.cheatsheets') },
+            { value: 'exams', label: i18n('studydocs.types.exams') },
+            { value: 'lecture documents', label: i18n('studydocs.types.lectureDocuments') },
+            { value: 'exercises', label: i18n('studydocs.types.exercises') },
           ],
         },
         {
           type: 'button',
-          label: i18n('studydocs.oral_ex'),
+          label: i18n('studydocs.oralExams'),
           className: 'flat-button',
           events: {
             onclick: () =>
               Dialog.show({
-                title: i18n('studydocs.oral_ex'),
-                body: m.trust(marked(i18n('studydocs.oral_ex_txt1'))),
+                title: i18n('studydocs.oralExams'),
+                body: m.trust(marked(i18n('studydocs.oralExamsExplanation'))),
                 modal: true,
                 backdrop: true,
                 footerButtons: m(Button, {

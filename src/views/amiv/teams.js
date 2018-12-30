@@ -126,11 +126,11 @@ export default class Teams {
   static view() {
     return m('div', [
       m('div', [
-        m('h1.centered', i18n('Ressorts/Teams')),
+        m('h1.centered', i18n('teams.ressorts')),
         m('div.teams', data_ressorts.map(ressort => m(Team, { team: ressort }))),
       ]),
       m('div', [
-        m('h1.centered', i18n('Commissions')),
+        m('h1.centered', i18n('teams.commissions')),
         m('div.teams', data_commissions.map(commission => m(Team, { team: commission }))),
       ]),
     ]);

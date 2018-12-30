@@ -1,9 +1,8 @@
 import m from 'mithril';
-import i18n from 'i18n4v';
-import german from '../languages/de.json';
-import english from '../languages/en.json';
-
-let _currentLanguage;
+import i18next from 'i18next';
+import LngDetector from 'i18next-browser-languagedetector';
+import german from '../languages/de';
+import english from '../languages/en';
 
 /**
  * Check if a given language code is valid.
@@ -12,37 +11,7 @@ let _currentLanguage;
  * @return `true` - if valid; `false` - otherwise
  */
 function isLanguageValid(language) {
-  return ['en', 'de'].indexOf(language) > -1;
-}
-
-/**
- * Set language
- *
- * @param {string} language two-letter code for the desired language.
- */
-function setLanguage(language) {
-  i18n.translator.reset();
-  if (language === 'de') {
-    _currentLanguage = 'de';
-    i18n.translator.add(german);
-  } else {
-    _currentLanguage = 'en';
-    i18n.translator.add(english);
-  }
-  localStorage.setItem('language', _currentLanguage);
-}
-
-/**
- * Change the language of the current page.
- *
- * @param {string} language two-letter code for the desired language.
- */
-function changeLanguage(language) {
-  if (!isLanguageValid(language)) return;
-
-  setLanguage(language);
-
-  m.route.set(`/${_currentLanguage}${m.route.get().substring(3)}`);
+  return i18next.languages.indexOf(language) > -1;
 }
 
 /**
@@ -52,19 +21,26 @@ function changeLanguage(language) {
  * This function sets the current language accordingly.
  */
 function loadLanguage() {
-  let lang = localStorage.getItem('language');
-  if (!lang) {
-    if (navigator.languages !== undefined) {
-      lang = navigator.languages.toString();
-    } else {
-      lang = navigator.language;
-    }
-  }
-  if (lang.indexOf('de') !== -1) {
-    setLanguage('de');
-  } else {
-    setLanguage('en');
-  }
+  i18next.use(LngDetector).init({
+    fallbackLng: 'en',
+    whitelist: ['en', 'de'],
+    nsSeparator: false,
+    initImmediate: false,
+    detection: {
+      order: ['path', 'cookie', 'localStorage', 'navigator', 'htmlTag'],
+      lookupCookie: 'language',
+      lookupLocalStorage: 'language',
+      lookupFromPathIndex: 0,
+    },
+    resources: {
+      en: {
+        translation: english,
+      },
+      de: {
+        translation: german,
+      },
+    },
+  });
 }
 
 /**
@@ -73,10 +49,10 @@ function loadLanguage() {
  * @return two-letter language code
  */
 function currentLanguage() {
-  if (!_currentLanguage) {
+  if (!i18next.language) {
     loadLanguage();
   }
-  return _currentLanguage;
+  return i18next.language;
 }
 
 /**
@@ -85,17 +61,31 @@ function currentLanguage() {
  * @return locale string
  */
 function currentLocale() {
-  if (_currentLanguage === 'en') return 'en-GB';
+  if (i18next.language === 'en') return 'en-GB';
 
   return 'de-DE';
 }
 
-export {
-  i18n,
-  changeLanguage,
-  setLanguage,
-  currentLanguage,
-  currentLocale,
-  loadLanguage,
-  isLanguageValid,
-};
+/**
+ * Change the language of the current page.
+ *
+ * @param {string} language two-letter code for the desired language.
+ */
+function changeLanguage(language) {
+  i18next.changeLanguage(language);
+  m.route.set(`/${currentLanguage()}${m.route.get().substring(3)}`);
+}
+
+/**
+ * Get a translation based on the configured language.
+ *
+ * @return translated string
+ */
+function i18n(key, values = null) {
+  if (values) {
+    return i18next.t(key, values);
+  }
+  return i18next.t(key);
+}
+
+export { i18n, changeLanguage, currentLanguage, currentLocale, loadLanguage, isLanguageValid };

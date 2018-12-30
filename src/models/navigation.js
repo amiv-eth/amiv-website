@@ -92,65 +92,65 @@ export default class Navigation {
 
 export const mainNavigation = new Navigation([
   {
-    label: 'Info',
+    label: 'mainMenu.about.label',
     path: '/about',
     addLanguagePrefix: true,
     onupdate: m.route.link,
     submenu: new Navigation([
       {
-        label: 'About AMIV',
+        label: 'mainMenu.about.about',
         path: '/about',
         addLanguagePrefix: true,
         onupdate: m.route.link,
       },
       {
-        label: 'Board',
+        label: 'mainMenu.about.board',
         path: '/board',
         addLanguagePrefix: true,
         onupdate: m.route.link,
       },
       {
-        label: 'Teams',
+        label: 'mainMenu.about.teams',
         path: '/teams',
         addLanguagePrefix: true,
         onupdate: m.route.link,
       },
       {
-        label: 'Statutes',
+        label: 'mainMenu.about.statutes',
         url: 'https://cloud.amiv.ethz.ch/index.php/s/statutes',
       },
       {
-        label: 'Minutes',
+        label: 'mainMenu.about.minutes',
         url: 'https://cloud.amiv.ethz.ch/index.php/s/minutes',
       },
     ]),
   },
   {
-    label: 'Events',
+    label: 'mainMenu.events',
     path: '/events',
     addLanguagePrefix: true,
     onupdate: m.route.link,
   },
   {
-    label: 'Studydocuments',
+    label: 'mainMenu.studydocuments',
     path: '/studydocuments',
     addLanguagePrefix: true,
     onupdate: m.route.link,
   },
   {
-    label: 'Jobs',
+    label: 'mainMenu.jobs.label',
     path: '/jobs',
     addLanguagePrefix: true,
     onupdate: m.route.link,
     submenu: new Navigation([
       {
-        label: 'Jobs',
+        label: 'mainMenu.jobs.jobs',
         path: '/jobs',
         addLanguagePrefix: true,
         onupdate: m.route.link,
       },
       {
-        label: 'Companies',
+        label: 'mainMenu.jobs.companies',
         url: {
           de: 'https://kontakt.amiv.ethz.ch/de/students/companyprofiles',
           en: 'https://kontakt.amiv.ethz.ch/en/students/companyprofiles',

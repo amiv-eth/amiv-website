@@ -141,7 +141,7 @@ export default class Header {
               m(
                 'a',
                 { href: `/${currentLanguage()}/profile`, onupdate: m.route.link },
-                i18n('Profile')
+                i18n('mainMenu.profile')
               )
             ),
             m(
@@ -149,7 +149,7 @@ export default class Header {
               m(
                 'a',
                 { href: `/${currentLanguage()}/logout`, onupdate: m.route.link },
-                i18n('Logout')
+                i18n('mainMenu.logout')
               )
             ),
           ]
@@ -166,7 +166,7 @@ export default class Header {
                     e.preventDefault();
                   },
                 },
-                m('span', i18n('Login'))
+                m('span', i18n('mainMenu.login'))
               )
             ),
           ]

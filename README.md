@@ -43,8 +43,8 @@ Backend: [AMIV API](https://github.com/amiv-eth/amivapi)
 
 Technologies:
 
-* [Mithril](https://mithril.js.org/)
-* [i18n for Virtual DOM](https://i18n4v.js.org)
+* [Mithril](https://mithril.js.org)
+* [i18next](https://www.i18next.com)
 
 Needed extensions:
 

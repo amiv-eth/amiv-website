@@ -25,7 +25,7 @@ export default class SessionInfo {
     const buttonArgs = { events: { onclick: () => this.submit() } };
 
     if (sessionCount === 0) {
-      return m('div#sessions', i18n('profile.loading_sessions'));
+      return m('div#sessions', i18n('profile.sessions.loading'));
     }
 
     if (this.busy) {
@@ -33,14 +33,14 @@ export default class SessionInfo {
     }
 
     if (sessionCount === 1) {
-      return m('div#sessions', i18n('profile.no_active_sessions'));
+      return m('div#sessions', i18n('profile.sessions.none'));
     }
 
     return m(
       'div#sessions',
       m(Button, {
         ...buttonArgs,
-        label: i18n('profile.active_sessions', { count: sessionCount }),
+        label: i18n('profile.sessions.terminateOthers', { count: sessionCount - 1 }),
       })
     );
   }
