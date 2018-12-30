@@ -2,12 +2,13 @@ import m from 'mithril';
 import { logout } from '../models/auth';
 import { currentLanguage } from '../models/language';
 
-module.exports = {
-  oninit() {
+export default class Logout {
+  static oninit() {
     logout();
     m.route.set(`/${currentLanguage()}/`);
-  },
-  view() {
+  }
+
+  static view() {
     return m('');
-  },
-};
+  }
+}

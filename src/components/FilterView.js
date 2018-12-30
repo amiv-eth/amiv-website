@@ -3,7 +3,10 @@ import { Search, Shadow, IconButton } from 'polythene-mithril';
 import { RadioGroup } from 'amiv-web-ui-components';
 import debounce from 'amiv-web-ui-components/src/debounce';
 import icons from 'amiv-web-ui-components/src/icons';
-import { Button, Checkbox, Dropdown, TextField } from '../components';
+import Button from './Button';
+import Checkbox from './Checkbox';
+import Dropdown from './Dropdown';
+import TextField from './TextField';
 import './FilterView.less';
 
 /**

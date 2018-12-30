@@ -6,7 +6,7 @@ const path = require('path');
 const config = {
   context: `${__dirname}/src`, // `__dirname` is root of project and `src` is source
 
-  entry: ['babel-polyfill', './index.js'],
+  entry: ['@babel/polyfill', './index.js'],
 
   output: {
     path: `${__dirname}/dist`, // `dist` is the destination
@@ -34,8 +34,8 @@ const config = {
           {
             loader: 'babel-loader',
             options: {
-              presets: [['env', { targets: 'last 2 years' }]],
-              plugins: ['transform-object-rest-spread'],
+              presets: [['@babel/preset-env', { targets: 'last 2 years' }]],
+              plugins: ['@babel/plugin-proposal-object-rest-spread'],
             },
           },
         ],
@@ -43,35 +43,6 @@ const config = {
           path.resolve(__dirname, './src'),
           path.resolve(__dirname, 'node_modules/@material'),
           path.resolve(__dirname, 'node_modules/amiv-web-ui-components'),
-        ],
-      },
-      {
-        test: /src\/content\/companies\/markdown\/[a-zA-Z\d-]{3,}\.[a-z]{2}\.md$/, // Check for all .md files in /companies/markdown
-        use: [
-          {
-            loader: 'file-loader', // Writes the generated HTML to a file
-            options: {
-              name: '[name].html',
-              outputPath: 'companies/',
-              publicPath: 'companies/',
-            },
-          },
-          {
-            loader: 'markdown-loader', // Converts Markdown to HTML
-          },
-        ],
-      },
-      {
-        test: /src\/content\/companies\/logos\/[-_a-zA-Z\d\/]+\.(png|jp(e*)g|svg)$/,
-        use: [
-          {
-            loader: 'file-loader',
-            options: {
-              name: '[name].[ext]',
-              outputPath: 'companies/',
-              publicPath: 'companies/',
-            },
-          },
         ],
       },
       {

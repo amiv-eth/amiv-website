@@ -418,8 +418,9 @@ export class FilteredListPage {
                 }
               }
               this.dataStore.listState = LIST_LOADED;
-            } catch ({ _error: { code } }) {
+            } catch (e) {
               this.dataStore.listState = LIST_ERROR;
+              error(e);
             }
             m.redraw();
           },
@@ -431,7 +432,8 @@ export class FilteredListPage {
   get _listContainerView() {
     if (this.dataStore.listState === LIST_LOADING) {
       return m('div.loading', m(Spinner, { show: true, size: '96px' }));
-    } else if (this.dataStore.listState === LIST_LOADED) {
+    }
+    if (this.dataStore.listState === LIST_LOADED) {
       let pinnedList;
 
       if (this.dataStore.pinnedItem && !this.dataStore.pinnedItem.loading) {
