@@ -2,6 +2,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const WebappWebpackPlugin = require('webapp-webpack-plugin');
 const HtmlWebpackInlineSVGPlugin = require('html-webpack-inline-svg-plugin');
 const { GenerateSW } = require('workbox-webpack-plugin');
+const RobotstxtPlugin = require('robotstxt-webpack-plugin').default;
 const path = require('path');
 
 const config = {
@@ -12,7 +13,8 @@ const config = {
   output: {
     path: `${__dirname}/dist`, // `dist` is the destination
     publicPath: '/',
-    filename: 'bundle.js',
+    filename: '[name].[hash].js',
+    chunkFilename: '[name].[hash].chunk.js',
   },
 
   // To run development server
@@ -43,11 +45,7 @@ const config = {
             },
           },
         ],
-        include: [
-          path.resolve(__dirname, './src'),
-          path.resolve(__dirname, 'node_modules/@material'),
-          path.resolve(__dirname, 'node_modules/amiv-web-ui-components'),
-        ],
+        include: [path.resolve(__dirname, './src')],
       },
       {
         test: /src\/content\/amiv\/markdown\/[a-zA-Z\d-]{3,}\.[a-z]{2}\.md$/, // Check for all .md files in /amiv/markdown
@@ -55,9 +53,9 @@ const config = {
           {
             loader: 'file-loader', // Writes the generated HTML to a file
             options: {
-              name: '[name].html',
-              outputPath: 'amiv/',
-              publicPath: 'amiv/',
+              name: '[name].[hash].html',
+              outputPath: 'assets/amiv/',
+              publicPath: 'assets/amiv/',
             },
           },
           {
@@ -72,8 +70,8 @@ const config = {
             loader: 'file-loader', // Writes the generated HTML to a file
             options: {
               name: '[name].[hash].html',
-              outputPath: 'amiv/',
-              publicPath: 'amiv/',
+              outputPath: 'assets/amiv/',
+              publicPath: 'assets/amiv/',
             },
           },
         ],
@@ -86,8 +84,8 @@ const config = {
             options: {
               limit: 8000, // Convert images < 8kb to base64 strings
               name: '[name].[hash].[ext]',
-              outputPath: 'amiv/',
-              publicPath: 'amiv/',
+              outputPath: 'assets/amiv/',
+              publicPath: 'assets/amiv/',
             },
           },
         ],
@@ -100,8 +98,8 @@ const config = {
             options: {
               limit: 8000, // Convert images < 8kb to base64 strings
               name: '[name].[hash].[ext]',
-              outputPath: 'images',
-              publicPath: 'images/',
+              outputPath: 'assets/images',
+              publicPath: 'assets/images/',
             },
           },
         ],
@@ -148,10 +146,23 @@ const config = {
 
   devtool: 'eval-source-map', // Default development sourcemap
 
+  optimization: {
+    usedExports: true,
+    sideEffects: true,
+    splitChunks: {
+      chunks: 'all',
+      automaticNameDelimiter: '-',
+      name: true,
+    },
+  },
+
   plugins: [
+    new RobotstxtPlugin({
+      policy: [{ userAgent: '*', allow: '/' }],
+    }),
     new WebappWebpackPlugin({
       logo: './images/amivWheel.svg',
-      prefix: 'favicon/',
+      prefix: 'assets/icons-[hash]/',
       title: 'AMIV an der ETH',
       favicons: {
         appName: 'AMIV an der ETH',
@@ -192,7 +203,6 @@ const config = {
       title: 'AMIV an der ETH',
       filename: 'index.html',
       template: 'index.html',
-      hash: true,
     }),
     new HtmlWebpackInlineSVGPlugin(),
   ],
