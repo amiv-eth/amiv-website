@@ -4,6 +4,10 @@ import LngDetector from 'i18next-browser-languagedetector';
 import german from '../languages/de';
 import english from '../languages/en';
 
+function setLanguageAttribute() {
+  document.documentElement.setAttribute('lang', i18next.language);
+}
+
 /**
  * Check if a given language code is valid.
  *
@@ -21,26 +25,31 @@ function isLanguageValid(language) {
  * This function sets the current language accordingly.
  */
 function loadLanguage() {
-  i18next.use(LngDetector).init({
-    fallbackLng: 'en',
-    whitelist: ['en', 'de'],
-    nsSeparator: false,
-    initImmediate: false,
-    detection: {
-      order: ['path', 'cookie', 'localStorage', 'navigator', 'htmlTag'],
-      lookupCookie: 'language',
-      lookupLocalStorage: 'language',
-      lookupFromPathIndex: 0,
-    },
-    resources: {
-      en: {
-        translation: english,
+  i18next
+    .use(LngDetector)
+    .init({
+      fallbackLng: 'en',
+      whitelist: ['en', 'de'],
+      nsSeparator: false,
+      initImmediate: false,
+      detection: {
+        order: ['path', 'cookie', 'localStorage', 'navigator', 'htmlTag'],
+        lookupCookie: 'language',
+        lookupLocalStorage: 'language',
+        lookupFromPathIndex: 0,
       },
-      de: {
-        translation: german,
+      resources: {
+        en: {
+          translation: english,
+        },
+        de: {
+          translation: german,
+        },
       },
-    },
-  });
+    })
+    .then(() => {
+      setLanguageAttribute();
+    });
 }
 
 /**
@@ -73,6 +82,7 @@ function currentLocale() {
  */
 function changeLanguage(language) {
   i18next.changeLanguage(language);
+  document.documentElement.setAttribute('lang', currentLanguage);
   m.route.set(`/${currentLanguage()}${m.route.get().substring(3)}`);
 }
 

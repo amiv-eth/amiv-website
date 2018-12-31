@@ -28,6 +28,7 @@ export default class EventCard {
       if (item.img_poster) {
         cardContent = m('img', {
           src: `${apiUrl}${item.img_poster.file}`,
+          alt: item.getTitle(),
         });
       } else {
         cardContent = m('div', [m('h2', item.getTitle()), m('span', item.getCatchphrase())]);

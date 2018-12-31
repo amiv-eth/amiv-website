@@ -24,6 +24,7 @@ export default {
   email: 'Email',
   search: 'Search',
   reset: 'Reset',
+  externalLink: 'External link',
   button: {
     cancel: 'cancel',
     confirm: 'confirm',

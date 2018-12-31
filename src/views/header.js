@@ -32,7 +32,7 @@ export default class Header {
           m(
             'a.logo',
             { href: `/${currentLanguage()}/`, onupdate: m.route.link },
-            m('img', { src: logos.amiv })
+            m('img', { src: logos.amiv, alt: 'AMIV an der ETH' })
           ),
           this.constructor._mainMenu,
           this.constructor._profileMenu,
@@ -119,6 +119,7 @@ export default class Header {
                                   class: 'external-link',
                                   svg: { content: m.trust(icons.link) },
                                   size: 'small',
+                                  alt: i18n('externalLink'),
                                 })
                               : m(''),
                           ]

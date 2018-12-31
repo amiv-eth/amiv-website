@@ -194,7 +194,7 @@ export default class EventList extends FilteredListPage {
       },
       header: () =>
         m('div.event-header', [
-          m('div.image.ratio-1to1', m('img', { src: imageurl })),
+          m('div.image.ratio-1to1', m('img', { src: imageurl, alt: event.getTitle() })),
           m('div.content', [
             m('h2.title', event.getTitle()),
             m('div.catchphrase', event.getCatchphrase()),

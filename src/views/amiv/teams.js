@@ -50,9 +50,9 @@ class Team {
     const additionalContent = [];
 
     if (team.image) {
-      image = m('img', { src: `/${team.image}` });
+      image = m('img', { src: `/${team.image}`, alt: team.name });
     } else {
-      image = m('img', { src: logos.amivWheel });
+      image = m('img', { src: logos.amivWheel, alt: team.name });
     }
 
     if (team.description && Object.keys(team.description).length > 0) {

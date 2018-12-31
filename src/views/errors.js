@@ -59,7 +59,7 @@ export class TranslationUnavailable {
       },
       [
         m(Icon, { svg: { content: m.trust(icons.translate) } }),
-        m('span', i18n('errors.translation_unavailable')),
+        m('span', i18n('error.translationUnavailable')),
         ' ',
         m(
           'span',

@@ -18,7 +18,7 @@ const renderVseth = coord => {
       href: `https://vseth.ethz.ch/`,
       style,
     },
-    m('img', { src: logos.vseth })
+    m('img', { src: logos.vseth, alt: 'VSETH' })
   );
 };
 
@@ -54,21 +54,25 @@ export default class Footer {
           m(
             'a',
             { href: `https://www.facebook.com/AMIV.ETHZ/` },
-            m(Icon, { size: 'medium', svg: { content: m.trust(icons.facebook) } })
+            m(Icon, { size: 'medium', svg: { content: m.trust(icons.facebook) }, alt: 'Facebook' })
           ),
           m(
             'a',
             { href: `https://www.instagram.com/amiv_eth/` },
-            m(Icon, { size: 'medium', svg: { content: m.trust(icons.instagram) } })
+            m(Icon, {
+              size: 'medium',
+              svg: { content: m.trust(icons.instagram) },
+              alt: 'Instagram',
+            })
           ),
           m(
             'a',
             { href: `https://twitter.com/amiv_ethz` },
-            m(Icon, { size: 'medium', svg: { content: m.trust(icons.twitter) } })
+            m(Icon, { size: 'medium', svg: { content: m.trust(icons.twitter) }, alt: 'Twitter' })
           )
         ),
         m('div.institution-logos', [
-          m('a', { href: `https://www.ethz.ch/` }, m('img', { src: logos.eth })),
+          m('a', { href: `https://www.ethz.ch/` }, m('img', { src: logos.eth, alt: 'ETH Zürich' })),
           m(
             'div',
             {
