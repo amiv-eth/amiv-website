@@ -22,6 +22,7 @@ export default {
   email: 'Email',
   search: 'Suchen',
   reset: 'Zurücksetzen',
+  externalLink: 'Externer Link',
   button: {
     cancel: 'abbrechen',
     confirm: 'bestätigen',

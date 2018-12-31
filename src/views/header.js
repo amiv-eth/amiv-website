@@ -32,7 +32,7 @@ export default class Header {
           m(
             'a.logo',
             { href: `/${currentLanguage()}/`, onupdate: m.route.link },
-            m('img', { src: AmivLogo })
+            m('img', { src: AmivLogo, alt: 'AMIV an der ETH' })
           ),
           this.constructor._mainMenu,
           this.constructor._profileMenu,
@@ -61,7 +61,7 @@ export default class Header {
                 this._mobileMenuShowing = !this._mobileMenuShowing;
               },
             },
-            m('img', { src: MobileMenuIcon, alt: i18n('Menu') })
+            m('img', { src: MobileMenuIcon, alt: i18n('menu') })
           ),
         ]
       )
@@ -113,6 +113,7 @@ export default class Header {
                             subitem.url
                               ? m('img.external-link', {
                                   src: ExternalLinkIcon,
+                                  alt: i18n('externalLink'),
                                 })
                               : m(''),
                           ]

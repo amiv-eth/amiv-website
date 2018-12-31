@@ -18,6 +18,7 @@ class ImageGroup {
       this._portraitViews.push(this.constructor._getPortraitView(portrait));
     });
   }
+
   static _parseMarkdownText(text) {
     // replace leading spaces when using multi-line strings
     return marked(escape(text.trim().replace(/\n[^\S\n]+/g, '\n')));
@@ -30,7 +31,10 @@ class ImageGroup {
     let image;
 
     if (group.image) {
-      image = m('div.image.ratio-3to2', m('img', { src: `/${group.image}` }));
+      image = m(
+        'div.image.ratio-3to2',
+        m('img', { src: `/${group.image}`, alt: this._portraitNames.join(' & ') })
+      );
     } else {
       image = m('div.no-image', i18n('no image'));
     }
@@ -112,7 +116,10 @@ export default class Board {
     let image;
 
     if (boardImage) {
-      image = m('div.image.ratio-3to2', m('img', { src: `/${boardImage}` }));
+      image = m(
+        'div.image.ratio-3to2',
+        m('img', { src: `/${boardImage}`, alt: i18n('board.title') })
+      );
     } else {
       image = m('');
     }

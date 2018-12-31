@@ -108,6 +108,7 @@ export default class Frontpage {
             ratio: 'landscape',
             content: m('img', {
               src: item.imageurl ? item.imageurl : icons.logoWheel,
+              alt: item.getTitle(),
             }),
             overlay: {
               sheet: true,
@@ -138,6 +139,7 @@ export default class Frontpage {
       if (item.img_poster) {
         cardContent = m('img', {
           src: `${apiUrl}${item.img_poster.file}`,
+          alt: item.getTitle(),
         });
       } else {
         cardContent = m('div', [m('h2', item.getTitle()), m('span', item.getCatchphrase())]);
@@ -164,7 +166,7 @@ export default class Frontpage {
 
       let logo;
       if (item.logo) {
-        logo = m('img', { src: `${apiUrl}${item.logo.file}` });
+        logo = m('img', { src: `${apiUrl}${item.logo.file}`, alt: item.company });
       }
 
       cardContent = m('div', [m('h3', item.getTitle()), m('div.image.ratio-4to1', logo)]);
