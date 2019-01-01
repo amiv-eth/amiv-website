@@ -1,7 +1,7 @@
 import m from 'mithril';
 import { apiUrl } from 'config';
-import { Card } from 'polythene-mithril';
-import { Spinner } from 'amiv-web-ui-components';
+import { Card } from 'polythene-mithril-card';
+import Spinner from 'amiv-web-ui-components/src/spinner';
 
 export default class EventCard {
   /**

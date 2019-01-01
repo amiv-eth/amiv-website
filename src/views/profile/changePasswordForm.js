@@ -1,10 +1,12 @@
 import m from 'mithril';
 import marked from 'marked';
 import { apiUrl } from 'config';
-import { Dialog, Icon } from 'polythene-mithril';
+import { Dialog } from 'polythene-mithril-dialog';
+import { Icon } from 'polythene-mithril-icon';
 import { log } from '../../models/log';
 import { i18n } from '../../models/language';
-import { Button, TextField } from '../../components';
+import Button from '../../components/Button';
+import TextField from '../../components/TextField';
 import icons from '../../images/icons';
 import { Infobox } from '../errors';
 

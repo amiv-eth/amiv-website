@@ -1,5 +1,5 @@
 import m from 'mithril';
-import { Tabs } from 'polythene-mithril';
+import { Tabs } from 'polythene-mithril-tabs';
 
 /**
  * Generic Tab component

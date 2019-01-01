@@ -4,7 +4,7 @@ import { mainNavigation } from '../models/navigation';
 import logos from '../images/logos';
 import icons from '../images/icons';
 import { i18n, currentLanguage, changeLanguage } from '../models/language';
-import { Button } from '../components';
+import Button from '../components/Button';
 import { isLoggedIn, login } from '../models/auth';
 
 let mobileMenuShowing = false;

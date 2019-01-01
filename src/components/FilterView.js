@@ -1,6 +1,8 @@
 import m from 'mithril';
-import { Search, Shadow, IconButton } from 'polythene-mithril';
-import { RadioGroup } from 'amiv-web-ui-components';
+import { Search } from 'polythene-mithril-search';
+import { Shadow } from 'polythene-mithril-shadow';
+import { IconButton } from 'polythene-mithril-icon-button';
+import RadioGroup from 'amiv-web-ui-components/src/radioGroup';
 import debounce from 'amiv-web-ui-components/src/debounce';
 import icons from 'amiv-web-ui-components/src/icons';
 import Button from './Button';

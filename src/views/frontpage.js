@@ -1,10 +1,10 @@
 import m from 'mithril';
 import { apiUrl } from 'config';
-import { Card } from 'polythene-mithril';
-import { Spinner } from 'amiv-web-ui-components';
-import { EventCard } from '../components';
-import { EventController } from '../models/events';
-import { JobofferController } from '../models/joboffers';
+import { Card } from 'polythene-mithril-card';
+import Spinner from 'amiv-web-ui-components/src/spinner';
+import EventCard from '../components/EventCard';
+import EventController from '../models/events/EventController';
+import JobofferController from '../models/joboffers/JobofferController';
 import { i18n, currentLanguage } from '../models/language';
 import icons from '../images/icons';
 

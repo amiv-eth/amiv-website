@@ -1,21 +1,16 @@
 // src/index.js
 import m from 'mithril';
 import Raven from 'raven-js';
+import { Button } from 'polythene-mithril-button';
 import { sentryUrl, sentryEnvironment } from 'config';
-import { loadLanguage, currentLanguage, isLanguageValid } from './models/language';
+import Spinner from 'amiv-web-ui-components/src/spinner';
+import { loadLanguage, currentLanguage, isLanguageValid, i18n } from './models/language';
 import { Error404, Error401 } from './views/errors';
 import { isLoggedIn, checkLogin } from './models/auth';
-import studydocList from './views/studydocs/studydocList';
-import studydocNew from './views/studydocs/studydocNew';
-import eventList from './views/events/eventList';
-import profile from './views/profile';
 import layout from './views/layout';
 import frontpage from './views/frontpage';
-import logout from './views/logout';
 import about from './views/amiv/about';
-import board from './views/amiv/board';
-import teams from './views/amiv/teams';
-import jobOfferList from './views/jobs/jobofferList';
+import logout from './views/logout';
 import legalNotice from './views/legalNotice';
 import './styles/base.less';
 
@@ -44,21 +39,21 @@ Raven.context(() => {
     {
       url: '/:language/studydocuments',
       reason: 'studydocs.accessDenied',
-      view: () => m(studydocList),
+      viewAsync: './views/studydocs/studydocList',
     },
     {
       url: '/:language/studydocuments/new',
       reason: 'studydocs.accessDenied',
-      view: () => m(studydocNew),
+      viewAsync: './views/studydocs/studydocNew',
     },
     {
       url: '/:language/studydocuments/:documentId',
       reason: 'studydocs.accessDenied',
-      view: vnode => m(studydocList, vnode.attrs),
+      viewAsync: './views/studydocs/studydocList',
     },
     {
       url: '/:language/profile',
-      view: vnode => m(profile, vnode.attrs),
+      viewAsync: './views/profile',
     },
   ];
 
@@ -70,11 +65,11 @@ Raven.context(() => {
     },
     {
       url: '/:language/board',
-      view: () => m(board),
+      viewAsync: './views/amiv/board',
     },
     {
       url: '/:language/teams',
-      view: () => m(teams),
+      viewAsync: './views/amiv/teams',
     },
     {
       url: '/:language/about',
@@ -86,19 +81,19 @@ Raven.context(() => {
     },
     {
       url: '/:language/events',
-      view: () => m(eventList),
+      viewAsync: './views/events/eventList',
     },
     {
       url: '/:language/events/:eventId',
-      view: vnode => m(eventList, vnode.attrs),
+      viewAsync: './views/events/eventList',
     },
     {
       url: '/:language/jobs',
-      view: () => m(jobOfferList),
+      viewAsync: './views/jobs/jobofferList',
     },
     {
       url: '/:language/jobs/:offerId',
-      view: vnode => m(jobOfferList, vnode.attrs),
+      viewAsync: './views/jobs/jobofferList',
     },
     {
       url: '/:language/legal-notice',
@@ -108,7 +103,45 @@ Raven.context(() => {
 
   function onmatch(args, route) {
     if (isLanguageValid(args.language)) {
-      return { view: vnode => m(layout, route.view(vnode)) };
+      if (route.view) {
+        return { view: vnode => m(layout, route.view(vnode)) };
+      }
+
+      return {
+        oninit() {
+          this.error = false;
+          import(/* webpackInclude: /\.js$/ */ `${route.viewAsync}`)
+            .then(loadedModule => {
+              this.loadedModule = loadedModule;
+              m.redraw();
+            })
+            .catch(() => {
+              this.error = true;
+            });
+        },
+        view(vnode) {
+          if (this.loadedModule) {
+            return m(layout, m(this.loadedModule.default, vnode.attrs));
+          }
+          if (this.error) {
+            return m(
+              layout,
+              m('.error', [
+                m('p', i18n('error.loadingPage')),
+                m(Button, {
+                  className: 'blue-button',
+                  name: 'retry',
+                  label: i18n('retry'),
+                  events: {
+                    onclick: () => window.location.reload(),
+                  },
+                }),
+              ])
+            );
+          }
+          return m(layout, m('.loading', m(Spinner, { show: true, size: '96px' })));
+        },
+      };
     }
     return {
       view() {

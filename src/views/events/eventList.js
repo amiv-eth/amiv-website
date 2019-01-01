@@ -1,15 +1,16 @@
 import m from 'mithril';
-import { Icon } from 'polythene-mithril';
 import { apiUrl } from 'config';
-import { ExpansionPanel } from 'amiv-web-ui-components';
+import ExpansionPanel from 'amiv-web-ui-components/src/expansionPanel';
+import Spinner from 'amiv-web-ui-components/src/spinner';
 import logos from '../../images/logos';
 import { i18n, currentLocale } from '../../models/language';
 import { EventController } from '../../models/events';
 import { FilteredListPage, FilteredListDataStore } from '../filteredListPage';
-import EventDetails from './eventDetails';
 
 const controller = new EventController({}, true);
 const dataStore = new FilteredListDataStore();
+
+let eventDetailsModule;
 
 /**
  * EventList class
@@ -204,7 +205,17 @@ export default class EventList extends FilteredListPage {
         ]),
       content: ({ expanded }) => {
         if (expanded) {
-          return m(EventDetails, { event });
+          if (eventDetailsModule) {
+            return m(eventDetailsModule.default, { event });
+          }
+
+          import(/* webpackInclude: /\.js$/ */ /* webpackChunkName: "event" */ './eventDetails').then(
+            loadedModule => {
+              eventDetailsModule = loadedModule;
+              m.redraw();
+            }
+          );
+          return m('.event-loading', m(Spinner, { show: true, size: '48px' }));
         }
         return m('');
       },

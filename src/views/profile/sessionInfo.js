@@ -1,12 +1,13 @@
 import m from 'mithril';
 import { i18n } from '../../models/language';
-import { Button } from '../../components';
+import Button from '../../components/Button';
 
 // provides a button to terminate all other sessions.
 export default class SessionInfo {
   oninit(vnode) {
     this.userController = vnode.attrs.userController;
   }
+
   submit() {
     this.busy = true;
     this.userController

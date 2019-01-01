@@ -1,5 +1,5 @@
 import m from 'mithril';
-import { TextField } from 'polythene-mithril';
+import { TextField } from 'polythene-mithril-textfield';
 
 /**
  * Generic TextField component

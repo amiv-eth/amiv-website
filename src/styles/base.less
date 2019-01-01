@@ -67,12 +67,30 @@ section {
 }
 
 main {
+  position: relative;
   width: 100%;
 
   > * {
     max-width: @dimension-max-content-width;
     padding: 0 1em;
     margin: 0 auto;
+  }
+
+  > .loading {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+  }
+
+  > .error {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    text-align: center;
+    font-size: 2em;
+    color: rgba(0, 0, 0, .54);
   }
 }
 

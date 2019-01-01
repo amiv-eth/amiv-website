@@ -1,6 +1,6 @@
 import m from 'mithril';
 import { i18n } from '../../models/language';
-import { Button } from '../../components';
+import Button from '../../components/Button';
 
 /**
  * NewsletterSubscriptionForm class

@@ -1,5 +1,5 @@
 import m from 'mithril';
-import { Checkbox } from 'polythene-mithril';
+import { Checkbox } from 'polythene-mithril-checkbox';
 
 /**
  * Generic Checkbox component

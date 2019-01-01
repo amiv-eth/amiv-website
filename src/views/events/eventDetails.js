@@ -2,11 +2,13 @@ import m from 'mithril';
 import { Icon } from 'polythene-mithril';
 import marked from 'marked';
 import escape from 'html-escape';
-import { Form, TextInput, Spinner } from 'amiv-web-ui-components';
+import Form from 'amiv-web-ui-components/src/form';
+import { TextInput } from 'amiv-web-ui-components/src/inputFields';
+import Spinner from 'amiv-web-ui-components/src/spinner';
 import { Infobox } from '../errors';
 import { log } from '../../models/log';
 import { isLoggedIn, login } from '../../models/auth';
-import { Button } from '../../components';
+import Button from '../../components/Button';
 import { i18n, currentLocale } from '../../models/language';
 import icons from '../../images/icons';
 

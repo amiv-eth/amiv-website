@@ -1,10 +1,14 @@
 import m from 'mithril';
 import animateScrollTo from 'animated-scroll-to';
-import { List, Shadow, ListTile, Button, Icon } from 'polythene-mithril';
-import { Spinner } from 'amiv-web-ui-components';
+import { List } from 'polythene-mithril-list';
+import { Shadow } from 'polythene-mithril-shadow';
+import { ListTile } from 'polythene-mithril-list-tile';
+import { Button } from 'polythene-mithril-button';
+import { Icon } from 'polythene-mithril-icon';
+import Spinner from 'amiv-web-ui-components/src/spinner';
 import { error } from '../models/log';
 import { i18n, currentLanguage } from '../models/language';
-import { FilterView } from '../components';
+import FilterView from '../components/FilterView';
 import icons from '../images/icons';
 
 const LIST_LOADING = 'loading';

@@ -1,7 +1,10 @@
 import m from 'mithril';
 import marked from 'marked';
 import StudydocsController from '../../models/studydocs';
-import { Button, Dropdown, TextField, FileInput } from '../../components';
+import Button from '../../components/Button';
+import Dropdown from '../../components/Dropdown';
+import TextField from '../../components/TextField';
+import FileInput from '../../components/FileInput';
 import { currentLanguage, i18n } from '../../models/language';
 
 export default class studydocNew {

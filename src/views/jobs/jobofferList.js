@@ -1,6 +1,6 @@
 import m from 'mithril';
 import { apiUrl } from 'config';
-import { ExpansionPanel } from 'amiv-web-ui-components';
+import ExpansionPanel from 'amiv-web-ui-components/src/expansionPanel';
 import { i18n } from '../../models/language';
 import { JobofferController } from '../../models/joboffers';
 import { FilteredListPage, FilteredListDataStore } from '../filteredListPage';

@@ -2,7 +2,7 @@ import m from 'mithril';
 import marked from 'marked';
 import escape from 'html-escape';
 import { apiUrl } from 'config';
-import { Button } from 'polythene-mithril';
+import { Button } from 'polythene-mithril-button';
 import { i18n } from '../../models/language';
 
 export default class JobofferDetails {

@@ -251,5 +251,6 @@ export default {
     notFound: 'The page you are looking for could not be found.',
     translationUnavailable: 'Translation not available.',
     shownLanguage: 'Showing text in {{shown_language}}.',
+    loadingPage: 'Could not load the requested page.',
   },
 };

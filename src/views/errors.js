@@ -2,7 +2,7 @@ import m from 'mithril';
 import { Icon } from 'polythene-mithril';
 import { i18n } from '../models/language';
 import { login } from '../models/auth';
-import { Button } from '../components';
+import Button from '../components/Button';
 import icons from '../images/icons';
 
 /**

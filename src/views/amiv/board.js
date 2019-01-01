@@ -1,7 +1,7 @@
 import m from 'mithril';
 import marked from 'marked';
 import escape from 'html-escape';
-import { Tabs } from '../../components';
+import Tabs from '../../components/Tabs';
 import { boardPortraits, boardImage } from '../../content/amiv/data/board_portraits';
 import { boardTaskDescriptions } from '../../content/amiv/data/board_roles';
 import { i18n, currentLanguage } from '../../models/language';
@@ -49,7 +49,7 @@ class ImageGroup {
           activeSelected: true,
           autofit: true,
           element: 'tab',
-          selectedTab: this._selectedTabIndex,
+          selectedTabIndex: this._selectedTabIndex,
           onChange: data => {
             this._selectedTabIndex = data.index;
           },

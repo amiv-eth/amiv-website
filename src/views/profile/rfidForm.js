@@ -1,6 +1,7 @@
 import m from 'mithril';
 import { i18n } from '../../models/language';
-import { Button, TextField } from '../../components';
+import Button from '../../components/Button';
+import TextField from '../../components/TextField';
 
 // provides a form to change the users rfid
 export default class RfidForm {

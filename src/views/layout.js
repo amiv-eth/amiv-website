@@ -1,5 +1,5 @@
 import m from 'mithril';
-import { Dialog } from 'polythene-mithril';
+import { Dialog } from 'polythene-mithril-dialog';
 import header from './header';
 import footer from './footer';
 

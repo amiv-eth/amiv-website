@@ -1,10 +1,11 @@
 import m from 'mithril';
 import marked from 'marked';
 import { apiUrl } from 'config';
-import { ExpansionPanel } from 'amiv-web-ui-components';
-import { Dialog, Button } from 'polythene-mithril';
+import ExpansionPanel from 'amiv-web-ui-components/src/expansionPanel';
+import { Dialog } from 'polythene-mithril-dialog';
+import { Button } from 'polythene-mithril-button';
 import StudydocsController from '../../models/studydocs';
-import { lectures } from '../studydocs/lectures';
+import { lectures } from './lectures';
 import { i18n, currentLanguage } from '../../models/language';
 import { FilteredListDataStore, FilteredListPage } from '../filteredListPage';
 

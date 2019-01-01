@@ -251,5 +251,6 @@ export default {
     notFound: 'Die gewünschte Seite konnte nicht gefunden werden.',
     translationUnavailable: 'Übersetzung nicht verfügbar.',
     shownLanguage: 'Zeige Text in {{shown_language}}.',
+    loadingPage: 'Die gewünschte Seite konnte nicht geladen werden.',
   },
 };

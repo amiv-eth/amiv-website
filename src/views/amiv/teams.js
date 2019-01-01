@@ -1,7 +1,9 @@
 import m from 'mithril';
 import marked from 'marked';
 import escape from 'html-escape';
-import { Card, IconButton, Icon } from 'polythene-mithril';
+import { Card } from 'polythene-mithril-card';
+import { IconButton } from 'polythene-mithril-icon-button';
+import { Icon } from 'polythene-mithril-icon';
 import logos from '../../images/logos';
 import { data as data_ressorts } from '../../content/amiv/data/ressorts';
 import { data as data_commissions } from '../../content/amiv/data/commissions';
