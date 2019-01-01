@@ -19,6 +19,13 @@ import jobOfferList from './views/jobs/jobofferList';
 import legalNotice from './views/legalNotice';
 import './styles/base.less';
 
+// Register Service Worker
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/service-worker.js');
+  });
+}
+
 Raven.config(sentryUrl, {
   environment: sentryEnvironment,
 }).install();

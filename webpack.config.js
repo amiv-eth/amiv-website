@@ -1,6 +1,7 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
+const WebappWebpackPlugin = require('webapp-webpack-plugin');
 const HtmlWebpackInlineSVGPlugin = require('html-webpack-inline-svg-plugin');
+const { GenerateSW } = require('workbox-webpack-plugin');
 const path = require('path');
 
 const config = {
@@ -145,10 +146,44 @@ const config = {
   devtool: 'eval-source-map', // Default development sourcemap
 
   plugins: [
-    new FaviconsWebpackPlugin({
+    new WebappWebpackPlugin({
       logo: './images/amivWheel.svg',
       prefix: 'favicon/',
       title: 'AMIV an der ETH',
+      favicons: {
+        appName: 'AMIV an der ETH',
+        appShortName: 'AMIV',
+        appDescription: 'Official Website of «AMIV an der ETH»',
+        developerName: 'AMIV an der ETH',
+        developerURL: null, // prevent retrieving from the nearest package.json
+        background: '#fff',
+        theme_color: '#e8462b',
+        lang: 'en',
+        icons: {
+          coast: false,
+          yandex: false,
+        },
+      },
+    }),
+    new GenerateSW({
+      navigateFallback: '/',
+      runtimeCaching: [
+        {
+          urlPattern: /\.(?:png|jpg|jpeg|svg)$/,
+          handler: 'cacheFirst',
+          options: {
+            cacheName: 'images',
+            expiration: { maxEntries: 10 }, // Only cache 10 images.
+          },
+        },
+        {
+          urlPattern: /\.js$/,
+          handler: 'cacheFirst',
+          options: {
+            cacheName: 'scripts',
+          },
+        },
+      ],
     }),
     new HtmlWebpackPlugin({
       title: 'AMIV an der ETH',
