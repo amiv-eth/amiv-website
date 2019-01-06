@@ -1,3 +1,80 @@
+.studydoc-header {
+  padding: 1em;
+
+  .title {
+    display: block;
+    width: 100%;
+    font-size: 1em;
+
+    h2 {
+      margin: 0;
+      display: inline-block;
+
+      span:before {
+        display: inline-block;
+        content: '\2013';
+        padding: 0 .5em;
+      }
+    }
+
+    span {
+      font-weight: normal;
+    }
+  }
+
+  .properties {
+    width: 100%;
+    margin-top: 1em;
+  }
+
+  .property {
+    display: inline-block;
+    padding-bottom: 1em;
+
+    &:after {
+      content: '/';
+      color: @color-red;
+      margin: 0 1em;
+    }
+
+    .name:after {
+      content: ':';
+      padding-right: .5em;
+    }
+
+    &:last-of-type:after {
+      content: '';
+      margin: 0;
+    }
+  }
+
+  .documents {
+    a {
+      display: inline-block;
+      color: #000;
+
+      &:not(:last-child) {
+        margin-right: 1em;
+      }
+    }
+
+    span {
+      display: inline-block;
+      position: relative;
+      bottom: -2px;
+    }
+
+    span.name {
+      margin-left: .25em;
+    }
+
+    span.size {
+      color: @color-dark-grey;
+      margin-left: 1em;
+    }
+  }
+}
+
 #studydoc-list {
   #head-style {
     text-align: right;

@@ -194,6 +194,13 @@ export default {
       lectureDocuments: 'Lecture Documents',
       exercises: 'Exercises',
     },
+    name: {
+      default: 'Not categorized',
+      'cheat sheets': 'Summary',
+      exams: 'Exam',
+      'lecture documents': 'Lecture Documents',
+      exercises: 'Exercises',
+    },
     semester: 'Semester',
     allSemesters: 'All semesters',
     semester1: '1st Semester',

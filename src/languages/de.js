@@ -194,6 +194,13 @@ export default {
       lectureDocuments: 'Unterrichtsmaterialien',
       exercises: 'Übungen',
     },
+    name: {
+      default: 'Nicht kategorisiert',
+      'cheat sheets': 'Zusammenfassung',
+      exams: 'Prüfung',
+      'lecture documents': 'Unterrichtsmaterialien',
+      exercises: 'Übungen',
+    },
     semester: 'Semester',
     allSemesters: 'Alle Semester',
     semester1: '1. Semester',

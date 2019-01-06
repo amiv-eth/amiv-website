@@ -1,12 +1,15 @@
 import m from 'mithril';
 import marked from 'marked';
 import { apiUrl } from 'config';
+import filesize from 'filesize';
 import ExpansionPanel from 'amiv-web-ui-components/src/expansionPanel';
 import { Dialog } from 'polythene-mithril-dialog';
 import { Button } from 'polythene-mithril-button';
+import { Icon } from 'polythene-mithril-icon';
 import StudydocsController from '../../models/studydocs';
 import { i18n, currentLanguage } from '../../models/language';
 import { FilteredListDataStore, FilteredListPage } from '../filteredListPage';
+import mimeTypeToIcon from '../../images/mimeTypeToIcon';
 
 const controller = new StudydocsController();
 const dataStore = new FilteredListDataStore();
@@ -250,6 +253,34 @@ export default class StudydocList extends FilteredListPage {
   _renderItem(studydocument, list, selectedId) {
     const animationDuration = 300; // in ms
 
+    const properties = [];
+
+    if (studydocument.course_year) {
+      properties.push({ value: studydocument.course_year });
+    }
+    if (studydocument.professor) {
+      properties.push({ value: studydocument.professor });
+    }
+
+    if (studydocument.author) {
+      properties.push({ name: i18n('studydocs.author'), value: studydocument.author });
+    }
+
+    if (studydocument.type) {
+      properties.push({ value: i18n(studydocument.type) });
+    }
+
+    const title =
+      studydocument.type || studydocument.lecture
+        ? `${studydocument.lecture ? studydocument.lecture : ''} ${
+            studydocument.type ? i18n(`studydocs.name.${studydocument.type}`) : ''
+          }`
+        : null;
+
+    const studydocTitle = studydocument.title
+      ? studydocument.title
+      : i18n('studydocs.name.default');
+
     return m(ExpansionPanel, {
       id: this.getItemElementId(studydocument._id),
       expanded: studydocument._id === selectedId,
@@ -259,37 +290,52 @@ export default class StudydocList extends FilteredListPage {
         this.onChange(studydocument._id, expanded, animationDuration);
       },
       header: () =>
-        m('div.studydoc', [
-          m(
-            'div',
-            {
-              class: 'list-title',
-            },
-            [
-              m('h2', studydocument.title),
-              m('div', [m('span', document.author), m('span', i18n(document.course_year))]),
-            ]
-          ),
-        ]),
-      content: () =>
-        m(
-          'div',
-          studydocument.files.map(item =>
-            m('div', [
+        m('div.studydoc-header', [
+          m('div', [
+            m('div.title', [
               m(
-                'span',
-                m(Button, {
-                  label: `Download ${item.name.split('.').pop()}`,
-                  events: {
-                    onclick: () => window.open(`${apiUrl}${item.file}`, '_blank'),
-                  },
-                })
+                'h2',
+                title
+                  ? [title, studydocument.title && m('span', studydocument.title)]
+                  : studydocTitle
               ),
-              m('span', item.name),
-            ])
-          )
-        ),
+            ]),
+            m('div.properties', properties.map(item => this.constructor._renderProperty(item))),
+            m('div.documents', studydocument.files.map(file => this.constructor._renderFile(file))),
+          ]),
+        ]),
     });
+  }
+
+  static _renderProperty({ name = null, value, visible = true }) {
+    if (!visible) return null;
+
+    return m('div.property', [name ? m('span.name', name) : undefined, m('span', value)]);
+  }
+
+  static _renderFile({ file, name, content_type, length }) {
+    let label;
+    if (name.length <= 18) {
+      label = name;
+    } else {
+      label = `${name.substr(0, 10)}\u2026${name.substr(name.length - 8)}`;
+    }
+
+    return m(
+      'a',
+      {
+        href: `${apiUrl}${file}`,
+        target: '_blank',
+        onclick: e => {
+          e.stopPropagation();
+        },
+      },
+      [
+        m(Icon, { svg: { content: m.trust(mimeTypeToIcon(content_type)) } }),
+        m('span.name', label),
+        m('span.size', filesize(length)),
+      ]
+    );
   }
 
   // eslint-disable-next-line class-methods-use-this
