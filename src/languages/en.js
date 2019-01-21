@@ -188,6 +188,20 @@ export default {
 
   // Studydocuments Page
   studydocs: {
+    quickfilter: {
+      title: 'Quick Filter',
+      selection: 'Selection',
+      selectSemester: 'Select department and semester',
+      selectDepartment: 'Select department',
+      selectLecture: 'Select lecture',
+      lecturePlaceholder: 'Type lecture name',
+      loadingError: 'Oops, we could not load the filter values.',
+    },
+    departments: {
+      all: 'All',
+      other: 'Other',
+      otherLong: 'Other Departments',
+    },
     types: {
       cheatsheets: 'Summaries',
       exams: 'Old exams',

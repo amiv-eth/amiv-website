@@ -55,7 +55,7 @@ export default class studydocNew {
             value: this.doc.title,
             events: {
               oninput: e => {
-                this.rfid = e.target.value;
+                this.doc.title = e.target.value;
               },
             },
           }),
@@ -63,9 +63,10 @@ export default class studydocNew {
             name: 'author',
             label: i18n('studydocs.author'),
             floatingLabel: true,
+            value: this.doc.author,
             events: {
               oninput: e => {
-                this.rfid = e.target.value;
+                this.doc.author = e.target.value;
               },
             },
           }),
@@ -125,7 +126,7 @@ export default class studydocNew {
           floatingLabel: true,
           events: {
             oninput: e => {
-              this.rfid = e.target.value;
+              this.doc.lecture = e.target.value;
             },
           },
         }),
@@ -174,7 +175,7 @@ export default class studydocNew {
           value: this.doc.professor,
           events: {
             oninput: e => {
-              this.rfid = e.target.value;
+              this.doc.professor = e.target.value;
             },
           },
         }),

@@ -17,7 +17,7 @@ ButtonCSS.addStyle('.red-button', {
 });
 
 ButtonCSS.addStyle('.flat-button', {
-  color_light_background: 'white',
+  color_light_background: 'transparent',
   color_light_text: 'black',
 });
 

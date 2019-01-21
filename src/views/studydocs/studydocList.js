@@ -10,6 +10,7 @@ import StudydocsController from '../../models/studydocs';
 import { i18n, currentLanguage } from '../../models/language';
 import { FilteredListDataStore, FilteredListPage } from '../filteredListPage';
 import mimeTypeToIcon from '../../images/mimeTypeToIcon';
+import StudydocQuickFilter from './studydocQuickFilter';
 
 const controller = new StudydocsController();
 const dataStore = new FilteredListDataStore();
@@ -208,32 +209,12 @@ export default class StudydocList extends FilteredListPage {
         },
       ],
       onchange: values => {
-        const query = {};
         this.dataStore.filterValues = values;
-
-        Object.keys(values).forEach(key => {
-          let value = values[key];
-
-          if (Array.isArray(value) && value.indexOf('all') === -1) {
-            query[key] = { $in: value };
-          } else if (key === 'title' && value.length > 0) {
-            value = value.substring(0, value.length);
-            query.$or = [
-              { title: { $regex: `^(?i).*${value}.*` } },
-              { lecture: { $regex: `^(?i).*${value}.*` } },
-              { author: { $regex: `^(?i).*${value}.*` } },
-              { professor: { $regex: `^(?i).*${value}.*` } },
-            ];
-          }
-
-          if (query.department && query.department.$in.length === 2) {
-            delete query.department;
-          }
-          if (query.type && query.type.$in.length === 4) {
-            delete query.type;
-          }
-        });
-        return controller.setQuery({ where: query });
+        if (controller.setFilterValues(values)) {
+          StudydocQuickFilter.clear();
+          return true;
+        }
+        return false;
       },
     };
   }
@@ -241,6 +222,13 @@ export default class StudydocList extends FilteredListPage {
   // eslint-disable-next-line class-methods-use-this
   get _lists() {
     return [
+      {
+        name: 'quickfilter',
+        items: [m(StudydocQuickFilter, { controller, dataStore })],
+      },
+      {
+        name: FilteredListPage.pinnedListIdentifier,
+      },
       {
         name: 'studydocs',
         pages: controller,
@@ -250,9 +238,13 @@ export default class StudydocList extends FilteredListPage {
   }
 
   // eslint-disable-next-line class-methods-use-this
-  _renderItem(studydocument, list, selectedId) {
-    const animationDuration = 300; // in ms
+  _renderItem(item, list, selectedId) {
+    if (list === 'quickfilter') {
+      return item;
+    }
 
+    const studydocument = item;
+    const animationDuration = 300; // in ms
     const properties = [];
 
     if (studydocument.course_year) {
@@ -300,7 +292,7 @@ export default class StudydocList extends FilteredListPage {
                   : studydocTitle
               ),
             ]),
-            m('div.properties', properties.map(item => this.constructor._renderProperty(item))),
+            m('div.properties', properties.map(prop => this.constructor._renderProperty(prop))),
             m('div.documents', studydocument.files.map(file => this.constructor._renderFile(file))),
           ]),
         ]),

@@ -311,7 +311,16 @@ export default class FilterViewComponent {
     return field.content;
   }
 
-  view() {
+  view({ attrs: { values } }) {
+    const argValuesJson = JSON.stringify(values);
+    const curValuesJson = JSON.stringify(this.values);
+
+    if (argValuesJson !== curValuesJson && argValuesJson !== this.previousValues) {
+      this.previousValues = curValuesJson;
+      this.values = values;
+      this.notify();
+    }
+
     const views = [];
 
     m('div#filter-page-style', [

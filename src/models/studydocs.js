@@ -32,6 +32,38 @@ export default class StudydocsController extends PaginationController {
     return true;
   }
 
+  /**
+   * Set a new query to load the configured resource
+   *
+   * @return {boolean} `true` - if query has changed; `false` - otherwise
+   * @public
+   */
+  async setFilterValues(filterValues) {
+    const query = {};
+
+    Object.keys(filterValues).forEach(key => {
+      let value = filterValues[key];
+
+      if (Array.isArray(value) && value.indexOf('all') === -1) {
+        query[key] = { $in: value };
+      } else if (key === 'title' && value.length > 0) {
+        value = value.substring(0, value.length);
+        query.$or = [
+          { title: { $regex: `^(?i).*${value}.*` } },
+          { lecture: { $regex: `^(?i).*${value}.*` } },
+          { author: { $regex: `^(?i).*${value}.*` } },
+          { professor: { $regex: `^(?i).*${value}.*` } },
+        ];
+      }
+
+      // Remove from query is all document types are selected.
+      if (query.type && query.type.$in.length === 4) {
+        delete query.type;
+      }
+    });
+    return this.setQuery({ where: query });
+  }
+
   /** Check if the study document is already loaded */
   isDocumentLoaded(documentId) {
     const test = item => item._id === documentId;

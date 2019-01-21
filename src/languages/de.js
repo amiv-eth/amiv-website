@@ -188,6 +188,20 @@ export default {
 
   // Studydocuments Page
   studydocs: {
+    quickfilter: {
+      title: 'Schnellfilter',
+      selection: 'Auswahl',
+      selectSemester: 'Departement und Semester auswählen',
+      selectDepartment: 'Departement auswählen',
+      selectLecture: 'Vorlesung auswählen',
+      lecturePlaceholder: 'Vorlesung hier eintippen',
+      loadingError: 'Ups, die Filteroptionen konnten nicht geladen werden.',
+    },
+    departments: {
+      all: 'Alle',
+      other: 'Andere',
+      otherLong: 'Andere Departemente',
+    },
     types: {
       cheatsheets: 'Zusammenfassungen',
       exams: 'Alte Prüfungen',

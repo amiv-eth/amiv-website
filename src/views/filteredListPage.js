@@ -305,6 +305,10 @@ export class FilteredListPage {
 
   /* eslint-enable */
 
+  static get pinnedListIdentifier() {
+    return 'pinned';
+  }
+
   reload() {
     this.dataStore.listState = LIST_LOADING;
     return this._reloadData()
@@ -463,12 +467,25 @@ export class FilteredListPage {
 
         if (this.dataStore.pinnedItem && !this.dataStore.pinnedItem.loading) {
           pinnedList = this._renderList({
-            name: 'pinned',
+            name: this.constructor.pinnedListIdentifier,
             items: [this.dataStore.pinnedItem.item],
           });
         }
 
-        return [pinnedList, ...this._lists.map(list => this._renderList(list))];
+        const lists = this._lists;
+        const containsPinnedList = lists.some(
+          list => list.name === this.constructor.pinnedListIdentifier
+        );
+
+        return [
+          !containsPinnedList ? pinnedList : null,
+          ...lists.map(list => {
+            if (list.name === this.constructor.pinnedListIdentifier) {
+              return pinnedList;
+            }
+            return this._renderList(list);
+          }),
+        ];
       }
       return this.constructor._renderFullPageMessage(i18n('emptyList'));
     }
