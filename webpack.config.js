@@ -46,35 +46,6 @@ const config = {
         ],
       },
       {
-        test: /src\/content\/companies\/markdown\/[a-zA-Z\d-]{3,}\.[a-z]{2}\.md$/, // Check for all .md files in /companies/markdown
-        use: [
-          {
-            loader: 'file-loader', // Writes the generated HTML to a file
-            options: {
-              name: '[name].html',
-              outputPath: 'companies/',
-              publicPath: 'companies/',
-            },
-          },
-          {
-            loader: 'markdown-loader', // Converts Markdown to HTML
-          },
-        ],
-      },
-      {
-        test: /src\/content\/companies\/logos\/[-_a-zA-Z\d\/]+\.(png|jp(e*)g|svg)$/,
-        use: [
-          {
-            loader: 'file-loader',
-            options: {
-              name: '[name].[ext]',
-              outputPath: 'companies/',
-              publicPath: 'companies/',
-            },
-          },
-        ],
-      },
-      {
         test: /src\/content\/amiv\/markdown\/[a-zA-Z\d-]{3,}\.[a-z]{2}\.md$/, // Check for all .md files in /amiv/markdown
         use: [
           {
@@ -96,7 +67,7 @@ const config = {
           {
             loader: 'file-loader', // Writes the generated HTML to a file
             options: {
-              name: '[name].html',
+              name: '[name].[hash].html',
               outputPath: 'amiv/',
               publicPath: 'amiv/',
             },
@@ -110,7 +81,7 @@ const config = {
             loader: 'url-loader',
             options: {
               limit: 8000, // Convert images < 8kb to base64 strings
-              name: '[name].[ext]',
+              name: '[name].[hash].[ext]',
               outputPath: 'amiv/',
               publicPath: 'amiv/',
             },
@@ -124,7 +95,7 @@ const config = {
             loader: 'url-loader',
             options: {
               limit: 8000, // Convert images < 8kb to base64 strings
-              name: '[name].[ext]',
+              name: '[name].[hash].[ext]',
               outputPath: 'images',
               publicPath: 'images/',
             },
@@ -164,7 +135,7 @@ const config = {
 
   plugins: [
     new FaviconsWebpackPlugin({
-      logo: './images/logoNoText.svg',
+      logo: './images/amivWheel.svg',
       prefix: 'favicon/',
       title: 'AMIV an der ETH',
     }),

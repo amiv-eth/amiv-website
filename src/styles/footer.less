@@ -42,12 +42,26 @@ footer div.copyright {
   @media @mobile {
     padding: 2.2em 0 1.2em;
     justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  > * {
+    @media @mobile {
+      width: 100%;
+      text-align: center;
+      margin-left: 0;
+      padding: 1em;
+    }
   }
 
   a {
     margin-left: 1em;
     color: @color-red;
     text-decoration: none;
+
+    @media @mobile {
+      margin-left: 0;
+    }
   }
 }
 
@@ -63,11 +77,9 @@ footer div.social-media-logos {
 
   a {
     position: relative;
-
-    img {
-      height: 2em;
-      padding: 1em .7em;
-    }
+    display: inline-block;
+    color: @color-white;
+    padding: 1em .7em;
   }
 }
 

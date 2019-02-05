@@ -1,8 +1,8 @@
 import m from 'mithril';
 import marked from 'marked';
 import escape from 'html-escape';
-import { Card, IconButton } from 'polythene-mithril';
-import AmivLogo from '../../images/logoNoText.svg';
+import { Card, IconButton, Icon } from 'polythene-mithril';
+import logos from '../../images/logos';
 import { data as data_ressorts } from '../../content/amiv/data/ressorts';
 import { data as data_commissions } from '../../content/amiv/data/commissions';
 import { i18n, currentLanguage } from '../../models/language';
@@ -52,7 +52,7 @@ class Team {
     if (team.image) {
       image = m('img', { src: `/${team.image}` });
     } else {
-      image = m('img', { src: AmivLogo });
+      image = m('img', { src: logos.amivWheel });
     }
 
     if (team.description && Object.keys(team.description).length > 0) {
@@ -88,7 +88,7 @@ class Team {
             m(IconButton, {
               href: item.url,
               label: Team._getActionLabel(item),
-              icon: m('img', { src: item.icon }),
+              icon: m(Icon, { svg: { content: m.trust(item.icon) } }),
             })
           ),
         },

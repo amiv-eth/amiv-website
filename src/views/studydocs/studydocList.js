@@ -23,6 +23,11 @@ export default class StudydocList extends FilteredListPage {
   }
 
   // eslint-disable-next-line class-methods-use-this
+  _hasItems() {
+    return controller.length > 0;
+  }
+
+  // eslint-disable-next-line class-methods-use-this
   _isItemLoaded(itemId) {
     return controller.isDocumentLoaded(itemId);
   }

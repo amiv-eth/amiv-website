@@ -4,23 +4,20 @@
 import kulturImage from '../images/ressorts/kultur.png';
 import itImage from '../images/ressorts/it.jpg';
 import designImage from '../images/ressorts/design.jpg';
-
-import websiteIcon from '../../../images/earth.svg';
-import phoneIcon from '../../../images/phone.svg';
-import emailIcon from '../../../images/email.svg';
+import icons from '../../../images/icons';
 
 const data = [
-    {
+  {
     name: 'Kulturteam',
     image: kulturImage,
     contact: [
       {
-        icon: emailIcon,
+        icon: icons.email,
         label: 'kultur@amiv.ethz.ch',
         url: 'mailto:kultur@amiv.ethz.ch',
       },
       {
-        icon: phoneIcon,
+        icon: icons.phone,
         label: '+41 44 632 42 45',
         url: 'tel:+41446324245',
       },
@@ -41,12 +38,12 @@ const data = [
     name: 'HoPo MAVT',
     contact: [
       {
-        icon: emailIcon,
+        icon: icons.email,
         label: 'hopo-mavt@amiv.ethz.ch',
         url: 'mailto:hopo-mavt@amiv.ethz.ch',
       },
       {
-        icon: phoneIcon,
+        icon: icons.phone,
         label: '+41 44 632 42 45',
         url: 'tel:+41446324245',
       },
@@ -60,12 +57,12 @@ const data = [
     name: 'HoPo ITET',
     contact: [
       {
-        icon: emailIcon,
+        icon: icons.email,
         label: 'hopo-itet@amiv.ethz.ch',
         url: 'mailto:hopo-itet@amiv.ethz.ch',
       },
       {
-        icon: phoneIcon,
+        icon: icons.phone,
         label: '+41 44 632 42 45',
         url: 'tel:+41446324245',
       },
@@ -84,12 +81,12 @@ const data = [
     image: designImage,
     contact: [
       {
-        icon: emailIcon,
+        icon: icons.email,
         label: 'design@amiv.ethz.ch',
         url: 'mailto:design@amiv.ethz.ch',
       },
       {
-        icon: phoneIcon,
+        icon: icons.phone,
         label: '+41 44 632 42 45',
         url: 'tel:+41446324245',
       },
@@ -112,17 +109,17 @@ const data = [
     image: itImage,
     contact: [
       {
-        icon: websiteIcon,
+        icon: icons.earth,
         label: 'gitlab.ethz.ch/amiv',
         url: 'https://gitlab.ethz.ch/amiv',
       },
       {
-        icon: emailIcon,
+        icon: icons.email,
         label: 'it@amiv.ethz.ch',
         url: 'mailto:it@amiv.ethz.ch',
       },
       {
-        icon: phoneIcon,
+        icon: icons.phone,
         label: '+41 44 632 42 45',
         url: 'tel:+41446324245',
       },
@@ -148,12 +145,12 @@ const data = [
     name: 'ER Team',
     contact: [
       {
-        icon: emailIcon,
+        icon: icons.email,
         label: 'er@amiv.ethz.ch',
         url: 'mailto:er@amiv.ethz.ch',
       },
       {
-        icon: phoneIcon,
+        icon: icons.phone,
         label: '+41 44 632 42 45',
         url: 'tel:+41446324245',
       },

@@ -1,8 +1,9 @@
 import m from 'mithril';
+import { Icon } from 'polythene-mithril';
 import { i18n } from '../models/language';
 import { login } from '../models/auth';
 import { Button } from '../components';
-import translateIcon from '../images/translate.svg';
+import icons from '../images/icons';
 
 /**
  * View to show when a visitor does not have the right permissions to see the content.
@@ -57,8 +58,8 @@ export class TranslationUnavailable {
         class: 'translation-unavailable infobox',
       },
       [
-        m('img', { src: translateIcon }),
-        m('span', i18n('error.translationUnavailable')),
+        m(Icon, { svg: { content: m.trust(icons.translate) } }),
+        m('span', i18n('errors.translation_unavailable')),
         ' ',
         m(
           'span',
@@ -74,13 +75,13 @@ export class TranslationUnavailable {
 /**
  * View to show some generic infobox.
  *
- * @param {string} icon  SVG icon
- * @param {string} label Text label
+ * @param {IconComponent} icon  SVG icon component
+ * @param {string}        label Text label
  *
  * @return {Infobox}
  */
 export class Infobox {
   static view({ attrs: { icon, label } }) {
-    return m('div', { class: 'infobox' }, [m('img', { src: icon }), m('span', label)]);
+    return m('div', { class: 'infobox' }, [icon, m('span', label)]);
   }
 }

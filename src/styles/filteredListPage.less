@@ -41,9 +41,9 @@
       color: @color-red;
     }
 
-    div {
-      width: 100%;
-      height: 100%;
+    > div {
+      top: -8px;
+      padding-right: 1em;
     }
 
     img {
@@ -92,6 +92,7 @@
     @media @mobile {
       border: none;
       padding: 1em;
+      min-height: 40vh;
     }
 
     .loading {
@@ -99,6 +100,16 @@
       top: 50%;
       left: 50%;
       transform: translateX(-50%) translateY(-50%);
+    }
+
+    .empty-list {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translateX(-50%) translateY(-50%);
+      font-size: 1.2em;
+      text-align: center;
+      width: calc(100% - 2em);
     }
 
     .list_header {

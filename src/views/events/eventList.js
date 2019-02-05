@@ -1,7 +1,8 @@
 import m from 'mithril';
+import { Icon } from 'polythene-mithril';
 import { apiUrl } from 'config';
 import { ExpansionPanel } from 'amiv-web-ui-components';
-import AmivLogo from '../../images/logoNoText.svg';
+import logos from '../../images/logos';
 import { i18n, currentLocale } from '../../models/language';
 import { EventController } from '../../models/events';
 import { FilteredListPage, FilteredListDataStore } from '../filteredListPage';
@@ -22,6 +23,15 @@ export default class EventList extends FilteredListPage {
 
   oninit(vnode) {
     super.oninit(vnode, vnode.attrs.eventId);
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  _hasItems() {
+    return (
+      controller.pastEvents.length > 0 ||
+      controller.openRegistrationEvents.length > 0 ||
+      controller.upcomingEvents.length > 0
+    );
   }
 
   // eslint-disable-next-line class-methods-use-this
@@ -158,7 +168,7 @@ export default class EventList extends FilteredListPage {
   // eslint-disable-next-line class-methods-use-this
   _renderItem(event, list, selectedId) {
     const animationDuration = 300; // in ms
-    const imageurl = event.img_thumbnail ? `${apiUrl}${event.img_thumbnail.file}` : AmivLogo;
+    const imageurl = event.img_thumbnail ? `${apiUrl}${event.img_thumbnail.file}` : logos.amivWheel;
     const properties = [
       {
         value: this.constructor._renderPrice(event.price),

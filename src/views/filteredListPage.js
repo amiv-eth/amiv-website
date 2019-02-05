@@ -1,12 +1,11 @@
 import m from 'mithril';
 import animateScrollTo from 'animated-scroll-to';
-import { List, Shadow, ListTile, Button } from 'polythene-mithril';
+import { List, Shadow, ListTile, Button, Icon } from 'polythene-mithril';
 import { Spinner } from 'amiv-web-ui-components';
 import { error } from '../models/log';
 import { i18n, currentLanguage } from '../models/language';
 import { FilterView } from '../components';
-import filterIcon from '../images/filterList.svg';
-import closeIcon from '../images/close.svg';
+import icons from '../images/icons';
 
 const LIST_LOADING = 'loading';
 const LIST_LOADED = 'loaded';
@@ -176,6 +175,18 @@ export class FilteredListPage {
   }
 
   /* eslint-disable class-methods-use-this, no-unused-vars */
+
+  /**
+   * Checks if the page has any items to show.
+   *
+   * You should replace this function if you need additional behavior!
+   *
+   * @return {boolean}
+   * @protected
+   */
+  _hasItems() {
+    return true;
+  }
 
   /**
    * Checks if the item with the given id is loaded
@@ -366,7 +377,11 @@ export class FilteredListPage {
             this.mobileViewShowFilter = false;
           },
         },
-        [m('img', { src: closeIcon }), m('span', i18n('filter.hide'))]
+        [
+          m(Icon, { svg: { content: m.trust(icons.close) } }),
+          ' ',
+          m('span', i18n('filtered_list.hide_filter')),
+        ]
       );
     } else {
       mobileButton = m(
@@ -376,7 +391,11 @@ export class FilteredListPage {
             this.mobileViewShowFilter = true;
           },
         },
-        [m('img', { src: filterIcon }), m('span', i18n('filter.show'))]
+        [
+          m(Icon, { svg: { content: m.trust(icons.filterList) } }),
+          ' ',
+          m('span', i18n('filtered_list.show_filter')),
+        ]
       );
     }
     return m(
@@ -432,18 +451,25 @@ export class FilteredListPage {
     if (this.dataStore.listState === LIST_LOADING) {
       return m('div.loading', m(Spinner, { show: true, size: '96px' }));
     } else if (this.dataStore.listState === LIST_LOADED) {
-      let pinnedList;
+      if (this._hasItems()) {
+        let pinnedList;
 
-      if (this.dataStore.pinnedItem && !this.dataStore.pinnedItem.loading) {
-        pinnedList = this._renderList({
-          name: 'pinned',
-          items: [this.dataStore.pinnedItem.item],
-        });
+        if (this.dataStore.pinnedItem && !this.dataStore.pinnedItem.loading) {
+          pinnedList = this._renderList({
+            name: 'pinned',
+            items: [this.dataStore.pinnedItem.item],
+          });
+        }
+
+        return [pinnedList, ...this._lists.map(list => this._renderList(list))];
       }
-
-      return [pinnedList, ...this._lists.map(list => this._renderList(list))];
+      return this.constructor._renderFullPageMessage(i18n('empty_list'));
     }
-    return m('span', i18n('loadingError'));
+    return this.constructor._renderFullPageMessage(i18n('loading_error'));
+  }
+
+  static _renderFullPageMessage(message) {
+    return m('span.empty-list', message);
   }
 
   _renderList(list) {
