@@ -69,13 +69,13 @@ export default class EventDetails {
       this.signupBusy = true;
       await this.event.signup(this.form.getData(), this.email);
       if (this.event.signupData.accepted) {
-        this.notification = { type: 'success', label: i18n('events.signup_success') };
+        this.notification = { type: 'success', label: i18n('events.signup.success') };
       } else {
-        this.notification = { type: 'success', label: i18n('events.signup_waiting_list') };
+        this.notification = { type: 'success', label: i18n('events.signup.waitingList') };
       }
     } catch (err) {
       log(err);
-      this.notification = { type: 'fail', label: i18n('events.signup_fail') };
+      this.notification = { type: 'fail', label: i18n('events.signup.failed') };
     }
     this.signupBusy = false;
   }
@@ -85,10 +85,10 @@ export default class EventDetails {
       this.signoffBusy = true;
       await this.event.signoff();
       this._createForm();
-      this.notification = { type: 'success', label: i18n('events.signoff_success') };
+      this.notification = { type: 'success', label: i18n('events.signoff.success') };
     } catch (err) {
       log(err);
-      this.notification = { type: 'fail', label: i18n('events.signoff_fail') };
+      this.notification = { type: 'fail', label: i18n('events.signoff.failed') };
     }
     this.signoffBusy = false;
   }
@@ -105,14 +105,14 @@ export default class EventDetails {
           if (!this.event.hasSignupDataLoaded) {
             if (this.signupFetchError) {
               eventSignupForm = m('div', [
-                m('p', i18n('errors.title')),
+                m('p', i18n('error.title')),
                 m(
                   'a.colored',
                   {
                     href: '#',
                     onclick: this._loadSignupData,
                   },
-                  `${i18n('errors.retry')}?`
+                  `${i18n('retry')}?`
                 ),
               ]);
             } else {
@@ -132,18 +132,18 @@ export default class EventDetails {
           eventSignupForm = this._renderSignupForm(signupFormOptions);
         } else {
           eventSignupForm = m('div', [
-            m('span', `${i18n('events.amiv_members_only')} `),
-            m(Button, { label: i18n('Login'), events: { onclick: () => login(m.route.get()) } }),
+            m('span', `${i18n('events.restrictions.membersOnly')} `),
+            m(Button, { label: i18n('login'), events: { onclick: () => login(m.route.get()) } }),
           ]);
         }
         this._renderParticipationNotice();
       } else {
-        eventSignupForm = m('div', m('p', i18n('events.registration_over')));
+        eventSignupForm = m('div', m('p', i18n('events.registration.over')));
         this._renderParticipationNotice();
       }
     } else {
       eventSignupForm = m('div', [
-        m('p', i18n('events.registration_starts_at')),
+        m('p', i18n('events.registration.startsAt')),
         m(
           'p.colored',
           registerStart.toLocaleString(currentLocale(), {
@@ -191,9 +191,9 @@ export default class EventDetails {
     }
 
     if (!hasSignupData) {
-      elements.push(this._renderSignupButton(i18n('events.signup')));
+      elements.push(this._renderSignupButton(i18n('events.signup.action')));
     } else if (this.schema) {
-      elements.push(this._renderSignupButton(i18n('events.update_signup')));
+      elements.push(this._renderSignupButton(i18n('events.signup.updateAction')));
     }
 
     if (signoffButton) {
@@ -233,7 +233,7 @@ export default class EventDetails {
   _renderSignoffButton() {
     return m(Button, {
       name: 'signoff',
-      label: i18n('events.delete_signup'),
+      label: i18n('events.signoff.action'),
       active: !this.signoffBusy,
       events: {
         onclick: () => this.signoff(),
@@ -251,8 +251,8 @@ export default class EventDetails {
       this.notification = {
         type: 'info',
         label: this.event.signupData.accepted
-          ? i18n('events.signed_up_accepted')
-          : i18n('events.signed_up_waiting_list'),
+          ? i18n('events.signup.accepted')
+          : i18n('events.signup.waitingList'),
       };
     }
   }

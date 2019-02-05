@@ -103,6 +103,15 @@ export default class JobofferList extends FilteredListPage {
     const animationDuration = 300; // in ms
     const imageurl = apiUrl + joboffer.logo.file;
     const days = Math.ceil((Date.now() - Date.parse(joboffer._created)) / (1000 * 3600 * 24));
+    let datePhrase;
+
+    if (days === 0) {
+      datePhrase = i18n('joboffers.publishedToday');
+    } else if (days === 1) {
+      datePhrase = i18n('joboffers.publishedYesterday');
+    } else {
+      datePhrase = i18n('joboffers.publishedDaysAgo', { days });
+    }
 
     return m(ExpansionPanel, {
       id: this.getItemElementId(joboffer._id),
@@ -115,10 +124,7 @@ export default class JobofferList extends FilteredListPage {
       header: () =>
         m('div.joboffer-header', [
           m('div.image.ratio-3to2', m('img', { src: imageurl, alt: joboffer.company })),
-          m('div.content', [
-            m('h2.title', joboffer.getTitle()),
-            m('div.date', i18n('joboffers.published_%n_days_ago', days)),
-          ]),
+          m('div.content', [m('h2.title', joboffer.getTitle()), m('div.date', datePhrase)]),
         ]),
       content: ({ expanded }) => {
         if (expanded) {

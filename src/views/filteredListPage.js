@@ -529,7 +529,7 @@ export class FilteredListPage {
       m(Button, {
         border: true,
         extraWide: true,
-        label: state === LOAD_MORE_ERROR ? i18n('load_more_error') : i18n('load_more'),
+        label: state === LOAD_MORE_ERROR ? i18n('loadMoreError') : i18n('loadMore'),
         events: {
           onclick: () => {
             this.dataStore.setLoadMoreState(list.name, LOAD_MORE_LOADING);

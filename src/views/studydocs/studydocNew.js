@@ -68,7 +68,7 @@ export default class studydocNew {
           }),
           m(TextField, {
             name: 'course_year',
-            label: i18n('studydocs.course_year'),
+            label: i18n('studydocs.courseYear'),
             floatingLabel: true,
             args: {
               placeholder: new Date().getFullYear(),
@@ -91,10 +91,10 @@ export default class studydocNew {
             selected: '',
             data: [
               { value: '', label: `${i18n('studydocs.type')}*`, disabled: true },
-              { value: 'exams', label: i18n('exams') },
-              { value: 'cheat sheets', label: i18n('cheat sheets') },
-              { value: 'lecture documents', label: i18n('lecture documents') },
-              { value: 'exercises', label: i18n('exercises') },
+              { value: 'exams', label: i18n('studydocs.types.exams') },
+              { value: 'cheat sheets', label: i18n('studydocs.types.cheatsheets') },
+              { value: 'lecture documents', label: i18n('studydocs.types.lectureDocuments') },
+              { value: 'exercises', label: i18n('studydocs.types.exercises') },
             ],
           }),
           m(FileInput, {
@@ -138,9 +138,9 @@ export default class studydocNew {
           },
           selected: null,
           data: [
-            { value: '', label: i18n('studydocs.no_department') },
-            { value: 'itet', label: 'ITET' },
-            { value: 'mavt', label: 'MAVT' },
+            { value: '', label: i18n('studydocs.noDepartment') },
+            { value: 'itet', label: 'D-ITET' },
+            { value: 'mavt', label: 'D-MAVT' },
           ],
         }),
         m(Dropdown, {
@@ -155,12 +155,12 @@ export default class studydocNew {
           },
           selected: null,
           data: [
-            { value: '', label: i18n('studydocs.no_semester') },
+            { value: '', label: i18n('studydocs.noSemester') },
             { value: '1', label: i18n('studydocs.semester1') },
             { value: '2', label: i18n('studydocs.semester2') },
             { value: '3', label: i18n('studydocs.semester3') },
             { value: '4', label: i18n('studydocs.semester4') },
-            { value: '5+', label: i18n('studydocs.semester5+') },
+            { value: '5+', label: i18n('studydocs.semester5') },
           ],
         }),
 
@@ -178,14 +178,14 @@ export default class studydocNew {
       ]),
 
       m('div#rule-style', [
-        m('div#rules-title', i18n('studydocs.rule')),
+        m('div#rules-title', i18n('studydocs.rules.title')),
         m('ol', [
-          m('div#rules-text', m('li', m.trust(marked(i18n('studydocs.rule_1'))))),
-          m('div#rules-text', m('li', m.trust(marked(i18n('studydocs.rule_2'))))),
-          m('div#rules-text', m('li', m.trust(marked(i18n('studydocs.rule_3'))))),
-          m('div#rules-text', m('li', m.trust(marked(i18n('studydocs.rule_4'))))),
+          m('div#rules-text', m('li', m.trust(marked(i18n('studydocs.rules.one'))))),
+          m('div#rules-text', m('li', m.trust(marked(i18n('studydocs.rules.two'))))),
+          m('div#rules-text', m('li', m.trust(marked(i18n('studydocs.rules.three'))))),
+          m('div#rules-text', m('li', m.trust(marked(i18n('studydocs.rules.four'))))),
         ]),
-        m('div#rules-text', i18n('studydocs.thx')),
+        m('div#rules-text', i18n('studydocs.thanks')),
       ]),
     ]);
   }

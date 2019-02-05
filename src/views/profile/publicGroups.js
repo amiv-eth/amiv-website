@@ -37,7 +37,7 @@ export default class PublicGroups {
     if (this.busy[group._id]) buttonArgs.disabled = true;
     return m('div.group-entry', [
       m('div', group.name),
-      m('div.group-button', m(Button, { ...buttonArgs, label: i18n('enroll') })),
+      m('div.group-button', m(Button, { ...buttonArgs, label: i18n('button.enroll') })),
     ]);
   }
 
@@ -46,7 +46,7 @@ export default class PublicGroups {
     const filterForm = m('div#group-search', [
       m(TextField, {
         name: 'group_search',
-        label: i18n('profile.search_groups'),
+        label: i18n('profile.groups.search'),
         valid: this.valid,
         events: {
           oninput: e => {

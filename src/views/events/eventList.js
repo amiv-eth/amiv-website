@@ -64,17 +64,17 @@ export default class EventList extends FilteredListPage {
           default: 'all',
           values: [
             { value: 'free', label: i18n('events.free') },
-            { value: 'all', label: i18n('events.all_events') },
+            { value: 'all', label: i18n('events.allEvents') },
           ],
         },
         {
           type: 'radio',
-          label: i18n('events.restrictions'),
+          label: i18n('events.restrictions.title'),
           key: 'signup_restrictions',
           default: 'members_only',
           values: [
-            { label: i18n('events.open_for_all'), value: 'all' },
-            { label: i18n('events.open_for_amiv_members_only'), value: 'members_only' },
+            { label: i18n('events.restrictions.none'), value: 'all' },
+            { label: i18n('events.restrictions.membersOnly'), value: 'members_only' },
           ],
         },
         { type: 'hr' },
@@ -142,7 +142,7 @@ export default class EventList extends FilteredListPage {
     if (controller.openRegistrationEvents.length > 0) {
       lists.push({
         name: 'openRegistration',
-        title: i18n('events.header_open_registration'),
+        title: i18n('events.headers.openRegistration'),
         pages: controller.openRegistrationEvents,
       });
     }
@@ -150,14 +150,14 @@ export default class EventList extends FilteredListPage {
     if (controller.upcomingEvents.length > 0) {
       lists.push({
         name: 'upcoming',
-        title: i18n('events.header_upcoming'),
+        title: i18n('events.headers.upcoming'),
         pages: controller.upcomingEvents,
       });
     }
 
     lists.push({
       name: 'past',
-      title: i18n('events.header_past'),
+      title: i18n('events.headers.past'),
       pages: controller.pastEvents,
       loadMore: this._hasMorePagesToLoad() ? this._loadNextPage : undefined,
     });
@@ -229,9 +229,11 @@ export default class EventList extends FilteredListPage {
 
   static _renderFreeSpots(spots, signup_count) {
     if (spots > 0) {
-      let available = spots - signup_count;
-      if (available < 0) available = 0;
-      return i18n('events.%n_spots_available', available);
+      const available = spots - signup_count;
+      if (available <= 0) {
+        return i18n('events.noSpotsAvailable');
+      }
+      return i18n('events.spotsAvailable', { count: available });
     }
     return '';
   }

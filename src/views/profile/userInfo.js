@@ -17,15 +17,15 @@ export default class UserInfo {
 
     if (user.membership !== 'none') {
       if (user.rfid !== undefined && user.rfid.length === 6) {
-        freeBeerNotice = m('div', i18n('profile.free_beer'));
+        freeBeerNotice = m('div', i18n('profile.freeBeer'));
       } else {
-        freeBeerNotice = m('div', i18n('profile.set_rfid'));
+        freeBeerNotice = m('div', i18n('profile.setRfid'));
       }
     }
 
     return m('div#info', [
       m('div#info-user', [m('b', [user.firstname, ' ', user.lastname]), m('div', user.legi)]),
-      m('div#info-amiv', [m('div', m('b', i18n(`${user.membership}_member`))), freeBeerNotice]),
+      m('div#info-amiv', [m('div', m('b', i18n(`membership.${user.membership}`))), freeBeerNotice]),
     ]);
   }
 }

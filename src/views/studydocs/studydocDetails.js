@@ -11,7 +11,7 @@ export default class StudydocDetails {
   view() {
     const document = this.controller.selectedDocument;
     if (!document) {
-      return m('h1', i18n('studydocs.not_found'));
+      return m('');
     }
 
     return [

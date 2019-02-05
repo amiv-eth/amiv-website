@@ -46,7 +46,7 @@ export default class Footer {
               href: `/${currentLanguage()}/legal-notice`,
               onupdate: m.route.link,
             },
-            `${i18n('contact')} / ${i18n('legal-notice')}`
+            `${i18n('contact')} / ${i18n('legalNotice.title')}`
           ),
         ]),
         m(

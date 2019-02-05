@@ -39,8 +39,8 @@ export default class AnnounceSubscriptionForm {
       m(Button, {
         ...buttonArgs,
         label: user.send_newsletter
-          ? i18n('profile.newsletter_unsubscribe')
-          : i18n('profile.newsletter_subscribe'),
+          ? i18n('profile.newsletter.unsubscribe')
+          : i18n('profile.newsletter.subscribe'),
       })
     );
   }

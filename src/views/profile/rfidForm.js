@@ -37,7 +37,7 @@ export default class RfidForm {
         name: 'rfid',
         label: i18n('profile.rfid'),
         floatingLabel: true,
-        error: i18n('profile.rfid_error'),
+        error: i18n('profile.rfidError'),
         valid: this.valid,
         value: this.rfid,
         events: {

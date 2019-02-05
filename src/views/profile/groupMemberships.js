@@ -21,10 +21,10 @@ export default class GroupMemberships {
 
     if (this.confirm[membership.group._id]) {
       buttons = [
-        m('div.group.button', [
+        m('div.group-button', [
           m(Button, {
             ...buttonArgs,
-            label: i18n('confirm'),
+            label: i18n('button.confirm'),
             events: {
               onclick: () => {
                 this.busy[membership.group._id] = true;
@@ -45,7 +45,7 @@ export default class GroupMemberships {
         m('div.group-button', [
           m(Button, {
             ...buttonArgs,
-            label: i18n('cancel'),
+            label: i18n('button.cancel'),
             className: 'flat-button',
             events: {
               onclick: () => {
@@ -61,7 +61,7 @@ export default class GroupMemberships {
         'div.group-button',
         m(Button, {
           ...buttonArgs,
-          label: i18n('withdraw'),
+          label: i18n('button.withdraw'),
           events: {
             onclick: () => {
               this.confirm[membership.group._id] = true;
@@ -75,7 +75,7 @@ export default class GroupMemberships {
       m('div.group-name', membership.group.name),
       membership.expiry === undefined
         ? undefined
-        : m('div.group-expiry', `(${i18n('profile.expire_on', { date: membership.expiry })})`),
+        : m('div.group-expiry', `(${i18n('profile.groups.expires', { date: membership.expiry })})`),
       buttons,
     ]);
   }
@@ -85,7 +85,7 @@ export default class GroupMemberships {
     const filterForm = m('div#group-search', [
       m(TextField, {
         name: 'group_search',
-        label: i18n('profile.search_groups'),
+        label: i18n('profile.groups.search'),
         valid: this.valid,
         events: {
           oninput: e => {

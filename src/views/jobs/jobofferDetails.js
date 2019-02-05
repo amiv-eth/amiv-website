@@ -10,7 +10,7 @@ export default class JobofferDetails {
     return m('div.joboffer-details', [
       m('div.description', m.trust(marked(escape(joboffer.getDescription())))),
       m(Button, {
-        label: i18n('joboffers.download_pdf'),
+        label: i18n('joboffers.downloadAsPdf'),
         border: true,
         events: {
           onclick: () => {

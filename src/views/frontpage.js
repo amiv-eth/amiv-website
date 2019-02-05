@@ -76,14 +76,14 @@ export default class Frontpage {
   view() {
     return m('div#frontpage-container', [
       m('div.hot-row', this.hot.map((item, index) => this.constructor._renderHotCard(item, index))),
-      m('h2', i18n('Events')),
+      m('h2', i18n('events.title')),
       m(
         'div.frontpage-row',
         this.events.length > 0
           ? this.events.map(item => m(EventCard, { item }))
           : Array.from(Array(3)).map(() => m(EventCard))
       ),
-      m('h2', i18n('Jobs')),
+      m('h2', i18n('joboffers.title')),
       m(
         'div.frontpage-row',
         this.jobs.length > 0
