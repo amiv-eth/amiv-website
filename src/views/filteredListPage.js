@@ -377,11 +377,7 @@ export class FilteredListPage {
             this.mobileViewShowFilter = false;
           },
         },
-        [
-          m(Icon, { svg: { content: m.trust(icons.close) } }),
-          ' ',
-          m('span', i18n('filtered_list.hide_filter')),
-        ]
+        [m(Icon, { svg: { content: m.trust(icons.close) } }), ' ', m('span', i18n('filter.hide'))]
       );
     } else {
       mobileButton = m(
@@ -394,7 +390,7 @@ export class FilteredListPage {
         [
           m(Icon, { svg: { content: m.trust(icons.filterList) } }),
           ' ',
-          m('span', i18n('filtered_list.show_filter')),
+          m('span', i18n('filter.show')),
         ]
       );
     }
@@ -463,9 +459,9 @@ export class FilteredListPage {
 
         return [pinnedList, ...this._lists.map(list => this._renderList(list))];
       }
-      return this.constructor._renderFullPageMessage(i18n('empty_list'));
+      return this.constructor._renderFullPageMessage(i18n('emptyList'));
     }
-    return this.constructor._renderFullPageMessage(i18n('loading_error'));
+    return this.constructor._renderFullPageMessage(i18n('loadingError'));
   }
 
   static _renderFullPageMessage(message) {

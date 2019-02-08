@@ -5,6 +5,7 @@ export default {
     en: 'English',
   },
   loading: 'Loading...',
+  emptyList: 'There are no items to show.',
   close: 'close',
   loadingError: 'Error while loading data.',
   loadMore: 'Load more',

@@ -5,6 +5,7 @@ export default {
     en: 'Englisch',
   },
   loading: 'Laden...',
+  emptyList: 'Es sind keine Einträge zum Anzeigen vorhanden.',
   close: 'schliessen',
   loadingError: 'Ein Fehler ist während dem Laden der Daten aufgetreten.',
   loadMore: 'Mehr laden',
