@@ -9,6 +9,30 @@ import { isLoggedIn, login } from '../models/auth';
 
 let mobileMenuShowing = false;
 
+class MobileMenuIcon {
+  constructor() {
+    this.change = false;
+  }
+
+  _toggle() {
+    this.change = !this.change;
+  }
+
+  view({ attrs: { className = '', change = this.change, onclick = () => {} } }) {
+    return m(
+      'div.mobile-menu-icon',
+      {
+        className: `${className} ${change ? 'change' : ''}`,
+        onclick: e => {
+          this._toggle();
+          onclick(e);
+        },
+      },
+      [m('div.bar1'), m('div.bar2'), m('div.bar3')]
+    );
+  }
+}
+
 export default class Header {
   oninit() {
     this._mobileMenuShowing = mobileMenuShowing;
@@ -54,19 +78,26 @@ export default class Header {
               events: { onclick: () => changeLanguage('de') },
             }),
           ]),
-          m(
-            'div.mobile-menu',
-            {
-              onclick: () => {
-                this._mobileMenuShowing = !this._mobileMenuShowing;
-              },
+          m(MobileMenuIcon, {
+            className: 'mobile-menu',
+            change: this._mobileMenuShowing,
+            onclick: () => {
+              this._mobileMenuShowing = !this._mobileMenuShowing;
             },
-            m(Icon, {
-              svg: { content: m.trust(icons.mobileMenu) },
-              size: 'large',
-              alt: i18n('Menu'),
-            })
-          ),
+          }),
+          // m(
+          //   'div.mobile-menu',
+          //   {
+          //     onclick: () => {
+          //       this._mobileMenuShowing = !this._mobileMenuShowing;
+          //     },
+          //   },
+          //   m(Icon, {
+          //     svg: { content: m.trust(icons.mobileMenu) },
+          //     size: 'large',
+          //     alt: i18n('Menu'),
+          //   })
+          // ),
         ]
       )
     );
