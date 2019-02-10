@@ -97,11 +97,16 @@
   user-select: none;
 }
 
+.pe-select--menu {
+  max-height: 80vh;
+}
+
 .pe-select--menu .pe-menu__panel {
   width: 100%;
+  max-height: inherit;
 
   .pe-menu__content {
-    max-height: 80vh;
+    max-height: inherit;
     overflow-y: auto;
   }
 }

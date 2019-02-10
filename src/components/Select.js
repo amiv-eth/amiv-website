@@ -63,11 +63,16 @@ export default class SelectComponent {
     this.focused = false;
     this.isOpen = false;
     this.valid = true;
+    this.element = null;
   }
 
   validate() {
     this.valid =
       !this.required || (this.value !== null && (!this.multiple || this.value.length > 0));
+  }
+
+  oncreate({ dom }) {
+    this.element = dom;
   }
 
   view({
@@ -188,6 +193,12 @@ export default class SelectComponent {
   }
 
   _renderMenu(options) {
+    let maxHeight = '80vh';
+    if (this.element !== null) {
+      const rect = this.element.getBoundingClientRect();
+      maxHeight = `${Math.min(0.8 * window.innerHeight, window.innerHeight - rect.top - 16)}px`;
+    }
+
     return m(Menu, {
       className: 'pe-select--menu',
       target: `#${this.name}-select`,
@@ -196,6 +207,7 @@ export default class SelectComponent {
       didHide: () => {
         this.isOpen = false;
       },
+      style: { maxHeight },
       content: m(
         List,
         options.map(option => {
