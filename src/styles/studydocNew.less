@@ -51,6 +51,10 @@
     align-items: flex-end;
     grid-gap: 1em;
 
+    @media @mobile {
+      grid-template-columns: 1fr 1fr;
+    }
+
     > * {
       padding-bottom: 0;
     }
@@ -59,6 +63,13 @@
   .file-input {
     margin: 2em 0;
     color: rgba(0, 0, 0, .54);
+
+    span {
+      @media @mobile {
+        display: block;
+        margin-top: 1em;
+      }
+    }
   }
 }
 
