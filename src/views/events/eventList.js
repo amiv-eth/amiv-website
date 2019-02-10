@@ -131,7 +131,10 @@ export default class EventList extends FilteredListPage {
         if (query.$and.length === 0) {
           delete query.$and;
         }
-        return controller.setQuery({ where: query, sort: '-time_start,-time_advertising_start' });
+        return controller.setQuery({
+          where: query,
+          sort: ['-time_start', '-time_advertising_start']
+        });
       },
     };
   }
