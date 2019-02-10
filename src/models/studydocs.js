@@ -26,9 +26,6 @@ export default class StudydocsController extends PaginationController {
   async setQuery(query) {
     if (!super.setQuery(query)) return false;
     await this.loadPageData(1);
-    // const data = await this.loadPageData(1);
-    // TODO: extract available filter values from response.
-    // this._availableFilterValues = data.<some-filter-field-values>
     return true;
   }
 
@@ -115,7 +112,7 @@ export default class StudydocsController extends PaginationController {
         for (let i = 0; i < doc.files.length; i += 1) {
           form.append('files', doc.files[i]);
         }
-      } else {
+      } else if (doc[key] !== '') {
         form.append(key, doc[key]);
       }
     });

@@ -8,14 +8,6 @@ import { Toolbar, ToolbarTitle } from 'polythene-mithril-toolbar';
 import debounce from 'amiv-web-ui-components/src/debounce';
 import icons from '../images/icons';
 
-const BackButton = {
-  view: ({ attrs }) =>
-    m(IconButton, {
-      icon: { svg: m.trust(icons.back) },
-      ink: false,
-      events: { onclick: attrs.leave },
-    }),
-};
 const ClearButton = {
   view: ({ attrs }) =>
     m(IconButton, {
@@ -55,15 +47,10 @@ class SearchField {
             defaultValue: attrs.defaultValue,
           },
           buttons: {
-            focus: {
-              before: m(BackButton, { leave: this.leave }),
-            },
             focus_dirty: {
-              before: m(BackButton, { leave: this.leave }),
               after: m(ClearButton, { clear: this.clear }),
             },
             dirty: {
-              before: m(BackButton, { leave: this.leave }),
               after: m(ClearButton, { clear: this.clear }),
             },
           },

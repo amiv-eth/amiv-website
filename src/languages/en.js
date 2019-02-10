@@ -26,6 +26,8 @@ export default {
   reset: 'Reset',
   externalLink: 'External link',
   button: {
+    clear: 'clear',
+    create: 'create',
     cancel: 'cancel',
     confirm: 'confirm',
     enroll: 'enroll',
@@ -221,7 +223,7 @@ export default {
     semester2: '2nd Semester',
     semester3: '3rd Semester',
     semester4: '4th Semester',
-    semester5: '5+ Semester',
+    'semester5+': '5+ Semester',
     lecture: 'Lecture',
     allLectures: 'All lectures',
     department: 'Department',
@@ -236,21 +238,26 @@ export default {
     courseYear: 'Course Year',
     files: 'Files',
     upload: 'Upload study document(s)',
+    uploadTitle: 'Upload a new study document',
+    uploadFileHint: 'You can select multiple files!',
+    uploadLoadingError: 'Could not load the upload form.',
+    uploadError: 'There was an error while uploading the documents.',
     uploading: 'Uploading...',
     accessDenied: 'Study documents are available only for ETH students.',
+    selectTextHelp: 'Tick «create» to create a new entry.',
     rules: {
       title: 'Rules',
       one:
         'This platform is based on a give-and-take principle, so please consider investing a few minutes to see whether you could contribute anything yourself. It does not take much time.',
       two:
-        'This overview is still in development. Feedback would be appreciated and can be submitted at  unterlagen@amiv.ethz.ch.',
-      three:
         'Some of the listed documents are subject to the [BOT](https://rechtssammlung.sp.ethz.ch/_layouts/15/start.aspx#/default.aspx) as well as copyright and serve only as internal documentation according to [Bundesgesetz SR 231.1, Art. 19.1c](https://www.admin.ch/opc/de/classified-compilation/19920251/index.html#a19) and must not be distributed to non-ETH members. For these reasons Login is mandatory.',
+      three:
+        'Plagiarism may have dire consequences. Do not promote work of others as your own! Please read [this page](https://www.ethz.ch/students/en/studies/performance-assessments/plagiarism.html).',
       four:
-        'Plagiarism may have dire consequences. Do not promote work of others as your own and read [this page](https://www.ethz.ch/studierende/de/studium/leistungskontrollen/plagiate.html) as well as [this ETH guide](http://www.lit.ethz.ch/faq/Italienisch/Lehre/box_feeder/PlagioETH_studenti)',
+        'If you have any feedback or spotted some issues, tell us by mail on [info@amiv.ethz.ch](mailto:info@amiv.ethz.ch)',
     },
     thanks:
-      'On behalf of all students we would like to thank those who contribute with their own documents and summaries – You da real MVP <3',
+      'On behalf of all students we would like to thank those who contribute with their own documents and summaries!',
     oralExams: 'Oral Exams',
     oralExamsExplanation:
       'You can order your exam protocols here and get them for a deposit of CHF 20.- at the AMIV Office in CAB E37.  You will get your deposit back for providing a protocol yourself. This shall make sure that our system is always up to date. If you need or want to provide an exam protocol, please send an e-mail to pruefungen@amiv.ethz.ch. A protocol includes at least the following content: course, professor/examinator, key words, what was asked and so on…',

@@ -1,196 +1,416 @@
 import m from 'mithril';
 import marked from 'marked';
+import animateScrollTo from 'animated-scroll-to';
+import { List } from 'polythene-mithril-list';
+import { ListTile } from 'polythene-mithril-list-tile';
+import { Card } from 'polythene-mithril-card';
+import { Icon } from 'polythene-mithril-icon';
+import debounce from 'amiv-web-ui-components/src/debounce';
+import Spinner from 'amiv-web-ui-components/src/spinner';
 import StudydocsController from '../../models/studydocs';
+import Select from '../../components/Select';
 import Button from '../../components/Button';
-import Dropdown from '../../components/Dropdown';
 import TextField from '../../components/TextField';
 import FileInput from '../../components/FileInput';
-import { currentLanguage, i18n } from '../../models/language';
+import Checkbox from '../../components/Checkbox';
+import { i18n, currentLanguage } from '../../models/language';
+import { Infobox } from '../errors';
+import icons from '../../images/icons';
 
-export default class studydocNew {
-  oninit() {
-    // We need to set the default values because they get only added to the request
-    // 'onchange' and thus do not appear in a request if the user does not change them
-    this.doc = { semester: null, type: null, department: null };
-    this.isValid = false;
-    this.isBusy = false;
-  }
+const STATE_LOADING = 0;
+const STATE_LOADED = 1;
+const STATE_LOADING_ERROR = 2;
 
-  static _getInputSuggestions(field, input, callback) {
-    if (input.length > 2) {
-      StudydocsController.getInputSuggestions(field, input).then(result => {
-        const suggestions = new Set();
-        result._items.forEach(item => {
-          suggestions.add(item[field]);
-        });
-        callback(Array.from(suggestions));
-      });
-    } else {
-      callback([]);
-    }
+const controller = new StudydocsController();
+
+const departments = [
+  'itet',
+  'mavt',
+  'arch',
+  'baug',
+  'bsse',
+  'infk',
+  'matl',
+  'biol',
+  'chab',
+  'math',
+  'phys',
+  'erdw',
+  'usys',
+  'hest',
+  'mtec',
+  'gess',
+];
+
+class SelectTextField {
+  constructor({ attrs: { options, onChange = () => {} } }) {
+    this.addNew = false;
+    this.value = '';
+    this.selected = null;
+    this.options = options;
+    this.filteredOptions = options;
+    this.onChange = onChange;
+    this.valid = true;
+    this.showList = false;
+    this.debouncedSearch = debounce(search => {
+      this.value = search;
+      if (search) {
+        const regex = RegExp(`.*(${search}).*`, 'gi');
+        this.filteredOptions = this.options.filter(item => regex.test(item));
+      } else {
+        this.filteredOptions = this.options;
+      }
+      this.notify();
+    }, 100);
   }
 
   validate() {
-    this.isValid = this.doc.files && this.doc.files.length > 0 && this.doc.type !== null;
+    this.valid = this.value === '' || this.addNew || this.selected;
+  }
+
+  notify() {
+    this.validate();
+
+    let value = '';
+    if (this.selected) {
+      value = this.selected;
+    } else if (this.addNew) {
+      // eslint-disable-next-line prefer-destructuring
+      value = this.value;
+    }
+    this.onChange({ value, isValid: this.valid });
+    m.redraw();
+  }
+
+  onupdate({ dom, attrs: { options } }) {
+    if (this.options.length !== options.length) {
+      this.options = options;
+      this.debouncedSearch(this.value);
+    }
+    // Turn of browser's autofill functionality
+    dom.querySelector('input').setAttribute('autocomplete', 'off');
+  }
+
+  view({ attrs: { name, label, help = i18n('studydocs.selectTextHelp'), ...attrs } }) {
+    return m('div.studydocs-upload-textfield', [
+      m('div.textfield', [
+        m(TextField, {
+          ...attrs,
+          name,
+          label,
+          help,
+          error: help,
+          floatingLabel: true,
+          value: this.selected || this.value,
+          valid: this.valid,
+          readonly: this.selected !== null,
+          onChange: ({ focus, value }) => {
+            if (focus) {
+              this.showList = true;
+            } else if (!focus) {
+              // don't close the list immidiately, as 'out of focus' could
+              // also mean that the user is clicking on a list item
+              setTimeout(() => {
+                this.showList = false;
+                m.redraw();
+              }, 500);
+            }
+
+            if (value !== this.value) {
+              // if we always update the search value, this would also happen
+              // immidiately in the moment where we click on the listitem.
+              // Then, the list get's updated before the click is registered.
+              // So, we make sure this state change is due to value change and
+              // not due to focus change.
+              this.value = value;
+              this.debouncedSearch(value);
+            }
+          },
+        }),
+        this.selected
+          ? m(Button, {
+              className: 'flat-button',
+              label: i18n('button.clear'),
+              events: {
+                onclick: () => {
+                  this.value = '';
+                  this.selected = null;
+                  this.debouncedSearch('');
+                },
+              },
+            })
+          : m(Checkbox, {
+              label: i18n('button.create'),
+              onChange: ({ checked }) => {
+                this.addNew = checked;
+                this.notify();
+              },
+            }),
+      ]),
+      this.showList && !this.selected && this.filteredOptions.length > 0
+        ? m(Card, {
+            className: 'suggestions',
+            content: m(
+              'div',
+              m(List, {
+                style: { height: '400px', 'background-color': 'white' },
+                tiles: this.filteredOptions.map(option =>
+                  m(ListTile, {
+                    title: option,
+                    hoverable: true,
+                    compactFront: true,
+                    events: {
+                      onclick: () => {
+                        this.selected = option;
+                        this.showList = false;
+                      },
+                    },
+                  })
+                ),
+              })
+            ),
+          })
+        : '',
+    ]);
+  }
+}
+
+export default class StudydocNew {
+  oninit() {
+    this.doc = { course_year: new Date().getFullYear() };
+    this.isValid = false;
+    this.isBusy = false;
+    this.state = STATE_LOADING;
+    this.uploadError = false;
+
+    this._loadAvailableValues();
+  }
+
+  _loadAvailableValues() {
+    if (Object.keys(controller.availableFilterValues).length > 0) {
+      // Reload values in the background while showing the old values in the form.
+      this.state = STATE_LOADED;
+    } else {
+      this.state = STATE_LOADING;
+    }
+
+    controller
+      .loadPageData(1)
+      .then(() => {
+        this.state = STATE_LOADED;
+        m.redraw();
+      })
+      .catch(() => {
+        this.state = STATE_LOADING_ERROR;
+        m.redraw();
+      });
+  }
+
+  validate() {
+    this.isValid =
+      this.doc.files !== undefined &&
+      this.doc.files.length > 0 &&
+      this.doc.title !== undefined &&
+      this.doc.title !== '';
   }
 
   async submit() {
     if (this.isValid && !this.isBusy) {
       this.isBusy = true;
-      await StudydocsController.addNew(this.doc);
-      this.isBusy = false;
-      m.route.set(`/${currentLanguage()}/studydocuments`);
+      this.uploadError = false;
+      try {
+        const response = await StudydocsController.addNew(this.doc);
+        this.isBusy = false;
+        m.route.set(`/${currentLanguage()}/studydocuments/${response._id}`);
+      } catch (Exception) {
+        this.isBusy = false;
+        this.uploadError = true;
+        animateScrollTo(document.body);
+      }
     }
   }
 
   view() {
-    return m('div#fileUpload-container', [
-      m(
-        'div#uploader-info',
-        m('form.new-style', { onsubmit: () => false }, [
-          m(TextField, {
-            name: 'title',
-            label: i18n('studydocs.title'),
-            floatingLabel: true,
-            value: this.doc.title,
-            events: {
-              oninput: e => {
-                this.doc.title = e.target.value;
-              },
-            },
-          }),
-          m(TextField, {
-            name: 'author',
-            label: i18n('studydocs.author'),
-            floatingLabel: true,
-            value: this.doc.author,
-            events: {
-              oninput: e => {
-                this.doc.author = e.target.value;
-              },
-            },
-          }),
-          m(TextField, {
-            name: 'course_year',
-            label: i18n('studydocs.courseYear'),
-            floatingLabel: true,
-            args: {
-              placeholder: new Date().getFullYear(),
-            },
-            oninput: e => {
-              this.doc.course_year = e.target.value;
-            },
-          }),
-          m(Dropdown, {
-            name: i18n('studydocs.type'),
-            onchange: e => {
-              const { value } = e.target;
-              if (value === '') {
-                this.doc.type = null;
-              } else {
-                this.doc.type = value;
-              }
-              this.validate();
-            },
-            selected: '',
-            data: [
-              { value: '', label: `${i18n('studydocs.type')}*`, disabled: true },
-              { value: 'exams', label: i18n('studydocs.types.exams') },
-              { value: 'cheat sheets', label: i18n('studydocs.types.cheatsheets') },
-              { value: 'lecture documents', label: i18n('studydocs.types.lectureDocuments') },
-              { value: 'exercises', label: i18n('studydocs.types.exercises') },
-            ],
-          }),
-          m(FileInput, {
-            multiple: 1,
-            onchange: e => {
-              this.doc.files = e.target.files;
-              this.validate();
-            },
-          }),
-          m(Button, {
-            name: 'submit',
-            label: this.isBusy ? i18n('studydocs.uploading') : i18n('studydocs.upload'),
-            active: this.isValid && !this.isBusy,
-            events: {
-              onclick: () => this.submit(),
-            },
-          }),
-        ])
-      ),
+    return m('div.studydocs-upload', [
+      m('div.title', m('h2', i18n('studydocs.uploadTitle'))),
+      m('div.studydocs-upload-form', [
+        this._renderForm(),
+        m('div.separator'),
+        this.constructor._renderRules(),
+      ]),
+    ]);
+  }
 
-      m('div#document-info', [
-        m(TextField, {
-          name: 'lecture',
-          label: i18n('studydocs.lecture'),
-          floatingLabel: true,
-          events: {
-            oninput: e => {
-              this.doc.lecture = e.target.value;
-            },
-          },
+  _renderForm() {
+    if (this.state === STATE_LOADING) {
+      return m('div.form-container-loading', m(Spinner, { className: 'spinner', show: true }));
+    }
+
+    if (this.state === STATE_LOADING_ERROR) {
+      return m('div.form-container-error', [
+        m('h1', i18n('error.title')),
+        m('p', i18n('studydocs.uploadLoadingError')),
+        m(Button, {
+          label: i18n('retry'),
+          events: { onclick: () => this._loadAvailableValues() },
         }),
-        m(Dropdown, {
-          name: i18n('studydocs.department'),
-          onchange: e => {
-            const { value } = e.target;
+      ]);
+    }
+
+    return m('div.form-container', [
+      this.uploadError &&
+        m(Infobox, {
+          icon: m(Icon, { svg: { content: m.trust(icons.error) } }),
+          label: i18n('studydocs.uploadError'),
+        }),
+      m(TextField, {
+        name: 'title',
+        className: 'title',
+        label: i18n('studydocs.title'),
+        floatingLabel: true,
+        value: this.doc.title,
+        required: true,
+        events: {
+          oninput: m.withAttr('value', value => {
+            this.doc.title = value;
+            this.validate();
+          }),
+        },
+      }),
+      m(SelectTextField, {
+        name: 'author',
+        label: i18n('studydocs.author'),
+        floatingLabel: true,
+        options: controller.availableFilterValues.author
+          ? Object.keys(controller.availableFilterValues.author).sort()
+          : [],
+        onChange: ({ value }) => {
+          this.doc.author = value;
+        },
+      }),
+      m(SelectTextField, {
+        name: 'lecture',
+        label: i18n('studydocs.lecture'),
+        floatingLabel: true,
+        options: controller.availableFilterValues.lecture
+          ? Object.keys(controller.availableFilterValues.lecture).sort()
+          : [],
+        onChange: ({ value }) => {
+          this.doc.lecture = value;
+        },
+      }),
+      m(SelectTextField, {
+        name: 'professor',
+        label: i18n('studydocs.professor'),
+        floatingLabel: true,
+        options: controller.availableFilterValues.professor
+          ? Object.keys(controller.availableFilterValues.professor).sort()
+          : [],
+        onChange: ({ value }) => {
+          this.doc.professor = value;
+        },
+      }),
+      m('div.select-row', [
+        m(Select, {
+          name: 'type',
+          label: i18n('studydocs.type'),
+          onChange: ({ value }) => {
+            if (value === '') {
+              this.doc.type = null;
+            } else {
+              this.doc.type = value;
+            }
+            this.validate();
+          },
+          options: [
+            { value: '', label: '' },
+            { value: 'exams', label: i18n('studydocs.types.exams') },
+            { value: 'cheat sheets', label: i18n('studydocs.types.cheatsheets') },
+            { value: 'lecture documents', label: i18n('studydocs.types.lectureDocuments') },
+            { value: 'exercises', label: i18n('studydocs.types.exercises') },
+          ],
+        }),
+        m(Select, {
+          name: 'department',
+          label: i18n('studydocs.department'),
+          onChange: ({ value }) => {
             if (value === '') {
               this.doc.department = null;
             } else {
               this.doc.department = value;
             }
           },
-          selected: null,
-          data: [
-            { value: '', label: i18n('studydocs.noDepartment') },
-            { value: 'itet', label: 'D-ITET' },
-            { value: 'mavt', label: 'D-MAVT' },
+          options: [
+            { value: '', label: '' },
+            ...departments.map(department => ({
+              value: department,
+              label: `D-${department.toUpperCase()}`,
+            })),
           ],
         }),
-        m(Dropdown, {
-          name: i18n('studydocs.semester'),
-          onchange: e => {
-            const { value } = e.target;
+        m(TextField, {
+          name: 'course_year',
+          type: 'number',
+          label: i18n('studydocs.courseYear'),
+          floatingLabel: true,
+          value: this.doc.course_year,
+          events: {
+            oninput: e => {
+              this.doc.course_year = Number(e.target.value);
+            },
+          },
+        }),
+        m(Select, {
+          name: 'semester',
+          label: i18n('studydocs.semester'),
+          onChange: ({ value }) => {
             if (value === '') {
               this.doc.semester = null;
             } else {
               this.doc.semester = value;
             }
           },
-          selected: null,
-          data: [
-            { value: '', label: i18n('studydocs.noSemester') },
+          options: [
+            { value: '', label: '' },
             { value: '1', label: i18n('studydocs.semester1') },
             { value: '2', label: i18n('studydocs.semester2') },
             { value: '3', label: i18n('studydocs.semester3') },
             { value: '4', label: i18n('studydocs.semester4') },
-            { value: '5+', label: i18n('studydocs.semester5') },
+            { value: '5+', label: i18n('studydocs.semester5+') },
           ],
         }),
-
-        m(TextField, {
-          name: 'professor',
-          label: i18n('studydocs.professor'),
-          floatingLabel: true,
-          value: this.doc.professor,
-          events: {
-            oninput: e => {
-              this.doc.professor = e.target.value;
-            },
+      ]),
+      m('div.file-input', [
+        m(FileInput, {
+          multiple: 1,
+          onchange: e => {
+            this.doc.files = e.target.files;
+            this.validate();
           },
         }),
+        m('span', i18n('studydocs.uploadFileHint')),
       ]),
+      m(Button, {
+        name: 'submit',
+        label: this.isBusy ? i18n('studydocs.uploading') : i18n('studydocs.upload'),
+        active: this.isValid && !this.isBusy,
+        events: {
+          onclick: () => this.submit(),
+        },
+      }),
+    ]);
+  }
 
-      m('div#rule-style', [
-        m('div#rules-title', i18n('studydocs.rules.title')),
-        m('ol', [
-          m('div#rules-text', m('li', m.trust(marked(i18n('studydocs.rules.one'))))),
-          m('div#rules-text', m('li', m.trust(marked(i18n('studydocs.rules.two'))))),
-          m('div#rules-text', m('li', m.trust(marked(i18n('studydocs.rules.three'))))),
-          m('div#rules-text', m('li', m.trust(marked(i18n('studydocs.rules.four'))))),
-        ]),
-        m('div#rules-text', i18n('studydocs.thanks')),
+  static _renderRules() {
+    return m('div.rules', [
+      m('h2', i18n('studydocs.rules.title')),
+      m('ol', [
+        m('div', m('li', m.trust(marked(i18n('studydocs.rules.one'))))),
+        m('div', m('li', m.trust(marked(i18n('studydocs.rules.two'))))),
+        m('div', m('li', m.trust(marked(i18n('studydocs.rules.three'))))),
+        m('div', m('li', m.trust(marked(i18n('studydocs.rules.four'))))),
       ]),
+      m('div', i18n('studydocs.thanks')),
     ]);
   }
 }

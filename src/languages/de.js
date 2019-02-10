@@ -26,6 +26,8 @@ export default {
   reset: 'Zurücksetzen',
   externalLink: 'Externer Link',
   button: {
+    clear: 'löschen',
+    create: 'erstellen',
     cancel: 'abbrechen',
     confirm: 'bestätigen',
     enroll: 'einschreiben',
@@ -221,7 +223,7 @@ export default {
     semester2: '2. Semester',
     semester3: '3. Semester',
     semester4: '4. Semester',
-    semester5: '5+ Semester',
+    'semester5+': '5+ Semester',
     lecture: 'Vorlesung',
     allLectures: 'Alle Vorlesungen',
     department: 'Departement',
@@ -236,18 +238,23 @@ export default {
     courseYear: 'Kursjahr',
     files: 'Dateien',
     upload: 'Dokument(e) hochladen',
+    uploadTitle: 'Ein neues Dokument hochladen',
+    uploadFileHint: 'Du kannst mehrere Dateien auswählen!',
+    uploadLoadingError: 'Das Upload-Formular konnte nicht geladen werden.',
+    uploadError: 'Während dem Hochladen ist ein Fehler aufgetreten.',
     uploading: 'lädt hoch...',
     accessDenied: 'Studienunterlagen sind nur für ETH Studenten verfügbar.',
+    selectTextHelp: 'Kreuze «erstellen» an, um einen neuen Eintrag zu erstellen.',
     rules: {
       title: 'Regeln',
       one:
         'Diese Plattform lebt vom geben und nehmen - investiere also auch mal ein paar Minuten und schaue ob du für andere nützliches Material hast und lade es hoch. Es kostet nicht viel Zeit.',
       two:
-        'Die Unterlagenübersicht ist noch im Beta-Stadium. Fehler und Anregungen bitte an unterlagen@amiv.ethz.ch senden.',
+        'Einige der hier zu findenden Daten unterliegen der [BOT](https://rechtssammlung.sp.ethz.ch/_layouts/15/start.aspx#/default.aspx) sowie dem Urheberrecht und dienen zur internen Dokumentation gemäss [Bundesgesetz SR 231.1, Art. 19.1c](https://www.admin.ch/opc/de/classified-compilation/19920251/index.html#a19) und dürfen nicht an Nicht-ETH-Angehörige weitergegeben werden - daher ist der Login verpflichtend.',
       three:
-        'Einige der hier zu findenden Daten unterliegen der [BOT](https://rechtssammlung.sp.ethz.ch/_layouts/15/start.aspx#/default.aspx) sowie dem Urheberrecht und dienen zur internen Dokumentation gemäss [Bundesgesetz SR 231.1, Art. 19.1c](https://www.admin.ch/opc/de/classified-compilation/19920251/index.html#a19) und dürfen nicht an Nicht-ETH-Angehörige weitergegeben werden - daher ist der LogIn verpflichtend.',
+        'Plagiate können schwerwiegende Folgen haben. Gib also keine Werke von anderen als dein eigenes aus und lies dir [diese Seite](https://www.ethz.ch/studierende/de/studium/leistungskontrollen/plagiate.html) durch.',
       four:
-        'Plagiate können schwerwiegende Folgen haben. Gib also keine Werke von anderen als dein eigenes aus und lies dir [diese Seite](https://www.ethz.ch/studierende/de/studium/leistungskontrollen/plagiate.html) sowie [dieses Merkblatt der ETH](http://www.lit.ethz.ch/faq/Italienisch/Lehre/box_feeder/PlagioETH_studenti) durch.',
+        'Hast du Feedback für uns oder ein Problem entdeckt? Sag uns Bescheid unter [info@amiv.ethz.ch](mailto:info@amiv.ethz.ch).',
     },
     thanks:
       'Wir bedanken uns im Namen aller Studenten bei Allen, die ihre Unterlagen, Zusammenfassungen, und und und hier für andere Studenten zugänglich machen. Danke tausend, Gruss und Kuss.',

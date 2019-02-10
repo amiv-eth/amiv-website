@@ -1,5 +1,90 @@
-#studydoc-new {
-  .file-style {
-    height: 10em;
+.studydocs-upload {
+  margin: 1em auto 7em;
+}
+
+.studydocs-upload-form {
+  display: grid;
+  grid-template-columns: 1fr 4px 1fr;
+  grid-gap: 1em;
+
+  @media @tablet, @mobile {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 4px auto;
+  }
+
+  > * {
+    margin: 1em 0;
+  }
+
+  .form-container-loading,.form-container-error {
+    position: relative;
+    width: 100%;
+    text-align: center;
+  }
+
+  .spinner {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+  }
+
+  .separator {
+    background: @color-grey;
+    width: 100%;
+    height: calc(100% - 2em);
+
+    @media @tablet, @mobile {
+      width: calc(100% - 2em);
+      height: 100%;
+      margin: 0 1em;
+    }
+  }
+
+  .title .pe-textfield__error-placeholder {
+    display: none;
+  }
+
+  .select-row {
+    display: grid;
+    grid-template-columns: 1.5fr .8fr .7fr 1fr;
+    align-items: flex-end;
+    grid-gap: 1em;
+
+    > * {
+      padding-bottom: 0;
+    }
+  }
+
+  .file-input {
+    margin: 2em 0;
+    color: rgba(0, 0, 0, .54);
+  }
+}
+
+.studydocs-upload-textfield {
+  height: 96px;
+  overflow-y: visible;
+
+  .textfield {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-gap: 1em;
+    align-items: end;
+
+    .pe-checkbox-control {
+      position: relative;
+      bottom: 34px;
+    }
+  }
+
+  .suggestions {
+    position: relative;
+    top: -24px;
+    z-index: 10000;
+
+    .pe-list {
+      overflow-y: auto;
+    }
   }
 }

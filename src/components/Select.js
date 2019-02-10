@@ -222,12 +222,13 @@ export default class SelectComponent {
 
           return m(ListTile, {
             title: label,
-            hoverable: true,
-            ink: true,
+            hoverable: !option.disabled && true,
+            ink: !option.disabled && true,
             highlight: selected,
             selected: !this.multiple ? selected : null,
             events: {
               onclick: () => {
+                if (option.disabled) return;
                 const value = isObject ? option.value : option;
                 if (this.multiple) {
                   const i = this.value.indexOf(value);
