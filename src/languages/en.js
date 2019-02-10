@@ -283,4 +283,10 @@ export default {
     shownLanguage: 'Showing text in {{shown_language}}.',
     loadingPage: 'Could not load the requested page.',
   },
+
+  // Footer
+  footer: {
+    issueSpotted: 'Did you encounter a problem?',
+    issueReport: 'Report a bug',
+  },
 };
