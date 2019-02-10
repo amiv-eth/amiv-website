@@ -133,7 +133,7 @@ export default class EventList extends FilteredListPage {
         }
         return controller.setQuery({
           where: query,
-          sort: ['-time_start', '-time_advertising_start']
+          sort: ['-time_start', '-time_advertising_start'],
         });
       },
     };
