@@ -272,7 +272,7 @@ export default class StudydocList extends FilteredListPage {
     }
 
     if (studydocument.type) {
-      properties.push({ value: i18n(studydocument.type) });
+      properties.push({ value: i18n(`studydocs.name.${studydocument.type}`) });
     }
 
     const title =
