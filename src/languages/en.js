@@ -243,6 +243,8 @@ export default {
     uploadLoadingError: 'Could not load the upload form.',
     uploadError: 'There was an error while uploading the documents.',
     uploading: 'Uploading...',
+    createNewEntry: 'Create a new entry',
+    createNewEntryLabel: 'new entry',
     accessDenied: 'Study documents are available only for ETH students.',
     selectTextHelp: 'Tick «create» to create a new entry.',
     rules: {

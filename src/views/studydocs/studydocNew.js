@@ -91,7 +91,8 @@ class SelectTextField {
     dom.querySelector('input').setAttribute('autocomplete', 'off');
   }
 
-  view({ attrs: { name, label, help = i18n('studydocs.selectTextHelp'), ...attrs } }) {
+  // view({ attrs: { name, label, help = i18n('studydocs.selectTextHelp'), ...attrs } }) {
+  view({ attrs: { name, label, help, ...attrs } }) {
     return m('div.studydocs-upload-textfield', [
       m('div.textfield', [
         m(TextField, {
@@ -139,34 +140,47 @@ class SelectTextField {
                 },
               },
             })
-          : m(Checkbox, {
-              label: i18n('button.create'),
-              onChange: ({ checked }) => {
-                this.addNew = checked;
-                this.notify();
-              },
+          : this.addNew &&
+            m(Button, {
+              className: 'flat-button',
+              label: i18n('studydocs.createNewEntryLabel'),
+              disabled: true,
             }),
       ]),
-      this.showList && !this.selected && this.filteredOptions.length > 0
+      this.showList && !this.addNew && !this.selected
         ? m(Card, {
             className: 'suggestions',
             content: m(
               'div',
               m(List, {
-                style: { height: '400px', 'background-color': 'white' },
-                tiles: this.filteredOptions.map(option =>
+                style: { maxHeight: '400px', 'background-color': 'white' },
+                tiles: [
+                  ...this.filteredOptions.map(option =>
+                    m(ListTile, {
+                      title: option,
+                      hoverable: true,
+                      compactFront: true,
+                      events: {
+                        onclick: () => {
+                          this.selected = option;
+                          this.showList = false;
+                        },
+                      },
+                    })
+                  ),
                   m(ListTile, {
-                    title: option,
+                    title: i18n('studydocs.createNewEntry'),
                     hoverable: true,
                     compactFront: true,
                     events: {
                       onclick: () => {
-                        this.selected = option;
+                        this.addNew = true;
                         this.showList = false;
+                        this.validate();
                       },
                     },
-                  })
-                ),
+                  }),
+                ],
               })
             ),
           })

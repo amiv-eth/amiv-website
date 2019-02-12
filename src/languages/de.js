@@ -243,6 +243,8 @@ export default {
     uploadLoadingError: 'Das Upload-Formular konnte nicht geladen werden.',
     uploadError: 'Während dem Hochladen ist ein Fehler aufgetreten.',
     uploading: 'lädt hoch...',
+    createNewEntry: 'Einen neuen Eintrag erstellen',
+    createNewEntryLabel: 'neuer Eintrag',
     accessDenied: 'Studienunterlagen sind nur für ETH Studenten verfügbar.',
     selectTextHelp: 'Kreuze «erstellen» an, um einen neuen Eintrag zu erstellen.',
     rules: {
