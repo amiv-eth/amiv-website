@@ -208,9 +208,10 @@ export default class StudydocList extends FilteredListPage {
           },
         },
       ],
-      onchange: values => {
+      onchange: async values => {
         this.dataStore.filterValues = values;
-        if (controller.setFilterValues(values)) {
+        const changed = await controller.setFilterValues(values);
+        if (changed) {
           StudydocQuickFilter.clear();
           return true;
         }
@@ -286,7 +287,7 @@ export default class StudydocList extends FilteredListPage {
           m('div', [
             m('div.title', [
               m(
-                'h2',
+                'h3',
                 title
                   ? [title, studydocument.title && m('span', studydocument.title)]
                   : studydocTitle
