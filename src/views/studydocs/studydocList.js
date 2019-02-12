@@ -62,7 +62,8 @@ export default class StudydocList extends FilteredListPage {
     });
 
     if (
-      (values[field] || values[field].length === 0 || values[field].includes('all')) &&
+      values[field] &&
+      (values[field].length === 0 || !values[field].includes('all')) &&
       field in dataStore.availableFilterValues
     ) {
       data.push(...dataStore.availableFilterValues[field]);
