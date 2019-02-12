@@ -247,6 +247,9 @@ export default {
     createNewEntryLabel: 'new entry',
     accessDenied: 'Study documents are available only for ETH students.',
     selectTextHelp: 'Tick «create» to create a new entry.',
+    legacyText:
+      'You didn\'t find the document you were looking for? Take a look at the <a href="https://legacy.amiv.ethz.ch/studium/unterlagen" target="_blank">old website</a>.',
+    legactLink: 'Try your luck',
     rules: {
       title: 'Rules',
       one:

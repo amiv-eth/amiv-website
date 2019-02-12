@@ -247,6 +247,8 @@ export default {
     createNewEntryLabel: 'neuer Eintrag',
     accessDenied: 'Studienunterlagen sind nur für ETH Studenten verfügbar.',
     selectTextHelp: 'Kreuze «erstellen» an, um einen neuen Eintrag zu erstellen.',
+    legacyText:
+      'Du hast das gesuchte Dokument nicht gefunden? Schau auf der <a href="https://legacy.amiv.ethz.ch/studium/unterlagen" target="_blank">alten Webseite</a>.',
     rules: {
       title: 'Regeln',
       one:

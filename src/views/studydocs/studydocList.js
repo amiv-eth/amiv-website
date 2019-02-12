@@ -11,6 +11,8 @@ import { i18n, currentLanguage } from '../../models/language';
 import { FilteredListDataStore, FilteredListPage } from '../filteredListPage';
 import mimeTypeToIcon from '../../images/mimeTypeToIcon';
 import StudydocQuickFilter from './studydocQuickFilter';
+import { Infobox } from '../errors';
+import icons from '../../images/icons';
 
 const controller = new StudydocsController();
 const dataStore = new FilteredListDataStore();
@@ -229,6 +231,15 @@ export default class StudydocList extends FilteredListPage {
         items: [m(StudydocQuickFilter, { controller, dataStore })],
       },
       {
+        name: 'notice',
+        items: [
+          m(Infobox, {
+            icon: m(Icon, { svg: { content: m.trust(icons.info) } }),
+            label: m.trust(i18n('studydocs.legacyText')),
+          }),
+        ],
+      },
+      {
         name: FilteredListPage.pinnedListIdentifier,
       },
       {
@@ -241,7 +252,7 @@ export default class StudydocList extends FilteredListPage {
 
   // eslint-disable-next-line class-methods-use-this
   _renderItem(item, list, selectedId) {
-    if (list === 'quickfilter') {
+    if (list === 'quickfilter' || list === 'notice') {
       return item;
     }
 
