@@ -12,7 +12,6 @@ import Select from '../../components/Select';
 import Button from '../../components/Button';
 import TextField from '../../components/TextField';
 import FileInput from '../../components/FileInput';
-import Checkbox from '../../components/Checkbox';
 import { i18n, currentLanguage } from '../../models/language';
 import { Infobox } from '../errors';
 import icons from '../../images/icons';
@@ -176,7 +175,7 @@ class SelectTextField {
                       onclick: () => {
                         this.addNew = true;
                         this.showList = false;
-                        this.validate();
+                        this.notify();
                       },
                     },
                   }),
@@ -191,6 +190,7 @@ class SelectTextField {
 
 export default class StudydocNew {
   oninit() {
+    this.invalid = new Set([]);
     this.doc = { course_year: new Date().getFullYear() };
     this.isValid = false;
     this.isBusy = false;
@@ -222,6 +222,7 @@ export default class StudydocNew {
 
   validate() {
     this.isValid =
+      this.invalid.size === 0 &&
       this.doc.files !== undefined &&
       this.doc.files.length > 0 &&
       this.doc.title !== undefined &&
@@ -298,8 +299,14 @@ export default class StudydocNew {
         options: controller.availableFilterValues.author
           ? Object.keys(controller.availableFilterValues.author).sort()
           : [],
-        onChange: ({ value }) => {
+        onChange: ({ value, isValid }) => {
           this.doc.author = value;
+          if (isValid) {
+            this.invalid.delete('author');
+          } else {
+            this.invalid.add('author');
+          }
+          this.validate();
         },
       }),
       m(SelectTextField, {
@@ -309,8 +316,14 @@ export default class StudydocNew {
         options: controller.availableFilterValues.lecture
           ? Object.keys(controller.availableFilterValues.lecture).sort()
           : [],
-        onChange: ({ value }) => {
+        onChange: ({ value, isValid }) => {
           this.doc.lecture = value;
+          if (isValid) {
+            this.invalid.delete('lecture');
+          } else {
+            this.invalid.add('lecture');
+          }
+          this.validate();
         },
       }),
       m(SelectTextField, {
@@ -320,8 +333,14 @@ export default class StudydocNew {
         options: controller.availableFilterValues.professor
           ? Object.keys(controller.availableFilterValues.professor).sort()
           : [],
-        onChange: ({ value }) => {
+        onChange: ({ value, isValid }) => {
           this.doc.professor = value;
+          if (isValid) {
+            this.invalid.delete('professor');
+          } else {
+            this.invalid.add('professor');
+          }
+          this.validate();
         },
       }),
       m('div.select-row', [
