@@ -101,7 +101,11 @@ export default class EventDetails {
     const registerStart = new Date(this.event.time_register_start);
     const registerEnd = new Date(this.event.time_register_end);
 
-    if (registerStart <= now) {
+    console.log(this.event.time_register_start);
+
+    if (this.event.time_register_start === null) {
+      eventSignupForm = m('div', m('p', i18n('events.registration.none')));
+    } else if (registerStart <= now) {
       if (registerEnd >= now) {
         if (isLoggedIn()) {
           if (!this.event.hasSignupDataLoaded) {
