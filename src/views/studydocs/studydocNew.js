@@ -123,7 +123,11 @@ class SelectTextField {
               // So, we make sure this state change is due to value change and
               // not due to focus change.
               this.value = value;
-              this.debouncedSearch(value);
+              if (this.addNew) {
+                this.notify();
+              } else {
+                this.debouncedSearch(value);
+              }
             }
           },
         }),
@@ -163,6 +167,7 @@ class SelectTextField {
                         onclick: () => {
                           this.selected = option;
                           this.showList = false;
+                          this.notify();
                         },
                       },
                     })
