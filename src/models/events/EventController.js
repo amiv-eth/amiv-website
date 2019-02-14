@@ -46,7 +46,12 @@ export default class EventController {
             show_website: true,
             time_start: { $gt: date },
             time_advertising_start: { $lt: date },
-            $or: [{ time_register_end: { $lt: date } }, { time_register_start: { $gt: date } }],
+            $or: [
+              { time_register_start: null },
+              { time_register_end: null },
+              { time_register_end: { $lt: date } },
+              { time_register_start: { $gt: date } },
+            ],
           },
         };
       };
