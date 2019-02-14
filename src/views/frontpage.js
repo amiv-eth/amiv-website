@@ -5,8 +5,7 @@ import Spinner from 'amiv-web-ui-components/src/spinner';
 import EventCard from '../components/EventCard';
 import EventController from '../models/events/EventController';
 import JobofferController from '../models/joboffers/JobofferController';
-import { i18n, currentLanguage } from '../models/language';
-import icons from '../images/icons';
+import { i18n } from '../models/language';
 
 async function getData(state) {
   const events = await state.eventController.upcomingEvents.getPageData(1);
@@ -30,10 +29,8 @@ export default class Frontpage {
     );
     this.jobOfferController = new JobofferController({ max_results: 3 });
 
-    this.hot = [];
     this.events = [];
     this.jobs = [];
-    this.socialmedia = [];
   }
 
   oncreate() {
@@ -42,40 +39,10 @@ export default class Frontpage {
       this.jobs = result.jobs;
       m.redraw();
     });
-
-    // MOCKDATA
-    this.hot = [
-      {
-        getTitle: () => {
-          if (currentLanguage() === 'de') return 'richtig heiss';
-          return 'super hot';
-        },
-        imageurl:
-          'https://www.heilpraxisnet.de/wp-content/uploads/2016/04/bier-lagern-1024x724.jpg',
-      },
-      {
-        getTitle: () => {
-          if (currentLanguage() === 'de') return 'auch ziemlich heiss';
-          return 'also pretty hot';
-        },
-        imageurl:
-          'https://image.shutterstock.com/z/stock-photo-group-of-happy-people-isolated-over-white-background-102307264.jpg',
-      },
-      {
-        title_en: 'kinda hot',
-        title_de: 'lauwarm',
-        getTitle: () => {
-          if (currentLanguage() === 'de') return 'lauwarm';
-          return 'kinda hot';
-        },
-        imageurl: 'https://bit.ly/2OUjN5w',
-      },
-    ];
   }
 
   view() {
     return m('div#frontpage-container', [
-      m('div.hot-row', this.hot.map((item, index) => this.constructor._renderHotCard(item, index))),
       m('h2', i18n('events.title')),
       m(
         'div.frontpage-row',
@@ -91,34 +58,6 @@ export default class Frontpage {
           : Array.from(Array(3)).map(() => this.constructor._renderJobCard(null, true))
       ),
     ]);
-  }
-
-  static _renderHotCard(item, index) {
-    return m(Card, {
-      className: index === 0 ? 'hot-first-card' : 'hot-card',
-      content: [
-        {
-          media: {
-            origin: 'center',
-            ratio: 'landscape',
-            content: m('img', {
-              src: item.imageurl ? item.imageurl : icons.logoWheel,
-              alt: item.getTitle(),
-            }),
-            overlay: {
-              sheet: true,
-              content: [
-                {
-                  primary: {
-                    title: item.getTitle(),
-                  },
-                },
-              ],
-            },
-          },
-        },
-      ],
-    });
   }
 
   static _renderEventCard(item, loading = false) {
