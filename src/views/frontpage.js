@@ -24,7 +24,7 @@ export default class Frontpage {
     this.eventController = new EventController(
       {
         max_results: 3,
-        sort: ['-priority', 'time_advertising_start'],
+        sort: ['-priority', '-time_advertising_start'],
       },
       false
     );

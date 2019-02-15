@@ -22,13 +22,17 @@ export default class EventController {
   constructor(query = {}, upcomingSkipRegistrationOpen = false) {
     this.query = query;
 
-    this._pastEvents = new EventListController(query, () => {
+    // Because past events do not need some advertising tweaks anymore,
+    // enforce sorting for past events to ensure the correct sort in time.
+    const pastQuery = JSON.parse(JSON.stringify(query));
+    pastQuery.sort = ['-time_start', '-time_advertising_start'];
+
+    this._pastEvents = new EventListController(pastQuery, () => {
       const date = `${new Date().toISOString().split('.')[0]}Z`;
       return {
         where: {
           show_website: true,
           time_advertising_start: { $lt: date },
-          time_advertising_end: { $lt: date },
           $and: [
             { $or: [{ time_start: null }, { time_start: { $lt: date } }] },
             { $or: [{ time_end: null }, { time_end: { $lt: date } }] },
