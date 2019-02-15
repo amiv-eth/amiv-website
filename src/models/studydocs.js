@@ -12,7 +12,7 @@ export default class StudydocsController extends PaginationController {
   constructor(query = {}, additionalQuery = {}) {
     super('studydocuments', query, {
       ...additionalQuery,
-      ...{ sort: ['lecture', 'type', 'course_year', 'title', 'author'] },
+      ...{ sort: ['lecture', '-course_year', 'type', 'title', 'author'] },
     });
     this._availableFilterValues = {};
   }
