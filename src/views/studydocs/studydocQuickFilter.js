@@ -238,23 +238,25 @@ export default class StudydocQuickFilter {
     const semesters = ['1', '2', '3', '4', '5+'];
     return m('div.department', [
       m('div', department !== 'other' ? `D-${department.toUpperCase()}` : department),
-      ...semesters.map(semester =>
-        m(Button, {
-          className: 'flat-button',
-          label: semester,
-          events: {
-            onclick: () => {
-              filterValues.semester = [semester];
-              if (department === 'other') {
-                this.state = STATE_DEPARTMENT;
-              } else {
-                filterValues.department = [department];
-                this.state = STATE_LECTURE;
-              }
+      m('div.buttons', [
+        semesters.map(semester =>
+          m(Button, {
+            className: 'flat-button',
+            label: semester,
+            events: {
+              onclick: () => {
+                filterValues.semester = [semester];
+                if (department === 'other') {
+                  this.state = STATE_DEPARTMENT;
+                } else {
+                  filterValues.department = [department];
+                  this.state = STATE_LECTURE;
+                }
+              },
             },
-          },
-        })
-      ),
+          })
+        ),
+      ]),
     ]);
   }
 }

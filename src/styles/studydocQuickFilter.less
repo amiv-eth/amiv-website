@@ -63,12 +63,25 @@
 
   .semester {
     text-align: left;
+    margin-top: 16px;
   }
 
   .department > div {
     display: inline-block;
-    width: 5em;
     padding-right: 1em;
     font-weight: bold;
+
+    @media @smallMobile {
+      width: 100%;
+      text-align: center;
+    }
+
+    &:first-of-type {
+      width: 5em;
+
+      @media @smallMobile {
+        width: 100%;
+      }
+    }
   }
 }
