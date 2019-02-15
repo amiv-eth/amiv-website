@@ -1,3 +1,41 @@
+@import './colors.less';
+
+.studydoc-documents {
+  width: calc(100% + 8px);
+  position: relative;
+  left: -4px;
+
+  a {
+    display: inline-block;
+    color: #000;
+    border-radius: 4px;
+    padding: 4px;
+
+    &:not(:last-child) {
+      margin-right: 1em;
+    }
+
+    &:hover {
+      background-color: @color-grey;
+    }
+  }
+
+  span {
+    display: inline-block;
+    position: relative;
+    bottom: -2px;
+  }
+
+  span.name {
+    margin-left: .25em;
+  }
+
+  span.size {
+    color: @color-dark-grey;
+    margin-left: 1em;
+  }
+}
+
 .studydoc-header {
   padding: 1em;
 
@@ -32,10 +70,20 @@
     display: inline-block;
     padding-bottom: 1em;
 
+    @media @mobile {
+      padding-bottom: .25em;
+    }
+
     &:after {
       content: '/';
       color: @color-red;
       margin: 0 1em;
+
+      @media @mobile {
+        content: ',';
+        color: #000;
+        margin: 0 .5em 0 0;
+      }
     }
 
     .name:after {
@@ -49,30 +97,20 @@
     }
   }
 
-  .documents {
-    a {
-      display: inline-block;
-      color: #000;
-
-      &:not(:last-child) {
-        margin-right: 1em;
-      }
+  .studydoc-documents {
+    @media @mobile, @tablet {
+      display: none;
     }
+  }
+}
 
-    span {
-      display: inline-block;
-      position: relative;
-      bottom: -2px;
-    }
+.studydoc-content .studydoc-documents {
+  display: none;
+  padding: 16px;
+  background-color: @color-grey;
 
-    span.name {
-      margin-left: .25em;
-    }
-
-    span.size {
-      color: @color-dark-grey;
-      margin-left: 1em;
-    }
+  @media @mobile, @tablet {
+    display: block;
   }
 }
 

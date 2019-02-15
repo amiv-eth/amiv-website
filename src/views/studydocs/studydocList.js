@@ -273,8 +273,8 @@ export default class StudydocList extends FilteredListPage {
       properties.push({ name: i18n('studydocs.author'), value: studydocument.author });
     }
 
-    if (studydocument.type) {
-      properties.push({ value: i18n(`studydocs.name.${studydocument.type}`) });
+    if (studydocument.semester) {
+      properties.push({ value: i18n(`studydocs.semester${studydocument.semester}`) });
     }
 
     const title =
@@ -308,8 +308,18 @@ export default class StudydocList extends FilteredListPage {
               ),
             ]),
             m('div.properties', properties.map(prop => this.constructor._renderProperty(prop))),
-            m('div.documents', studydocument.files.map(file => this.constructor._renderFile(file))),
+            m(
+              'div.studydoc-documents',
+              studydocument.files.map(file => this.constructor._renderFile(file))
+            ),
           ]),
+        ]),
+      content: () =>
+        m('div.studydoc-content', [
+          m(
+            'div.studydoc-documents',
+            studydocument.files.map(file => this.constructor._renderFile(file))
+          ),
         ]),
     });
   }
