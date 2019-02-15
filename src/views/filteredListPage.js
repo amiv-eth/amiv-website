@@ -11,6 +11,7 @@ import { i18n, currentLanguage } from '../models/language';
 import FilterView from '../components/FilterView';
 import icons from '../images/icons';
 
+const LIST_LOADING_DELAY = 150;
 const LIST_LOADING = 'loading';
 const LIST_LOADED = 'loaded';
 const LIST_ERROR = 'error';
@@ -310,12 +311,17 @@ export class FilteredListPage {
   }
 
   reload() {
-    this.dataStore.listState = LIST_LOADING;
+    const timeout = setTimeout(() => {
+      this.dataStore.listState = LIST_LOADING;
+      m.redraw();
+    }, LIST_LOADING_DELAY);
     return this._reloadData()
       .then(() => {
+        clearTimeout(timeout);
         this.dataStore.listState = LIST_LOADED;
       })
       .catch(err => {
+        clearTimeout(timeout);
         error(err);
         this.dataStore.listState = LIST_ERROR;
       })
@@ -434,8 +440,10 @@ export class FilteredListPage {
           values: this.dataStore.filterValues,
           ...this._filterViewAttributes,
           onchange: async values => {
-            this.dataStore.listState = LIST_LOADING;
-            m.redraw();
+            const timeout = setTimeout(() => {
+              this.dataStore.listState = LIST_LOADING;
+              m.redraw();
+            }, LIST_LOADING_DELAY);
             try {
               await this._filterViewAttributes.onchange(values);
 
@@ -445,8 +453,10 @@ export class FilteredListPage {
                   this._handleItemDirectLink(this.itemId);
                 }
               }
+              clearTimeout(timeout);
               this.dataStore.listState = LIST_LOADED;
             } catch (_error) {
+              clearTimeout(timeout);
               this.dataStore.listState = LIST_ERROR;
               if (_error) error(_error);
             }
@@ -458,42 +468,53 @@ export class FilteredListPage {
   }
 
   get _listContainerView() {
+    const lists = this._lists;
+    const listLoaded = this.dataStore.listState === LIST_LOADED;
+    const containsPinnedList = lists.some(
+      list => list.name === this.constructor.pinnedListIdentifier
+    );
+
+    let pinnedList;
+
+    if (this.dataStore.pinnedItem && !this.dataStore.pinnedItem.loading) {
+      pinnedList = this._renderList({
+        name: this.constructor.pinnedListIdentifier,
+        items: [this.dataStore.pinnedItem.item],
+      });
+    }
+
+    let fullPageMessage;
+
     if (this.dataStore.listState === LIST_LOADING) {
-      return m('div.loading', m(Spinner, { show: true, size: '96px' }));
+      fullPageMessage = m('div.loading', m(Spinner, { show: true, size: '96px' }));
+    } else if (this.dataStore.listState === LIST_ERROR) {
+      fullPageMessage = this.constructor._renderFullPageMessage(i18n('loadingError'));
+    } else if (!this._hasItems()) {
+      fullPageMessage = this.constructor._renderFullPageMessage(i18n('emptyList'));
     }
-    if (this.dataStore.listState === LIST_LOADED) {
-      if (this._hasItems()) {
-        let pinnedList;
 
-        if (this.dataStore.pinnedItem && !this.dataStore.pinnedItem.loading) {
-          pinnedList = this._renderList({
-            name: this.constructor.pinnedListIdentifier,
-            items: [this.dataStore.pinnedItem.item],
-          });
+    return [
+      listLoaded && !containsPinnedList ? pinnedList : null,
+      ...lists.map(list => {
+        if (list.permanent === true) {
+          return this._renderList(list);
         }
-
-        const lists = this._lists;
-        const containsPinnedList = lists.some(
-          list => list.name === this.constructor.pinnedListIdentifier
-        );
-
-        return [
-          !containsPinnedList ? pinnedList : null,
-          ...lists.map(list => {
-            if (list.name === this.constructor.pinnedListIdentifier) {
-              return pinnedList;
-            }
+        if (listLoaded) {
+          if (list.name === this.constructor.pinnedListIdentifier) {
+            return pinnedList;
+          }
+          if (this._hasItems()) {
             return this._renderList(list);
-          }),
-        ];
-      }
-      return this.constructor._renderFullPageMessage(i18n('emptyList'));
-    }
-    return this.constructor._renderFullPageMessage(i18n('loadingError'));
+          }
+        }
+        return null;
+      }),
+      fullPageMessage,
+    ];
   }
 
   static _renderFullPageMessage(message) {
-    return m('span.empty-list', message);
+    return m('div.empty-list', m('span', message));
   }
 
   _renderList(list) {

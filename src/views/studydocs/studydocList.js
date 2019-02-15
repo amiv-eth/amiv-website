@@ -228,10 +228,12 @@ export default class StudydocList extends FilteredListPage {
     return [
       {
         name: 'quickfilter',
+        permanent: true,
         items: [m(StudydocQuickFilter, { controller, dataStore })],
       },
       {
         name: 'notice',
+        permanent: true,
         items: [
           m(Infobox, {
             icon: m(Icon, { svg: { content: m.trust(icons.info) } }),
