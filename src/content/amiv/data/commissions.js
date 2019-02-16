@@ -193,8 +193,11 @@ const data = [
     contact: [
       {
         icon: icons.earth,
-        label: 'limes.ethz.ch',
-        url: 'https://limes.ethz.ch',
+        label: {
+          en: 'LIMES Website',
+          de: 'LIMES Webseite',
+        },
+        url: 'https://legacy.amiv.ethz.ch/limes',
       },
       {
         icon: icons.email,
