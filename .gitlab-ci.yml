@@ -33,6 +33,9 @@ build_master:
     - docker push "$CI_REGISTRY_IMAGE"
   only:
     - master
+  environment:
+    name: production
+    url: https://future.amiv.ethz.ch
 
 # On branches except master: verify that build works, do not push to registry
 build:
@@ -47,9 +50,19 @@ build:
   except:
     - master
 
-deploy:
+deploy_cluster:
   stage: deploy
   image: amiveth/service-update-helper
+  script:
+    - /update.py
+  only:
+    - master
+
+deploy_pazuzu:
+  stage: deploy
+  image: amiveth/service-update-helper
+  before_script:
+    - export CI_DEPLOY_URL="$CI_DEPLOY_URL_PAZUZU"
   script:
     - /update.py
   only:
