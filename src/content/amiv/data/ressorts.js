@@ -49,8 +49,12 @@ const data = [
       },
     ],
     description: {
-      en: '_No description available._',
-      de: '_Keine Beschreibung verfügbar._',
+      de: `Das HoPo-MAVT Team hat die Aufgabe, die Studierende gegenüber dem D-MAVT zu vertreten.
+        Besonders an der Unterrichtskommission, der Departementskonferenz und der Notenkonferenz setzen wir uns für die Studierenden ein.
+        Dabei ist es wichtig, dass jedes Studienjahr im Team vertreten ist, denn die Vertreter sind die primären Ansprechpartner für ihre Stufe.
+
+        Das Team trifft sich regelmässig und bespricht die aktuellen Anliegen.
+        Ausserdem organisiert das HoPo-Team verschiedene Dienstleistungen wie Prüfungsvorbereitungskurse oder organisiert Umfragen zur Verbesserung der Studienbedingungen.`,
     },
   },
   {
