@@ -102,7 +102,11 @@ export default class JobofferList extends FilteredListPage {
   _renderItem(joboffer, list, selectedId) {
     const animationDuration = 300; // in ms
     const imageurl = apiUrl + joboffer.logo.file;
-    const days = Math.ceil((Date.now() - Date.parse(joboffer._created)) / (1000 * 3600 * 24));
+    const dayFactor = 1000 * 3600 * 24;
+    // Set createdDay to timestamp with hour set to 0 to ensure
+    // correct time phrase rendering (today, yesterday, etc.)
+    const createdDay = Math.floor(Date.parse(joboffer._created) / dayFactor);
+    const days = Math.floor(Date.now() / dayFactor) - createdDay;
     let datePhrase;
 
     if (days === 0) {
