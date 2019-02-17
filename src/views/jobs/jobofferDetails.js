@@ -9,15 +9,17 @@ export default class JobofferDetails {
   static view({ attrs: { joboffer } }) {
     return m('div.joboffer-details', [
       m('div.description', m.trust(marked(escape(joboffer.getDescription())))),
-      m(Button, {
-        label: i18n('joboffers.downloadAsPdf'),
-        border: true,
-        events: {
-          onclick: () => {
-            window.open(apiUrl + joboffer.pdf.file, '_blank');
-          },
-        },
-      }),
+      joboffer.pdf
+        ? m(Button, {
+            label: i18n('joboffers.downloadAsPdf'),
+            border: true,
+            events: {
+              onclick: () => {
+                window.open(apiUrl + joboffer.pdf.file, '_blank');
+              },
+            },
+          })
+        : null,
     ]);
   }
 }
