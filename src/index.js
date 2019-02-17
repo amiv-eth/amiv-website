@@ -7,6 +7,7 @@ import Spinner from 'amiv-web-ui-components/src/spinner';
 import { loadLanguage, currentLanguage, isLanguageValid, i18n } from './models/language';
 import { Error404, Error401 } from './views/errors';
 import { isLoggedIn, checkLogin } from './models/auth';
+import logos from './images/logos';
 import layout from './views/layout';
 import frontpage from './views/frontpage';
 import about from './views/amiv/about';
@@ -26,6 +27,23 @@ Raven.config(sentryUrl, {
 }).install();
 
 Raven.context(() => {
+  const isSafari = /^((?!chrome|android|crios|fxios).)*safari/i.test(navigator.userAgent);
+
+  function renderBrowserUnsupportedNotice(browser) {
+    document.getElementsByClassName('static-container')[0].innerHTML =
+      `<div id="splash-error" style="display:block;"><img src="${
+        logos.amiv
+      }" alt="AMIV an der ETH">` +
+      `<h1>${browser} is not supported!</h1>` +
+      `<p>Safari is currently not supported. Please use another browser.</p>` +
+      `</div>`;
+  }
+
+  if (isSafari) {
+    renderBrowserUnsupportedNotice('Safari');
+    return;
+  }
+
   checkLogin();
   loadLanguage();
 
