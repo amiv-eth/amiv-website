@@ -35,6 +35,7 @@ export default {
     proceed: 'proceed',
   },
   membership: {
+    none: 'NO MEMBER',
     regular: 'REGULAR MEMBER',
     extraordinary: 'EXTRAORDINARY MEMBER',
     honorary: 'HONORARY MEMBER',

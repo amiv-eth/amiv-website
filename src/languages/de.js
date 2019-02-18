@@ -35,6 +35,7 @@ export default {
     proceed: 'fortfahren',
   },
   membership: {
+    none: 'KEIN MITGLIED',
     regular: 'ORDENTLICHES MITGLIED',
     extraordinary: 'AUSSERORDENTLICHES MITGLIED',
     honorary: 'EHRENMITGLIED',
