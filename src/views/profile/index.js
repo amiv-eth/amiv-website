@@ -1,6 +1,6 @@
 import m from 'mithril';
 import { Card } from 'polythene-mithril';
-import { DropdownCard } from 'amiv-web-ui-components';
+import { DropdownCard, Spinner } from 'amiv-web-ui-components';
 import UserInfo from './userInfo';
 import ChangePasswordForm from './changePasswordForm';
 import RfidForm from './rfidForm';
@@ -31,6 +31,10 @@ export default class Profile {
   }
 
   static view() {
+    if (!userController.user) {
+      return m('.loading', m(Spinner, { show: true, size: '96px' }));
+    }
+
     return m('div.profile-container', [
       m(Card, {
         className: 'info-container',
