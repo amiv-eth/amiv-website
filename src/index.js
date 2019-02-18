@@ -35,7 +35,8 @@ Raven.context(() => {
         logos.amiv
       }" alt="AMIV an der ETH">` +
       `<h1>${browser} is not supported!</h1>` +
-      `<p>Safari is currently not supported. Please use another browser.</p>` +
+      `<p>Safari is currently not supported. Stay tuned for updates. Please use a different browser temporarily.</p>` +
+      `<p>If you are looking for study documents, please go to <a href="https://legacy.amiv.ethz.ch/studium/unterlagen">legacy.amiv.ethz.ch</a></p>` +
       `</div>`;
   }
 
