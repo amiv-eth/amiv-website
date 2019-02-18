@@ -54,6 +54,7 @@ export default {
       teams: 'Teams',
       statutes: 'Statutes',
       minutes: 'Minutes',
+      gv: 'General Assemblies',
     },
     events: 'Events',
     studydocuments: 'Study Documents',

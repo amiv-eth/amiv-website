@@ -123,6 +123,10 @@ export const mainNavigation = new Navigation([
         label: 'mainMenu.about.minutes',
         url: 'https://cloud.amiv.ethz.ch/index.php/s/minutes',
       },
+      {
+        label: 'mainMenu.about.gv',
+        url: 'https://cloud.amiv.ethz.ch/index.php/f/1139324',
+      },
     ]),
   },
   {

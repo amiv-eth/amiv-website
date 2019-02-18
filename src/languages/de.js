@@ -54,6 +54,7 @@ export default {
       teams: 'Teams',
       statutes: 'Statuten',
       minutes: 'Protokolle',
+      gv: 'Generalversammlungen',
     },
     events: 'Events',
     studydocuments: 'Studienunterlagen',
