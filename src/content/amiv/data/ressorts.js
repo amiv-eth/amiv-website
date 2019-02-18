@@ -49,6 +49,11 @@ const data = [
       },
     ],
     description: {
+      en: `The student representation team at D-MAVT represent the interests of the students, and participates in the committees on departmental level.
+        These are the Departmental Conference, the Unterrichtskommission, and the Notenkonferenz. The team consists of students from each year of study and is the primary point of contact for both students and the department.
+        
+        The team meets regularly to discuss and resolve requests and problems.
+        Furthermore, the team organises Examination Preperation Courses, and works on improving the degrees offered at the Department as well as the study conditions.`,
       de: `Das HoPo-MAVT Team hat die Aufgabe, die Studierende gegenüber dem D-MAVT zu vertreten.
         Besonders an der Unterrichtskommission, der Departementskonferenz und der Notenkonferenz setzen wir uns für die Studierenden ein.
         Dabei ist es wichtig, dass jedes Studienjahr im Team vertreten ist, denn die Vertreter sind die primären Ansprechpartner für ihre Stufe.
