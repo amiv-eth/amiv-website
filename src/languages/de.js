@@ -107,6 +107,10 @@ export default {
     setRfid: 'Setze deine RFID unten, um gratis Bier zu erhalten!',
     rfid: 'RFID',
     rfidError: '6 Ziffern erforderlich. Siehe Rückseite deiner Legi.',
+    rfidChanged: 'RFID Nummer aktualisiert.',
+    rfidPatchError:
+      'Ein Fehler ist aufgetreten. Möglichweise ist die RFID Nummer bereits in Verwendung.',
+    rfidNotSet: 'nicht gesetzt',
     password: {
       change: 'Passwort ändern',
       changed: 'Password wurde geändert.',

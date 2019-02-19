@@ -83,9 +83,6 @@ export default class UserController {
       })
       .then(result => {
         this._user = result;
-      })
-      .catch(e => {
-        error(e.message);
       });
   }
 

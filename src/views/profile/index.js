@@ -57,7 +57,7 @@ export default class Profile {
           content: m(SessionInfo, { userController }),
         }),
         m(DropdownCard, {
-          title: `RFID: ${userController.user.rfid}`,
+          title: `RFID: ${userController.user.rfid || i18n('profile.rfidNotSet')}`,
           style: {
             margin: '16px 0',
             borderRadius: '4px',

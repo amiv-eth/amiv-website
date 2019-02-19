@@ -107,6 +107,9 @@ export default {
     setRfid: 'Set your RFID below to get free beer!',
     rfid: 'RFID',
     rfidError: '6 digits required. See back of your legi.',
+    rfidChanged: 'RFID number changed.',
+    rfidPatchError: 'An error occurred. The number might already be in use.',
+    rfidNotSet: 'not set',
     password: {
       change: 'Change password',
       changed: 'Password updated.',
