@@ -16,7 +16,7 @@ export default class UserInfo {
     let freeBeerNotice;
 
     if (user.membership !== 'none') {
-      if (user.rfid !== undefined && user.rfid.length === 6) {
+      if (user.rfid && user.rfid.length === 6) {
         freeBeerNotice = m('div', i18n('profile.freeBeer'));
       } else {
         freeBeerNotice = m('div', i18n('profile.setRfid'));

@@ -11,16 +11,16 @@ export default class RfidForm {
   }
 
   submit() {
-    const savedRfid = this.rfid;
+    const savedRfid = this.rfid !== '' ? this.rfid : null;
     this.busy = true;
     this.userController
       .update({ rfid: savedRfid })
       .then(() => {
-        this.rfid = savedRfid;
+        this.rfid = savedRfid || '';
         this.busy = false;
       })
       .catch(() => {
-        this.rfid = savedRfid;
+        this.rfid = savedRfid || '';
         this.busy = false;
       });
   }
@@ -29,7 +29,7 @@ export default class RfidForm {
     const buttonArgs = { events: { onclick: () => this.submit() } };
     const { user } = this.userController;
 
-    if (this.rfid === undefined) this.rfid = user.rfid;
+    if (this.rfid === undefined) this.rfid = user.rfid || '';
     if (!this.valid || this.busy) {
       buttonArgs.disabled = true;
     }
