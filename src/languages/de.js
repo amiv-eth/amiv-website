@@ -113,6 +113,8 @@ export default {
       revertToLdap: 'Zu LDAP zurückkehren',
       revertToLdapWarning:
         'Falls du dich nicht über das ETH LDAP authentifizieren kannst, ist das einloggen nicht mehr möglich!\nNur ETH Angehörige sollten diese Aktion ausführen.\n\n**Dies kann nicht rückgängig gemacht werden!**',
+      explanation:
+        'Du kannst dich jederzeit mit deinen ETH-Anmeldedaten anmelden. Du kannst aber auch ein zusätzliches Passwort für die Anmeldung bei AMIV-Diensten festlegen.',
       set: 'Passwort setzen',
       requirements: 'Passwort muss zwischen 7 und 100 Zeichen lang sein.',
       current: 'Aktuelles Passwort',

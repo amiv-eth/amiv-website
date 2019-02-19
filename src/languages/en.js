@@ -113,6 +113,8 @@ export default {
       revertToLdap: 'Revert to LDAP',
       revertToLdapWarning:
         'If you cannot authenticate against the ETH LDAP service, you can no longer log in!\nOnly ETH affiliated people should use this function.\n\n**This cannot be undone!**',
+      explanation:
+        'You can always log in with your ETH credentials, but you can also set an additional password to log in to AMIV services.',
       set: 'Set password',
       requirements: 'Password has to be between 7 and 100 characters long.',
       current: 'Current password',
