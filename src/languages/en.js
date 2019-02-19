@@ -35,6 +35,7 @@ export default {
     proceed: 'proceed',
   },
   membership: {
+    none: 'NO MEMBER',
     regular: 'REGULAR MEMBER',
     extraordinary: 'EXTRAORDINARY MEMBER',
     honorary: 'HONORARY MEMBER',
@@ -106,12 +107,17 @@ export default {
     setRfid: 'Set your RFID below to get free beer!',
     rfid: 'RFID',
     rfidError: '6 digits required. See back of your legi.',
+    rfidChanged: 'RFID number changed.',
+    rfidPatchError: 'An error occurred. The number might already be in use.',
+    rfidNotSet: 'not set',
     password: {
       change: 'Change password',
       changed: 'Password updated.',
       revertToLdap: 'Revert to LDAP',
       revertToLdapWarning:
         'If you cannot authenticate against the ETH LDAP service, you can no longer log in!\nOnly ETH affiliated people should use this function.\n\n**This cannot be undone!**',
+      explanation:
+        'You can always log in with your ETH credentials, but you can also set an additional password to log in to AMIV services.',
       set: 'Set password',
       requirements: 'Password has to be between 7 and 100 characters long.',
       current: 'Current password',

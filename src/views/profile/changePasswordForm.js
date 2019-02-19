@@ -21,6 +21,7 @@ export default class ChangePasswordForm {
     this.password_old = '';
     this.password1 = '';
     this.password2 = '';
+    this.notification = { type: 'info', label: i18n('profile.password.explanation') };
   }
 
   static _createSession(user, password) {

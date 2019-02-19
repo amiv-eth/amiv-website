@@ -35,6 +35,7 @@ export default {
     proceed: 'fortfahren',
   },
   membership: {
+    none: 'KEIN MITGLIED',
     regular: 'ORDENTLICHES MITGLIED',
     extraordinary: 'AUSSERORDENTLICHES MITGLIED',
     honorary: 'EHRENMITGLIED',
@@ -106,12 +107,18 @@ export default {
     setRfid: 'Setze deine RFID unten, um gratis Bier zu erhalten!',
     rfid: 'RFID',
     rfidError: '6 Ziffern erforderlich. Siehe Rückseite deiner Legi.',
+    rfidChanged: 'RFID Nummer aktualisiert.',
+    rfidPatchError:
+      'Ein Fehler ist aufgetreten. Möglichweise ist die RFID Nummer bereits in Verwendung.',
+    rfidNotSet: 'nicht gesetzt',
     password: {
       change: 'Passwort ändern',
       changed: 'Password wurde geändert.',
       revertToLdap: 'Zu LDAP zurückkehren',
       revertToLdapWarning:
         'Falls du dich nicht über das ETH LDAP authentifizieren kannst, ist das einloggen nicht mehr möglich!\nNur ETH Angehörige sollten diese Aktion ausführen.\n\n**Dies kann nicht rückgängig gemacht werden!**',
+      explanation:
+        'Du kannst dich jederzeit mit deinen ETH-Anmeldedaten anmelden. Du kannst aber auch ein zusätzliches Passwort für die Anmeldung bei AMIV-Diensten festlegen.',
       set: 'Passwort setzen',
       requirements: 'Passwort muss zwischen 7 und 100 Zeichen lang sein.',
       current: 'Aktuelles Passwort',
