@@ -171,6 +171,8 @@ export default class EventList extends FilteredListPage {
 
   // eslint-disable-next-line class-methods-use-this
   _renderItem(event, list, selectedId) {
+    if (!event) return m('');
+
     const animationDuration = 300; // in ms
     const imageurl = event.img_thumbnail ? `${apiUrl}${event.img_thumbnail.file}` : logos.amivWheel;
     const properties = [
@@ -199,7 +201,7 @@ export default class EventList extends FilteredListPage {
       header: () =>
         m('div.event-header', [
           m('div.image.ratio-1to1', m('img', { src: imageurl, alt: event.getTitle() })),
-          m('div.content', [
+          m('div.event-content', [
             m('h2.title', event.getTitle()),
             m('div.catchphrase', event.getCatchphrase()),
             m('div.date', this.constructor._renderEventTime(event.time_start, event.time_end)),
@@ -257,15 +259,14 @@ export default class EventList extends FilteredListPage {
     const date_end = new Date(time_end);
 
     if (
-      date_start.getUTCDate() === date_end.getUTCDate() ||
-      (date_start.getUTCDate() === date_end.getUTCDate() - 1 &&
-        date_start.getUTCHours() > date_end.getUTCHours())
+      date_start.getDate() === date_end.getDate() ||
+      (date_start.getDate() === date_end.getDate() - 1 &&
+        date_start.getHours() > date_end.getHours())
     ) {
       return [
         m(
           'span',
           date_start.toLocaleString(currentLocale(), {
-            timeZone: 'UTC',
             weekday: 'long',
             day: '2-digit',
             month: '2-digit',
@@ -278,9 +279,9 @@ export default class EventList extends FilteredListPage {
         m(
           'span',
           date_end.toLocaleString(currentLocale(), {
-            timeZone: 'UTC',
             hour: '2-digit',
             minute: '2-digit',
+            timeZoneName: 'short',
           })
         ),
       ];
@@ -290,7 +291,6 @@ export default class EventList extends FilteredListPage {
       m(
         'span',
         date_start.toLocaleString(currentLocale(), {
-          timeZone: 'UTC',
           weekday: 'long',
           day: '2-digit',
           month: '2-digit',
@@ -303,13 +303,13 @@ export default class EventList extends FilteredListPage {
       m(
         'span',
         date_end.toLocaleString(currentLocale(), {
-          timeZone: 'UTC',
           weekday: 'long',
           day: '2-digit',
           month: '2-digit',
           year: '2-digit',
           hour: '2-digit',
           minute: '2-digit',
+          timeZoneName: 'short',
         })
       ),
     ];

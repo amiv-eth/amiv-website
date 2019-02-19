@@ -101,8 +101,6 @@ export default class EventDetails {
     const registerStart = new Date(this.event.time_register_start);
     const registerEnd = new Date(this.event.time_register_end);
 
-    console.log(this.event.time_register_start);
-
     if (this.event.time_register_start === null) {
       eventSignupForm = m('div', m('p', i18n('events.registration.none')));
     } else if (registerStart <= now) {
@@ -153,7 +151,6 @@ export default class EventDetails {
         m(
           'p.colored',
           registerStart.toLocaleString(currentLocale(), {
-            timeZone: 'UTC',
             weekday: 'long',
             day: '2-digit',
             month: '2-digit',
