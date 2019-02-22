@@ -125,8 +125,8 @@
     }
 
     .list_header {
-      position: -webkit-sticky;
-      position: sticky;
+      position: -webkit-sticky; /* stylelint-disable-line value-no-vendor-prefix */
+      position: sticky;         /* stylelint-disable-line declaration-block-no-duplicate-properties */
       top: 24px;
       z-index: 10;
       background-color: @color-grey;
