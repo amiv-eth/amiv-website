@@ -213,7 +213,7 @@ const data = [
         _...because engineering knows no limits!_`,
       de: `Wir **L**adies **i**n **M**echanical and **E**lectrical **S**tudies sind die Frauenkommission des AMIV. Wir organisieren verschiedene Events um Studentinnen untereinander, aber auch mit Industriepartnern zu verknüpfen.
 
-        Unsere Events sind hauptsächlich an AMIVlerinnen gerichtet. Neue Ladies im Vorstand sind ausserdem immer herzlich willkommen. Bei unseren Talks Events freuen wir uns aber auch immer über männliche Kommilitonen.
+        Unsere Events sind hauptsächlich an AMIVlerinnen gerichtet. Neue Ladies im Vorstand sind ausserdem immer herzlich willkommen. Bei unseren Talk Events freuen wir uns aber auch immer über männliche Kommilitonen.
 
         _...because engineering knows no limits!_`,
     },

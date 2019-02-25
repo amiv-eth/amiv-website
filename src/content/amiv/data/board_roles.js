@@ -47,7 +47,7 @@ const boardTaskDescriptions = {
 
   Infrastructure: {
     de:
-      'Antonia ist für sämtliche Räumlichkeiten des AMIV und der darin enthaltenen, dem Verein gehörenden, Einrichtung und deren Zustand verantwortlich. Die Gestaltung und Zuordnung im Kulturraumes, Regeln für den Aufenthaltsraum und die Getränkeversorgung beanspruchen die meiste Zeit ihrer Tätigkeit als Vorstand. Es freut sie jeweils, wenn sie sieht, wie AMIVler denn Müll trennen und sich um Ordnung und Sauberkeit bemühen. Für sämtliche Anliegen, Anreize und Ideen hat sie stets ein offenes Ohr und freut sich auf eine Mail von euch. infrastruktur@amiv.ethz.ch',
+      'Lukas ist für sämtliche Räumlichkeiten des AMIV und der darin enthaltenen, dem Verein gehörenden, Einrichtung und deren Zustand verantwortlich. Die Gestaltung und Zuordnung im Kulturraumes, Regeln für den Aufenthaltsraum und die Getränkeversorgung beanspruchen die meiste Zeit seinerTätigkeit als Vorstand. Es freut ihn jeweils, wenn er sieht, wie AMIVler denn Müll trennen und sich um Ordnung und Sauberkeit bemühen. Für sämtliche Anliegen, Anreize und Ideen hat er stets ein offenes Ohr und freut sich auf eine Mail von euch. [infrastruktur@amiv.ethz.ch](mailto:infrastruktur@amiv.ethz.ch)',
   },
 };
 
