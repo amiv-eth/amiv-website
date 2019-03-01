@@ -24,6 +24,7 @@ export default class Frontpage {
       {
         max_results: 3,
         sort: ['-priority', '-time_advertising_start'],
+        where: { img_poster: { $ne: null } },
       },
       false
     );
