@@ -80,6 +80,7 @@ export default class EventDetails {
       this.notification = { type: 'fail', label: i18n('events.signup.failed') };
     }
     this.signupBusy = false;
+    m.redraw();
   }
 
   async signoff() {
@@ -226,7 +227,7 @@ export default class EventDetails {
       validateOnInput: true,
       floatingLabel: true,
       type: 'email',
-      onChange: (name, value) => {
+      onChange: ({ value }) => {
         this.email = value;
       },
       value: this.email,
