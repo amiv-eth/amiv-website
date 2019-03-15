@@ -157,6 +157,16 @@ Raven.context(() => {
           m.route.set(`/${currentLanguage()}/`);
         },
       },
+      '/anmeldung': {
+        onmatch() {
+          m.route.set(`/${currentLanguage()}/events`);
+        },
+      },
+      '/events': {
+        onmatch() {
+          m.route.set(`/${currentLanguage()}/events`);
+        },
+      },
     };
 
     routes.forEach(r => {
