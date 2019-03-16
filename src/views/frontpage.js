@@ -9,10 +9,14 @@ import { i18n } from '../models/language';
 
 async function getData(state) {
   const events = await state.eventController.upcomingEvents.getPageData(1);
-  if (events.length < 3) {
+  // if there are more than 3 upcoming events with posters, show two rows with event posters.
+  const posterCount = events.length <= 3 ? 3 : 6;
+  if (events.length < posterCount) {
     const pastEvents = await state.eventController.pastEvents.getPageData(1);
     const { length } = events;
-    for (let i = 0; i < Math.min(3 - length, pastEvents.length); i += 1) events.push(pastEvents[i]);
+    for (let i = 0; i < Math.min(posterCount - length, pastEvents.length); i += 1) {
+      events.push(pastEvents[i]);
+    }
   }
   const jobs = await state.jobOfferController.getPageData(1);
   return { ...{ events }, ...{ jobs } };
@@ -22,8 +26,8 @@ export default class Frontpage {
   oninit() {
     this.eventController = new EventController(
       {
-        max_results: 3,
-        sort: ['-priority', '-time_advertising_start'],
+        max_results: 6,
+        sort: ['-priority', 'time_start'],
         where: { img_poster: { $ne: null } },
       },
       false
@@ -59,34 +63,6 @@ export default class Frontpage {
           : Array.from(Array(3)).map(() => this.constructor._renderJobCard(null, true))
       ),
     ]);
-  }
-
-  static _renderEventCard(item, loading = false) {
-    let url;
-    let cardContent;
-
-    if (item && !loading) {
-      url = {
-        href: `${m.route.get()}events/${item._id}`,
-        oncreate: m.route.link,
-      };
-
-      if (item.img_poster) {
-        cardContent = m('img', {
-          src: `${apiUrl}${item.img_poster.file}`,
-          alt: item.getTitle(),
-        });
-      } else {
-        cardContent = m('div', [m('h2', item.getTitle()), m('span', item.getCatchphrase())]);
-      }
-    } else {
-      cardContent = m(Spinner, { show: true });
-    }
-
-    return m(Card, {
-      url,
-      content: m('div.image.ratio-paper-a-vertical', cardContent),
-    });
   }
 
   static _renderJobCard(item, loading = false) {
