@@ -27,7 +27,7 @@ export default class Frontpage {
     this.eventController = new EventController(
       {
         max_results: 6,
-        sort: ['-priority', 'time_start'],
+        sort: ['-priority', '-time_advertising_start'],
         where: { img_poster: { $ne: null } },
       },
       false
