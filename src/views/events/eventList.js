@@ -6,6 +6,7 @@ import logos from '../../images/logos';
 import { i18n, currentLocale } from '../../models/language';
 import { EventController } from '../../models/events';
 import { FilteredListPage, FilteredListDataStore } from '../filteredListPage';
+import EventCalendar from './eventCalendar';
 
 const controller = new EventController({}, true);
 const dataStore = new FilteredListDataStore();
@@ -81,18 +82,6 @@ export default class EventList extends FilteredListPage {
         { type: 'hr' },
         {
           type: 'button',
-          label: i18n('events.agenda'),
-          className: 'flat-button',
-          events: {
-            onclick: () =>
-              window.open(
-                'https://calendar.google.com/calendar/embed?src=mdk91hfvr18q8rrlh3sedlhgvo%40group.calendar.google.com',
-                '_blank'
-              ),
-          },
-        },
-        {
-          type: 'button',
           label: i18n('reset'),
           className: 'flat-button',
           events: {
@@ -141,7 +130,13 @@ export default class EventList extends FilteredListPage {
 
   // eslint-disable-next-line class-methods-use-this
   get _lists() {
-    const lists = [];
+    const lists = [
+      {
+        name: 'calendar',
+        permanent: true,
+        items: [m(EventCalendar, { controller, dataStore })],
+      },
+    ];
 
     if (controller.openRegistrationEvents.length > 0) {
       lists.push({
@@ -172,6 +167,9 @@ export default class EventList extends FilteredListPage {
   // eslint-disable-next-line class-methods-use-this
   _renderItem(event, list, selectedId) {
     if (!event) return m('');
+    if (list === 'calendar') {
+      return event;
+    }
 
     const animationDuration = 300; // in ms
     const imageurl = event.img_thumbnail ? `${apiUrl}${event.img_thumbnail.file}` : logos.amivWheel;
