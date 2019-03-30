@@ -33,10 +33,7 @@ export default class EventController {
         where: {
           show_website: true,
           time_advertising_start: { $lt: date },
-          $and: [
-            { $or: [{ time_start: null }, { time_start: { $lt: date } }] },
-            { $or: [{ time_end: null }, { time_end: { $lt: date } }] },
-          ],
+          $or: [{ time_start: null }, { time_start: { $lt: date } }],
         },
       };
     });
