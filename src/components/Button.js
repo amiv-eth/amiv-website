@@ -3,7 +3,7 @@ import { Button } from 'polythene-mithril-button';
 import { ButtonCSS } from 'polythene-css';
 
 ButtonCSS.addStyle('.blue-button', {
-  color_light_background: '#5378E1',
+  color_light_background: '#3f51b5',
   color_light_text: 'white',
   color_dark_background: '#1f2d54',
   color_dark_text: 'white',
@@ -14,6 +14,17 @@ ButtonCSS.addStyle('.red-button', {
   color_light_text: 'white',
   color_dark_background: '#e8462b',
   color_dark_text: 'white',
+});
+
+ButtonCSS.addStyle('.blue-flat-button', {
+  color_light_background: 'transparent',
+  color_light_border: '#3f51b5',
+  color_light_text: '#3f51b5',
+});
+
+ButtonCSS.addStyle('.red-flat-button', {
+  color_light_background: 'transparent',
+  color_light_text: '#e8462b',
 });
 
 ButtonCSS.addStyle('.flat-button', {

@@ -9,8 +9,10 @@ import { Infobox } from '../errors';
 import { log } from '../../models/log';
 import { isLoggedIn, login } from '../../models/auth';
 import Button from '../../components/Button';
-import { i18n, currentLocale } from '../../models/language';
+import ActionBar from '../../components/ActionBar';
+import { i18n, currentLocale, currentLanguage } from '../../models/language';
 import icons from '../../images/icons';
+import { copyToClipboard } from '../../utils';
 
 export default class EventDetails {
   oninit(vnode) {
@@ -101,13 +103,20 @@ export default class EventDetails {
   }
 
   view() {
+    let noSignup = false;
     let eventSignupForm;
+    let eventSignupButtons;
     const now = new Date();
     const registerStart = new Date(this.event.time_register_start);
     const registerEnd = new Date(this.event.time_register_end);
 
     if (this.event.time_register_start === null) {
-      eventSignupForm = m('div', m('p', i18n('events.registration.none')));
+      eventSignupButtons = m(Button, {
+        className: 'flat-button',
+        disabled: true,
+        label: i18n('events.registration.none'),
+      });
+      noSignup = true;
     } else if (registerStart <= now) {
       if (registerEnd >= now) {
         if (isLoggedIn()) {
@@ -131,19 +140,24 @@ export default class EventDetails {
             const signupFormOptions = {
               signoffButton: this.event.signupData != null,
               hasSignupData: this.event.signupData != null,
+              canChangeSignup: this.schema != null,
             };
             eventSignupForm = this._renderSignupForm(signupFormOptions);
+            eventSignupButtons = this._renderSignupButtons(signupFormOptions);
           }
         } else if (this.event.allow_email_signup) {
           const signupFormOptions = {
             emailField: true,
           };
           eventSignupForm = this._renderSignupForm(signupFormOptions);
+          eventSignupButtons = this._renderSignupButtons(signupFormOptions);
         } else {
-          eventSignupForm = m('div', [
-            m('span', `${i18n('events.restrictions.membersOnly')} `),
-            m(Button, { label: i18n('login'), events: { onclick: () => login(m.route.get()) } }),
-          ]);
+          eventSignupForm = m('div', [m('span', `${i18n('events.restrictions.membersOnly')} `)]);
+          eventSignupButtons = m(Button, {
+            label: i18n('login'),
+            className: 'blue-flat-button',
+            events: { onclick: () => login(m.route.get()) },
+          });
         }
         this._renderParticipationNotice();
       } else {
@@ -184,31 +198,57 @@ export default class EventDetails {
       });
     }
 
-    return m('div.event-details', [
+    const urlId = `event-${this.event._id}-url`;
+
+    return m('div.event-details', { className: noSignup ? 'no-signup' : null }, [
       m('p', m.trust(marked(escape(this.event.getDescription())))),
-      m('div.separator'),
-      m('div.form', [notification, eventSignupForm]),
+      !noSignup && m('div.separator'),
+      !noSignup && m('div.form', [notification, eventSignupForm]),
+      m(ActionBar, {
+        className: 'event-actions',
+        left: eventSignupButtons,
+        right: [
+          m('textarea', {
+            id: urlId,
+            style: { opacity: 0, width: 0, height: 0, padding: 0 },
+          }),
+          m(Button, {
+            className: 'flat-button',
+            label: i18n('copyDirectLink'),
+            events: {
+              onclick: () => {
+                const url = `${window.location.origin}/${currentLanguage()}/events/${
+                  this.event._id
+                }`;
+                const inputElement = document.getElementById(urlId);
+
+                copyToClipboard(url, inputElement);
+              },
+            },
+          }),
+        ],
+      }),
     ]);
   }
 
-  _renderSignupForm({ hasSignupData = false, emailField = false, signoffButton = false }) {
+  _renderSignupForm({ emailField = false }) {
     const elements = this.schema ? this.form.renderSchema() : [];
 
     if (emailField) {
       elements.push(this._renderEmailField());
     }
 
-    if (!hasSignupData) {
-      elements.push(this._renderSignupButton(i18n('events.signup.action')));
-    } else if (this.schema) {
-      elements.push(this._renderSignupButton(i18n('events.signup.updateAction')));
-    }
-
-    if (signoffButton) {
-      elements.push(this._renderSignoffButton());
-    }
-
     return m('form', { onsubmit: () => false }, elements);
+  }
+
+  _renderSignupButtons({ canChangeSignup = false, hasSignupData = false, signoffButton = false }) {
+    return [
+      (!hasSignupData || canChangeSignup) &&
+        this._renderSignupButton(
+          i18n(`events.signup.${hasSignupData ? 'updateAction' : 'action'}`)
+        ),
+      signoffButton && this._renderSignoffButton(),
+    ];
   }
 
   _renderSignupButton(label) {
@@ -216,6 +256,8 @@ export default class EventDetails {
     // Waiting for MR to be accepted in web-ui-components repository.
     return m(Button, {
       name: 'signup',
+      className: 'blue-flat-button',
+      border: true,
       label,
       active: this.form.valid && !this.signupBusy,
       events: {
@@ -241,6 +283,7 @@ export default class EventDetails {
   _renderSignoffButton() {
     return m(Button, {
       name: 'signoff',
+      className: 'blue-flat-button',
       label: i18n('events.signoff.action'),
       active: !this.signoffBusy,
       events: {

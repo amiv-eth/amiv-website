@@ -1,7 +1,7 @@
 .joboffer-header {
   display: grid;
   grid-template-areas: 'logo content';
-  grid-template-columns: 150px 1fr;
+  grid-template-columns: 138px 1fr;
 
   @media @mobile {
     grid-template-areas: 'content';
@@ -9,8 +9,10 @@
   }
 
   .image {
+    width: unset;
     grid-area: logo;
     display: block;
+    margin: 16px;
     background-color: transparent;
 
     @media @mobile {

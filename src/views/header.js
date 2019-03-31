@@ -148,7 +148,7 @@ export default class Header {
                             subitem.url
                               ? m(Icon, {
                                   class: 'external-link',
-                                  svg: { content: m.trust(icons.link) },
+                                  svg: { content: m.trust(icons.externalLink) },
                                   size: 'small',
                                   alt: i18n('externalLink'),
                                 })

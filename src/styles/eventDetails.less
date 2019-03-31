@@ -2,8 +2,10 @@
 
 .event-details {
   display: grid;
-  grid-template-areas: 'description separator signup';
-  grid-template-columns: 1fr 4px 350px;
+  grid-template-areas:
+    'signup separator description'
+    'actions actions actions';
+  grid-template-columns: 350px 4px 1fr;
   border-top: 1px solid @color-grey;
   align-items: center;
   min-height: 10em;
@@ -13,8 +15,24 @@
     grid-template-areas:
       'description'
       'separator'
-      'signup';
+      'signup'
+      'actions';
     min-height: unset;
+  }
+
+  &.no-signup {
+    grid-template-areas:
+      'description'
+      'actions';
+    grid-template-columns: 1fr;
+
+    .separator {
+      display: none;
+    }
+
+    .form {
+      display: none;
+    }
   }
 
   > p {
@@ -39,8 +57,7 @@
   .form {
     grid-area: signup;
     position: relative;
-    margin: 2em 1em;
-    text-align: center;
+    margin: 2em 1em .5em;
 
     > p {
       position: absolute;
@@ -63,6 +80,10 @@
   button {
     margin-right: 1em;
   }
+}
+
+.event-actions {
+  grid-area: actions;
 }
 
 .event-loading {

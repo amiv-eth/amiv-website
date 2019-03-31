@@ -127,9 +127,9 @@ export default class JobofferList extends FilteredListPage {
       },
       header: () =>
         m('div.joboffer-header', [
-          m('div.image.ratio-3to2', m('img', { src: imageurl, alt: joboffer.company })),
+          m('div.image.ratio-4to1', m('img', { src: imageurl, alt: joboffer.company })),
           m('div.joboffer-content', [
-            m('h2.title', joboffer.getTitle()),
+            m('h3.title', joboffer.getTitle()),
             m('div.date', datePhrase),
           ]),
         ]),

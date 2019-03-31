@@ -4,8 +4,9 @@ import { apiUrl } from 'config';
 import filesize from 'filesize';
 import ExpansionPanel from 'amiv-web-ui-components/src/expansionPanel';
 import { Dialog } from 'polythene-mithril-dialog';
-import { Button } from 'polythene-mithril-button';
 import { Icon } from 'polythene-mithril-icon';
+import Button from '../../components/Button';
+import ActionBar from '../../components/ActionBar';
 import StudydocsController from '../../models/studydocs';
 import { i18n, currentLanguage } from '../../models/language';
 import { FilteredListDataStore, FilteredListPage } from '../filteredListPage';
@@ -13,6 +14,7 @@ import mimeTypeToIcon from '../../images/mimeTypeToIcon';
 import StudydocQuickFilter from './studydocQuickFilter';
 import { Infobox } from '../errors';
 import icons from '../../images/icons';
+import { copyToClipboard } from '../../utils';
 
 const controller = new StudydocsController();
 const dataStore = new FilteredListDataStore();
@@ -22,6 +24,8 @@ export default class StudydocList extends FilteredListPage {
     super('studydocuments', dataStore);
 
     this.dropdownDisabled = {};
+    this.directLinkCopied = null;
+    this.directLinkCopiedTimeout = null;
   }
 
   oninit(vnode) {
@@ -288,24 +292,29 @@ export default class StudydocList extends FilteredListPage {
       ? studydocument.title
       : i18n('studydocs.name.default');
 
+    const urlId = `studydoc-${studydocument._id}-url`;
+
     return m(ExpansionPanel, {
       id: this.getItemElementId(studydocument._id),
       expanded: studydocument._id === selectedId,
       separated: true,
       duration: animationDuration,
       onChange: expanded => {
+        if (this.expandDisabled === studydocument._id) {
+          this.expandDisabled = null;
+          return;
+        }
         this.onChange(studydocument._id, expanded, animationDuration);
       },
       header: () =>
         m('div.studydoc-header', [
           m('div', [
             m('div.title', [
-              m(
-                'h3',
-                title
+              m('h3', [
+                ...(title
                   ? [title, studydocument.title && m('span', studydocument.title)]
-                  : studydocTitle
-              ),
+                  : [studydocTitle]),
+              ]),
             ]),
             m('div.properties', properties.map(prop => this.constructor._renderProperty(prop))),
             m(
@@ -320,6 +329,29 @@ export default class StudydocList extends FilteredListPage {
             'div.studydoc-documents',
             studydocument.files.map(file => this.constructor._renderFile(file))
           ),
+          m(ActionBar, {
+            className: 'studydoc-actions',
+            right: [
+              m('textarea', {
+                id: urlId,
+                style: { opacity: 0, width: 0, height: 0, padding: 0 },
+              }),
+              m(Button, {
+                className: 'flat-button',
+                label: i18n('copyDirectLink'),
+                events: {
+                  onclick: () => {
+                    const url = `${window.location.origin}/${currentLanguage()}/studydocuments/${
+                      studydocument._id
+                    }`;
+                    const inputElement = document.getElementById(urlId);
+
+                    copyToClipboard(url, inputElement);
+                  },
+                },
+              }),
+            ],
+          }),
         ]),
     });
   }

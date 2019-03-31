@@ -25,6 +25,7 @@ export default {
   search: 'Suchen',
   reset: 'Zurücksetzen',
   externalLink: 'Externer Link',
+  copyDirectLink: 'Direktlink kopieren',
   button: {
     clear: 'löschen',
     create: 'erstellen',
@@ -281,7 +282,7 @@ export default {
   // Joboffers Page
   joboffers: {
     title: 'Jobs',
-    downloadAsPdf: 'Als PDF herunterladen',
+    downloadAsPdf: 'PDF herunterladen',
     publishedToday: 'heute veröffentlicht',
     publishedYesterday: 'gestern veröffentlicht',
     publishedDaysAgo: 'vor {{days}} Tagen veröffentlicht',

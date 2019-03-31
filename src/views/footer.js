@@ -48,7 +48,7 @@ export default class Footer {
             i18n('footer.issueReport'),
             m(Icon, {
               class: 'external-link',
-              svg: { content: m.trust(icons.link) },
+              svg: { content: m.trust(icons.externalLink) },
               size: 'small',
               alt: i18n('externalLink'),
             }),
