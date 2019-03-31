@@ -9,6 +9,7 @@ import Button from './Button';
 import Checkbox from './Checkbox';
 import Select from './Select';
 import TextField from './TextField';
+import { isLsdTripEnabled, getTadaAnimation } from '../models/lsd';
 import './FilterView.less';
 
 /**
@@ -160,6 +161,7 @@ export default class FilterViewComponent {
     });
 
     return m(Search, {
+      style: isLsdTripEnabled() ? getTadaAnimation() : null,
       textfield: {
         label: field.label || '',
         value: this.values[field.key],
@@ -184,6 +186,7 @@ export default class FilterViewComponent {
     this.values[field.key] = this.values[field.key] || field.default || '';
 
     return m(TextField, {
+      style: isLsdTripEnabled() ? getTadaAnimation() : null,
       label: field.label || '',
       value: this.values[field.key],
       onChange: state => {
@@ -209,7 +212,7 @@ export default class FilterViewComponent {
       field.values.map(item => items.push(this._createCheckbox(field.key, item.label, item.value)));
     }
 
-    return m('div.check', items);
+    return m('div.check', { style: isLsdTripEnabled() ? getTadaAnimation() : null }, items);
   }
 
   _createCheckbox(key, label, value) {
@@ -231,7 +234,7 @@ export default class FilterViewComponent {
   }
 
   _createRadioGroup(field) {
-    return m('div.radio', [
+    return m('div.radio', { style: isLsdTripEnabled() ? getTadaAnimation() : null }, [
       field.label ? m('h4', field.label) : m(''),
       m(RadioGroup, {
         ...field,
@@ -280,7 +283,11 @@ export default class FilterViewComponent {
       this.notify();
     };
 
-    return m(Select, options);
+    return m(
+      'div',
+      { style: `width:100%;display:grid;${isLsdTripEnabled() ? getTadaAnimation() : ''}` },
+      m(Select, options)
+    );
   }
 
   _createButton(field) {
@@ -298,7 +305,11 @@ export default class FilterViewComponent {
       options.className = field.className;
     }
 
-    return m(Button, options);
+    return m(
+      'div',
+      { style: `width:100%;display:grid;${isLsdTripEnabled() ? getTadaAnimation() : ''}` },
+      m(Button, options)
+    );
   }
 
   // eslint-disable-next-line class-methods-use-this

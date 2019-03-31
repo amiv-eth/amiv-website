@@ -4,6 +4,8 @@ export default {
     de: 'German',
     en: 'English',
   },
+  greetingCodingWeekend:
+    'Greetings from the Coding Weekend! Click on the «Stop» button on the right to return to the default view.',
   loading: 'Loading...',
   emptyList: 'There are no items to show.',
   close: 'close',

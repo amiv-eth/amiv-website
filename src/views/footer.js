@@ -3,6 +3,7 @@ import { Icon } from 'polythene-mithril';
 import { currentLanguage, i18n } from '../models/language';
 import logos from '../images/logos';
 import icons from '../images/icons';
+import { isLsdTripEnabled, getTadaAnimation } from '../models/lsd';
 
 const renderVseth = coord => {
   const style = `
@@ -18,7 +19,11 @@ const renderVseth = coord => {
       href: `https://vseth.ethz.ch/`,
       style,
     },
-    m('img', { src: logos.vseth, alt: 'VSETH' })
+    m('img', {
+      style: isLsdTripEnabled() ? 'animation: lsdtrip 2s linear infinite;' : null,
+      src: logos.vseth,
+      alt: 'VSETH',
+    })
   );
 };
 
@@ -37,26 +42,48 @@ export default class Footer {
   view() {
     return [
       m('div.report-issue', [
-        m('span', i18n('footer.issueSpotted')),
-        m(
-          'a',
-          {
-            href: 'https://gitlab.ethz.ch/amiv/amiv-website/issues/new?issuable_template=bug',
-            target: '_blank',
-          },
-          [
-            i18n('footer.issueReport'),
-            m(Icon, {
-              class: 'external-link',
-              svg: { content: m.trust(icons.link) },
-              size: 'small',
-              alt: i18n('externalLink'),
-            }),
-          ]
-        ),
+        ...(isLsdTripEnabled()
+          ? [
+              m(
+                'div',
+                {
+                  style: {
+                    width: '100%',
+                    height: '1.3em',
+                    overflow: 'hidden',
+                    position: 'relative',
+                  },
+                },
+                [
+                  m('span.greeting.animation1', `++++ ${i18n('greetingCodingWeekend')} ++++`),
+                  m('span.greeting.animation2', `++++ ${i18n('greetingCodingWeekend')} ++++`),
+                  m('span.greeting.animation3', `++++ ${i18n('greetingCodingWeekend')} ++++`),
+                ]
+              ),
+            ]
+          : [
+              m('span', i18n('footer.issueSpotted')),
+              m(
+                'a',
+                {
+                  href: 'https://gitlab.ethz.ch/amiv/amiv-website/issues/new?issuable_template=bug',
+                  target: '_blank',
+                },
+                [
+                  i18n('footer.issueReport'),
+                  m(Icon, {
+                    class: 'external-link',
+                    svg: { content: m.trust(icons.link) },
+                    size: 'small',
+                    alt: i18n('externalLink'),
+                  }),
+                ]
+              ),
+            ]),
       ]),
       m(
         'footer',
+        { style: isLsdTripEnabled() ? 'animation: lsdtrip 2s linear infinite;' : null },
         m('div', [
           m('div.copyright', [
             m('span', `© 1893 - ${new Date().getFullYear()} AMIV an der ETH`),
@@ -73,7 +100,10 @@ export default class Footer {
             'div.social-media-logos',
             m(
               'a',
-              { href: `https://www.facebook.com/AMIV.ETHZ/` },
+              {
+                style: isLsdTripEnabled() ? getTadaAnimation() : null,
+                href: `https://www.facebook.com/AMIV.ETHZ/`,
+              },
               m(Icon, {
                 size: 'medium',
                 svg: { content: m.trust(icons.facebook) },
@@ -82,7 +112,10 @@ export default class Footer {
             ),
             m(
               'a',
-              { href: `https://www.instagram.com/amiv_eth/` },
+              {
+                style: isLsdTripEnabled() ? getTadaAnimation() : null,
+                href: `https://www.instagram.com/amiv_eth/`,
+              },
               m(Icon, {
                 size: 'medium',
                 svg: { content: m.trust(icons.instagram) },
@@ -91,19 +124,30 @@ export default class Footer {
             ),
             m(
               'a',
-              { href: `https://twitter.com/amiv_ethz` },
+              {
+                style: isLsdTripEnabled() ? getTadaAnimation() : null,
+                href: `https://twitter.com/amiv_ethz`,
+              },
               m(Icon, { size: 'medium', svg: { content: m.trust(icons.twitter) }, alt: 'Twitter' })
             )
           ),
           m('div.institution-logos', [
             m(
               'a',
-              { href: `https://www.ethz.ch/` },
-              m('img', { src: logos.eth, alt: 'ETH Zürich' })
+              {
+                style: isLsdTripEnabled() ? getTadaAnimation() : null,
+                href: `https://www.ethz.ch/`,
+              },
+              m('img', {
+                style: isLsdTripEnabled() ? 'animation: lsdtrip 2s linear infinite;' : null,
+                src: logos.eth,
+                alt: 'ETH Zürich',
+              })
             ),
             m(
               'div',
               {
+                style: isLsdTripEnabled() ? getTadaAnimation() : null,
                 onclick: () => this.handleClick(),
               },
               renderVseth(this.coord)

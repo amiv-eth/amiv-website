@@ -6,6 +6,7 @@ import EventCard from '../components/EventCard';
 import EventController from '../models/events/EventController';
 import JobofferController from '../models/joboffers/JobofferController';
 import { i18n } from '../models/language';
+import { isLsdTripEnabled, getTadaAnimation, getTada2Animation } from '../models/lsd';
 
 async function getData(state) {
   const events = await state.eventController.upcomingEvents.getPageData(1);
@@ -48,14 +49,18 @@ export default class Frontpage {
 
   view() {
     return m('div#frontpage-container', [
-      m('h2', i18n('events.title')),
+      m('h2', { style: isLsdTripEnabled() ? getTada2Animation() : null }, i18n('events.title')),
       m(
         'div.frontpage-row',
         this.events.length > 0
-          ? this.events.map(item => m(EventCard, { item }))
-          : Array.from(Array(3)).map(() => m(EventCard))
+          ? this.events.map(item =>
+              m(EventCard, { item, style: isLsdTripEnabled() ? getTadaAnimation() : null })
+            )
+          : Array.from(Array(3)).map(() =>
+              m(EventCard, { style: isLsdTripEnabled() ? getTadaAnimation() : null })
+            )
       ),
-      m('h2', i18n('joboffers.title')),
+      m('h2', { style: isLsdTripEnabled() ? getTada2Animation() : null }, i18n('joboffers.title')),
       m(
         'div.frontpage-row',
         this.jobs.length > 0
@@ -86,6 +91,7 @@ export default class Frontpage {
     }
 
     return m(Card, {
+      style: isLsdTripEnabled() ? getTadaAnimation() : null,
       className: 'frontpage-job',
       url,
       content: cardContent,

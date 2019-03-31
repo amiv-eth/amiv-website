@@ -15,7 +15,7 @@ export default class EventCard {
    *   ```
    */
 
-  static view({ attrs: { item } }) {
+  static view({ attrs: { item, style } }) {
     let url;
     let cardContent;
 
@@ -38,6 +38,7 @@ export default class EventCard {
     }
 
     return m(Card, {
+      style,
       url,
       content: m('div.image.ratio-paper-a-vertical', cardContent),
     });

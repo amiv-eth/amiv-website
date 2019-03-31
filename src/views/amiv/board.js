@@ -6,6 +6,7 @@ import { boardPortraits, boardImage } from '../../content/amiv/data/board_portra
 import { boardTaskDescriptions } from '../../content/amiv/data/board_roles';
 import { i18n, currentLanguage } from '../../models/language';
 import { TranslationUnavailable } from '../errors';
+import { isLsdTripEnabled, getTadaAnimation } from '../../models/lsd';
 
 class ImageGroup {
   oninit(vnode) {
@@ -33,6 +34,7 @@ class ImageGroup {
     if (group.image) {
       image = m(
         'div.image.ratio-3to2',
+        { style: isLsdTripEnabled() ? getTadaAnimation() : null },
         m('img', { src: `/${group.image}`, alt: this._portraitNames.join(' & ') })
       );
     } else {
@@ -118,6 +120,7 @@ export default class Board {
     if (boardImage) {
       image = m(
         'div.image.ratio-3to2',
+        { style: isLsdTripEnabled() ? getTadaAnimation() : null },
         m('img', { src: `/${boardImage}`, alt: i18n('board.title') })
       );
     } else {

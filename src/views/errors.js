@@ -81,7 +81,7 @@ export class TranslationUnavailable {
  * @return {Infobox}
  */
 export class Infobox {
-  static view({ attrs: { icon, label } }) {
-    return m('div', { class: 'infobox' }, [icon, m('span', label)]);
+  static view({ attrs: { icon, label, style } }) {
+    return m('div', { class: 'infobox', style }, [icon, m('span', label)]);
   }
 }

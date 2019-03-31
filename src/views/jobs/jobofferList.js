@@ -5,6 +5,7 @@ import { i18n } from '../../models/language';
 import { JobofferController } from '../../models/joboffers';
 import { FilteredListPage, FilteredListDataStore } from '../filteredListPage';
 import JobofferDetails from './jobofferDetails';
+import { isLsdTripEnabled, getTada2Animation } from '../../models/lsd';
 
 const controller = new JobofferController();
 const dataStore = new FilteredListDataStore();
@@ -117,29 +118,33 @@ export default class JobofferList extends FilteredListPage {
       datePhrase = i18n('joboffers.publishedDaysAgo', { days });
     }
 
-    return m(ExpansionPanel, {
-      id: this.getItemElementId(joboffer._id),
-      expanded: joboffer._id === selectedId,
-      separated: true,
-      duration: animationDuration,
-      onChange: expanded => {
-        this.onChange(joboffer._id, expanded, animationDuration);
-      },
-      header: () =>
-        m('div.joboffer-header', [
-          m('div.image.ratio-3to2', m('img', { src: imageurl, alt: joboffer.company })),
-          m('div.joboffer-content', [
-            m('h2.title', joboffer.getTitle()),
-            m('div.date', datePhrase),
+    return m(
+      'div',
+      { style: isLsdTripEnabled() ? getTada2Animation() : null },
+      m(ExpansionPanel, {
+        id: this.getItemElementId(joboffer._id),
+        expanded: joboffer._id === selectedId,
+        separated: true,
+        duration: animationDuration,
+        onChange: expanded => {
+          this.onChange(joboffer._id, expanded, animationDuration);
+        },
+        header: () =>
+          m('div.joboffer-header', [
+            m('div.image.ratio-3to2', m('img', { src: imageurl, alt: joboffer.company })),
+            m('div.joboffer-content', [
+              m('h2.title', joboffer.getTitle()),
+              m('div.date', datePhrase),
+            ]),
           ]),
-        ]),
-      content: ({ expanded }) => {
-        if (expanded) {
-          return m(JobofferDetails, { joboffer });
-        }
-        return m('');
-      },
-    });
+        content: ({ expanded }) => {
+          if (expanded) {
+            return m(JobofferDetails, { joboffer });
+          }
+          return m('');
+        },
+      })
+    );
   }
 
   // eslint-disable-next-line class-methods-use-this
