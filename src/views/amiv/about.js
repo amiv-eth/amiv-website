@@ -43,7 +43,7 @@ export default class Amiv {
 
   static _load() {
     return m.request({
-      url: `/${currentLanguage === 'de' ? contentUrlGerman : contentUrlEnglish}`,
+      url: `/${currentLanguage() === 'de' ? contentUrlGerman : contentUrlEnglish}`,
       method: 'GET',
       deserialize: response => response,
     });
