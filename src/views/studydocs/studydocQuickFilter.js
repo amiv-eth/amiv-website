@@ -7,7 +7,6 @@ import ListSelect from '../../components/ListSelect';
 import { i18n } from '../../models/language';
 import StudydocsController from '../../models/studydocs';
 import icons from '../../images/icons';
-import { isLsdTripEnabled, getTada2Animation } from '../../models/lsd';
 
 const STATE_SEMESTER = 0;
 const STATE_DEPARTMENT = 1;
@@ -133,36 +132,32 @@ export default class StudydocQuickFilter {
       ];
     }
 
-    return m(
-      'div',
-      { style: isLsdTripEnabled() ? getTada2Animation() : null },
-      m(DropdownCard, {
-        className: ['studydocs-quickfilter', expanded ? 'expanded' : null].join(' '),
-        expanded,
-        separated: false,
-        duration: animationDuration,
-        onChange: expandedArg => {
-          expanded = expandedArg;
-        },
-        title: i18n('studydocs.quickfilter.title'),
-        content: m('div.studydocs-quickfilter-container', [
-          m('div.selection', [
-            m(Button, {
-              className: 'button flat-button',
-              label: i18n('reset'),
-              events: {
-                onclick: () => {
-                  this.constructor.clear();
-                  this.dataStore.filterValues = {};
-                },
+    return m(DropdownCard, {
+      className: ['studydocs-quickfilter', expanded ? 'expanded' : null].join(' '),
+      expanded,
+      separated: false,
+      duration: animationDuration,
+      onChange: expandedArg => {
+        expanded = expandedArg;
+      },
+      title: i18n('studydocs.quickfilter.title'),
+      content: m('div.studydocs-quickfilter-container', [
+        m('div.selection', [
+          m(Button, {
+            className: 'button flat-button',
+            label: i18n('reset'),
+            events: {
+              onclick: () => {
+                this.constructor.clear();
+                this.dataStore.filterValues = {};
               },
-            }),
-            ...this._renderSelection(),
-          ]),
-          m('div.filtercontent', content),
+            },
+          }),
+          ...this._renderSelection(),
         ]),
-      })
-    );
+        m('div.filtercontent', content),
+      ]),
+    });
   }
 
   // eslint-disable-next-line class-methods-use-this

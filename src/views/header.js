@@ -6,7 +6,6 @@ import icons from '../images/icons';
 import { i18n, currentLanguage, changeLanguage } from '../models/language';
 import Button from '../components/Button';
 import { isLoggedIn, login } from '../models/auth';
-import { isLsdTripEnabled, setLsdTripState, getTadaAnimation } from '../models/lsd';
 
 let mobileMenuShowing = false;
 
@@ -48,24 +47,15 @@ export default class Header {
   view() {
     return m(
       'header',
-      { style: isLsdTripEnabled() ? 'animation: lsdtrip 2s linear infinite;' : null },
       m(
         'nav',
         {
           class: this._mobileMenuShowing ? 'expanded' : '',
-          onmouseover: () => {
-            setLsdTripState(true);
-            m.redraw();
-          },
         },
         [
           m(
             'a.logo',
-            {
-              href: `/${currentLanguage()}/`,
-              onupdate: m.route.link,
-              style: isLsdTripEnabled() ? getTadaAnimation() : null,
-            },
+            { href: `/${currentLanguage()}/`, onupdate: m.route.link },
             m('img', { src: logos.amiv, alt: 'AMIV an der ETH' })
           ),
           this.constructor._mainMenu,
@@ -76,7 +66,6 @@ export default class Header {
               className: 'bordered-button',
               border: currentLanguage() === 'en',
               inactive: currentLanguage() === 'en',
-              style: isLsdTripEnabled() ? getTadaAnimation() : null,
               tone: 'dark',
               events: { onclick: () => changeLanguage('en') },
             }),
@@ -85,19 +74,30 @@ export default class Header {
               className: 'bordered-button',
               border: currentLanguage() === 'de',
               inactive: currentLanguage() === 'de',
-              style: isLsdTripEnabled() ? getTadaAnimation() : null,
               tone: 'dark',
               events: { onclick: () => changeLanguage('de') },
             }),
           ]),
           m(MobileMenuIcon, {
             className: 'mobile-menu',
-            style: isLsdTripEnabled() ? getTadaAnimation() : null,
             change: this._mobileMenuShowing,
             onclick: () => {
               this._mobileMenuShowing = !this._mobileMenuShowing;
             },
           }),
+          // m(
+          //   'div.mobile-menu',
+          //   {
+          //     onclick: () => {
+          //       this._mobileMenuShowing = !this._mobileMenuShowing;
+          //     },
+          //   },
+          //   m(Icon, {
+          //     svg: { content: m.trust(icons.mobileMenu) },
+          //     size: 'large',
+          //     alt: i18n('Menu'),
+          //   })
+          // ),
         ]
       )
     );
@@ -117,7 +117,6 @@ export default class Header {
               'a',
               {
                 href: item.getLink(),
-                style: isLsdTripEnabled() ? getTadaAnimation() : null,
                 onclick: e => {
                   if (item.submenu) {
                     mobileMenuShowing = true;
@@ -179,11 +178,7 @@ export default class Header {
               },
               m(
                 'a',
-                {
-                  href: `/${currentLanguage()}/profile`,
-                  onupdate: m.route.link,
-                  style: isLsdTripEnabled() ? getTadaAnimation() : null,
-                },
+                { href: `/${currentLanguage()}/profile`, onupdate: m.route.link },
                 i18n('mainMenu.profile')
               )
             ),
@@ -191,11 +186,7 @@ export default class Header {
               'li',
               m(
                 'a',
-                {
-                  href: `/${currentLanguage()}/logout`,
-                  onupdate: m.route.link,
-                  style: isLsdTripEnabled() ? getTadaAnimation() : null,
-                },
+                { href: `/${currentLanguage()}/logout`, onupdate: m.route.link },
                 i18n('mainMenu.logout')
               )
             ),
@@ -207,7 +198,6 @@ export default class Header {
               m(
                 'a',
                 {
-                  style: isLsdTripEnabled() ? getTadaAnimation() : null,
                   href: `/${currentLanguage()}/profile`,
                   onclick: e => {
                     login(`/${currentLanguage()}/profile`);

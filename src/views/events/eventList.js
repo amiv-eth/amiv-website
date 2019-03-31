@@ -6,7 +6,6 @@ import logos from '../../images/logos';
 import { i18n, currentLocale } from '../../models/language';
 import { EventController } from '../../models/events';
 import { FilteredListPage, FilteredListDataStore } from '../filteredListPage';
-import { isLsdTripEnabled, getTada2Animation } from '../../models/lsd';
 
 const controller = new EventController({}, true);
 const dataStore = new FilteredListDataStore();
@@ -191,45 +190,41 @@ export default class EventList extends FilteredListPage {
       },
     ];
 
-    return m(
-      'div',
-      { style: isLsdTripEnabled() ? getTada2Animation() : null },
-      m(ExpansionPanel, {
-        id: this.getItemElementId(event._id),
-        expanded: event._id === selectedId,
-        separated: true,
-        duration: animationDuration,
-        onChange: expanded => {
-          this.onChange(event._id, expanded, animationDuration);
-        },
-        header: () =>
-          m('div.event-header', [
-            m('div.image.ratio-1to1', m('img', { src: imageurl, alt: event.getTitle() })),
-            m('div.event-content', [
-              m('h2.title', event.getTitle()),
-              m('div.catchphrase', event.getCatchphrase()),
-              m('div.date', this.constructor._renderEventTime(event.time_start, event.time_end)),
-              m('div.properties', properties.map(item => this.constructor._renderProperty(item))),
-            ]),
+    return m(ExpansionPanel, {
+      id: this.getItemElementId(event._id),
+      expanded: event._id === selectedId,
+      separated: true,
+      duration: animationDuration,
+      onChange: expanded => {
+        this.onChange(event._id, expanded, animationDuration);
+      },
+      header: () =>
+        m('div.event-header', [
+          m('div.image.ratio-1to1', m('img', { src: imageurl, alt: event.getTitle() })),
+          m('div.event-content', [
+            m('h2.title', event.getTitle()),
+            m('div.catchphrase', event.getCatchphrase()),
+            m('div.date', this.constructor._renderEventTime(event.time_start, event.time_end)),
+            m('div.properties', properties.map(item => this.constructor._renderProperty(item))),
           ]),
-        content: ({ expanded }) => {
-          if (expanded) {
-            if (eventDetailsModule) {
-              return m(eventDetailsModule.default, { event });
-            }
-
-            import(/* webpackInclude: /\.js$/ */ /* webpackChunkName: "event" */ './eventDetails').then(
-              loadedModule => {
-                eventDetailsModule = loadedModule;
-                m.redraw();
-              }
-            );
-            return m('.event-loading', m(Spinner, { show: true, size: '48px' }));
+        ]),
+      content: ({ expanded }) => {
+        if (expanded) {
+          if (eventDetailsModule) {
+            return m(eventDetailsModule.default, { event });
           }
-          return m('');
-        },
-      })
-    );
+
+          import(/* webpackInclude: /\.js$/ */ /* webpackChunkName: "event" */ './eventDetails').then(
+            loadedModule => {
+              eventDetailsModule = loadedModule;
+              m.redraw();
+            }
+          );
+          return m('.event-loading', m(Spinner, { show: true, size: '48px' }));
+        }
+        return m('');
+      },
+    });
   }
 
   static _renderProperty({ name = null, value, visible = false }) {

@@ -9,7 +9,6 @@ import { data as data_ressorts } from '../../content/amiv/data/ressorts';
 import { data as data_commissions } from '../../content/amiv/data/commissions';
 import { i18n, currentLanguage } from '../../models/language';
 import { TranslationUnavailable } from '../errors';
-import { isLsdTripEnabled, getTadaAnimation, getTada2Animation } from '../../models/lsd';
 
 class Team {
   static _parseMarkdownText(text) {
@@ -100,7 +99,6 @@ class Team {
 
     return m(Card, {
       className: 'team',
-      style: isLsdTripEnabled() ? getTadaAnimation() : null,
       content: [
         {
           media: {
@@ -130,19 +128,11 @@ export default class Teams {
   static view() {
     return m('div', [
       m('div', [
-        m(
-          'h1.centered',
-          { style: isLsdTripEnabled() ? getTada2Animation() : null },
-          i18n('teams.ressorts')
-        ),
+        m('h1.centered', i18n('teams.ressorts')),
         m('div.teams', data_ressorts.map(ressort => m(Team, { team: ressort }))),
       ]),
       m('div', [
-        m(
-          'h1.centered',
-          { style: isLsdTripEnabled() ? getTada2Animation() : null },
-          i18n('teams.commissions')
-        ),
+        m('h1.centered', i18n('teams.commissions')),
         m('div.teams', data_commissions.map(commission => m(Team, { team: commission }))),
       ]),
     ]);

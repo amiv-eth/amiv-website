@@ -11,7 +11,6 @@ import { i18n, currentLanguage } from '../../models/language';
 import { FilteredListDataStore, FilteredListPage } from '../filteredListPage';
 import mimeTypeToIcon from '../../images/mimeTypeToIcon';
 import StudydocQuickFilter from './studydocQuickFilter';
-import { isLsdTripEnabled, getTada2Animation } from '../../models/lsd';
 import { Infobox } from '../errors';
 import icons from '../../images/icons';
 
@@ -230,19 +229,13 @@ export default class StudydocList extends FilteredListPage {
       {
         name: 'quickfilter',
         permanent: true,
-        items: [
-          m(StudydocQuickFilter, {
-            controller,
-            dataStore,
-          }),
-        ],
+        items: [m(StudydocQuickFilter, { controller, dataStore })],
       },
       {
         name: 'notice',
         permanent: true,
         items: [
           m(Infobox, {
-            style: isLsdTripEnabled() ? getTada2Animation() : null,
             icon: m(Icon, { svg: { content: m.trust(icons.info) } }),
             label: m.trust(i18n('studydocs.legacyText')),
           }),
@@ -295,44 +288,40 @@ export default class StudydocList extends FilteredListPage {
       ? studydocument.title
       : i18n('studydocs.name.default');
 
-    return m(
-      'div',
-      { style: isLsdTripEnabled() ? getTada2Animation() : null },
-      m(ExpansionPanel, {
-        id: this.getItemElementId(studydocument._id),
-        expanded: studydocument._id === selectedId,
-        separated: true,
-        duration: animationDuration,
-        onChange: expanded => {
-          this.onChange(studydocument._id, expanded, animationDuration);
-        },
-        header: () =>
-          m('div.studydoc-header', [
-            m('div', [
-              m('div.title', [
-                m(
-                  'h3',
-                  title
-                    ? [title, studydocument.title && m('span', studydocument.title)]
-                    : studydocTitle
-                ),
-              ]),
-              m('div.properties', properties.map(prop => this.constructor._renderProperty(prop))),
+    return m(ExpansionPanel, {
+      id: this.getItemElementId(studydocument._id),
+      expanded: studydocument._id === selectedId,
+      separated: true,
+      duration: animationDuration,
+      onChange: expanded => {
+        this.onChange(studydocument._id, expanded, animationDuration);
+      },
+      header: () =>
+        m('div.studydoc-header', [
+          m('div', [
+            m('div.title', [
               m(
-                'div.studydoc-documents',
-                studydocument.files.map(file => this.constructor._renderFile(file))
+                'h3',
+                title
+                  ? [title, studydocument.title && m('span', studydocument.title)]
+                  : studydocTitle
               ),
             ]),
-          ]),
-        content: () =>
-          m('div.studydoc-content', [
+            m('div.properties', properties.map(prop => this.constructor._renderProperty(prop))),
             m(
               'div.studydoc-documents',
               studydocument.files.map(file => this.constructor._renderFile(file))
             ),
           ]),
-      })
-    );
+        ]),
+      content: () =>
+        m('div.studydoc-content', [
+          m(
+            'div.studydoc-documents',
+            studydocument.files.map(file => this.constructor._renderFile(file))
+          ),
+        ]),
+    });
   }
 
   static _renderProperty({ name = null, value, visible = true }) {

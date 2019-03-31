@@ -10,7 +10,6 @@ import { error } from '../models/log';
 import { i18n, currentLanguage } from '../models/language';
 import FilterView from '../components/FilterView';
 import icons from '../images/icons';
-import { isLsdTripEnabled, getTadaAnimation, getTada2Animation } from '../models/lsd';
 
 const LIST_LOADING_DELAY = 150;
 const LIST_LOADING = 'loading';
@@ -526,7 +525,6 @@ export class FilteredListPage {
         m(
           Shadow,
           {
-            style: isLsdTripEnabled() ? getTada2Animation() : null,
             className: 'list_header',
             shadowDepth: 1,
           },
@@ -573,7 +571,6 @@ export class FilteredListPage {
     }
     return m(
       'div.load-more-items',
-      { style: isLsdTripEnabled() ? getTadaAnimation() : null },
       m(Button, {
         border: true,
         extraWide: true,

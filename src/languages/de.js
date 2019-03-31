@@ -4,8 +4,6 @@ export default {
     de: 'Deutsch',
     en: 'Englisch',
   },
-  greetingCodingWeekend:
-    'Grüsse vom Coding Weekend! Klicke rechts auf «Stop» um zur Normalansicht zurückzukehren.',
   loading: 'Laden...',
   emptyList: 'Es sind keine Einträge zum Anzeigen vorhanden.',
   close: 'schliessen',
