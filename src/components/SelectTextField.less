@@ -1,0 +1,26 @@
+.pe-select-textfield {
+  height: 96px;
+  overflow-y: visible;
+
+  .textfield {
+    display: flex;
+    align-content: space-between;
+    align-items: flex-start;
+
+    .pe-button {
+      position: relative;
+      top: 2em;
+      margin-left: .5em;
+    }
+  }
+
+  .suggestions {
+    position: relative;
+    top: -24px;
+    z-index: 10000;
+
+    .pe-list {
+      overflow-y: auto;
+    }
+  }
+}
