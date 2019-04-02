@@ -139,15 +139,20 @@ export class FilteredListPage {
    * @param {object} vnode
    * @param {string} itemId id of the item to be shown on the details page
    */
-  oninit(vnode, itemId) {
+  oninit(_, itemId) {
     // scroll events don't bubble up, so we need set useCapture to true for children scrollable elements
-    document.addEventListener('scroll', () => this.onscroll(), true);
+    this.scrollFunction = () => this.onscroll();
+    document.addEventListener('scroll', this.scrollFunction, true);
 
     this.itemId = itemId;
 
     if (this.dataStore.isInitialized) {
       this._handleItemDirectLink(itemId);
     }
+  }
+
+  onremove() {
+    document.removeEventListener('scroll', this.scrollFunction, true);
   }
 
   _handleItemDirectLink(itemId) {
