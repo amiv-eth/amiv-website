@@ -185,6 +185,7 @@ export default {
       updateAction: 'change signup',
       success: "Success! you're in",
       failed: 'Signup failed',
+      blacklisted: 'You cannot register for this event because you are on the blacklist.',
       waitingList: 'You are on the waiting list.',
       accepted: 'You are signed up and got a spot.',
     },

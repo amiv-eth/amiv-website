@@ -77,7 +77,11 @@ export default class EventDetails {
       }
     } catch (err) {
       log(err);
-      this.notification = { type: 'fail', label: i18n('events.signup.failed') };
+      if (err.message.includes('blacklist')) {
+        this.notification = { type: 'fail', label: i18n('events.signup.blacklisted') };
+      } else {
+        this.notification = { type: 'fail', label: i18n('events.signup.failed') };
+      }
     }
     this.signupBusy = false;
     m.redraw();

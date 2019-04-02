@@ -186,6 +186,7 @@ export default {
       updateAction: 'Anmeldung ändern',
       success: 'Du hast einen Platz ergattert!',
       failed: 'Anmeldung fehlgeschlagen',
+      blacklisted: 'Du kannst dich im Moment nicht anmelden, da du auf der Blacklist bist.',
       waitingList: 'Du bist auf der Warteliste.',
       accepted: 'Du bist angemeldet und hast einen Platz.',
     },
