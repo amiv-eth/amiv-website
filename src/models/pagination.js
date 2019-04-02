@@ -168,6 +168,28 @@ export default class PaginationController {
   }
 
   /**
+   * Reload the data from the API using the configured query.
+   * @return {Promise}
+   * @public
+   */
+  async reload() {
+    const numberOfLoadedPages = this.lastLoadedPage;
+    this._pages = [];
+
+    // load first page to get the number of available pages.
+    await this.loadPageData(1);
+
+    let currentPage = 2;
+    const pagesToLoad = Math.min(numberOfLoadedPages, this.totalPages);
+    const promiseList = [];
+    while (currentPage <= pagesToLoad) {
+      promiseList.push(this.loadPageData(currentPage));
+      currentPage += 1;
+    }
+    await Promise.all(promiseList);
+  }
+
+  /**
    * Process a response from the API.
    *
    * You can override this function to further process the API data.

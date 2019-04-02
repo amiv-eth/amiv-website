@@ -127,6 +127,17 @@ export default class StudydocsController extends PaginationController {
     });
   }
 
+  static delete(id, etag) {
+    return m.request({
+      method: 'DELETE',
+      url: `${apiUrl}/studydocuments/${id}`,
+      headers: {
+        Authorization: getToken(),
+        'If-Match': etag,
+      },
+    });
+  }
+
   /**
    * Additional processing of the API responses to get the
    * `_summary` values for the studydocuments resource.

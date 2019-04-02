@@ -24,11 +24,13 @@ ButtonCSS.addStyle('.blue-flat-button', {
 
 ButtonCSS.addStyle('.red-flat-button', {
   color_light_background: 'transparent',
+  color_light_border: '#e8462b',
   color_light_text: '#e8462b',
 });
 
 ButtonCSS.addStyle('.flat-button', {
   color_light_background: 'transparent',
+  color_light_border: 'black',
   color_light_text: 'black',
 });
 

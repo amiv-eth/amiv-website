@@ -48,7 +48,7 @@ export default class EventList extends FilteredListPage {
 
   // eslint-disable-next-line class-methods-use-this
   _reloadData() {
-    return controller.refresh();
+    return controller.reload();
   }
 
   get _filterViewAttributes() {

@@ -40,7 +40,7 @@ export default class JobofferList extends FilteredListPage {
 
   // eslint-disable-next-line class-methods-use-this
   _reloadData() {
-    return controller.loadPageData(1);
+    return controller.reload();
   }
 
   get _filterViewAttributes() {

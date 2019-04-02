@@ -15,6 +15,7 @@ import StudydocQuickFilter from './studydocQuickFilter';
 import { Infobox } from '../errors';
 import icons from '../../images/icons';
 import { copyToClipboard } from '../../utils';
+import * as log from '../../models/log';
 
 const controller = new StudydocsController();
 const dataStore = new FilteredListDataStore();
@@ -24,6 +25,7 @@ export default class StudydocList extends FilteredListPage {
     super('studydocuments', dataStore);
 
     this.dropdownDisabled = {};
+    this.deleteDocument = { id: null, busy: false };
     this.directLinkCopied = null;
     this.directLinkCopiedTimeout = null;
   }
@@ -49,7 +51,7 @@ export default class StudydocList extends FilteredListPage {
 
   // eslint-disable-next-line class-methods-use-this
   _reloadData() {
-    return controller.loadPageData(1);
+    return controller.reload();
   }
 
   _isDropdownDisabled(field) {
@@ -263,6 +265,7 @@ export default class StudydocList extends FilteredListPage {
     }
 
     const studydocument = item;
+    const actionButtons = [];
     const animationDuration = 300; // in ms
     const properties = [];
 
@@ -291,6 +294,59 @@ export default class StudydocList extends FilteredListPage {
     const studydocTitle = studydocument.title
       ? studydocument.title
       : i18n('studydocs.name.default');
+
+    if (studydocument._links.self.methods.includes('DELETE')) {
+      // User is allowed to delete this document
+      if (this.deleteDocument.id === studydocument._id && !this.deleteDocument.busy) {
+        actionButtons.push(
+          ...[
+            m(Button, {
+              name: `delete-cancel-${studydocument._id}`,
+              className: 'flat-button',
+              label: i18n('studydocs.actions.cancel'),
+              events: {
+                onclick: () => {
+                  this.deleteDocument = { id: null, busy: false };
+                },
+              },
+            }),
+            m(Button, {
+              name: `delete-confirm-${studydocument._id}`,
+              className: 'red-flat-button',
+              border: true,
+              label: i18n('studydocs.actions.confirm'),
+              events: {
+                onclick: async () => {
+                  this.deleteDocument.busy = true;
+                  try {
+                    await StudydocsController.delete(studydocument._id, studydocument._etag);
+                    controller.reload();
+                    m.route.set(`/${currentLanguage()}/studydocuments`);
+                  } catch (err) {
+                    log.error(err);
+                    this.deleteDocument = { id: null, busy: false };
+                  }
+                },
+              },
+            }),
+          ]
+        );
+      } else {
+        actionButtons.push(
+          m(Button, {
+            name: `delete-${studydocument._id}`,
+            className: 'blue-flat-button',
+            disabled: this.deleteDocument.id === studydocument._id && this.deleteDocument.busy,
+            label: i18n('studydocs.actions.delete'),
+            events: {
+              onclick: () => {
+                this.deleteDocument = { id: studydocument._id, busy: false };
+              },
+            },
+          })
+        );
+      }
+    }
 
     const urlId = `studydoc-${studydocument._id}-url`;
 
@@ -331,6 +387,7 @@ export default class StudydocList extends FilteredListPage {
           ),
           m(ActionBar, {
             className: 'studydoc-actions',
+            left: actionButtons,
             right: [
               m('textarea', {
                 id: urlId,

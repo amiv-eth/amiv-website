@@ -210,6 +210,12 @@ export default {
       lecturePlaceholder: 'Vorlesung hier eintippen',
       loadingError: 'Ups, die Filteroptionen konnten nicht geladen werden.',
     },
+    actions: {
+      edit: 'bearbeiten',
+      delete: 'löschen',
+      cancel: 'abbrechen',
+      confirm: 'bestätigen',
+    },
     departments: {
       all: 'Alle',
       other: 'Andere',

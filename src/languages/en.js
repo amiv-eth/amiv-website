@@ -209,6 +209,12 @@ export default {
       lecturePlaceholder: 'Type lecture name',
       loadingError: 'Oops, we could not load the filter values.',
     },
+    actions: {
+      edit: 'edit',
+      delete: 'delete',
+      cancel: 'cancel',
+      confirm: 'confirm',
+    },
     departments: {
       all: 'All',
       other: 'Other',

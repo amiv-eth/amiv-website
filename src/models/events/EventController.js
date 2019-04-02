@@ -91,16 +91,22 @@ export default class EventController {
     this.openRegistrationEvents.setQuery(this.query);
     this.upcomingEvents.setQuery(this.query);
     this.pastEvents.setQuery(this.query);
-    await this.refresh();
-    return true;
-  }
 
-  /** Refresh all event data */
-  async refresh() {
     const jobs = [
       this.openRegistrationEvents.loadAll(),
       this.upcomingEvents.loadAll(),
       this.pastEvents.loadPageData(1),
+    ];
+    await Promise.all(jobs);
+    return true;
+  }
+
+  /** Reload all event data */
+  async reload() {
+    const jobs = [
+      this.openRegistrationEvents.loadAll(),
+      this.upcomingEvents.loadAll(),
+      this.pastEvents.reload(),
     ];
     await Promise.all(jobs);
   }
