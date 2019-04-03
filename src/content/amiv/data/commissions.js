@@ -249,6 +249,11 @@ const data = [
     image: randomDudesImage,
     contact: [
       {
+        icon: icons.facebook,
+        label: 'AMIV-Gondel',
+        url: 'https://www.facebook.com/amiv.gondel/',
+      },
+      {
         icon: icons.email,
         label: 'randomdudes@amiv.ethz.ch',
         url: 'mailto:randomdudes@amiv.ethz.ch',
