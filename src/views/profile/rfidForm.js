@@ -15,7 +15,7 @@ export default class RfidForm {
   }
 
   submit() {
-    const savedRfid = this.rfid || null;
+    const savedRfid = this.rfid && this.rfid.length > 0 ? this.rfid : null;
     this.busy = true;
     this.userController
       .update({ rfid: savedRfid })
@@ -35,7 +35,7 @@ export default class RfidForm {
     const buttonArgs = { events: { onclick: () => this.submit() } };
     const { user } = this.userController;
 
-    if (user.rfid === undefined) {
+    if (user === undefined) {
       return m('');
     }
 
