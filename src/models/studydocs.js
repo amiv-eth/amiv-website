@@ -102,7 +102,7 @@ export default class StudydocsController extends PaginationController {
    * @return {Promise}
    * @static
    */
-  static addNew(doc) {
+  static post(doc) {
     if (typeof doc !== 'object') {
       return new Promise(() => {}); // empty promise
     }
@@ -112,7 +112,7 @@ export default class StudydocsController extends PaginationController {
         for (let i = 0; i < doc.files.length; i += 1) {
           form.append('files', doc.files[i]);
         }
-      } else if (doc[key] !== '') {
+      } else if (doc[key] && doc[key] !== '') {
         form.append(key, doc[key]);
       }
     });
@@ -127,6 +127,70 @@ export default class StudydocsController extends PaginationController {
     });
   }
 
+  /**
+   * Patches an existing studydocument in the AMIV API.
+   *
+   * @param {Object}  doc              studydocument object to be patched containing the new values.
+   * @param {boolean} updateDocuments  Specify whether to upload new documents or not.
+   * @return {Promise}
+   * @static
+   */
+  static async patch(doc, updateDocuments) {
+    if (typeof doc !== 'object') {
+      return new Promise(() => {}); // empty promise
+    }
+
+    let etag = doc._etag;
+
+    // Upload documents
+    if (updateDocuments && doc.files.length > 0) {
+      const form = new FormData();
+      for (let i = 0; i < doc.files.length; i += 1) {
+        form.append('files', doc.files[i]);
+      }
+
+      const response = await m.request({
+        method: 'PATCH',
+        url: `${apiUrl}/studydocuments/${doc._id}`,
+        data: form,
+        headers: {
+          Authorization: getToken(),
+          'If-Match': etag,
+        },
+      });
+
+      etag = response._etag;
+    }
+
+    const data = {};
+    const ignoredFields = ['files', 'uploader'];
+
+    Object.keys(doc).forEach(key => {
+      if (!key.startsWith('_') && !ignoredFields.includes(key)) {
+        data[key] = doc[key];
+      }
+    });
+
+    // Update meta information
+    return m.request({
+      method: 'PATCH',
+      url: `${apiUrl}/studydocuments/${doc._id}`,
+      data,
+      headers: {
+        Authorization: getToken(),
+        'If-Match': etag,
+      },
+    });
+  }
+
+  /**
+   * Deletes an existing studydocument from the AMIV API.
+   *
+   * @param {string} id    studydocument id
+   * @param {string} etag  etag value for the given studydocument
+   * @return {Promise}
+   * @static
+   */
   static delete(id, etag) {
     return m.request({
       method: 'DELETE',

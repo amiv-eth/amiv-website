@@ -254,8 +254,12 @@ export default {
     noSemester: 'Kein Semester',
     courseYear: 'Kursjahr',
     files: 'Dateien',
+    noFiles: 'Keine Dateien ausgewählt.',
     upload: 'Dokument(e) hochladen',
-    uploadTitle: 'Ein neues Dokument hochladen',
+    uploadTitle: {
+      new: 'Ein neues Dokument hochladen',
+      edit: 'Dokument bearbeiten',
+    },
     uploadFileHint: 'Du kannst mehrere Dateien auswählen!',
     uploadLoadingError: 'Das Upload-Formular konnte nicht geladen werden.',
     uploadError: 'Während dem Hochladen ist ein Fehler aufgetreten.',

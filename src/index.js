@@ -44,7 +44,12 @@ Raven.context(() => {
     {
       url: '/:language/studydocuments/new',
       reason: 'studydocs.accessDenied',
-      viewAsync: './views/studydocs/studydocNew',
+      viewAsync: './views/studydocs/studydocForm',
+    },
+    {
+      url: '/:language/studydocuments/:documentId/edit',
+      reason: 'studydocs.accessDenied',
+      viewAsync: './views/studydocs/studydocForm',
     },
     {
       url: '/:language/studydocuments/:documentId',
@@ -194,8 +199,16 @@ Raven.context(() => {
     };
 
     m.route.setOrig = m.route.set;
-    m.route.set = (path, data, options) => {
+
+    // Allow change of route without scrolling to the top of the page.
+    m.route.setNoScroll = (path, data, options) => {
+      m.route.previousPath = m.route.get();
       m.route.setOrig(path, data, options);
+    };
+
+    // Scroll to the top of the page when changing route (default behavior).
+    m.route.set = (path, data, options) => {
+      m.route.setNoScroll(path, data, options);
       // Delay scroll to top due to rendering latency.
       setTimeout(() => window.scrollTo(0, 0), 10);
     };

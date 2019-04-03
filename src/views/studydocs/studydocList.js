@@ -32,6 +32,16 @@ export default class StudydocList extends FilteredListPage {
 
   oninit(vnode) {
     super.oninit(vnode, vnode.attrs.documentId);
+
+    if (
+      vnode.attrs.documentId &&
+      m.route.previousPath &&
+      m.route.previousPath.includes('studydocuments') &&
+      m.route.previousPath.includes('edit')
+    ) {
+      this.dataStore.shouldScroll = true;
+      this.reload();
+    }
   }
 
   // eslint-disable-next-line class-methods-use-this
@@ -294,6 +304,21 @@ export default class StudydocList extends FilteredListPage {
     const studydocTitle = studydocument.title
       ? studydocument.title
       : i18n('studydocs.name.default');
+
+    if (studydocument._links.self.methods.includes('PATCH')) {
+      actionButtons.push(
+        m(Button, {
+          name: `edit-${studydocument._id}`,
+          className: 'blue-flat-button',
+          label: i18n('studydocs.actions.edit'),
+          events: {
+            onclick: () => {
+              m.route.set(`/${currentLanguage()}/studydocuments/${studydocument._id}/edit`);
+            },
+          },
+        })
+      );
+    }
 
     if (studydocument._links.self.methods.includes('DELETE')) {
       // User is allowed to delete this document

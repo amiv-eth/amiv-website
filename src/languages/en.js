@@ -253,8 +253,12 @@ export default {
     noSemester: 'No semester',
     courseYear: 'Course Year',
     files: 'Files',
+    noFiles: 'No files selected.',
     upload: 'Upload study document(s)',
-    uploadTitle: 'Upload a new study document',
+    uploadTitle: {
+      new: 'Upload a new study document',
+      edit: 'Edit a study document',
+    },
     uploadFileHint: 'You can select multiple files!',
     uploadLoadingError: 'Could not load the upload form.',
     uploadError: 'There was an error while uploading the documents.',

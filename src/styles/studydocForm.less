@@ -60,9 +60,37 @@
     }
   }
 
+  .files {
+    width: 100%;
+    margin: 2em 0;
+
+    .no-files {
+      display: block;
+      width: 100%;
+      text-align: center;
+      color: @color-dark-grey;
+    }
+
+    .file {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+
+      span.name {
+        margin-left: .25em;
+      }
+
+      span.size {
+        display: inline-block;
+        color: @color-dark-grey;
+        margin-left: 1em;
+      }
+    }
+  }
+
   .file-input {
     margin: 2em 0;
-    color: rgba(0, 0, 0, .54);
+    color: @color-dark-grey;
 
     span {
       @media @mobile {

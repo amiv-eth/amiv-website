@@ -1,5 +1,7 @@
 import m from 'mithril';
 import marked from 'marked';
+import filesize from 'filesize';
+import { apiUrl } from 'config';
 import animateScrollTo from 'animated-scroll-to';
 import { Icon } from 'polythene-mithril-icon';
 import Spinner from 'amiv-web-ui-components/src/spinner';
@@ -9,6 +11,7 @@ import Button from '../../components/Button';
 import TextField from '../../components/TextField';
 import SelectTextField from '../../components/SelectTextField';
 import FileInput from '../../components/FileInput';
+import mimeTypeToIcon from '../../images/mimeTypeToIcon';
 import { i18n, currentLanguage } from '../../models/language';
 import { Infobox } from '../errors';
 import icons from '../../images/icons';
@@ -38,14 +41,23 @@ const departments = [
   'gess',
 ];
 
-export default class StudydocNew {
-  oninit() {
+export default class StudydocForm {
+  async oninit({ attrs: { documentId = null } }) {
     this.invalid = new Set([]);
+
     this.doc = { course_year: new Date().getFullYear() };
+    this.files = [];
+    this.filesChanged = false;
     this.isValid = false;
     this.isBusy = false;
     this.state = STATE_LOADING;
     this.uploadError = false;
+
+    if (documentId) {
+      this.doc = await controller.loadDocument(documentId);
+      this.files = this.doc.files.map(item => ({ info: item, file: null }));
+      delete this.doc.files;
+    }
 
     this._loadAvailableValues();
   }
@@ -73,10 +85,21 @@ export default class StudydocNew {
   validate() {
     this.isValid =
       this.invalid.size === 0 &&
-      this.doc.files !== undefined &&
-      this.doc.files.length > 0 &&
+      this.files.length > 0 &&
       this.doc.title !== undefined &&
       this.doc.title !== '';
+  }
+
+  static async _prepareFileForUpload({ info = null, file = null }) {
+    if (file) return Promise.resolve(file);
+
+    return m.request({
+      method: 'GET',
+      url: `${apiUrl}${info.file}`,
+      responseType: 'blob',
+      extract: xhr =>
+        new File([xhr.response], info.name, { type: xhr.responseType, lastModified: Date.now() }),
+    });
   }
 
   async submit() {
@@ -84,7 +107,16 @@ export default class StudydocNew {
       this.isBusy = true;
       this.uploadError = false;
       try {
-        const response = await StudydocsController.addNew(this.doc);
+        if (this.filesChanged) {
+          this.doc.files = await Promise.all(
+            this.files.map(item => this.constructor._prepareFileForUpload(item))
+          );
+        }
+
+        const response = this.doc._id
+          ? await StudydocsController.patch(this.doc, this.filesChanged)
+          : await StudydocsController.post(this.doc);
+        this.filesChanged = false;
         this.isBusy = false;
         m.route.set(`/${currentLanguage()}/studydocuments/${response._id}`);
       } catch (Exception) {
@@ -97,7 +129,13 @@ export default class StudydocNew {
 
   view() {
     return m('div.studydocs-upload', [
-      m('div.title', m('h2', i18n('studydocs.uploadTitle'))),
+      m(
+        'div.title',
+        m(
+          'h2',
+          this.doc._id ? i18n('studydocs.uploadTitle.edit') : i18n('studydocs.uploadTitle.new')
+        )
+      ),
       m('div.studydocs-upload-form', [
         this._renderForm(),
         m('div.separator'),
@@ -145,6 +183,7 @@ export default class StudydocNew {
       m(SelectTextField, {
         name: 'author',
         label: i18n('studydocs.author'),
+        value: this.doc.author,
         floatingLabel: true,
         options: controller.availableFilterValues.author
           ? Object.keys(controller.availableFilterValues.author).sort()
@@ -161,6 +200,7 @@ export default class StudydocNew {
       }),
       m(SelectTextField, {
         name: 'lecture',
+        value: this.doc.lecture,
         label: i18n('studydocs.lecture'),
         floatingLabel: true,
         options: controller.availableFilterValues.lecture
@@ -178,6 +218,7 @@ export default class StudydocNew {
       }),
       m(SelectTextField, {
         name: 'professor',
+        value: this.doc.professor,
         label: i18n('studydocs.professor'),
         floatingLabel: true,
         options: controller.availableFilterValues.professor
@@ -196,6 +237,7 @@ export default class StudydocNew {
       m('div.select-row', [
         m(Select, {
           name: 'type',
+          value: this.doc.type,
           label: i18n('studydocs.type'),
           onChange: ({ value }) => {
             if (value === '') {
@@ -215,6 +257,7 @@ export default class StudydocNew {
         }),
         m(Select, {
           name: 'department',
+          value: this.doc.department,
           label: i18n('studydocs.department'),
           onChange: ({ value }) => {
             if (value === '') {
@@ -245,6 +288,7 @@ export default class StudydocNew {
         }),
         m(Select, {
           name: 'semester',
+          value: this.doc.semeter,
           label: i18n('studydocs.semester'),
           onChange: ({ value }) => {
             if (value === '') {
@@ -263,11 +307,45 @@ export default class StudydocNew {
           ],
         }),
       ]),
+      m(
+        'div.files',
+        this.files.length > 0
+          ? this.files.map((item, index) => {
+              const filename = item.info ? item.info.name : item.file.name;
+              const length = item.info ? item.info.length : item.file.size;
+              const content_type = item.info ? item.info.content_type : item.file.type;
+              const file_index = index;
+
+              return m('div.file', [
+                m('div', [
+                  m(Icon, { svg: { content: m.trust(mimeTypeToIcon(content_type)) } }),
+                  m('span.name', filename),
+                  m('span.size', filesize(length)),
+                ]),
+                m(Button, {
+                  className: 'red-flat-button',
+                  label: i18n('studydocs.actions.delete'),
+                  events: {
+                    onclick: () => {
+                      this.files.splice(file_index, 1);
+                      this.filesChanged = true;
+                      this.validate();
+                    },
+                  },
+                }),
+              ]);
+            })
+          : m('span.no-files', i18n('studydocs.noFiles'))
+      ),
       m('div.file-input', [
         m(FileInput, {
           multiple: 1,
+          value: [],
           onchange: e => {
-            this.doc.files = e.target.files;
+            for (let i = 0; i < e.target.files.length; i += 1) {
+              this.files.push({ info: null, file: e.target.files[i] });
+              this.filesChanged = true;
+            }
             this.validate();
           },
         }),

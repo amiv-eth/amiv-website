@@ -364,7 +364,7 @@ export class FilteredListPage {
     this.changeTimeout = setTimeout(() => {
       const basePath = `/${currentLanguage()}/${this.name}`;
       const path = this.itemId ? `${basePath}/${id}` : basePath;
-      m.route.setOrig(path);
+      m.route.setNoScroll(path);
     }, delay);
   }
 

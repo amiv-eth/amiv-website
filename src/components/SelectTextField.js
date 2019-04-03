@@ -9,10 +9,10 @@ import { i18n } from '../models/language';
 import './SelectTextField.less';
 
 export default class SelectTextField {
-  constructor({ attrs: { options, onChange = () => {} } }) {
+  constructor({ attrs: { options, value = null, onChange = () => {} } }) {
     this.addNew = false;
     this.value = '';
-    this.selected = null;
+    this.selected = value;
     this.options = options;
     this.filteredOptions = options;
     this.onChange = onChange;
