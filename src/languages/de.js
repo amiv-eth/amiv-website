@@ -190,6 +190,7 @@ export default {
       blacklisted: 'Du kannst dich im Moment nicht anmelden, da du auf der Blacklist bist.',
       waitingList: 'Du bist auf der Warteliste.',
       accepted: 'Du bist angemeldet und hast einen Platz.',
+      noAdditionalInfoRequired: 'Keine Zusatzinformationen erforderlich.',
     },
     signoff: {
       action: 'abmelden',

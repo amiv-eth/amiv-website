@@ -19,6 +19,7 @@ export default class EventDetails {
     this.signupFetchError = false;
     this.event = vnode.attrs.event;
     this.notification = null;
+    this.emailValid = true;
     this.signupBusy = false;
     this.signoffBusy = false;
     this.schema = !this.event.additional_fields
@@ -152,7 +153,10 @@ export default class EventDetails {
           eventSignupForm = this._renderSignupForm(signupFormOptions);
           eventSignupButtons = this._renderSignupButtons(signupFormOptions);
         } else {
-          eventSignupForm = m('div', [m('span', `${i18n('events.restrictions.membersOnly')} `)]);
+          eventSignupForm = m(
+            'div.message',
+            m('span', `${i18n('events.restrictions.membersOnly')} `)
+          );
           eventSignupButtons = m(Button, {
             label: i18n('login'),
             className: 'blue-flat-button',
@@ -161,7 +165,7 @@ export default class EventDetails {
         }
         this._renderParticipationNotice();
       } else {
-        eventSignupForm = m('div', m('p', i18n('events.registration.over')));
+        eventSignupForm = m('div.message', m('p', i18n('events.registration.over')));
         this._renderParticipationNotice();
       }
     } else {
@@ -203,7 +207,13 @@ export default class EventDetails {
     return m('div.event-details', { className: noSignup ? 'no-signup' : null }, [
       m('p', m.trust(marked(escape(this.event.getDescription())))),
       !noSignup && m('div.separator'),
-      !noSignup && m('div.form', [notification, eventSignupForm]),
+      !noSignup &&
+        m(
+          'div.form',
+          notification || eventSignupForm
+            ? [notification, eventSignupForm]
+            : m('div.message', [m('span', `${i18n('events.signup.noAdditionalInfoRequired')} `)])
+        ),
       m(ActionBar, {
         className: 'event-actions',
         left: eventSignupButtons,
@@ -238,7 +248,7 @@ export default class EventDetails {
       elements.push(this._renderEmailField());
     }
 
-    return m('form', { onsubmit: () => false }, elements);
+    return elements.length > 0 ? m('form', { onsubmit: () => false }, elements) : null;
   }
 
   _renderSignupButtons({ canChangeSignup = false, hasSignupData = false, signoffButton = false }) {
@@ -252,14 +262,12 @@ export default class EventDetails {
   }
 
   _renderSignupButton(label) {
-    // TODO: evaluate email field validity!
-    // Waiting for MR to be accepted in web-ui-components repository.
     return m(Button, {
       name: 'signup',
       className: 'blue-flat-button',
       border: true,
       label,
-      active: this.form.valid && !this.signupBusy,
+      active: this.emailValid && this.form.valid && !this.signupBusy,
       events: {
         onclick: () => this.signup(),
       },
@@ -273,8 +281,9 @@ export default class EventDetails {
       validateOnInput: true,
       floatingLabel: true,
       type: 'email',
-      onChange: ({ value }) => {
+      onChange: ({ value, invalid }) => {
         this.email = value;
+        this.emailValid = !invalid;
       },
       value: this.email,
     });

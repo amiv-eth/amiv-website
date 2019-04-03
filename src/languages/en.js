@@ -189,6 +189,7 @@ export default {
       blacklisted: 'You cannot register for this event because you are on the blacklist.',
       waitingList: 'You are on the waiting list.',
       accepted: 'You are signed up and got a spot.',
+      noAdditionalInfoRequired: 'No additional information required.',
     },
     signoff: {
       action: 'signoff',
