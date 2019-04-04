@@ -18,8 +18,8 @@ const data = [
       },
       {
         icon: icons.phone,
-        label: '+41 44 632 42 45',
-        url: 'tel:+41446324245',
+        label: '+41 44 632 64 67',
+        url: 'tel:+41446326467',
       },
     ],
     description: {
@@ -44,8 +44,8 @@ const data = [
       },
       {
         icon: icons.phone,
-        label: '+41 44 632 42 45',
-        url: 'tel:+41446324245',
+        label: '+41 44 632 64 67',
+        url: 'tel:+41446326467',
       },
     ],
     description: {
@@ -72,8 +72,8 @@ const data = [
       },
       {
         icon: icons.phone,
-        label: '+41 44 632 42 45',
-        url: 'tel:+41446324245',
+        label: '+41 44 632 64 67',
+        url: 'tel:+41446326467',
       },
     ],
     description: {
@@ -96,8 +96,8 @@ const data = [
       },
       {
         icon: icons.phone,
-        label: '+41 44 632 42 45',
-        url: 'tel:+41446324245',
+        label: '+41 44 632 64 67',
+        url: 'tel:+41446326467',
       },
     ],
     description: {
@@ -129,8 +129,8 @@ const data = [
       },
       {
         icon: icons.phone,
-        label: '+41 44 632 42 45',
-        url: 'tel:+41446324245',
+        label: '+41 44 632 64 67',
+        url: 'tel:+41446326467',
       },
     ],
     description: {
@@ -160,8 +160,8 @@ const data = [
       },
       {
         icon: icons.phone,
-        label: '+41 44 632 42 45',
-        url: 'tel:+41446324245',
+        label: '+41 44 632 64 67',
+        url: 'tel:+41446326467',
       },
     ],
     description: {

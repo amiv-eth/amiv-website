@@ -12,7 +12,7 @@ export default class LegalNotice {
         m('span', '8092 Zürich'),
         m('span', i18n('switzerland')),
         m('a.email', { href: 'mailto:info@amiv.ethz.ch' }, 'info@amiv.ethz.ch'),
-        m('a.phone', { href: 'tel:+41446324245' }, '+41 (0)44 / 632 42 45'),
+        m('a.phone', { href: 'tel:+41446326467' }, '+41 (0)44 / 632 64 67'),
       ]),
       m('h2.disclaimer', i18n('legalNotice.disclaimer')),
       m('p.disclaimer', i18n('legalNotice.disclaimerText')),
