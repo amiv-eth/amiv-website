@@ -11,6 +11,32 @@ import EventCalendar from './eventCalendar';
 const controller = new EventController({}, true);
 const dataStore = new FilteredListDataStore();
 
+const dateFormatOptions = {
+  hour: 'numeric',
+  minute: 'numeric',
+  hour12: false,
+  timeZone: 'Europe/Zurich',
+};
+const dateFormatter = new Intl.DateTimeFormat(currentLocale, {
+  ...dateFormatOptions,
+  timeZoneName: 'short',
+});
+const dateFormatterWeekday = new Intl.DateTimeFormat(currentLocale, {
+  ...dateFormatOptions,
+  year: 'numeric',
+  month: 'numeric',
+  day: 'numeric',
+  weekday: 'long',
+});
+const dateFormatterWeekdayTimezone = new Intl.DateTimeFormat(currentLocale, {
+  ...dateFormatOptions,
+  year: 'numeric',
+  month: 'numeric',
+  day: 'numeric',
+  weekday: 'long',
+  timeZoneName: 'short',
+});
+
 let eventDetailsModule;
 
 /**
@@ -256,61 +282,34 @@ export default class EventList extends FilteredListPage {
     const date_start = new Date(time_start);
     const date_end = new Date(time_end);
 
+    // check if the dates are valid
     if (
-      date_start.getDate() === date_end.getDate() ||
-      (date_start.getDate() === date_end.getDate() - 1 &&
-        date_start.getHours() > date_end.getHours())
+      date_start instanceof Date &&
+      !Number.isNaN(date_start.valueOf()) &&
+      date_end instanceof Date &&
+      !Number.isNaN(date_end.valueOf())
     ) {
+      if (
+        date_start.getDate() === date_end.getDate() ||
+        (date_start.getDate() === date_end.getDate() - 1 &&
+          date_start.getHours() > date_end.getHours())
+      ) {
+        return [
+          m('span', dateFormatterWeekday.format(date_start)),
+          ' – ',
+          m('span', dateFormatter.format(date_end)),
+        ];
+      }
+
       return [
-        m(
-          'span',
-          date_start.toLocaleString(currentLocale(), {
-            weekday: 'long',
-            day: '2-digit',
-            month: '2-digit',
-            year: '2-digit',
-            hour: '2-digit',
-            minute: '2-digit',
-          })
-        ),
+        m('span', dateFormatterWeekday.format(date_start)),
         ' – ',
-        m(
-          'span',
-          date_end.toLocaleString(currentLocale(), {
-            hour: '2-digit',
-            minute: '2-digit',
-            timeZoneName: 'short',
-          })
-        ),
+        m('span', dateFormatterWeekdayTimezone.format(date_end)),
       ];
     }
 
-    return [
-      m(
-        'span',
-        date_start.toLocaleString(currentLocale(), {
-          weekday: 'long',
-          day: '2-digit',
-          month: '2-digit',
-          year: '2-digit',
-          hour: '2-digit',
-          minute: '2-digit',
-        })
-      ),
-      ' – ',
-      m(
-        'span',
-        date_end.toLocaleString(currentLocale(), {
-          weekday: 'long',
-          day: '2-digit',
-          month: '2-digit',
-          year: '2-digit',
-          hour: '2-digit',
-          minute: '2-digit',
-          timeZoneName: 'short',
-        })
-      ),
-    ];
+    // Do not display anything if no date is set
+    return {};
   }
 
   // eslint-disable-next-line class-methods-use-this
