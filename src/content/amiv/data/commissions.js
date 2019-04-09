@@ -94,6 +94,11 @@ const data = [
         label: 'Instagram: amivbrau',
         url: 'https://www.instagram.com/amivbrau/',
       },
+      {
+        icon: icons.email,
+        label: 'amivbraeu@amiv.ethz.ch',
+        url: 'mailto:amivbraeu@amiv.ethz.ch',
+      },
     ],
     description: {
       en: `The brewing commission supplies the AMIV with handcrafted beers. From 
@@ -138,7 +143,7 @@ const data = [
       en: `Irrational Coffee is an AMIV commission dedicated to spreading alternative coffee culture.
         If you are interested in learning more about different coffee beans, processing techniques, brewing methods, or anything coffee-related, then this is the place for you!
 
-        **Every Wednesday 16:00-18:00**, come out to the CAB courtyard where you can taste different coffees and cascara tea at our coffee stand.
+        **Every Friday 12:00-14:00**, come out to the CAB courtyard where you can taste different coffees and cascara tea at our coffee stand.
 
         Irrational Coffee also organizes coffee workshops and other coffee-related events, such as trips and coffee «pub crawls». `,
     },
