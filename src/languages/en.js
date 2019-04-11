@@ -81,6 +81,7 @@ export default {
       universityPolicy: 'University Policy',
       externalRelations: 'External Relations',
       infrastracture: 'Infrastructure',
+      information: 'Information',
     },
     tasks: 'Tasks',
   },

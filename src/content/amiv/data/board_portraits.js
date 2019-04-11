@@ -56,7 +56,7 @@ const boardPortraits = [
         name: '',
         description: {
           de:
-            'Da leider niemand gefunden wurde, ist dieser Posten seit vakant. Silvio Geel übernimmt in Zusammenarbeit mit Sandro Lutz und dem IT-Team die wichtigsten Aufgaben, bis jemand gefunden wird.',
+            'Da leider niemand gefunden wurde, ist der Posten dieses Semester vakant. Silvio Geel übernimmt in Zusammenarbeit mit Sandro Lutz und dem IT-Team die wichtigsten Aufgaben, bis jemand gefunden wird.',
         },
       },
     ],
