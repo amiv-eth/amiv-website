@@ -26,7 +26,7 @@ class ImageGroup {
 
   view(vnode) {
     const { group } = vnode.attrs;
-    const roles = new Set(group.portraits.map(portrait => i18n(portrait.role)));
+    const roles = new Set(group.portraits.map(portrait => i18n(`board.roles.${portrait.role}`)));
 
     let image;
 
@@ -39,8 +39,8 @@ class ImageGroup {
       image = m('div.no-image', i18n('no image'));
     }
 
-    return m('div', [
-      m('h2', Array.from(roles).join(' & ')),
+    return m('div', { className: !group.showRoles ? 'no-roles' : null }, [
+      group.showRoles && m('h2', Array.from(roles).join(' & ')),
       image,
       m('div.descriptions', [
         m(Tabs, {
@@ -89,7 +89,7 @@ class ImageGroup {
   static _getTaskView(role) {
     if (!boardTaskDescriptions[role]) return [];
 
-    const content = [m('h3', i18n('Tasks'))];
+    const content = [m('h3', i18n('board.tasks'))];
 
     if (boardTaskDescriptions[role][currentLanguage()]) {
       content.push(
