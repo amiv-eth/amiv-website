@@ -1,22 +1,29 @@
 // Contains static information about the current board.
 // Markdown can be used to style the text.
 
-import boardImage from '../images/board/board.png';
-import presidentImage from '../images/board/president.png';
-import quaestorImage from '../images/board/quaestor.png';
-import kulturImage from '../images/board/kultur.png';
-import erImage from '../images/board/er.png';
-import hopoImage from '../images/board/hopo.png';
-import informationImage from '../images/board/information.png';
-import infrastructureImage from '../images/board/infrastructure.png';
-import itImage from '../images/board/it.png';
+import { boardRoles } from './board_roles';
+
+import boardImage from '../images/board/Board.jpg';
+import presidentImage from '../images/board/Antonia.jpg';
+import quaestorImage from '../images/board/Luzian.jpg';
+import kulturImage1 from '../images/board/Betty.jpg';
+import kulturImage2 from '../images/board/Ian.jpg';
+import kulturImage3 from '../images/board/Max.jpg';
+import erImage1 from '../images/board/Leon.jpg';
+import erImage2 from '../images/board/Silvio.jpg';
+import hopoImageITET from '../images/board/Lioba.jpg';
+import hopoImageMAVT from '../images/board/Julia.jpg';
+import informationImage from '../images/board/Patricia.jpg';
+import infrastructureImage from '../images/board/Lukas.jpg';
+import itImage from '../images/board/IT.jpg';
 
 const boardPortraits = [
   {
     image: presidentImage,
+    showRoles: true,
     portraits: [
       {
-        role: 'President',
+        role: boardRoles.president,
         name: 'Antonia Mosberger',
         description: {
           de:
@@ -27,9 +34,10 @@ const boardPortraits = [
   },
   {
     image: quaestorImage,
+    showRoles: true,
     portraits: [
       {
-        role: 'Quaestor',
+        role: boardRoles.quaestor,
         name: 'Luzian Bieri',
         description: {
           de: `Seine Anfänge im AMIV hatte Luzi bereits am ESW. Schnell war klar, dass er für den AMIV wie geschaffen war (sein Kürzel ist luziBIER, for real?!). Er trat der Brauko bei und wurde Kulturi der Leiden (schafft), womit er sich im AMIV schnell einen Namen machte. Auch der Kontakt drückt er als PR Verantwortlicher seinen Stempel auf und meistert diese Aufgabe mit Bravour und einer unglaublicher Effizienz, wie man sie von einem Berner kaum gewohnt ist.
@@ -41,22 +49,24 @@ const boardPortraits = [
   },
   {
     image: itImage,
+    showRoles: true,
     portraits: [
       {
-        role: 'IT',
-        name: 'Sandro Lutz',
+        role: boardRoles.it,
+        name: '',
         description: {
           de:
-            'Sandro ist der wohl erste IT-Vorstand, der keinen Kaffee trinkt [edit: mittlerweile schon, aber selbstverständlich nur fancy Tannenbar-Kaffee]. In seiner dritten Amtszeit überschaut er einige grosse Informatikprojekte, darunter auch die seit vielen Jahren sehnlichst erwartete neue AMIV-Website und das neue PVK-Tool. Damit der AMIV auch in der Zukunft IT-mässig spitze bleibt, versucht er an den Coding-Days im Dezember, Nachwuchs für das IT-Team zu rekrutieren. Im 6. Semester des Elektrotechnikstudiums bleibt ihm trotz Gruppenarbeit genug Zeit um im Bastli tatkräftig an verschiedensten Projekten mitzuwerkeln.',
+            'Da leider niemand gefunden wurde, ist dieser Posten seit vakant. Silvio Geel übernimmt in Zusammenarbeit mit Sandro Lutz und dem IT-Team die wichtigsten Aufgaben, bis jemand gefunden wird.',
         },
       },
     ],
   },
   {
     image: informationImage,
+    showRoles: true,
     portraits: [
       {
-        role: 'Information',
+        role: boardRoles.information,
         name: 'Patricia Schmid',
         description: {
           de:
@@ -66,26 +76,11 @@ const boardPortraits = [
     ],
   },
   {
-    image: kulturImage,
+    image: kulturImage1,
+    showRoles: true,
     portraits: [
       {
-        role: 'Event Planning',
-        name: 'Lina Gehri',
-        description: {
-          de:
-            'Am Erstiweekend hat Lina das erste Mal AMIV-Luft geschnuppert und rutschte dann in ihrem Basisjahr immer tiefer hinein. Im den letzten zwei Semester war sie unter anderem mit der Organisation des Speeddatings, für die Verbreitung von Liebe zuständig. Nach einem bestandenen Basisjahr und einem guten halben Jahr Brainwashing entschied sie sich dazu, als Kulturvorstand zusammen mit Kira (vermutlich das erste Mal in der Geschichte des AMIV, dass beide Kulturvorstände Frauen sind...) dafür zu sorgen, dass weiterhin geile Events zustande kommen.',
-        },
-      },
-      {
-        role: 'Event Planning',
-        name: 'Ian Boschung',
-        description: {
-          de:
-            'Ian ist seit seinem ersten Semester Kulturi aus Leidenschaft. Mit seiner Begeisterung für seinen absoluten Lieblingsevent, die Weindegu (Als fast-Welscher ist Wein halt eine Herzenssache), erinnerte er so stark an andere Kulturvorstände vergangener Tage, dass seine Nomination nur der nächste logische Schritt war. Ians Qualitäten als organisierter Planer und Teamplayer machen ihn zu einer Idealbesetzung für den nun dreiköpfigen Kulturvorstandsposten. Der einzige Nachteil: niemand versteht seinen Dialekt, und schon gar nicht seine Nachrichten!',
-        },
-      },
-      {
-        role: 'Event Planning',
+        role: boardRoles.eventPlanning,
         name: 'Betty Lory',
         description: {
           de:
@@ -95,19 +90,54 @@ const boardPortraits = [
     ],
   },
   {
-    image: hopoImage,
+    image: kulturImage2,
+    showRoles: false,
     portraits: [
       {
-        role: 'University Policy',
-        name: 'Daniel Biek',
+        role: boardRoles.eventPlanning,
+        name: 'Ian Boschung',
         description: {
-          de: `Biek, Daniel Biek. Aufgewachsen ist er mit seinen zwei schwulen Schildkröten Koopa und Yoshi in Berlin. Obwohl er halb Deutscher und halb Kolumbianer ist sowie russische und dänische Vorfahren hat, spricht er weder Russisch, noch Dänisch, noch Spanisch. Nur Deutsch. Ein wenig enttäuschend, aber naja. Dafür ist Dani prädestiniert als Hopo-ITET-Vorstand, da er eine weltoffene Persönlichkeit besitzt, mit allen und jedem spricht und sich alle Namen, Adressen, Augenfarben, etc. merken kann (Stalker-Alarm!). Ebenfalls ist er als Gossip Girl erster Ansprechpartner für Klatsch und Tratsch am D-ITET. Er bevorzugt Fussball über Icehockey, Mayo über Ketchup, Mc Donald’s über BurgerKing, Sommer über Winter, den BVB über Bayern, Kakao über Kaffee (?!?) und Tequilla über allem (but… why?). Weiter liebt er Raclette (wer schon nicht?!) und hat sein schwächeres Auge links (daher die Brille, thanks Captain Obvious).
-
-            Und grün. Seine Lieblingsfarbe ist grün.`,
+          de:
+            'Ian ist seit seinem ersten Semester Kulturi aus Leidenschaft. Mit seiner Begeisterung für seinen absoluten Lieblingsevent, die Weindegu (Als fast-Welscher ist Wein halt eine Herzenssache), erinnerte er so stark an andere Kulturvorstände vergangener Tage, dass seine Nomination nur der nächste logische Schritt war. Ians Qualitäten als organisierter Planer und Teamplayer machen ihn zu einer Idealbesetzung für den nun dreiköpfigen Kulturvorstandsposten. Der einzige Nachteil: niemand versteht seinen Dialekt, und schon gar nicht seine Nachrichten!',
         },
       },
+    ],
+  },
+  {
+    image: kulturImage3,
+    showRoles: false,
+    portraits: [
       {
-        role: 'University Policy',
+        role: boardRoles.eventPlanning,
+        name: 'Max Aspect',
+        description: {
+          de: `Ein ungewöhnlicher Weg führte Max nach Zürich. Mr. Cosmopolitan ist in Paris geboren, hat in Düsseldorf den Kindergarten besucht, wieder zurück in Paris das französische Schulsystem getestet und zu guter Letzt in Zürich die Schule abgeschlossen.
+            
+            Angekommen an der ETH führte für den Kultri aus Leidenschaft kein Weg am AMIV vorbei. Schnell gab es kaum eine Kommission im AMIV die noch vor Max sicher war. Sein Engagement beim Blitz, Braukommission, Irrational Co., EESTEC und RandomDudes dienten ihm als perfekte Vorbereitung für seine Aufgaben als Kulturvorstand. Es ist erstaunlich, dass er neben all diesen Tätigkeiten sogar ab und zu noch Zeit für sein Maschinenbaustudium findet.`,
+        },
+      },
+    ],
+  },
+  {
+    image: hopoImageITET,
+    showRoles: true,
+    portraits: [
+      {
+        role: boardRoles.universityPolicy,
+        name: 'Lioba Heimbach',
+        description: {
+          de:
+            'Lioba hat den Posten des Hopo Vorstands für ITET übernommen. Sie ist eine sehr nette ITET’lerin die immer wieder ein Lächeln auf die Gesichter unserer Bürobewohner zaubert. Ihr grösstes Hobby ist das Reisen und sie präferiert exotische Cocktails über Bier. Wenn sie nicht gerade im Büro ist, ist Lioba des Öfteren, der Jusbibliothek anzutreffen. Lioba wurde in Emails des wiederholt mit der falschen Anrede angeschrieben. Sie hat es nun satt immer als Mann angeschrieben zu werden setzt sie sich nun stark für die Gleichberechtigung im Mailverkehr ein.',
+        },
+      },
+    ],
+  },
+  {
+    image: hopoImageMAVT,
+    showRoles: true,
+    portraits: [
+      {
+        role: boardRoles.universityPolicy,
         name: 'Julia Jäggi',
         description: {
           de: `Seit Julia mit dem Maschinenbaustudium an der ETH angefangen hatte, engagierte sie sich tatkräftig beim HoPo-MAVT-Team. Dort hat sie zu vielen Themen eine gut überlegte Meinung und scheut auch nicht, diese zu vertreten. Während ihrem Basisjahr organisierte sie zahlreiche PVKs und arbeitete sich in diverse Gremien ein. Nach erfolgreichem Basisjahr traf Julia die einzige richtige Entscheidung und wurde Vorstand des HoPo-MAVTs. Wenn Julia nicht gerade in der Vorlesung HoPo-Angelegenheiten regelt, ist sie bestimmt mit ihrem Hund unterwegs, am Wandern im Engadin oder am Skifahren.
@@ -118,10 +148,11 @@ const boardPortraits = [
     ],
   },
   {
-    image: erImage,
+    image: erImage2,
+    showRoles: true,
     portraits: [
       {
-        role: 'External Relations',
+        role: boardRoles.externalRelations,
         name: 'Silvio Geel',
         description: {
           de: `Silvio kam an seinem Ersti-Weekend zum ersten Mal mit dem amiv in Kontakt. Danach galt es zunächst die Basisprüfung zu bestehen. Als Einstiegsdroge entpuppte sich dann im 3. Semester die Braukommission. Silvio arbeitete sich stetig empor. Vom normalen Brauko-Mitglied zum Vizepräsidenten bis er schliesslich diesen Winter zum Braumeister gewählt wurde.
@@ -133,21 +164,28 @@ const boardPortraits = [
             Vor allem die Vertiefung im Bereich Kommunikation hat es ihm angetan.`,
         },
       },
+    ],
+  },
+  {
+    image: erImage1,
+    showRoles: true,
+    portraits: [
       {
-        role: 'External Relations',
-        name: 'Marie Matos',
+        role: boardRoles.externalRelations,
+        name: 'Leon Hinderling',
         description: {
           de:
-            'Als fremdsprachiges Vorstandsmitglied hat Marie manchmal einen schweren Stand. Immer wieder heisst es «Hei Leute, Änglisch!». Doch als zielstrebige Person, kann sie das gut managen. Vielleicht kommt das auch von ihrer langjährigen Erfahrung als Schiedsrichterin. Neben dem Studium spielt sie auch sehr gerne Volleyball. Sie studiert Biomedical Engineering und möchte später Leuten mit Knie- oder Hüftproblemen helfen. Doch vorher sorgt sie erstmal dafür, dass in der Eventkasse des amiv kein grosses Loch klafft und die Kontakt gut über die Bühne geht.',
+            'Man kann sich darüber streiten, welcher ER Vorstand die prominentere Frisur hat, diese Frage soll hier aber auch gar nicht ausdiskutiert werden. Was allerdings klar ist: Leon ist voll an seinem Platz angekommen. Seit dem Beginn seiner ETH-"Karriere" ist er im Aufenthaltsraum anzutreffen und bringt seine Legi zum dampfen. Immer gemütlich und gechillt führt er nun das ER Team als amiv Vorstand, nachdem er so lange mit dabei war. Seinen Platz auf dem Sofa im Aufenthaltsraum hat er gegen ein Sofa im Büro ausgetauscht. Und wie  es isch für einen wahren Sparfuchs gehört  steht an seinem neuen Arbeitsplatz seine eigene Palette Mate.',
         },
       },
     ],
   },
   {
     image: infrastructureImage,
+    showRoles: true,
     portraits: [
       {
-        role: 'Infrastructure',
+        role: boardRoles.infrastructure,
         name: 'Lukas Eberle',
         description: {
           de: `Anfangs schien es dem Landburschen Lukas gar nicht zu gefallen an der ETH: wenn es ihm mal wieder zu stressig wird, träumt er laut von einem chilligen Leben an der PH (je nach Tagesform auch von einer Karriere als Curlingprofi oder davon, die nächstbeste Dorfbank zu übernehmen). Doch seit der Übernahme der Infrastruktur scheint er angekommen zu sein; es gibt schliesslich kein befriedigenderes Gefühl als einen vollen Bierautomat und glückliche Studenten mit einer Hülse in der Hand.

@@ -74,7 +74,7 @@ export default {
   board: {
     title: 'Vorstand',
     roles: {
-      president: 'Präsident',
+      president: 'Präsidentin',
       quaestor: 'Quästor',
       it: 'IT',
       eventPlanning: 'Kultur',
