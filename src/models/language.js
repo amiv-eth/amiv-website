@@ -98,4 +98,118 @@ function i18n(key, values = null) {
   return i18next.t(key);
 }
 
-export { i18n, changeLanguage, currentLanguage, currentLocale, loadLanguage, isLanguageValid };
+const dateFormatOptions = {
+  hour: 'numeric',
+  minute: 'numeric',
+  hour12: false,
+  timeZone: 'Europe/Zurich',
+};
+// Note that we need seperate objects for the different languages
+// (or they would need to be reinitialized on language change)
+const dateFormatter = {
+  en: {
+    short: new Intl.DateTimeFormat('en-GB', {
+      ...dateFormatOptions,
+      timeZoneName: 'short',
+    }),
+    weekday: new Intl.DateTimeFormat('en-GB', {
+      ...dateFormatOptions,
+      year: 'numeric',
+      month: 'numeric',
+      day: 'numeric',
+      weekday: 'long',
+    }),
+    weekdayTimezone: new Intl.DateTimeFormat('en-GB', {
+      ...dateFormatOptions,
+      year: 'numeric',
+      month: 'numeric',
+      day: 'numeric',
+      weekday: 'long',
+      timeZoneName: 'short',
+    }),
+  },
+  de: {
+    short: new Intl.DateTimeFormat('de-DE', {
+      ...dateFormatOptions,
+      timeZoneName: 'short',
+    }),
+    weekday: new Intl.DateTimeFormat('de-DE', {
+      ...dateFormatOptions,
+      year: 'numeric',
+      month: 'numeric',
+      day: 'numeric',
+      weekday: 'long',
+    }),
+    weekdayTimezone: new Intl.DateTimeFormat('de-DE', {
+      ...dateFormatOptions,
+      year: 'numeric',
+      month: 'numeric',
+      day: 'numeric',
+      weekday: 'long',
+      timeZoneName: 'short',
+    }),
+  },
+};
+
+/**
+ * Format date
+ *
+ * @param {Date} date
+ *
+ * @return formatted date in a {string}
+ */
+function formatDate(date) {
+  // check if the dates are valid
+  if (date instanceof Date && !Number.isNaN(date.valueOf())) {
+    return dateFormatter[i18next.language].weekdayTimezone.format(date);
+  }
+
+  return {};
+}
+
+/**
+ * Format duration between `start_date` and `end_date`
+ *
+ * @param {Date} date_start
+ * @param {Date} date_end
+ *
+ * @return formatted dates in a list of strings
+ */
+function formatDateDuration(date_start, date_end) {
+  // check if the dates are valid
+  if (
+    date_start instanceof Date &&
+    !Number.isNaN(date_start.valueOf()) &&
+    date_end instanceof Date &&
+    !Number.isNaN(date_end.valueOf())
+  ) {
+    if (
+      date_start.getDate() === date_end.getDate() ||
+      (date_start.getDate() === date_end.getDate() - 1 &&
+        date_start.getHours() > date_end.getHours())
+    ) {
+      return [
+        dateFormatter[i18next.language].weekday.format(date_start),
+        dateFormatter[i18next.language].short.format(date_end),
+      ];
+    }
+
+    return [
+      dateFormatter[i18next.language].weekday.format(date_start),
+      dateFormatter[i18next.language].weekdayTimezone.format(date_end),
+    ];
+  }
+
+  return [];
+}
+
+export {
+  i18n,
+  changeLanguage,
+  currentLanguage,
+  currentLocale,
+  loadLanguage,
+  isLanguageValid,
+  formatDate,
+  formatDateDuration,
+};

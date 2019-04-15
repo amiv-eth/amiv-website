@@ -10,7 +10,7 @@ import { log } from '../../models/log';
 import { isLoggedIn, login } from '../../models/auth';
 import Button from '../../components/Button';
 import ActionBar from '../../components/ActionBar';
-import { i18n, currentLocale, currentLanguage } from '../../models/language';
+import { i18n, currentLanguage, formatDate } from '../../models/language';
 import icons from '../../images/icons';
 import { copyToClipboard } from '../../utils';
 
@@ -171,17 +171,7 @@ export default class EventDetails {
     } else {
       eventSignupForm = m('div', [
         m('p', i18n('events.registration.startsAt')),
-        m(
-          'p.colored',
-          registerStart.toLocaleString(currentLocale(), {
-            weekday: 'long',
-            day: '2-digit',
-            month: '2-digit',
-            year: '2-digit',
-            hour: '2-digit',
-            minute: '2-digit',
-          })
-        ),
+        m('p.colored', formatDate(registerStart)),
       ]);
     }
 

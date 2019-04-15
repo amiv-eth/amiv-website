@@ -3,39 +3,13 @@ import { apiUrl } from 'config';
 import ExpansionPanel from 'amiv-web-ui-components/src/expansionPanel';
 import Spinner from 'amiv-web-ui-components/src/spinner';
 import logos from '../../images/logos';
-import { i18n, currentLocale } from '../../models/language';
+import { i18n, formatDateDuration } from '../../models/language';
 import { EventController } from '../../models/events';
 import { FilteredListPage, FilteredListDataStore } from '../filteredListPage';
 import EventCalendar from './eventCalendar';
 
 const controller = new EventController({}, true);
 const dataStore = new FilteredListDataStore();
-
-const dateFormatOptions = {
-  hour: 'numeric',
-  minute: 'numeric',
-  hour12: false,
-  timeZone: 'Europe/Zurich',
-};
-const dateFormatter = new Intl.DateTimeFormat(currentLocale, {
-  ...dateFormatOptions,
-  timeZoneName: 'short',
-});
-const dateFormatterWeekday = new Intl.DateTimeFormat(currentLocale, {
-  ...dateFormatOptions,
-  year: 'numeric',
-  month: 'numeric',
-  day: 'numeric',
-  weekday: 'long',
-});
-const dateFormatterWeekdayTimezone = new Intl.DateTimeFormat(currentLocale, {
-  ...dateFormatOptions,
-  year: 'numeric',
-  month: 'numeric',
-  day: 'numeric',
-  weekday: 'long',
-  timeZoneName: 'short',
-});
 
 let eventDetailsModule;
 
@@ -282,33 +256,11 @@ export default class EventList extends FilteredListPage {
     const date_start = new Date(time_start);
     const date_end = new Date(time_end);
 
-    // check if the dates are valid
-    if (
-      date_start instanceof Date &&
-      !Number.isNaN(date_start.valueOf()) &&
-      date_end instanceof Date &&
-      !Number.isNaN(date_end.valueOf())
-    ) {
-      if (
-        date_start.getDate() === date_end.getDate() ||
-        (date_start.getDate() === date_end.getDate() - 1 &&
-          date_start.getHours() > date_end.getHours())
-      ) {
-        return [
-          m('span', dateFormatterWeekday.format(date_start)),
-          ' – ',
-          m('span', dateFormatter.format(date_end)),
-        ];
-      }
-
-      return [
-        m('span', dateFormatterWeekday.format(date_start)),
-        ' – ',
-        m('span', dateFormatterWeekdayTimezone.format(date_end)),
-      ];
+    const dates = formatDateDuration(date_start, date_end);
+    if (dates.length === 2) {
+      return [m('span', dates[0]), ' – ', m('span', dates[1])];
     }
 
-    // Do not display anything if no date is set
     return {};
   }
 
