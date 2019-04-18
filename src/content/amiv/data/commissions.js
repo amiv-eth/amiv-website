@@ -202,7 +202,7 @@ const data = [
           en: 'LIMES Website',
           de: 'LIMES Webseite',
         },
-        url: 'https://legacy.amiv.ethz.ch/limes',
+        url: 'https://www.limes.ethz.ch/',
       },
       {
         icon: icons.email,
