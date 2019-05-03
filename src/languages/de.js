@@ -80,7 +80,7 @@ export default {
       eventPlanning: 'Kultur',
       universityPolicy: 'Hochschulpolitik',
       externalRelations: 'External Relations',
-      infrastracture: 'Infrastruktur',
+      infrastructure: 'Infrastruktur',
       information: 'Information',
     },
     tasks: 'Aufgaben',
