@@ -204,7 +204,10 @@ export default class StudydocList extends FilteredListPage {
                   label: i18n('close'),
                   className: 'flat-button',
                   events: {
-                    onclick: () => Dialog.hide(),
+                    onclick: () => {
+                      Dialog.hide();
+                      return false;
+                    },
                   },
                 }),
               }),
