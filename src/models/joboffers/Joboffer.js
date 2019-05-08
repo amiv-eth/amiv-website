@@ -29,10 +29,6 @@ export default class Joboffer {
 
   getDescription() {
     const otherLanguage = currentLanguage() === 'en' ? 'de' : 'en';
-    const description =
-      this[`description_${currentLanguage()}`] || this[`description_${otherLanguage}`];
-    // Use regex to substitute headers in description with h3 headers
-    const regex = /(#+\s+)(\w+)/g;
-    return description.replace(regex, (match, p1, p2) => `### ${p2}`);
+    return this[`description_${currentLanguage()}`] || this[`description_${otherLanguage}`];
   }
 }
