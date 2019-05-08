@@ -4,7 +4,7 @@ import ExpansionPanel from 'amiv-web-ui-components/src/expansionPanel';
 import Spinner from 'amiv-web-ui-components/src/spinner';
 import logos from '../../images/logos';
 import { i18n, formatDateDuration } from '../../models/language';
-import { EventController } from '../../models/events';
+import { Event, EventController } from '../../models/events';
 import { FilteredListPage, FilteredListDataStore } from '../filteredListPage';
 import EventCalendar from './eventCalendar';
 
@@ -167,7 +167,7 @@ export default class EventList extends FilteredListPage {
   // eslint-disable-next-line class-methods-use-this
   _renderItem(event, list, selectedId) {
     if (!event) return m('');
-    if (list === 'calendar') {
+    if (list === 'calendar' || !(event instanceof Event)) {
       return event;
     }
 

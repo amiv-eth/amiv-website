@@ -160,7 +160,13 @@ export class FilteredListPage {
       this.dataStore.shouldScroll = false;
     }
 
-    if (itemId && !this._isItemLoaded(itemId)) {
+    if (
+      itemId &&
+      !this._isItemLoaded(itemId) &&
+      (!this.dataStore.pinnedItem ||
+        !this.dataStore.pinnedItem.item ||
+        this.dataStore.pinnedItem.item._id !== itemId)
+    ) {
       this.dataStore.pinnedItem = { loading: true };
       this._loadItem(itemId)
         .then(item => {
@@ -481,11 +487,18 @@ export class FilteredListPage {
 
     let pinnedList;
 
-    if (this.dataStore.pinnedItem && !this.dataStore.pinnedItem.loading) {
-      pinnedList = this._renderList({
-        name: this.constructor.pinnedListIdentifier,
-        items: [this.dataStore.pinnedItem.item],
-      });
+    if (this.dataStore.pinnedItem) {
+      if (this.dataStore.pinnedItem.loading) {
+        pinnedList = this._renderList({
+          name: this.constructor.pinnedListIdentifier,
+          items: [m('div.loading', m(Spinner, { show: true, size: '96px' }))],
+        });
+      } else {
+        pinnedList = this._renderList({
+          name: this.constructor.pinnedListIdentifier,
+          items: [this.dataStore.pinnedItem.item],
+        });
+      }
     }
 
     let fullPageMessage;
