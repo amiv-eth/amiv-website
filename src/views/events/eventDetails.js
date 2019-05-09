@@ -47,6 +47,9 @@ export default class EventDetails {
       })
       .catch(() => {
         this.signupFetchError = true;
+      })
+      .finally(() => {
+        m.redraw();
       });
   }
 
