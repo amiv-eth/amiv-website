@@ -174,6 +174,9 @@ export class FilteredListPage {
         })
         .catch(() => {
           this.dataStore.pinnedItem = { loading: false };
+        })
+        .finally(() => {
+          m.redraw();
         });
     }
     this.itemId = itemId;
