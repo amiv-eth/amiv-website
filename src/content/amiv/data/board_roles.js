@@ -16,16 +16,16 @@ const boardRoles = {
 const boardTaskDescriptions = {
   president: {
     de:
-      'Der Präsident ist für die Koordination der Arbeit des gesamten Vorstandes verantwortlich und repräsentiert den Fachverein nach aussen. Er beruft die Sitzungen und Generalversammlungen ein und delegiert die Arbeit an die einzelnen Ressorts. Er ist das Bindeglied zum Dachverband, dem VSETH.',
+      'Die Präsidentin ist für die Koordination der Arbeit des gesamten Vorstandes verantwortlich und repräsentiert den Fachverein nach aussen. Sie beruft die Sitzungen und Generalversammlungen ein und delegiert die Arbeit an die einzelnen Ressorts. Sie ist das Bindeglied zum Dachverband, dem VSETH. Erreichbar unter praesidentin@amiv.ethz.ch',
     en:
-      'The president is responsible for coordinating the work of the entire board and represents the association to the outside world. He convenes the meetings and general assemblies and delegates the work to the individual departments. He is the link to the umbrella organization, the VSETH.',
+      'The president is responsible for coordinating the work of the entire board and represents the association to the outside world. She convenes the meetings and general assemblies and delegates the work to the individual departments. She is the link to the umbrella organization, the VSETH. Contact: praesidentin@amiv.ethz.ch',
   },
 
   quaestor: {
     de:
-      'Der Quästor ist verantwortlich für die finanziellen Angelegenheiten des AMIV, namentlich für die Budgetierung und Rechnungsführung. Er verwaltet zudem die Vereinskonten und prüft die Rechnungen aller Kommissionen.',
+      'Der Quästor ist verantwortlich für die finanziellen Angelegenheiten des AMIV, namentlich für die Budgetierung und Rechnungsführung. Er verwaltet zudem die Vereinskonten und prüft die Rechnungen aller Kommissionen. Für alles finanzielle: quaestor@amiv.ethz.ch',
     en:
-      'The Quaestor is responsible for the financial affairs of AMIV, namely budgeting and accounting. He also manages the bank accounts of the association and checks the bills of all commissions.',
+      'The Quaestor is responsible for the financial affairs of AMIV, namely budgeting and accounting. He also manages the bank accounts of the association and checks the bills of all commissions. Everithing financial: quaestor@amiv.ethz.ch',
   },
 
   it: {
