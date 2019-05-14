@@ -314,9 +314,15 @@ const data = [
   },
   {
     name: 'MNS',
+    contact: [
+      {
+        icon: icons.email,
+        label: 'mns@amiv.ethz.ch',
+        url: 'mailto:mns@amiv.ethz.ch',
+      },
+    ],
     description: {
-      en: '_No description available._',
-      de: '_Keine Beschreibung verfügbar._',
+      en: 'The Micro- and Nanosystems (MNS) Commission brings together people interested in Microsystems and Nanotechnology by organizing events for prospective, current and former students and researchers at any level (BSc, MSc, PhD, postdoc…), as well as faculty members. During our events (e.g. dinners, apéros) you can learn about the Micro- and Nanosystems specialization (lectures, exams, research, internships) and perhaps find your supervisor/student for a bachelor, semester and master thesis. You will probably get a more realistic impression of the personality of your supervisor/student after a few drinks at the CLA rooftop than through a 10-minute office meeting or by scrolling through a research group’s website. If that sounds useful, or you just want to chat with your classmates over a pizza, do not hesitate to drop us a short email and we will put you on the mailing list for our upcoming events!',
     },
   },
 ];
