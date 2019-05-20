@@ -64,7 +64,7 @@ export default class JobofferList extends FilteredListPage {
           },
         },
       ],
-      onchange: values => {
+      onchange: async values => {
         const query = {};
         this.dataStore.filterValues = values;
         Object.keys(values).forEach(key => {
@@ -82,7 +82,8 @@ export default class JobofferList extends FilteredListPage {
             ];
           }
         });
-        return controller.setQuery({ where: query });
+        await controller.setQuery({ where: query });
+        return controller.loadAll();
       },
     };
   }

@@ -19,7 +19,7 @@ async function getData(state) {
     }
   }
   const jobs = await state.jobOfferController.getPageData(1);
-  return { ...{ events }, ...{ jobs } };
+  return { events, jobs };
 }
 
 export default class Frontpage {
@@ -32,7 +32,7 @@ export default class Frontpage {
       },
       false
     );
-    this.jobOfferController = new JobofferController({ max_results: 3 });
+    this.jobOfferController = new JobofferController({ max_results: 6 });
 
     this.events = [];
     this.jobs = [];
