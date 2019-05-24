@@ -7,7 +7,7 @@ import emc2Image from '../images/commissions/emc2.jpg';
 import irrationalImage from '../images/commissions/irrational.jpg';
 import kontaktImage from '../images/commissions/kontakt.jpg';
 import randomDudesImage from '../images/commissions/randomdudes.jpg';
-import limesImage from '../images/commissions/limes.jpg';
+import limesImage from '../images/commissions/limes1.jpg';
 import braukoImage from '../images/commissions/brauko.jpg';
 import eestecImage from '../images/commissions/eestec.png';
 import funkbudeImage from '../images/commissions/funkbude.jpg';
