@@ -133,8 +133,8 @@ export default {
       },
     },
     newsletter: {
-      unsubscribe: 'Vom Newsletter abmelden',
-      subscribe: 'Newsletter abonnieren',
+      unsubscribe: 'Vom AMIV Announce abmelden',
+      subscribe: 'AMIV Announce abonnieren',
     },
     sessions: {
       loading: 'Lade Sitzungsdaten',

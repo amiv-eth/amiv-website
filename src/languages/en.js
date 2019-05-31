@@ -132,8 +132,8 @@ export default {
       },
     },
     newsletter: {
-      unsubscribe: 'Unsubscribe from Newsletter',
-      subscribe: 'Subscribe to Newsletter',
+      unsubscribe: 'Unsubscribe from AMIV Announce',
+      subscribe: 'Subscribe to AMIV Announce',
     },
     sessions: {
       loading: 'Loading session data',
