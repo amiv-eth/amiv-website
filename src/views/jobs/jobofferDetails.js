@@ -35,9 +35,7 @@ export default class JobofferDetails {
             label: i18n('copyDirectLink'),
             events: {
               onclick: () => {
-                const url = `${window.location.origin}/${currentLanguage()}/${this.name}/${
-                  joboffer._id
-                }`;
+                const url = `${window.location.origin}/${currentLanguage()}/jobs/${joboffer._id}`;
                 const inputElement = document.getElementById(urlId);
 
                 copyToClipboard(url, inputElement);
