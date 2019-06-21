@@ -259,6 +259,11 @@ const data = [
         url: 'https://www.facebook.com/amiv.gondel/',
       },
       {
+        icon: icons.instagram,
+        label: 'AMIV-Gondel',
+        url: 'https://www.instagram.com/amiv_gondel/',
+      },
+      {
         icon: icons.email,
         label: 'randomdudes@amiv.ethz.ch',
         url: 'mailto:randomdudes@amiv.ethz.ch',
