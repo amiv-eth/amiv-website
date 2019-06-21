@@ -26,19 +26,21 @@ export default class JobofferDetails {
                 },
               })
             : null,
-          m('textarea', {
-            id: urlId,
-            style: { opacity: 0, width: 0, height: 0, padding: 0 },
-          }),
+          m(
+            'span',
+            {
+              id: urlId,
+              style: { opacity: 0, width: 0, height: 0, padding: 0 },
+            },
+            `${window.location.origin}/${currentLanguage()}/jobs/${joboffer._id}`
+          ),
           m(Button, {
             className: 'flat-button',
             label: i18n('copyDirectLink'),
             events: {
               onclick: () => {
-                const url = `${window.location.origin}/${currentLanguage()}/jobs/${joboffer._id}`;
-                const inputElement = document.getElementById(urlId);
-
-                copyToClipboard(url, inputElement);
+                const copyElement = document.getElementById(urlId);
+                copyToClipboard(copyElement);
               },
             },
           }),
