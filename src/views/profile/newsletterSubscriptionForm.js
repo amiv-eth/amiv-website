@@ -35,12 +35,12 @@ export default class NewsletterSubscriptionForm {
     }
 
     return m(
-      'div.newsletter',
+      'div.announce',
       m(Button, {
         ...buttonArgs,
         label: user.send_newsletter
-          ? i18n('profile.newsletter.unsubscribe')
-          : i18n('profile.newsletter.subscribe'),
+          ? i18n('profile.announce.unsubscribe')
+          : i18n('profile.announce.subscribe'),
       })
     );
   }

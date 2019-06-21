@@ -132,9 +132,9 @@ export default {
         unknown: 'Es ist ein Fehler aufgetreten. Bitte versuche es erneut.',
       },
     },
-    newsletter: {
-      unsubscribe: 'Vom Newsletter abmelden',
-      subscribe: 'Newsletter abonnieren',
+    announce: {
+      unsubscribe: 'Von der AMIV Announce abmelden',
+      subscribe: 'AMIV Announce abonnieren',
     },
     sessions: {
       loading: 'Lade Sitzungsdaten',

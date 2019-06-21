@@ -131,9 +131,9 @@ export default {
         unknown: 'There was an error. Please try again.',
       },
     },
-    newsletter: {
-      unsubscribe: 'Unsubscribe from Newsletter',
-      subscribe: 'Subscribe to Newsletter',
+    announce: {
+      unsubscribe: 'Unsubscribe from AMIV Announce',
+      subscribe: 'Subscribe to AMIV Announce',
     },
     sessions: {
       loading: 'Loading session data',
