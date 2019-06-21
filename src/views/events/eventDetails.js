@@ -104,10 +104,11 @@ export default class EventDetails {
       this.notification = { type: 'fail', label: i18n('events.signoff.failed') };
     }
     this.signoffBusy = false;
+    m.redraw();
   }
 
   view() {
-    let noSignup = false;
+    let noSignupForm = false;
     let eventSignupForm;
     let eventSignupButtons;
     const now = new Date();
@@ -120,25 +121,29 @@ export default class EventDetails {
         disabled: true,
         label: i18n('events.registration.none'),
       });
-      noSignup = true;
+      noSignupForm = true;
     } else if (registerStart <= now) {
       if (registerEnd >= now) {
         if (isLoggedIn()) {
           if (!this.event.hasSignupDataLoaded) {
             if (this.signupFetchError) {
-              eventSignupForm = m('div', [
-                m('p', i18n('error.title')),
-                m(
-                  'a.colored',
-                  {
-                    href: '#',
-                    onclick: this._loadSignupData,
-                  },
-                  `${i18n('retry')}?`
-                ),
-              ]);
+              this.notification = {
+                type: 'fail',
+                label: m('span', [
+                  i18n('error.title'),
+                  m(
+                    'a.colored',
+                    {
+                      href: '#',
+                      onclick: this._loadSignupData,
+                    },
+                    ` ${i18n('retry')}`
+                  ),
+                ]),
+              };
             } else {
-              eventSignupForm = m(Spinner, { show: true });
+              eventSignupButtons = m('div.spinner', m(Spinner, { size: '32px', show: true }));
+              noSignupForm = true;
             }
           } else {
             const signupFormOptions = {
@@ -146,7 +151,11 @@ export default class EventDetails {
               hasSignupData: this.event.signupData != null,
               canChangeSignup: this.schema != null,
             };
-            eventSignupForm = this._renderSignupForm(signupFormOptions);
+            if (this.schema) {
+              eventSignupForm = this._renderSignupForm(signupFormOptions);
+            } else {
+              noSignupForm = true;
+            }
             eventSignupButtons = this._renderSignupButtons(signupFormOptions);
           }
         } else if (this.event.allow_email_signup) {
@@ -156,20 +165,27 @@ export default class EventDetails {
           eventSignupForm = this._renderSignupForm(signupFormOptions);
           eventSignupButtons = this._renderSignupButtons(signupFormOptions);
         } else {
-          eventSignupForm = m(
-            'div.message',
-            m('span', `${i18n('events.restrictions.membersOnly')} `)
-          );
-          eventSignupButtons = m(Button, {
-            label: i18n('login'),
-            className: 'blue-flat-button',
-            events: { onclick: () => login(m.route.get()) },
-          });
+          noSignupForm = true;
+          eventSignupButtons = [
+            m(Button, {
+              label: i18n('login'),
+              className: 'blue-flat-button',
+              events: { onclick: () => login(m.route.get()) },
+            }),
+            m(Button, {
+              label: i18n('events.restrictions.membersOnly'),
+              disabled: true,
+              className: 'blue-flat-button',
+            }),
+          ];
         }
-        this._renderParticipationNotice();
       } else {
-        eventSignupForm = m('div.message', m('p', i18n('events.registration.over')));
-        this._renderParticipationNotice();
+        eventSignupButtons = m(Button, {
+          className: 'flat-button',
+          disabled: true,
+          label: i18n('events.registration.over'),
+        });
+        noSignupForm = true;
       }
     } else {
       eventSignupForm = m('div', [
@@ -177,6 +193,8 @@ export default class EventDetails {
         m('p.colored', formatDate(registerStart)),
       ]);
     }
+
+    this._renderParticipationNotice();
 
     let notification;
 
@@ -197,15 +215,15 @@ export default class EventDetails {
 
     const urlId = `event-${this.event._id}-url`;
 
-    return m('div.event-details', { className: noSignup ? 'no-signup' : null }, [
+    return m('div.event-details', { className: noSignupForm ? 'no-signup' : null }, [
+      notification && m('div.notification', notification),
       m('p', m.trust(marked(escape(this.event.getDescription())))),
-      !noSignup && m('div.separator'),
-      !noSignup &&
+      !noSignupForm && m('div.separator'),
+      !noSignupForm &&
         m(
           'div.form',
-          notification || eventSignupForm
-            ? [notification, eventSignupForm]
-            : m('div.message', [m('span', `${i18n('events.signup.noAdditionalInfoRequired')} `)])
+          eventSignupForm ||
+            m('div.message', [m('span', `${i18n('events.signup.noAdditionalInfoRequired')} `)])
         ),
       m(ActionBar, {
         className: 'event-actions',
