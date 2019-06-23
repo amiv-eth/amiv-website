@@ -77,6 +77,7 @@ export default class StudydocList extends FilteredListPage {
     data.push({
       value: 'all',
       label: defaultLabel,
+      hideSelection: true,
     });
 
     if (
@@ -178,7 +179,7 @@ export default class StudydocList extends FilteredListPage {
             this._loadFilterOptions('professor', values, i18n('studydocs.allProfessors')),
         },
         {
-          type: 'checkbox',
+          type: 'select',
           key: 'type',
           label: i18n('studydocs.type'),
           default: ['cheat sheets', 'exams', 'lecture documents', 'exercises'],
