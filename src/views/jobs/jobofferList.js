@@ -53,9 +53,6 @@ export default class JobofferList extends FilteredListPage {
           min_length: 3,
         },
         {
-          type: 'hr',
-        },
-        {
           type: 'button',
           label: i18n('reset'),
           className: 'flat-button',
