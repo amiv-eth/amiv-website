@@ -1,0 +1,46 @@
+@import '../styles/colors.less';
+
+.pe-filter--item {
+  cursor: pointer;
+  pointer-events: unset;
+  color: rgba(0, 0, 0, .54);
+
+  &:hover {
+    background-color: rgba(@color-grey, .54);
+    color: @color-red;
+  }
+}
+
+.pe-filter--item-selected {
+  &:hover .pe-button {
+    color: @color-red;
+  }
+
+  .pe-button {
+    pointer-events: unset;
+  }
+}
+
+.pe-filter--select {
+  width: 100%;
+  margin-top: -.5em;
+
+  .mdc-select {
+    width: 100%;
+  }
+}
+
+.pe-filter--list {
+  border-bottom: 1px solid @color-grey;
+  padding-bottom: .5em;
+}
+
+.pe-filter {
+  min-width: 120px;
+  border: 0;
+  display: inline-flex;
+  position: relative;
+  flex-direction: column;
+  vertical-align: top;
+  font-size: 1rem;
+}
