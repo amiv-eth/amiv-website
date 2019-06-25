@@ -79,11 +79,24 @@ export default {
       it: 'IT',
       eventPlanning: 'Event Planning',
       universityPolicy: 'University Policy',
+      universityPolicyItet: 'University Policy D-ITET',
+      universityPolicyMavt: 'University Policy D-MAVT',
       externalRelations: 'External Relations',
       infrastructure: 'Infrastructure',
       information: 'Information',
     },
     tasks: 'Tasks',
+    current: {
+      notice: 'The current board members are listed below.',
+      link: 'Show previous board members.',
+    },
+    old: {
+      notice: 'Only previous board members are listed below.',
+      link: 'Show the current board.',
+      title: 'Previous Boards',
+      fs: 'Spring Semester (FS)',
+      hs: 'Autumn Semester (HS)',
+    },
   },
 
   // Teams Page

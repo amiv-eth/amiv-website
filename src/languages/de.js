@@ -74,16 +74,29 @@ export default {
   board: {
     title: 'Vorstand',
     roles: {
-      president: 'Präsidentin',
-      quaestor: 'Quästor',
+      president: 'Präsidium',
+      quaestor: 'Quästur',
       it: 'IT',
       eventPlanning: 'Kultur',
       universityPolicy: 'Hochschulpolitik',
+      universityPolicyItet: 'Hochschulpolitik D-ITET',
+      universityPolicyMavt: 'Hochschulpolitik D-MAVT',
       externalRelations: 'External Relations',
       infrastructure: 'Infrastruktur',
       information: 'Information',
     },
     tasks: 'Aufgaben',
+    current: {
+      notice: 'Es wird nur der aktuelle Vorstand angezeigt.',
+      link: 'Zeige vorherige Vorstände.',
+    },
+    old: {
+      notice: 'Es werden nur vergangene Vorstandsmitglieder angezeigt.',
+      link: 'Zum aktuellen Vorstand.',
+      title: 'Vergangene Vorstände',
+      fs: 'Frühlingssemester (FS)',
+      hs: 'Herbstsemester (HS)',
+    },
   },
 
   // Teams Page

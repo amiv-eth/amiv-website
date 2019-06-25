@@ -7,7 +7,9 @@ const boardRoles = {
   it: 'it',
   information: 'information',
   eventPlanning: 'eventPlanning',
-  universityPolicy: 'universityPolicy',
+  universityPolicy: 'universityPolicy', // Used for unspecified HoPo (e.g. current board members)
+  universityPolicyItet: 'universityPolicyItet', // Used for department specific HoPo (e.g. old board members)
+  universityPolicyMavt: 'universityPolicyMavt', // Used for department specific HoPo (e.g. old board members)
   externalRelations: 'externalRelations',
   infrastructure: 'infrastructure',
 };

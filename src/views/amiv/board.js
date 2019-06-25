@@ -1,11 +1,13 @@
 import m from 'mithril';
 import marked from 'marked';
 import escape from 'html-escape';
+import { Icon } from 'polythene-mithril-icon';
 import Tabs from '../../components/Tabs';
 import { boardPortraits, boardImage } from '../../content/amiv/data/board_portraits';
 import { boardTaskDescriptions } from '../../content/amiv/data/board_roles';
 import { i18n, currentLanguage } from '../../models/language';
-import { TranslationUnavailable } from '../errors';
+import { TranslationUnavailable, Infobox } from '../errors';
+import icons from '../../images/icons';
 
 class ImageGroup {
   oninit(vnode) {
@@ -125,6 +127,18 @@ export default class Board {
     }
 
     return m('div', [
+      m(Infobox, {
+        className: 'board-notice',
+        icon: m(Icon, { svg: { content: m.trust(icons.info) } }),
+        label: [
+          m('span', i18n('board.current.notice')),
+          m(
+            'a',
+            { href: `/${currentLanguage()}/board/history`, oncreate: m.route.link },
+            i18n('board.current.link')
+          ),
+        ],
+      }),
       m('h1.centered', i18n('board.title')),
       image,
       m('div.board', boardPortraits.map(group => m(ImageGroup, { group }))),

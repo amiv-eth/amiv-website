@@ -73,6 +73,10 @@ Raven.context(() => {
       viewAsync: './views/amiv/board',
     },
     {
+      url: '/:language/board/history',
+      viewAsync: './views/amiv/oldBoards',
+    },
+    {
       url: '/:language/teams',
       viewAsync: './views/amiv/teams',
     },

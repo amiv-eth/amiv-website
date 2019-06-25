@@ -1,5 +1,13 @@
 @import './colors.less';
 
+.board-notice {
+  margin-top: 1em;
+
+  a {
+    margin-left: .25em;
+  }
+}
+
 .board {
   margin-top: 8em;
 
@@ -49,6 +57,31 @@
       p {
         margin-left: 0;
         margin-right: 0;
+      }
+    }
+
+    // used on old boards page
+    ul.members {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      line-height: 1.75em;
+
+      .name {
+        font-weight: bold;
+      }
+
+      .role {
+        font-style: italic;
+        margin: .25em;
+      }
+
+      .role:before {
+        content: '(';
+      }
+
+      .role:after {
+        content: ')';
       }
     }
   }
