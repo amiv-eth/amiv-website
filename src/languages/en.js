@@ -188,6 +188,7 @@ export default {
     registration: {
       none: 'No registration required',
       over: 'The registration period is over.',
+      notStarted: 'Registration period has not started yet.',
       startsAt: 'Registration starts at',
     },
     spot: 'spot',

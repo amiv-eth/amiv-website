@@ -189,6 +189,7 @@ export default {
     registration: {
       none: 'Keine Anmeldung erforderlich',
       over: 'Das Anmeldefenster ist geschlossen.',
+      notStarted: 'Das Anmeldefenster ist noch nicht geöffnet.',
       startsAt: 'Anmeldung möglich ab',
     },
     spot: 'Platz',

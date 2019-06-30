@@ -188,10 +188,22 @@ export default class EventDetails {
         noSignupForm = true;
       }
     } else {
-      eventSignupForm = m('div', [
-        m('p', i18n('events.registration.startsAt')),
-        m('p.colored', formatDate(registerStart)),
-      ]);
+      eventSignupButtons = m(Button, {
+        className: 'flat-button',
+        disabled: true,
+        label: i18n('events.registration.notStarted'),
+      });
+      this.notification = {
+        type: 'info',
+        label: [
+          m('span', [
+            i18n('events.registration.startsAt'),
+            m.trust('&nbsp;'),
+            m('span.colored', formatDate(registerStart)),
+          ]),
+        ],
+      };
+      noSignupForm = true;
     }
 
     this._renderParticipationNotice();
