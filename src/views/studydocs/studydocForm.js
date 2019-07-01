@@ -98,7 +98,10 @@ export default class StudydocForm {
       url: `${apiUrl}${info.file}`,
       responseType: 'blob',
       extract: xhr =>
-        new File([xhr.response], info.name, { type: xhr.responseType, lastModified: Date.now() }),
+        new File([xhr.response], info.name, {
+          type: xhr.getResponseHeader('content-type'),
+          lastModified: Date.now(),
+        }),
     });
   }
 
