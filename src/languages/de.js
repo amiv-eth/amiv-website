@@ -225,8 +225,13 @@ export default {
       lecturePlaceholder: 'Vorlesung hier eintippen',
       loadingError: 'Ups, die Filteroptionen konnten nicht geladen werden.',
     },
+    notice: {
+      existingFiles:
+        'Alle bisherigen Dokumente sind oben aufgelistet. Wenn du eine neue Version eines Dokuments hochladen willst, stelle bitte sicher, dass du alle anderen Dokumente auch hochlädst. Ansonsten sind sie unwiederbringlich weg!',
+    },
     actions: {
       edit: 'bearbeiten',
+      download: 'herunterladen',
       delete: 'löschen',
       cancel: 'abbrechen',
       confirm: 'bestätigen',
@@ -269,6 +274,7 @@ export default {
     noSemester: 'Kein Semester',
     courseYear: 'Kursjahr',
     files: 'Dateien',
+    noFilesForUpload: 'Keine Dateien ausgewählt. Nur die Meta-Informationen werden aktualisiert!',
     noFiles: 'Keine Dateien ausgewählt.',
     upload: 'Dokument(e) hochladen',
     uploadTitle: {
