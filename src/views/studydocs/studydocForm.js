@@ -86,7 +86,7 @@ export default class StudydocForm {
   validate() {
     this.isValid =
       this.invalid.size === 0 &&
-      this.files.length > 0 &&
+      (this.files.length > 0 || this.existingFiles.length > 0) &&
       this.doc.title !== undefined &&
       this.doc.title !== '';
   }
