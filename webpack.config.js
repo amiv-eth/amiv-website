@@ -181,6 +181,7 @@ const config = {
     }),
     new GenerateSW({
       navigateFallback: '/',
+      navigateFallbackBlacklist: [/^\/media/],
       runtimeCaching: [
         {
           urlPattern: /\.(?:png|jpg|jpeg|svg)$/,

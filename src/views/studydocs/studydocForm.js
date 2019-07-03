@@ -331,7 +331,7 @@ export default class StudydocForm {
                   'a',
                   {
                     className: 'flat-button',
-                    href: `${apiUrl}${item.info.file}`,
+                    href: `${item.info.file}`,
                     download: filename,
                   },
                   i18n('studydocs.actions.download')
