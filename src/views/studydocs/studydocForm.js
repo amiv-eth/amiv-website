@@ -3,7 +3,6 @@ import marked from 'marked';
 import filesize from 'filesize';
 import animateScrollTo from 'animated-scroll-to';
 import { Icon } from 'polythene-mithril-icon';
-import { apiUrl } from 'config';
 import Spinner from 'amiv-web-ui-components/src/spinner';
 import StudydocsController from '../../models/studydocs';
 import Select from '../../components/Select';
