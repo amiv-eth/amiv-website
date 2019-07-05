@@ -48,7 +48,8 @@ export default class Frontpage {
 
   view() {
     return m('div#frontpage-container', [
-      m('h2',
+      m(
+        'h2',
         m(
           'a',
           {
@@ -56,7 +57,7 @@ export default class Frontpage {
             oncreate: m.route.link,
           },
           i18n('events.title')
-        ),
+        )
       ),
       m(
         'div.frontpage-row',
@@ -64,7 +65,8 @@ export default class Frontpage {
           ? this.events.map(item => m(EventCard, { item }))
           : Array.from(Array(3)).map(() => m(EventCard))
       ),
-      m('h2',
+      m(
+        'h2',
         m(
           'a',
           {
