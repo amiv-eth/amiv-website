@@ -1,7 +1,6 @@
 import m from 'mithril';
 import marked from 'marked';
 import filesize from 'filesize';
-import { apiUrl } from 'config';
 import animateScrollTo from 'animated-scroll-to';
 import { Icon } from 'polythene-mithril-icon';
 import Spinner from 'amiv-web-ui-components/src/spinner';
@@ -47,6 +46,7 @@ export default class StudydocForm {
 
     this.doc = { course_year: new Date().getFullYear() };
     this.files = [];
+    this.existingFiles = [];
     this.filesChanged = false;
     this.isValid = false;
     this.isBusy = false;
@@ -55,7 +55,7 @@ export default class StudydocForm {
 
     if (documentId) {
       this.doc = await controller.loadDocument(documentId);
-      this.files = this.doc.files.map(item => ({ info: item, file: null }));
+      this.existingFiles = this.doc.files.map(item => ({ info: item, file: null }));
       delete this.doc.files;
     }
 
@@ -85,22 +85,26 @@ export default class StudydocForm {
   validate() {
     this.isValid =
       this.invalid.size === 0 &&
-      this.files.length > 0 &&
+      (this.files.length > 0 || this.existingFiles.length > 0) &&
       this.doc.title !== undefined &&
       this.doc.title !== '';
   }
 
-  static async _prepareFileForUpload({ info = null, file = null }) {
-    if (file) return Promise.resolve(file);
+  // Commented due to issues with re-upload of documents downloaded from the API with an XHR request beforehand.
+  // static async _prepareFileForUpload({ info = null, file = null }) {
+  //   if (file) return Promise.resolve(file);
 
-    return m.request({
-      method: 'GET',
-      url: `${apiUrl}${info.file}`,
-      responseType: 'blob',
-      extract: xhr =>
-        new File([xhr.response], info.name, { type: xhr.responseType, lastModified: Date.now() }),
-    });
-  }
+  //   return m.request({
+  //     method: 'GET',
+  //     url: `${apiUrl}${info.file}`,
+  //     responseType: 'blob',
+  //     extract: xhr =>
+  //       new File([xhr.response], info.name, {
+  //         type: xhr.getResponseHeader('content-type'),
+  //         lastModified: Date.now(),
+  //       }),
+  //   });
+  // }
 
   async submit() {
     if (this.isValid && !this.isBusy) {
@@ -108,9 +112,11 @@ export default class StudydocForm {
       this.uploadError = false;
       try {
         if (this.filesChanged) {
-          this.doc.files = await Promise.all(
-            this.files.map(item => this.constructor._prepareFileForUpload(item))
-          );
+          this.doc.files = this.files;
+          // Commented due to issues with re-upload of documents downloaded from the API with an XHR request beforehand.
+          // this.doc.files = await Promise.all(
+          //   this.files.map(item => this.constructor._prepareFileForUpload(item))
+          // );
         }
 
         const response = this.doc._id
@@ -309,6 +315,36 @@ export default class StudydocForm {
       ]),
       m(
         'div.files',
+        this.existingFiles.length > 0
+          ? this.existingFiles.map(item => {
+              const filename = item.info.name;
+              const { length, content_type } = item.info;
+
+              return m('div.file', [
+                m('div.info', [
+                  m(Icon, { svg: { content: m.trust(mimeTypeToIcon(content_type)) } }),
+                  m('span.name', filename),
+                  m('span.size', filesize(length)),
+                ]),
+                m(
+                  'a',
+                  {
+                    className: 'flat-button',
+                    href: `${item.info.file}`,
+                    download: filename,
+                  },
+                  i18n('studydocs.actions.download')
+                ),
+              ]);
+            })
+          : m('span.no-files', i18n('studydocs.noFiles'))
+      ),
+      m(Infobox, {
+        icon: m(Icon, { svg: { content: m.trust(icons.info) } }),
+        label: i18n('studydocs.notice.existingFiles'),
+      }),
+      m(
+        'div.files',
         this.files.length > 0
           ? this.files.map((item, index) => {
               const filename = item.info ? item.info.name : item.file.name;
@@ -335,7 +371,7 @@ export default class StudydocForm {
                 }),
               ]);
             })
-          : m('span.no-files', i18n('studydocs.noFiles'))
+          : m('span.no-files', i18n('studydocs.noFilesForUpload'))
       ),
       m('div.file-input', [
         m(FileInput, {

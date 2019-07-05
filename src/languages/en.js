@@ -224,9 +224,14 @@ export default {
       lecturePlaceholder: 'Type lecture name',
       loadingError: 'Oops, we could not load the filter values.',
     },
+    notice: {
+      existingFiles:
+        'All existing files are listed above. If you want to upload a new version of a document, please make sure that you also upload all other documents. They will be lost otherwise!',
+    },
     actions: {
       edit: 'edit',
       delete: 'delete',
+      download: 'download',
       cancel: 'cancel',
       confirm: 'confirm',
     },
@@ -268,6 +273,7 @@ export default {
     noSemester: 'No semester',
     courseYear: 'Course Year',
     files: 'Files',
+    noFilesForUpload: 'No files selected for upload. Only the meta data will be updated!',
     noFiles: 'No files selected.',
     upload: 'Upload study document(s)',
     uploadTitle: {
