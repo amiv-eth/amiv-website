@@ -48,14 +48,34 @@ export default class Frontpage {
 
   view() {
     return m('div#frontpage-container', [
-      m('h2', i18n('events.title')),
+      m(
+        'h2',
+        m(
+          'a',
+          {
+            href: `${m.route.get()}events`,
+            oncreate: m.route.link,
+          },
+          i18n('events.title')
+        )
+      ),
       m(
         'div.frontpage-row',
         this.events.length > 0
           ? this.events.map(item => m(EventCard, { item }))
           : Array.from(Array(3)).map(() => m(EventCard))
       ),
-      m('h2', i18n('joboffers.title')),
+      m(
+        'h2',
+        m(
+          'a',
+          {
+            href: `${m.route.get()}jobs`,
+            oncreate: m.route.link,
+          },
+          i18n('joboffers.title')
+        )
+      ),
       m(
         'div.frontpage-row',
         this.jobs.length > 0
