@@ -2,6 +2,7 @@
 // Markdown can be used to style the text.
 
 import { boardRoles } from '../board_roles';
+import boardImage from '../../images/board/old/hs15.jpg';
 
 /**
  * Board information for autumn semester 2015 (HS15)
@@ -9,6 +10,7 @@ import { boardRoles } from '../board_roles';
 export default {
   year: 2015,
   semester: 'hs',
+  image: boardImage,
   members: [
     {
       role: boardRoles.president,
