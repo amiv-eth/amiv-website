@@ -112,7 +112,7 @@ export default class StudydocForm {
       this.uploadError = false;
       try {
         if (this.filesChanged) {
-          this.doc.files = this.files;
+          this.doc.files = this.files.map(item => item.file);
           // Commented due to issues with re-upload of documents downloaded from the API with an XHR request beforehand.
           // this.doc.files = await Promise.all(
           //   this.files.map(item => this.constructor._prepareFileForUpload(item))
