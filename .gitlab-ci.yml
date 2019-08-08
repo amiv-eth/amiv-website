@@ -21,10 +21,9 @@ stylelint:
 
 build_master:
   stage: build
-  image: docker:latest
+  image: docker:stable
   variables:
     GIT_SUBMODULE_STRATEGY: normal
-    DOCKER_HOST: tcp://docker:2375
     DOCKER_DRIVER: overlay2
   services:
     - docker:dind
@@ -42,10 +41,9 @@ build_master:
 # On branches except master: verify that build works, do not push to registry
 build:
   stage: build
-  image: docker:latest
+  image: docker:stable
   variables:
     GIT_SUBMODULE_STRATEGY: normal
-    DOCKER_HOST: tcp://docker:2375
     DOCKER_DRIVER: overlay2
   services:
     - docker:dind
