@@ -42,6 +42,8 @@ build_dev:
   variables:
     GIT_SUBMODULE_STRATEGY: normal
     DOCKER_DRIVER: overlay2
+  before_script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
   script:
     - docker build --cache-from "$CI_REGISTRY_IMAGE:dev" --build-arg NPM_BUILD_COMMAND=build-dev --pull -t "$CI_REGISTRY_IMAGE:dev" ./
     - docker push "$CI_REGISTRY_IMAGE:dev"
