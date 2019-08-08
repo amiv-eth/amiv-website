@@ -24,18 +24,20 @@ build_master:
   image: docker:latest
   variables:
     GIT_SUBMODULE_STRATEGY: normal
+    DOCKER_HOST: tcp://docker:2375
+    DOCKER_DRIVER: overlay2
   services:
     - docker:dind
   before_script:
     - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
   script:
-    - docker build --pull -t "$CI_REGISTRY_IMAGE" ./
-    - docker push "$CI_REGISTRY_IMAGE"
+    - docker build --cache-from "$CI_REGISTRY_IMAGE:latest" --pull -t "$CI_REGISTRY_IMAGE:latest" ./
+    - docker push "$CI_REGISTRY_IMAGE:latest"
   only:
     - master
   environment:
     name: production
-    url: https://future.amiv.ethz.ch
+    url: https://amiv.ethz.ch
 
 # On branches except master: verify that build works, do not push to registry
 build:
@@ -43,10 +45,12 @@ build:
   image: docker:latest
   variables:
     GIT_SUBMODULE_STRATEGY: normal
+    DOCKER_HOST: tcp://docker:2375
+    DOCKER_DRIVER: overlay2
   services:
     - docker:dind
   script:
-    - docker build --pull ./
+    - docker build --cache-from "$CI_REGISTRY_IMAGE:latest" --pull ./
   except:
     - master
 
