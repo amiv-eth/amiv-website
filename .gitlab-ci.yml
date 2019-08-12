@@ -21,34 +21,44 @@ stylelint:
 
 build_master:
   stage: build
-  image: docker:latest
+  image: docker:stable
   variables:
     GIT_SUBMODULE_STRATEGY: normal
-  services:
-    - docker:dind
+    DOCKER_DRIVER: overlay2
   before_script:
     - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
   script:
-    - docker build --pull -t "$CI_REGISTRY_IMAGE" ./
-    - docker push "$CI_REGISTRY_IMAGE"
+    - docker build --cache-from "$CI_REGISTRY_IMAGE:latest" --pull -t "$CI_REGISTRY_IMAGE:latest" ./
+    - docker push "$CI_REGISTRY_IMAGE:latest"
   only:
     - master
   environment:
     name: production
-    url: https://future.amiv.ethz.ch
+    url: https://amiv.ethz.ch
 
-# On branches except master: verify that build works, do not push to registry
-build:
+build_dev:
   stage: build
-  image: docker:latest
+  image: docker:stable
   variables:
     GIT_SUBMODULE_STRATEGY: normal
-  services:
-    - docker:dind
+    DOCKER_DRIVER: overlay2
+  before_script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
   script:
-    - docker build --pull ./
-  except:
-    - master
+    - docker build --cache-from "$CI_REGISTRY_IMAGE:dev" --build-arg NPM_BUILD_COMMAND=build-dev --pull -t "$CI_REGISTRY_IMAGE:dev" ./
+    - docker push "$CI_REGISTRY_IMAGE:dev"
+  environment:
+    name: development
+    url: https://web-dev.amiv.ethz.ch
+
+deploy_dev:
+  stage: deploy
+  image: amiveth/service-update-helper
+  before_script:
+    - export CI_DEPLOY_SERVICE="${CI_DEPLOY_SERVICE}-dev"
+  script:
+    - /update.py
+  allow_failure: true
 
 deploy_cluster:
   stage: deploy

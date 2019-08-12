@@ -9,6 +9,7 @@
     "docs-md": "doxdox 'src/**/*.js' --layout markdown --output DOCUMENTATION.md",
     "start": "webpack -d --watch",
     "build": "webpack -p --config webpack.config.prod.js",
+    "build-dev": "webpack -p --config webpack.config.dev.js",
     "server": "webpack-dev-server --hot --inline",
     "lint": "npm run eslint && npm run stylelint",
     "eslint": "eslint src/*.js src/**/*.js",
