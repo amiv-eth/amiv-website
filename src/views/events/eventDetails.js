@@ -292,7 +292,13 @@ export default class EventDetails {
       label,
       active: this.emailValid && this.form.valid && !this.signupBusy,
       events: {
-        onclick: () => this.signup(),
+        onclick: () => {
+          this.form.validate();
+
+          if (this.form.valid) {
+            this.signup();
+          }
+        }
       },
     });
   }
