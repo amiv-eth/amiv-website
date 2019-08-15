@@ -106,6 +106,7 @@ export default class ListSelect {
       } else {
         this.filteredOptions = this.options;
       }
+      m.redraw();
     }, 100);
   }
 

@@ -308,7 +308,12 @@ export default class StudydocList extends FilteredListPage {
       ? studydocument.title
       : i18n('studydocs.name.default');
 
-    if (studydocument._links.self.methods.includes('PATCH')) {
+    if (
+      studydocument._links &&
+      studydocument._links.self &&
+      studydocument._links.self.methods &&
+      studydocument._links.self.methods.includes('PATCH')
+    ) {
       actionButtons.push(
         m(Button, {
           name: `edit-${studydocument._id}`,
@@ -323,7 +328,12 @@ export default class StudydocList extends FilteredListPage {
       );
     }
 
-    if (studydocument._links.self.methods.includes('DELETE')) {
+    if (
+      studydocument._links &&
+      studydocument._links.self &&
+      studydocument._links.self.methods &&
+      studydocument._links.self.methods.includes('DELETE')
+    ) {
       // User is allowed to delete this document
       if (this.deleteDocument.id === studydocument._id && !this.deleteDocument.busy) {
         actionButtons.push(
