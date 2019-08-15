@@ -493,7 +493,7 @@ export class FilteredListPage {
     if (this.dataStore.pinnedItem) {
       if (this.dataStore.pinnedItem.loading) {
         pinnedList = this._renderList({
-          name: this.constructor.pinnedListIdentifier,
+          name: 'loading',
           items: [m('div.loading', m(Spinner, { show: true, size: '96px' }))],
         });
       } else {
@@ -538,6 +538,13 @@ export class FilteredListPage {
     return m('div.empty-list', m('span', message));
   }
 
+  _renderItemInternal(item, list, selectedId) {
+    if (list === 'loading') {
+      return item;
+    }
+    return this._renderItem(item, list, selectedId);
+  }
+
   _renderList(list) {
     const tiles = [];
 
@@ -558,10 +565,12 @@ export class FilteredListPage {
 
     if (list.pages) {
       tiles.push(
-        ...list.pages.map(page => page.map(item => this._renderItem(item, list.name, this.itemId)))
+        ...list.pages.map(page =>
+          page.map(item => this._renderItemInternal(item, list.name, this.itemId))
+        )
       );
     } else {
-      tiles.push(...list.items.map(item => this._renderItem(item, list.name, this.itemId)));
+      tiles.push(...list.items.map(item => this._renderItemInternal(item, list.name, this.itemId)));
     }
 
     if (list.loadMore && typeof list.loadMore === 'function') {
