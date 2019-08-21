@@ -206,11 +206,27 @@ export default {
       waitingList: 'Du bist auf der Warteliste.',
       accepted: 'Du bist angemeldet und hast einen Platz.',
       noAdditionalInfoRequired: 'Keine Zusatzinformationen erforderlich.',
+      legalNoticeInfo1: 'Ich habe die ',
+      legalNoticeInfo2: ' gelesen und erkläre mich damit einverstanden. ',
     },
     signoff: {
       action: 'abmelden',
       success: 'Anmeldung gelöscht',
       failed: 'Abmelden fehlgeschlagen',
+    },
+    legalNotice: {
+      title: 'Regeln',
+      one:
+        'Versicherung ist Sache der TeilnehmerInnen. JedeR TeilnehmerIn nimmt auf eigene Verantwortung und Risiko am Event teil. Soweit gesetzlich zulässig, schliesst der Veranstalter (AMIV) jegliche Haftung für Schäden der TeilnehmerInnen aus. ',
+      two:
+        'Die TeilnehmerInnen verpflichten sich, den Veranstalter (AMIV) und seine Hilfspersonen auf erstes Verlangen von Haftungsansprüchen Dritter freizustellen, soweit diese Dritten Schäden in Folge der Teilnahme des/der TeilnehmersIn an einem vom AMIV organisierten Event erleiden.',
+      three: 'Der AMIV behält sich Änderungen oder die Absage des Events vor. ',
+      four:
+        'Abmeldungen sind nur bis zur festgelegten Abmeldefrist möglich, danach muss die Teilnahmegebühr in jedem Fall bezahlt werden. Bei Fernbleiben von einem Gratis-Event wird der/die TeilnehmerIn zur Zahlung einer Aufwandsentschädigung von CHF 5 an den AMIV verpflichtet. ',
+      five:
+        'Der Veranstalter (AMIV) erlaubt sich, fehlbare TeilnehmerInnen von zukünftigen Events auszuschliessen. Diese Entscheidung liegt beim AMIV-Vorstand. ',
+      six:
+        'Anmeldungen sind nicht übertragbar. Bei Events ohne Warteliste und kurzfristigen Ausfällen ist es möglich, einen Ersatz für die eigene Teilnahme an einem Event zu organisieren. Dies muss vor dem Eventstart mit dem Event-OK abgeklärt werden. ',
     },
   },
 

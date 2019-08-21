@@ -205,11 +205,27 @@ export default {
       waitingList: 'You are on the waiting list.',
       accepted: 'You are signed up and got a spot.',
       noAdditionalInfoRequired: 'No additional information required.',
+      legalNoticeInfo1: 'I have read and agree to the ',
+      legalNoticeInfo2: '.',
     },
     signoff: {
       action: 'signoff',
       success: 'Signoff successful',
       failed: 'Signoff failed',
+    },
+    legalNotice: {
+      title: 'Terms and conditions',
+      one:
+        "The participation at AMIV events is at the participant's own risk and he/she is responsible for their own insurance. To the maximum extent permitted by law, the organizer (AMIV) shall in no event be liable (explicitly, implicitly or otherwise) for any damage or injury to the participants. ",
+      two:
+        'By registering, the participant is obliged to indemnify the organizer (AMIV) upon first request of all liability claims by third parties which result from the participation of the participant. ',
+      three: 'AMIV reserves the right to change or cancel the event. ',
+      four:
+        'Signoffs are only possible until the designated deadline, after that date the registration fee has to be paid in any case. If a registered participant does not attend to a free event, he/she has to pay a compensation of CHF 5 to AMIV. ',
+      five:
+        'Participants who violate these regulations can be banned from future events organized by AMIV; This measure is at the discretion of the AMIV-board. ',
+      six:
+        'Registrations are not transferable to other persons. In the case a participant is prevented from attending by an inevitable and unforeseeable event and there is no waiting list, he is allowed to organize a replacement person. This has to be clarified with the event-organizers beforehand. ',
     },
   },
 

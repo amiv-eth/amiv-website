@@ -52,6 +52,14 @@
     margin: 1em;
   }
 
+  .pe-control__label {
+    cursor: default;
+  }
+
+  div > a {
+    cursor: pointer;
+  }
+
   .separator {
     grid-area: separator;
     background: @color-grey;
@@ -83,7 +91,7 @@
       margin: 0;
     }
 
-    form div:not(.pe-button__content) {
+    form div.mdc-select {
       width: 100%;
     }
   }

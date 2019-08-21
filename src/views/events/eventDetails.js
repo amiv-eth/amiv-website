@@ -1,5 +1,5 @@
 import m from 'mithril';
-import { Icon } from 'polythene-mithril';
+import { Icon, Dialog } from 'polythene-mithril';
 import marked from 'marked';
 import escape from 'html-escape';
 import Form from 'amiv-web-ui-components/src/form';
@@ -10,6 +10,7 @@ import { log } from '../../models/log';
 import { isLoggedIn, login } from '../../models/auth';
 import Button from '../../components/Button';
 import ActionBar from '../../components/ActionBar';
+import CheckboxComponent from '../../components/Checkbox';
 import { i18n, currentLanguage, formatDate } from '../../models/language';
 import icons from '../../images/icons';
 import { copyToClipboard } from '../../utils';
@@ -26,6 +27,7 @@ export default class EventDetails {
       ? undefined
       : JSON.parse(this.event.additional_fields);
 
+    this.acceptedTerms = false;
     this.email = '';
     this.emailSignup = null;
 
@@ -105,6 +107,22 @@ export default class EventDetails {
     }
     this.signoffBusy = false;
     m.redraw();
+  }
+
+  static show_AGB() {
+    Dialog.show({
+      body: m('div.rules', [
+        m('h2', i18n('events.legalNotice.title')),
+        m('ol', [
+          m('div', m('li', m.trust(marked(i18n('events.legalNotice.one'))))),
+          m('div', m('li', m.trust(marked(i18n('events.legalNotice.two'))))),
+          m('div', m('li', m.trust(marked(i18n('events.legalNotice.three'))))),
+          m('div', m('li', m.trust(marked(i18n('events.legalNotice.four'))))),
+          m('div', m('li', m.trust(marked(i18n('events.legalNotice.five'))))),
+          m('div', m('li', m.trust(marked(i18n('events.legalNotice.six'))))),
+        ]),
+      ]),
+    });
   }
 
   view() {
@@ -229,7 +247,10 @@ export default class EventDetails {
 
     return m('div.event-details', { className: noSignupForm ? 'no-signup' : null }, [
       notification && m('div.notification', notification),
-      m('p', m.trust(marked(escape(this.event.getDescription())))),
+      m('p', [
+        m.trust(marked(escape(this.event.getDescription()))),
+        noSignupForm && this._renderTerms(),
+      ]),
       !noSignupForm && m('div.separator'),
       !noSignupForm &&
         m(
@@ -271,6 +292,8 @@ export default class EventDetails {
       elements.push(this._renderEmailField());
     }
 
+    elements.push(this._renderTerms());
+
     return elements.length > 0 ? m('form', { onsubmit: () => false }, elements) : null;
   }
 
@@ -284,13 +307,45 @@ export default class EventDetails {
     ];
   }
 
+  _renderTerms() {
+    return m(CheckboxComponent, {
+      name: 'terms',
+      onChange: event => {
+        this.acceptedTerms = event.checked;
+      },
+      label: m(
+        'div',
+        {
+          onclick: event => {
+            event.preventDefault();
+          },
+        },
+        [
+          i18n('events.signup.legalNoticeInfo1'),
+          m(
+            'a',
+            {
+              onclick: event => {
+                EventDetails.show_AGB();
+                console.log(this.form);
+                event.preventDefault();
+              },
+            },
+            i18n('events.legalNotice.title')
+          ),
+          i18n('events.signup.legalNoticeInfo2'),
+        ]
+      ),
+    });
+  }
+
   _renderSignupButton(label) {
     return m(Button, {
       name: 'signup',
       className: 'blue-flat-button',
       border: true,
       label,
-      active: this.emailValid && this.form.valid && !this.signupBusy,
+      active: this.acceptedTerms && this.emailValid && this.form.valid && !this.signupBusy,
       events: {
         onclick: () => {
           this.form.validate();
@@ -298,7 +353,7 @@ export default class EventDetails {
           if (this.form.valid) {
             this.signup();
           }
-        }
+        },
       },
     });
   }
