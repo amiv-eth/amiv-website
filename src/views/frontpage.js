@@ -1,5 +1,6 @@
 import m from 'mithril';
 import { apiUrl } from 'config';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { Card } from 'polythene-mithril-card';
 import Spinner from 'amiv-web-ui-components/src/spinner';
 import EventCard from '../components/EventCard';
@@ -51,10 +52,10 @@ export default class Frontpage {
       m(
         'h2',
         m(
-          'a',
+          m.route.Link,
           {
+            selector: 'a',
             href: `${m.route.get()}events`,
-            oncreate: m.route.link,
           },
           i18n('events.title')
         )
@@ -68,10 +69,10 @@ export default class Frontpage {
       m(
         'h2',
         m(
-          'a',
+          m.route.Link,
           {
+            selector: 'a',
             href: `${m.route.get()}jobs`,
-            oncreate: m.route.link,
           },
           i18n('joboffers.title')
         )
@@ -90,10 +91,7 @@ export default class Frontpage {
     let cardContent;
 
     if (item && !loading) {
-      url = {
-        href: `${m.route.get()}jobs/${item._id}`,
-        oncreate: m.route.link,
-      };
+      url = `${m.route.get()}jobs/${item._id}`;
 
       let logo;
       if (item.logo) {
@@ -105,10 +103,16 @@ export default class Frontpage {
       cardContent = m('div.image.ratio-2to1', m(Spinner, { show: true }));
     }
 
-    return m(Card, {
-      className: 'frontpage-job',
-      url,
-      content: cardContent,
-    });
+    return m(
+      m.route.Link,
+      {
+        selector: 'a',
+        href: url,
+      },
+      m(Card, {
+        className: 'frontpage-job',
+        content: cardContent,
+      })
+    );
   }
 }

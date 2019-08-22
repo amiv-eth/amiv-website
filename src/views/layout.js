@@ -1,4 +1,5 @@
 import m from 'mithril';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { Dialog } from 'polythene-mithril-dialog';
 import header from './header';
 import footer from './footer';

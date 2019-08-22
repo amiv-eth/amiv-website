@@ -1,6 +1,9 @@
 import m from 'mithril';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { List } from 'polythene-mithril-list';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { ListTile } from 'polythene-mithril-list-tile';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { Card } from 'polythene-mithril-card';
 import debounce from 'amiv-web-ui-components/src/debounce';
 import Button from './Button';

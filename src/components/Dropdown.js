@@ -33,7 +33,13 @@ export default class DropdownComponent {
   view(vnode) {
     return m(
       'select.dropdown',
-      { onchange: m.withAttr('value', this.selectedId), ...this.defaultProps, ...vnode.attrs },
+      {
+        onchange: event => {
+          this.selectedId = event.value;
+        },
+        ...this.defaultProps,
+        ...vnode.attrs,
+      },
       // vnode.attrs.placeholder
       // ? m(
       //     'option',

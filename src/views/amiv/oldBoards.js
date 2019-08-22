@@ -87,8 +87,8 @@ export default class OldBoard {
         label: [
           m('span', i18n('board.old.notice')),
           m(
-            'a',
-            { href: `/${currentLanguage()}/board`, oncreate: m.route.link },
+            m.route.Link,
+            { selector: 'a', href: `/${currentLanguage()}/board` },
             i18n('board.old.link')
           ),
         ],

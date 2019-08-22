@@ -1,4 +1,5 @@
 import m from 'mithril';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { TextField } from 'polythene-mithril-textfield';
 
 /**
