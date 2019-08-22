@@ -37,7 +37,7 @@ export default class GroupMembershipsController extends PaginationController {
               Authorization: `Token ${getToken()}`,
             }
           : {},
-        data: { group: groupId, user: getUserId() },
+        body: { group: groupId, user: getUserId() },
       })
       .then(() => {
         this.loadAll();

@@ -1,3 +1,4 @@
+/* eslint-disable max-classes-per-file */
 import m from 'mithril';
 import { Icon } from 'polythene-mithril';
 import { i18n } from '../models/language';

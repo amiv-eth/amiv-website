@@ -1,9 +1,14 @@
 import m from 'mithril';
 import animateScrollTo from 'animated-scroll-to';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { List } from 'polythene-mithril-list';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { Shadow } from 'polythene-mithril-shadow';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { ListTile } from 'polythene-mithril-list-tile';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { Button } from 'polythene-mithril-button';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { Icon } from 'polythene-mithril-icon';
 import Spinner from 'amiv-web-ui-components/src/spinner';
 import { error } from '../models/log';

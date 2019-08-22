@@ -4,7 +4,7 @@ import { i18n } from '../models/language';
 export default class LegalNotice {
   static view() {
     return m('div.legal-notice', [
-      m('h1', i18n('legalNotice')),
+      m('h1', i18n('legalNotice.title')),
       m('div.contact', [
         m('span.name', 'AMIV an der ETH'),
         m('span', 'CAB E37'),

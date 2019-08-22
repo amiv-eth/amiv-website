@@ -30,7 +30,7 @@ export default class ChangePasswordForm {
     return m.request({
       method: 'POST',
       url: `${apiUrl}/sessions`,
-      data: { username, password },
+      body: { username, password },
     });
   }
 

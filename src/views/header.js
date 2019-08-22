@@ -54,8 +54,11 @@ export default class Header {
         },
         [
           m(
-            'a.logo',
-            { href: `/${currentLanguage()}/`, onupdate: m.route.link },
+            m.route.Link,
+            {
+              selector: 'a.logo',
+              href: `/${currentLanguage()}/`,
+            },
             m('img', { src: logos.amiv, alt: 'AMIV an der ETH' })
           ),
           this.constructor._mainMenu,
@@ -85,6 +88,9 @@ export default class Header {
               this._mobileMenuShowing = !this._mobileMenuShowing;
             },
           }),
+
+          // ------
+
           // m(
           //   'div.mobile-menu',
           //   {
@@ -114,8 +120,9 @@ export default class Header {
           },
           [
             m(
-              'a',
+              item.url ? 'a' : m.route.Link,
               {
+                selector: 'a',
                 href: item.getLink(),
                 onclick: e => {
                   if (item.submenu) {
@@ -138,10 +145,10 @@ export default class Header {
                         'li',
                         { class: item.submenu.selectedIndex === subindex ? 'active' : '' },
                         m(
-                          'a',
+                          subitem.url ? 'a' : m.route.Link,
                           {
+                            selector: 'a',
                             href: subitem.getLink(),
-                            onupdate: subitem.onupdate,
                           },
                           [
                             i18n(subitem.label),
@@ -177,16 +184,16 @@ export default class Header {
                 class: m.route.get().includes(`/profile`) ? 'active' : '',
               },
               m(
-                'a',
-                { href: `/${currentLanguage()}/profile`, onupdate: m.route.link },
+                m.route.Link,
+                { selector: 'a', href: `/${currentLanguage()}/profile` },
                 i18n('mainMenu.profile')
               )
             ),
             m(
               'li',
               m(
-                'a',
-                { href: `/${currentLanguage()}/logout`, onupdate: m.route.link },
+                m.route.Link,
+                { selector: 'a', href: `/${currentLanguage()}/logout` },
                 i18n('mainMenu.logout')
               )
             ),
@@ -196,8 +203,9 @@ export default class Header {
               'li',
               { class: 'not-logged-in' },
               m(
-                'a',
+                m.route.Link,
                 {
+                  selector: 'a',
                   href: `/${currentLanguage()}/profile`,
                   onclick: e => {
                     login(`/${currentLanguage()}/profile`);

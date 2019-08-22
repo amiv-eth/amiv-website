@@ -1,4 +1,5 @@
 import m from 'mithril';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { Tabs } from 'polythene-mithril-tabs';
 
 /**
@@ -15,8 +16,8 @@ import { Tabs } from 'polythene-mithril-tabs';
  *
  *     m(TabComponent, {
  *         tabs: [
- *             { label: 'Tab 1', url: { href: '/tab1', onupdate: m.route.link, index: 0 } },
- *             { label: 'Tab 2', url: { href: '/tab2', onupdate: m.route.link, index: 1 } },
+ *             { label: 'Tab 1', url: { href: '/tab1', index: 0 } },
+ *             { label: 'Tab 2', url: { href: '/tab2', index: 1 } },
  *         ],
  *         className: 'themed-tabs',
  *         activeSelected: true,

@@ -9,7 +9,7 @@ import { currentLanguage } from './language';
 export default class Navigation {
   constructor(items) {
     this._items = items.map(item => {
-      const newItem = Object.assign({}, item);
+      const newItem = { ...item };
       if (newItem.url) {
         newItem.getLink = () => Navigation._getUrlLink(newItem.url);
       } else if (newItem.addLanguagePrefix) {
@@ -95,25 +95,21 @@ export const mainNavigation = new Navigation([
     label: 'mainMenu.about.label',
     path: '/about',
     addLanguagePrefix: true,
-    onupdate: m.route.link,
     submenu: new Navigation([
       {
         label: 'mainMenu.about.about',
         path: '/about',
         addLanguagePrefix: true,
-        onupdate: m.route.link,
       },
       {
         label: 'mainMenu.about.board',
         path: '/board',
         addLanguagePrefix: true,
-        onupdate: m.route.link,
       },
       {
         label: 'mainMenu.about.teams',
         path: '/teams',
         addLanguagePrefix: true,
-        onupdate: m.route.link,
       },
       {
         label: 'mainMenu.about.statutes',
@@ -133,25 +129,21 @@ export const mainNavigation = new Navigation([
     label: 'mainMenu.events',
     path: '/events',
     addLanguagePrefix: true,
-    onupdate: m.route.link,
   },
   {
     label: 'mainMenu.studydocuments',
     path: '/studydocuments',
     addLanguagePrefix: true,
-    onupdate: m.route.link,
   },
   {
     label: 'mainMenu.jobs.label',
     path: '/jobs',
     addLanguagePrefix: true,
-    onupdate: m.route.link,
     submenu: new Navigation([
       {
         label: 'mainMenu.jobs.jobs',
         path: '/jobs',
         addLanguagePrefix: true,
-        onupdate: m.route.link,
       },
       {
         label: 'mainMenu.jobs.companies',
