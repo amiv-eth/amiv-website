@@ -66,8 +66,6 @@ export default class EventDetails {
     }
 
     if (this.schema && this.schema.$schema) {
-      // ajv fails to verify the v4 schema of some resources
-      this.schema.$schema = 'http://json-schema.org/draft-06/schema#';
       this.form.setSchema(this.schema);
     }
   }

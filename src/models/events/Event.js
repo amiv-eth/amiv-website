@@ -141,7 +141,7 @@ export default class Event {
     this._signup = await m.request({
       method: 'POST',
       url: `${apiUrl}/eventsignups`,
-      data,
+      body: data,
       headers: {
         Authorization: getToken(),
       },
@@ -153,7 +153,7 @@ export default class Event {
     this._signup = await m.request({
       method: 'PATCH',
       url: `${apiUrl}/eventsignups/${this._signup._id}`,
-      data: {
+      body: {
         additional_fields: additionalFieldsString,
       },
       headers: {

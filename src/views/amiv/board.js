@@ -133,8 +133,11 @@ export default class Board {
         label: [
           m('span', i18n('board.current.notice')),
           m(
-            'a',
-            { href: `/${currentLanguage()}/board/history`, oncreate: m.route.link },
+            m.route.Link,
+            {
+              selector: 'a',
+              href: `/${currentLanguage()}/board/history`,
+            },
             i18n('board.current.link')
           ),
         ],

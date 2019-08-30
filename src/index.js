@@ -1,6 +1,7 @@
 // src/index.js
 import m from 'mithril';
 import Raven from 'raven-js';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { Button } from 'polythene-mithril-button';
 import { sentryUrl, sentryEnvironment } from 'config';
 import Spinner from 'amiv-web-ui-components/src/spinner';
@@ -30,7 +31,7 @@ Raven.context(() => {
   loadLanguage();
 
   // set to pathname strategy (Please note that the server needs to support this)
-  m.route.prefix('');
+  m.route.prefix = '';
 
   // routes which require authentication
   // NOTE: You can specify a reason why this restriction is in place. This can also be a
@@ -122,10 +123,11 @@ Raven.context(() => {
           import(/* webpackInclude: /\.js$/ */ `${route.viewAsync}`)
             .then(loadedModule => {
               this.loadedModule = loadedModule;
-              m.redraw();
+              m.redraw.sync();
             })
             .catch(() => {
               this.error = true;
+              m.redraw.sync();
             });
         },
         view(vnode) {

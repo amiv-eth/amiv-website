@@ -1,6 +1,7 @@
 import m from 'mithril';
-import { Icon, Shadow } from 'polythene-mithril';
+import { Icon, Shadow, Toolbar, ToolbarTitle } from 'polythene-mithril';
 import DropdownCard from 'amiv-web-ui-components/src/dropdownCard';
+import ExpansionPanel from 'amiv-web-ui-components/src/expansionPanel';
 import Spinner from 'amiv-web-ui-components/src/spinner';
 import Button from '../../components/Button';
 import ListSelect from '../../components/ListSelect';
@@ -132,32 +133,74 @@ export default class StudydocQuickFilter {
       ];
     }
 
-    return m(DropdownCard, {
+    const toolbar = m(
+      Toolbar,
+      { compact: true },
+      m(ToolbarTitle, { text: i18n('studydocs.quickfilter.title') })
+    );
+
+    return m(ExpansionPanel, {
       className: ['studydocs-quickfilter', expanded ? 'expanded' : null].join(' '),
       expanded,
       separated: false,
       duration: animationDuration,
       onChange: expandedArg => {
         expanded = expandedArg;
+        setTimeout(() => m.redraw.sync(), 50);
       },
-      title: i18n('studydocs.quickfilter.title'),
-      content: m('div.studydocs-quickfilter-container', [
-        m('div.selection', [
-          m(Button, {
-            className: 'button flat-button',
-            label: i18n('reset'),
-            events: {
-              onclick: () => {
-                this.constructor.clear();
-                this.dataStore.filterValues = {};
+      header: toolbar,
+      content: m(
+        'div',
+        {
+          style: {
+            padding: '0 10px 10px 10px',
+          },
+        },
+        m('div.studydocs-quickfilter-container', [
+          m('div.selection', [
+            m(Button, {
+              className: 'button flat-button',
+              label: i18n('reset'),
+              events: {
+                onclick: () => {
+                  this.constructor.clear();
+                  this.dataStore.filterValues = {};
+                },
               },
-            },
-          }),
-          ...this._renderSelection(),
-        ]),
-        m('div.filtercontent', content),
-      ]),
+            }),
+            ...this._renderSelection(),
+          ]),
+          m('div.filtercontent', content),
+        ])
+      ),
     });
+
+    // return m(DropdownCard, {
+    //   className: ['studydocs-quickfilter', expanded ? 'expanded' : null].join(' '),
+    //   expanded,
+    //   separated: false,
+    //   duration: animationDuration,
+    //   onChange: expandedArg => {
+    //     expanded = expandedArg;
+    //   },
+    //   title: i18n('studydocs.quickfilter.title'),
+    //   content: m('div.studydocs-quickfilter-container', [
+    //     m('div.selection', [
+    //       m(Button, {
+    //         className: 'button flat-button',
+    //         label: i18n('reset'),
+    //         events: {
+    //           onclick: () => {
+    //             this.constructor.clear();
+    //             this.dataStore.filterValues = {};
+    //           },
+    //         },
+    //       }),
+    //       ...this._renderSelection(),
+    //     ]),
+    //     m('div.filtercontent', content),
+    //   ]),
+    // });
   }
 
   // eslint-disable-next-line class-methods-use-this

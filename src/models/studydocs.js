@@ -120,7 +120,7 @@ export default class StudydocsController extends PaginationController {
     return m.request({
       method: 'POST',
       url: `${apiUrl}/studydocuments`,
-      data: form,
+      body: form,
       headers: {
         Authorization: getToken(),
       },
@@ -152,7 +152,7 @@ export default class StudydocsController extends PaginationController {
       const response = await m.request({
         method: 'PATCH',
         url: `${apiUrl}/studydocuments/${doc._id}`,
-        data: form,
+        body: form,
         headers: {
           Authorization: getToken(),
           'If-Match': etag,
@@ -175,7 +175,7 @@ export default class StudydocsController extends PaginationController {
     return m.request({
       method: 'PATCH',
       url: `${apiUrl}/studydocuments/${doc._id}`,
-      data,
+      body: data,
       headers: {
         Authorization: getToken(),
         'If-Match': etag,

@@ -79,7 +79,7 @@ export default class UserController {
           Authorization: token || getToken(),
           'If-Match': this._user._etag,
         },
-        data: options,
+        body: options,
       })
       .then(result => {
         this._user = result;

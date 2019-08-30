@@ -1,5 +1,6 @@
 import m from 'mithril';
 import { Menu, List, ListTile } from 'polythene-mithril';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { vars as theme } from 'polythene-theme';
 import './Select.less';
 

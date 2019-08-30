@@ -359,7 +359,7 @@ export default class StudydocList extends FilteredListPage {
                   try {
                     await StudydocsController.delete(studydocument._id, studydocument._etag);
                     controller.reload();
-                    m.route.set(`/${currentLanguage()}/studydocuments`);
+                    m.route.setNoScroll(`/${currentLanguage()}/studydocuments`);
                   } catch (err) {
                     log.error(err);
                     this.deleteDocument = { id: null, busy: false };

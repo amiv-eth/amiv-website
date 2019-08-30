@@ -1,14 +1,14 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const WebappWebpackPlugin = require('webapp-webpack-plugin');
+const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 const HtmlWebpackInlineSVGPlugin = require('html-webpack-inline-svg-plugin');
 const { GenerateSW } = require('workbox-webpack-plugin');
-const RobotstxtPlugin = require('robotstxt-webpack-plugin').default;
+const RobotstxtPlugin = require('robotstxt-webpack-plugin');
 const path = require('path');
 
 const config = {
   context: `${__dirname}/src`, // `__dirname` is root of project and `src` is source
 
-  entry: ['@babel/polyfill', './index.js'],
+  entry: './index.js',
 
   output: {
     path: `${__dirname}/dist`, // `dist` is the destination
@@ -37,7 +37,9 @@ const config = {
           {
             loader: 'babel-loader',
             options: {
-              presets: [['@babel/preset-env', { targets: 'last 2 years' }]],
+              presets: [
+                ['@babel/preset-env', { useBuiltIns: 'usage', corejs: 3, targets: 'last 2 years' }],
+              ],
               plugins: [
                 '@babel/plugin-proposal-object-rest-spread',
                 '@babel/plugin-syntax-dynamic-import',
@@ -148,7 +150,7 @@ const config = {
 
   optimization: {
     usedExports: true,
-    sideEffects: true,
+    sideEffects: false,
     splitChunks: {
       chunks: 'all',
       automaticNameDelimiter: '-',
@@ -160,7 +162,7 @@ const config = {
     new RobotstxtPlugin({
       policy: [{ userAgent: '*', allow: '/' }],
     }),
-    new WebappWebpackPlugin({
+    new FaviconsWebpackPlugin({
       logo: './images/amivWheel.svg',
       prefix: 'assets/icons-[hash]/',
       title: 'AMIV an der ETH',
@@ -185,7 +187,7 @@ const config = {
       runtimeCaching: [
         {
           urlPattern: /\.(?:png|jpg|jpeg|svg)$/,
-          handler: 'cacheFirst',
+          handler: 'CacheFirst',
           options: {
             cacheName: 'images',
             expiration: { maxEntries: 10 }, // Only cache 10 images.
@@ -193,7 +195,7 @@ const config = {
         },
         {
           urlPattern: /\.js$/,
-          handler: 'cacheFirst',
+          handler: 'CacheFirst',
           options: {
             cacheName: 'scripts',
           },

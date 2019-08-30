@@ -180,10 +180,10 @@ export default class StudydocForm {
         value: this.doc.title,
         required: true,
         events: {
-          oninput: m.withAttr('value', value => {
-            this.doc.title = value;
+          oninput: event => {
+            this.doc.title = event.value;
             this.validate();
-          }),
+          },
         },
       }),
       m(SelectTextField, {

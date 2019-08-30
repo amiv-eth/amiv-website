@@ -1,4 +1,5 @@
 import m from 'mithril';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { Button } from 'polythene-mithril-button';
 import Spinner from 'amiv-web-ui-components/src/spinner';
 import { currentLanguage, i18n } from '../../models/language';
@@ -8,14 +9,16 @@ import contentUrlGerman from '../../content/amiv/markdown/about.de.md';
 export default class Amiv {
   oninit() {
     this.content = null;
-    this.loaded = false;
     this.constructor
       ._load()
       .then(response => {
         this.content = response;
+        this.error = false;
+        m.redraw();
       })
       .catch(() => {
         this.error = true;
+        m.redraw();
       });
   }
 
@@ -45,7 +48,7 @@ export default class Amiv {
     return m.request({
       url: `/${currentLanguage() === 'de' ? contentUrlGerman : contentUrlEnglish}`,
       method: 'GET',
-      deserialize: response => response,
+      responseType: 'text/html',
     });
   }
 }

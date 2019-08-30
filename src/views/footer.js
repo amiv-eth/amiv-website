@@ -61,10 +61,10 @@ export default class Footer {
           m('div.copyright', [
             m('span', `© 1893 - ${new Date().getFullYear()} AMIV an der ETH`),
             m(
-              'a',
+              m.route.Link,
               {
+                selector: 'a',
                 href: `/${currentLanguage()}/legal-notice`,
-                onupdate: m.route.link,
               },
               `${i18n('contact')} / ${i18n('legalNotice.title')}`
             ),

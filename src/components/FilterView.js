@@ -1,6 +1,9 @@
 import m from 'mithril';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { Search } from 'polythene-mithril-search';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { Shadow } from 'polythene-mithril-shadow';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { IconButton } from 'polythene-mithril-icon-button';
 import RadioGroup from 'amiv-web-ui-components/src/radioGroup';
 import debounce from 'amiv-web-ui-components/src/debounce';
@@ -235,6 +238,7 @@ export default class FilterViewComponent {
       field.label ? m('h4', field.label) : m(''),
       m(RadioGroup, {
         ...field,
+        key: undefined,
         value: this.values[field.key],
         onChange: state => {
           this.values[field.key] = state;
