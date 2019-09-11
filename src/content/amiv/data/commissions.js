@@ -165,9 +165,13 @@ const data = [
     ],
     description: {
       en:
-        'EESTEC is an international association of Electrical/Mechanical Engineers and Computer Scientists. We are present in over 50 cities all over Europe and offer a variety of events. For example workshops, where you travel to a different country and engage in interesting topics like 3D printing, AI, VR and many others. And apart from the travel costs, everything is included for free! You can find further information about us on our website.',
+        `EESTEC is the Electrical Engineering STudents’ assoCiation and spans over 50 different cities! Being both a commision of AMIV and a branch of EESTEC International, LC Zurich not only organizes shorter local events but also week-long international events!
+
+Do you want to travel, meet people from different cultures, and improve yourself - while keeping everything on a low cost? Or do you want to help organize memorable events here in Zurich while having the time of your life? Write an email, check out our website, or simply drop by ;)`,
       de:
-        'EESTEC ist ein internationaler Verein von Elektrotechnik, Maschinenbau und Informatik Studenten. Wir sind in über 50 Städten in ganz Europa vertreten und bieten verschiedenste Arten von Events an. Zum Beispiel Workshops, bei denen ihr eine Ganze Woche in ein anderes Land reisen könnt und euch dort mit interessanten Themen wie 3D Printing, AI, VR und vielem weiterem beschäftigt. Und das Ganze ist bis auf die Anreise vollkommen kostenlos! Auf unserer Website findet ihr noch mehr infos über uns.',
+        `EESTEC ist die “Electrical Engineering STudents’ assoCiation” und ist in über 50 Städten vertreten! Als Kommission des AMIVs und Teil von EESTEC International organisiert LC Zurich nicht nur lokale Events, sondern auch bis zu einwöchige Internationale Events.
+
+Willst du reisen, Leute aus unterschiedlichen Kulturen und dich selber besser kennenlernen - und das Ganze mit einem Studentenbudget? Oder willst du mithelfen unvergessliche Events hier in Zürich zu organisieren und währenddessen dem Studienalltag entfliehen? Dann schreibe eine E-Mail, schau dir unsere Webseite an oder komme einfach vorbei ;)`,
     },
   },
   {
