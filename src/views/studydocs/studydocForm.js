@@ -179,11 +179,14 @@ export default class StudydocForm {
         floatingLabel: true,
         value: this.doc.title,
         required: true,
-        events: {
-          oninput: event => {
-            this.doc.title = event.value;
-            this.validate();
-          },
+        onChange: ({ value, invalid }) => {
+          this.doc.title = value;
+          if (!invalid) {
+            this.invalid.delete('title');
+          } else {
+            this.invalid.add('title');
+          }
+          this.validate();
         },
       }),
       m(SelectTextField, {
