@@ -9,8 +9,7 @@ import RadioGroup from 'amiv-web-ui-components/src/radioGroup';
 import debounce from 'amiv-web-ui-components/src/debounce';
 import icons from 'amiv-web-ui-components/src/icons';
 import Button from './Button';
-import Checkbox from './Checkbox';
-import Select from './Select';
+import Filter from './Filter';
 import TextField from './TextField';
 import './FilterView.less';
 
@@ -202,7 +201,7 @@ export default class FilterViewComponent {
       this.values[field.key] || JSON.parse(JSON.stringify(field.default || []));
 
     if (field.label) {
-      items.push(m('h4', field.label));
+      items.push(m('label', field.label));
     }
 
     if (typeof field.values === 'function') {
@@ -215,33 +214,15 @@ export default class FilterViewComponent {
     return m('div.check', items);
   }
 
-  _createCheckbox(key, label, value) {
-    return m(Checkbox, {
-      checked: this.values[key].includes(value),
-      onChange: state => {
-        if (state.checked) {
-          this.values[key].push(value);
-        } else {
-          const i = this.values[key].indexOf(value);
-          if (i !== -1) {
-            this.values[key].splice(i, 1);
-          }
-        }
-        this.notify();
-      },
-      label,
-    });
-  }
-
   _createRadioGroup(field) {
     return m('div.radio', [
-      field.label ? m('h4', field.label) : m(''),
+      field.label ? m('label', field.label) : m(''),
       m(RadioGroup, {
         ...field,
         key: undefined,
         value: this.values[field.key],
-        onChange: state => {
-          this.values[field.key] = state;
+        onChange: ({ value }) => {
+          this.values[field.key] = value;
           this.notify();
         },
       }),
@@ -278,13 +259,14 @@ export default class FilterViewComponent {
     options.multiple = field.multiple || false;
     options.hint = field.hint;
     options.adjustSelection = field.adjustSelection ? field.adjustSelection : value => value;
+    options.dropdownThreshold = field.dropdownThreshold;
     options.options = values;
     options.onChange = ({ value }) => {
       this.values[field.key] = options.adjustSelection(value, this.values[field.key]);
       this.notify();
     };
 
-    return m(Select, options);
+    return m(Filter, options);
   }
 
   _createButton(field) {
@@ -333,8 +315,6 @@ export default class FilterViewComponent {
           views.push(this._createSearchField(field));
         } else if (field.type === 'text') {
           views.push(this._createTextField(field));
-        } else if (field.type === 'checkbox') {
-          views.push(this._createCheckboxGroup(field));
         } else if (field.type === 'radio') {
           views.push(this._createRadioGroup(field));
         } else if (field.type === 'select') {

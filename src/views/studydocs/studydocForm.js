@@ -2,10 +2,11 @@ import m from 'mithril';
 import marked from 'marked';
 import filesize from 'filesize';
 import animateScrollTo from 'animated-scroll-to';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { Icon } from 'polythene-mithril-icon';
 import Spinner from 'amiv-web-ui-components/src/spinner';
+import Select from 'amiv-web-ui-components/src/select';
 import StudydocsController from '../../models/studydocs';
-import Select from '../../components/Select';
 import Button from '../../components/Button';
 import TextField from '../../components/TextField';
 import SelectTextField from '../../components/SelectTextField';
@@ -289,6 +290,9 @@ export default class StudydocForm {
           label: i18n('studydocs.courseYear'),
           floatingLabel: true,
           value: this.doc.course_year,
+          style: {
+            paddingBottom: '12px',
+          },
           events: {
             oninput: e => {
               this.doc.course_year = Number(e.target.value);
